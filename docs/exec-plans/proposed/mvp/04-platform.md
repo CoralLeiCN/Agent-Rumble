@@ -1,151 +1,198 @@
-# PLAT — Platform-and-Experience Cohort
+# PLAT — Catalog-Platform-and-Experience Cohort
 
-**Status:** Proposed
+**Status:** Proposed — revised for catalog-first delivery
+
 **Plan index:** [Parallel MVP Execution Plan](README.md)
 
-This cohort exposes the application service through FastAPI, implements the
-accepted YAML-first persistence and search boundary, verifies isolation, and
-builds the React flows selected for release.
+**Detailed first slice:**
+[Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md)
+
+This cohort exposes validated, preprocessed Agent Project Cards through FastAPI
+and connects the selected React catalog experience. It implements the accepted
+YAML-first card store and disposable in-memory basic search. It does not accept
+a Git repository link, start an interactive analysis job, or invoke Codex in a
+public request. Those on-demand modes are P2.
 
 ## Entry Condition
 
-Checkpoint I-2 is published.
+The catalog foundation may begin when at least one canonical card validates
+through the repository-local skill's executable schema and semantic validator.
+The existing BioAgents example satisfies that condition for publication,
+loader, retrieval, and evidence work.
 
-* PLAT-1 has no additional decision gate.
-* PLAT-2 requires G-02; G-04 is satisfied by the accepted YAML-first catalog
-  decision.
-* PLAT-3, PLAT-7, and PLAT-8 require G-01 and G-05 and are omitted when the
-  frontend is outside the selected release.
+Additional gates apply by packet:
 
-## Round A — Independent Adapters
+* PLAT-1 and PLAT-2 implement the accepted YAML-first catalog decision and do
+  not require another persistence decision.
+* PLAT-3 may start with one validated card, but representative relevance tests
+  require the selected search corpus.
+* PLAT-4 requires at least three validated cards under one coherent Assessment
+  Context.
+* PLAT-5 requires the frontend contract to preserve the canonical status
+  dimensions and explicit comparison context.
+* PLAT-6 requires the applicable G-02 source-retention boundary and selected
+  operator publication flow.
 
-Dispatch PLAT-1, PLAT-2, PLAT-4, and conditional PLAT-3 in parallel.
+## Packet Summary
 
-### PLAT-1 — Analysis API
+| Packet | Scope | Gate |
+| --- | --- | --- |
+| PLAT-1 — YAML catalog foundation | Settings, typed contracts, versioned store discovery, validated repository | One valid canonical card |
+| PLAT-2 — Retrieval and evidence API | Catalog context, current/versioned cards, evidence resolution | PLAT-1 |
+| PLAT-3 — Deterministic search | Keyword interpretation, structured filters, traceable matches | PLAT-1; corpus for representative tests |
+| PLAT-4 — Contextual comparison | Role-first comparison with exact field states | Three contextually comparable cards |
+| PLAT-5 — React HTTP integration | HTTP gateway and contract alignment | PLAT-2 through PLAT-4 as used by the UI |
+| PLAT-6 — Publication and refresh | Atomic YAML publication, history, diffs, refresh | G-02 and selected operator flow |
+| PLAT-7 — Quality and safety | End-to-end, adversarial, isolation, and parity checks | Applicable completed packets |
 
-**Task:** P-01
+## PLAT-1 — YAML Catalog Foundation
 
-Implement FastAPI endpoints to start analysis from a Git repository link,
-observe typed status/failure information, and retrieve the canonical card and
-generated views. Delegate to Y-01 without duplicating analysis logic.
+**Owns:** P-00 and the catalog portion of P-02
 
-**Must not:** Implement persistence internals, redefine the card, or synthesize
-findings in the route layer.
+Implement typed backend settings, independent status enums, strict card and API
+projection models, and a `CatalogRepository` interface for the accepted YAML
+layout:
 
-**Complete when:** OpenAPI and integration tests cover valid, invalid, failed,
-and completed jobs and prove parity with direct-session output.
+```text
+catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml
+```
 
-### PLAT-2 — Job and YAML Card Persistence
+The catalog root remains configurable. The encoded card ID is one
+percent-encoded UTF-8 path segment and must resolve to the unencoded card ID in
+the YAML. Every discovered card must pass the same executable schema and
+semantic rules as the Agent Project Card skill before it enters the in-memory
+catalog.
 
-**Task:** P-02
-**Gate:** G-02
+Publish the validated BioAgents example as the first service card without
+changing its canonical content. Reject malformed files, unsafe paths, duplicate
+identifiers, invalid versions, and dangling references. Any search projection
+is disposable and rebuildable from the canonical YAML; do not add embeddings,
+vector storage, or a persistent derived card index.
 
-Implement versioned canonical `project-card.yaml` storage under the configured
-catalog root, plus the minimum request and status state required by the selected
-release flow. Keep retained source content within G-02.
+**Complete when:** The published BioAgents card loads without semantic loss,
+invalid catalogs fail deterministically, and tests preserve card, schema,
+ontology, snapshot, status, confidence, Claim, Evidence, and field-state
+semantics.
 
-Agree with PLAT-1 on the storage interface, but only this packet implements it;
-PLAT-1 owns HTTP behavior. Do not add a relational card projection, embeddings,
-or a vector store.
+## PLAT-2 — Retrieval and Evidence API
 
-**Complete when:** Restart, atomic publication, idempotency, version, isolation,
-and failure tests pass without changing the canonical card contract.
+**Owns:** P-01 catalog retrieval behavior
 
-### PLAT-3 — React Foundation
+Implement:
 
-**Task:** U-01
-**Conditional gates:** G-01 and G-05
+* `GET /api/v1/catalog`
+* `GET /api/v1/projects/{project_id}/cards/current`
+* `GET /api/v1/projects/{project_id}/cards/{card_version}`
+* `GET /api/v1/projects/{project_id}/cards/{card_version}/evidence/{evidence_id}`
 
-Create the selected React scaffold, test setup, generated API-client boundary,
-and shared loading, empty, error, unknown, and unavailable states.
+Routes delegate to the catalog application service and do not synthesize card
+facts. The current route selects the greatest valid retained card version.
+Evidence responses resolve related Claims, the parent Source, pinned revision,
+and precise locator. Repository excerpts remain inert text.
 
-**Must not:** Implement card generation, backend analysis logic, or frontend
-choices not accepted under G-05.
+**Complete when:** OpenAPI and integration tests cover success and typed error
+behavior, canonical cards round-trip exactly, and every evidence result resolves
+inside the selected card and Source Snapshot.
 
-**Complete when:** The application builds/tests and consumes the OpenAPI
-contract without duplicating card-generation logic.
+## PLAT-3 — Deterministic Search
 
-### PLAT-4 — Quality Scaffolding
+**Owns:** Search portion of P-03
 
-**Task:** E-02, non-blocked portion only
+Implement `POST /api/v1/catalog/search` over a disposable in-memory projection
+rebuilt from the canonical YAML. Support stated need, controlled and tested
+synonyms, structured filters for category, capability, language, license,
+maturity, and architecture layer, pagination, and deterministic ordering.
 
-Prepare the direct/API parity harness, static-only checks, and end-to-end fixture
-setup that do not require search, refresh, isolation, or selected UI flows.
-
-**Must not:** Mark E-02 complete, change expected results to accommodate defects,
-or adopt thresholds before G-03.
-
-**Complete when:** REL can add the remaining assertions without replacing the
-test harness.
-
-## Round B — Dependent Platform Features
-
-Dispatch applicable packets after PLAT-1 and PLAT-2 merge.
-
-### PLAT-5 — Search and Manual Refresh
-
-**Task:** P-03
-**Depends on:** PLAT-2 and CORE-4
-
-Load validated canonical YAML cards directly and build only disposable in-memory
-search state. Support basic keyword search and filters for type, capability,
-language, license, maturity, and architecture layer. Add manual reanalysis
-against a new Source Snapshot, retain prior card versions, and compute material
-card/Claim differences. Do not add embeddings, vector search, or a persistent
-card index; those capabilities remain in the
+Return uninterpreted terms and Claim-linked match reasons. Do not expose an
+aggregate project score, treat popularity as quality, interpret unavailable
+values as negative facts, or add embedding-based semantic ranking. Semantic and
+vector search remain in the
 [deferred backlog](../../../backlog.md#semantic-and-vector-search).
 
-**Complete when:** Search returns expected corpus projects, unknown does not
-behave like absent, and refresh produces traceable lineage and explicit diffs
-without continuous monitoring.
+**Complete when:** Search returns reproducible corpus results, reports Source
+Snapshot age and card version, and tests preserve all field states.
 
-### PLAT-6 — Analysis-Job Isolation
+## PLAT-4 — Contextual Comparison
 
-**Task:** S-05
-**Depends on:** PLAT-2 and ANA-9
+**Owns:** Catalog comparison behavior
 
-Verify that cached content, temporary files, sources, Claims, Evidence, and
-cards cannot cross analysis-job boundaries.
+Implement `POST /api/v1/catalog/compare` for two or three pinned card versions
+and an explicit Assessment Context. Explain whether project roles are
+substitutes, adjacent, or complementary before comparing capabilities.
 
-**Complete when:** Concurrent and sequential tests demonstrate that one project
-cannot affect another project's card.
+Compare interfaces, prerequisites, constraints, capabilities, limitations,
+open questions, and context-compatible assessments. Consequential cells carry
+Claim and Evidence identifiers. If the cards do not support a context-specific
+judgment, return `not_analyzed` instead of transferring an assessment from a
+different context.
 
-### PLAT-7 — Intake and Card UI
+**Complete when:** Three real validated cards support one defensible comparison,
+unknown states are preserved, and no output declares a universal winner.
 
-**Task:** U-02
-**Conditional dependencies:** PLAT-1, PLAT-3, and CORE-4
+## PLAT-5 — React HTTP Integration
 
-Implement repository-link intake, analysis status/failure presentation, Card
-Summary, detailed card, and Claim-to-Evidence navigation.
+**Owns:** U-01 through U-03 only for catalog access selected for the release
 
-**Complete when:** A user can submit a supported repository, follow its job,
-inspect the card, and trace material conclusions to Evidence.
+Align the frontend gateway with the OpenAPI contract. Capability support, Claim
+verification, Evidence status, confidence, and field state remain independent
+types. Add catalog context and current-card operations, pass an explicit
+Assessment Context and pinned card versions to comparison, and retain a visibly
+labeled static fallback.
 
-## Optional UI Tail
+The generated-client workflow, production routing, and production rendering
+mode remain decision boundaries unless separately accepted.
 
-### PLAT-8 — Search and Refresh UI
+**Complete when:** HTTP and static gateway adapters expose equivalent response
+semantics, the selected catalog flow uses validated cards, and illustrative
+fixtures remain visibly labeled when used as fallback data.
 
-**Task:** U-03
-**Depends on:** PLAT-5 and PLAT-7
+## PLAT-6 — Publication and Manual Refresh
 
-Expose card search/filters, Source Snapshot age, card version, and manual
-refresh. Do not imply continuous monitoring.
+**Owns:** Publication and refresh portions of P-02 and P-03
 
-**Complete when:** Browser-level tests cover search, filtering, stale-card
-display, and manual refresh.
+**Gate:** G-02 source-retention boundary and selected operator flow
+
+Publish only cards produced through the shared preprocessing contract and
+accepted by structural and semantic validation. Preserve `card_id`, assign the
+next `card_version`, create a new version directory atomically, retain every
+earlier version, rebuild disposable search state, and compute material card and
+Claim differences.
+
+Any request or job state needed by the selected operator flow remains separate
+from the canonical card. Do not add continuous monitoring, user-submitted
+repository intake, relational card projections, or on-demand public analysis.
+
+**Complete when:** Restart, atomic publication, idempotency, concurrency,
+lineage, isolation, and diff tests pass without changing the canonical card
+contract.
+
+## PLAT-7 — Quality and Safety
+
+**Owns:** Catalog portions of S-05 and E-02
+
+Verify safe path encoding, all-or-nothing catalog loading, source-content
+inertness, cross-card reference isolation, exact status semantics, OpenAPI
+contracts, HTTP/static parity, deterministic search, contextual comparison, and
+any selected frontend flow.
+
+**Complete when:** Adversarial cards cannot influence configuration, authority,
+scope, HTML rendering, or another card's results, and applicable regression
+checks pass through locked workflows.
 
 ## Merge Order
 
-1. PLAT-1, PLAT-2, PLAT-3, and PLAT-4 may merge independently after their gates.
-2. Merge PLAT-5 and PLAT-6 after PLAT-2.
-3. Merge PLAT-7 after PLAT-1 and PLAT-3.
-4. Merge PLAT-8 after PLAT-5 and PLAT-7.
-5. Run API, persistence, search, refresh, isolation, parity, and selected UI
-   tests together.
+1. Merge PLAT-1.
+2. PLAT-2 and the contract-independent parts of PLAT-3 may proceed in parallel.
+3. Add the accepted comparison cards before completing PLAT-3 and starting
+   PLAT-4.
+4. Merge PLAT-4 after its data gate.
+5. Merge PLAT-5 after the API operations used by the frontend are stable.
+6. Merge PLAT-6 after its source and operator-flow gates.
+7. Complete PLAT-7 across every selected packet.
 
 ## Exit Checkpoint I-3
 
-The API and direct mode are integrated; persistence, basic search, manual
-refresh, and isolation tests pass; and selected frontend flows use the same
-application and canonical card interfaces. Publish the commit as the base for
-REL.
+Validated preprocessed cards are stored and loaded through the accepted
+YAML-first catalog; catalog context, retrieval, evidence, deterministic search,
+and contextual comparison APIs pass; selected frontend flows use the same
+contract; and P2 on-demand analysis remains explicit.

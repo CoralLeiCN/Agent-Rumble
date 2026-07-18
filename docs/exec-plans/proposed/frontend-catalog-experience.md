@@ -20,14 +20,19 @@ comparison, and evidence viewing do not invoke an AI model.
 
 ## Current State
 
-* The repository has no frontend application.
-* React is required, while routing, build tooling, rendering, styling, and
-  component libraries remain unresolved.
+* A local Vite, React, and TypeScript prototype implements the prepared Explore,
+  shortlist, comparison, and evidence flow behind a static catalog gateway.
+  Its tooling and in-app navigation remain reversible prototype choices rather
+  than accepted production architecture.
 * FastAPI currently exposes only `/health`.
-* Canonical card models and validated card fixtures are not implemented.
+* The repository-local Agent Project Card skill includes an executable v0.2
+  schema and deterministic validator, and one real BioAgents card validates.
+  Typed backend card consumption models and catalog projections are not yet
+  implemented.
 * Catalog search, project-card, comparison, and evidence endpoints do not exist.
-* The design prototype uses illustrative data that must not be presented as
-  validated project intelligence.
+* The frontend uses illustrative OpenAI Agents SDK, LangGraph, and CrewAI data
+  that must not be presented as validated project intelligence or copied into
+  the catalog without real preprocessing.
 
 ## Scope
 
@@ -105,7 +110,7 @@ checks are proposed.
 These decisions allow the initial frontend to use Agent Rumble copy and SPA
 rendering without implying that public-card discoverability is complete.
 
-### Before Frontend Scaffolding Is Accepted
+### Before the Prototype Becomes Production Frontend Architecture
 
 Accept or revise:
 
@@ -135,6 +140,8 @@ interface CatalogGateway {
   getCatalogContext(): Promise<CatalogContext>
   searchProjects(request: SearchRequest): Promise<SearchResponse>
   getCurrentCard(projectId: string): Promise<AgentProjectCard>
+  getCard(projectId: string, cardVersion: number): Promise<AgentProjectCard>
+  getEvidence(request: EvidenceRequest): Promise<EvidenceResponse>
   compareProjects(request: ComparisonRequest): Promise<ComparisonResponse>
 }
 ```
@@ -155,6 +162,8 @@ components. It must not introduce a frontend-owned card or comparison model.
 | Catalog context | `GET /api/v1/catalog` | Cohort, coverage, freshness, schema versions, ontology versions, and exclusions |
 | Search | `POST /api/v1/catalog/search` | Interpreted requirements, facets, results, and claim-linked match explanations |
 | Current card | `GET /api/v1/projects/{project_id}/cards/current` | Canonical Agent Project Card |
+| Versioned card | `GET /api/v1/projects/{project_id}/cards/{card_version}` | Pinned canonical Agent Project Card revision |
+| Evidence | `GET /api/v1/projects/{project_id}/cards/{card_version}/evidence/{evidence_id}` | Evidence, related Claims, Source, pinned revision, locator, and safe source URL |
 | Compare | `POST /api/v1/catalog/compare` | Difference-first comparison under an explicit Assessment Context |
 
 Search interpretation for the first slice is deterministic and ontology-backed:
@@ -191,6 +200,7 @@ interface ComparisonCell {
   claimVerificationStatus?: ClaimVerificationStatus
   confidence?: Confidence
   claimIds: string[]
+  evidenceIds: string[]
 }
 ```
 
@@ -262,7 +272,7 @@ Deliver:
 
 * Confirm scenario, cohort, and compare limit; use Agent Rumble as the visible
   product name.
-* Freeze the four gateway operations and response shapes.
+* Freeze the six catalog gateway operations and response shapes.
 * Select the exact 90-second happy path and prepared deep link.
 * Classify work as must, should, or later.
 
@@ -280,7 +290,7 @@ Parallel work:
 * **Frontend owner:** application scaffold, routes, error boundary, visual tokens,
   responsive shell, gateway interface, and static adapter.
 * **Data/API owner:** canonical models, three validated cards, API projection
-  models, fixture validation, and the four FastAPI endpoints.
+  models, fixture validation, and the six catalog API operations.
 
 Exit criteria:
 

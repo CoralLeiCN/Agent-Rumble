@@ -26,14 +26,15 @@ start only after the responsible decision is accepted and recorded.
 
 ## Immediate Dispatch
 
-The following files can be handed off now from the same repository baseline:
+The first backend implementation should follow the proposed
+[Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md).
+It can publish the validated BioAgents example into the accepted YAML-first
+`catalog/cards/` layout without waiting for the repository-analysis pipeline or
+P2 on-demand generation.
 
-* [DEC — Decision preparation](00-decisions.md): two decision-preparation
-  packets can run in parallel.
-* [FND — Contracts and safety](01-foundation.md): FND-1 through FND-5 can run in
-  parallel, followed by FND-6 contract convergence.
-
-Do not dispatch CORE until checkpoint I-0 is published and G-02 is accepted.
+The DEC, FND, CORE, and ANA cohorts below remain the broader plan for completing
+operator-managed preprocessing and later card generation. Do not use the old
+analysis-job path as the first public API sequence.
 
 ## Cohort Files
 
@@ -43,18 +44,19 @@ Do not dispatch CORE until checkpoint I-0 is published and G-02 is accepted.
 | 1 | [FND — Contracts and safety](01-foundation.md) | 5 packets, then 1 convergence packet | I-0: contracts, safety fixtures, provisional evaluation harness, and settings are stable. |
 | 2 | [CORE — Repository and core tool](02-core.md) | 4 immediate packets and 1 staggered packet | I-1: supported fixtures are safely mapped, validated, and rendered. |
 | 3 | [ANA — Analyzers and orchestration](03-analyzers.md) | 5 packets in round A, 3 in round B, then 2 convergence packets | I-2: representative projects reach one validated application service. |
-| 4 | [PLAT — Platform and experience](04-platform.md) | 3–4 packets in round A, 3 in round B, optional UI tail | I-3: selected access modes, persistence, search, refresh, and isolation are integrated. |
+| 4 | [PLAT — Catalog platform and experience](04-platform.md) | Catalog API packets implement the accepted YAML-first store; publication and refresh retain their source and operator-flow gates. | I-3: validated catalog loading, retrieval, search, comparison, evidence, and selected frontend flows are integrated. |
 | 5 | [REL — Evaluation and release](05-release.md) | 1 evaluation owner plus parallel fixes by prior owners | I-4: acceptance evidence and the release report are complete. |
 
 ```mermaid
 flowchart LR
     DEC["DEC decisions"] -.unblocks.-> CORE["CORE repository and core tool"]
     DEC -.unblocks.-> ANA["ANA analyzers and orchestration"]
-    DEC -.unblocks.-> PLAT["PLAT platform and experience"]
+    DEC -.unblocks.-> PLAT["PLAT catalog platform and experience"]
     DEC -.unblocks.-> REL["REL evaluation and release"]
     FND["FND contracts and safety"] -->|I-0| CORE
     CORE -->|I-1| ANA
-    ANA -->|I-2| PLAT
+    CARDS["Validated preprocessed cards"] --> PLAT
+    ANA -->|later preprocessing| CARDS
     PLAT -->|I-3| REL
     REL --> I4["I-4 release evidence"]
 ```
@@ -114,21 +116,32 @@ The following work already exists:
 * A root `uv` workspace with the Python backend and seven-day dependency release
   cooldown.
 * A FastAPI application factory, router layout, health endpoint, and API tests.
-* A top-level `frontend/` project boundary without selected build tooling.
+* A local Vite, React, and TypeScript prototype with typed illustrative fixtures
+  behind a catalog gateway seam. These remain reversible prototype choices, not
+  accepted production frontend architecture.
 * Accepted React, FastAPI, Pydantic, OpenAI Agents SDK, Codex, direct-session,
   and API-adapter constraints.
 * Specified card semantics, exploration workflow, safety boundaries, and MVP
   acceptance criteria.
+* A repository-local Agent Project Card skill packaged as a plugin, an
+  executable v0.2 JSON Schema, migration and validation scripts, and focused
+  tests.
+* One validated BioAgents card with a pinned Source Snapshot, Claims, Evidence,
+  assessments, relationships, and explicit unavailable-value states.
+* An accepted YAML-first card-catalog decision and default versioned layout
+  under `catalog/cards/`, with embeddings and vector search deferred.
 
-The executable schema, ontologies, analyzers, card skill, orchestration,
-YAML-backed persistence, basic search, refresh, and user-facing card flow remain
-plan work.
+Typed backend settings and card consumption models, YAML catalog publication
+and loading, additional comparison cards, deterministic search, comparison,
+evidence retrieval, manual refresh, analyzers, orchestration, and the frontend
+HTTP adapter remain plan work.
 
 ## MVP Outcome and Boundary
 
-Deliver the smallest end-to-end system that statically analyzes a supported
-public GitHub project and produces a schema-valid, evidence-backed Agent Project
-Card tied to an explicit project boundary and Source Snapshot.
+Deliver a searchable and comparable catalog of preprocessed, schema-valid,
+evidence-backed Agent Project Cards. Operator-managed static preprocessing
+produces the cards, while the first public API retrieves and compares them
+without accepting a user-provided repository.
 
 The plan stays within the [MVP scope](../../../specification/06-mvp-scope-and-evaluation.md#19-mvp-scope).
 It excludes private repositories, dynamic code execution, continuous
@@ -138,18 +151,23 @@ knowledge-graph implementation, and organization-wide access control.
 
 ## Critical Path
 
-1. C-01 and C-02, followed by C-03
-2. G-02 and R-01 through R-04
-3. K-01 and G-06, followed by K-03
-4. A-01 through A-06
-5. Y-01, followed by S-04
-6. P-01 in parallel with P-02 under the accepted YAML-first catalog decision
-7. P-03 and S-05
-8. E-02
-9. G-03 and E-03
+1. Align the executable card contract with typed backend settings and models.
+2. Publish the validated BioAgents example and load the accepted versioned
+   `catalog/cards/` YAML layout through one repository boundary.
+3. Expose catalog context, current and versioned card retrieval, and evidence
+   resolution.
+4. Add enough validated cards for one coherent search and comparison context.
+5. Implement deterministic search and contextual comparison.
+6. Connect the React HTTP gateway and complete catalog-flow regression checks.
+7. Complete operator-managed preprocessing through CORE and ANA without
+   changing the catalog contract.
+8. Add atomic publication and durable manual refresh under the accepted
+   YAML-first decision and applicable G-02 source boundary.
+9. Resolve G-03 and complete release evaluation.
 
-G-01 determines the release sequence and whether U-01 through U-03 join the
-critical path. K-02 keeps direct-session use independently testable.
+The focused [backend plan](../backend-catalog-vertical-slice.md) owns steps 1
+through 6. Direct-session and user-provided repository analysis remain P2 and
+are not on the first-release critical path.
 
 ## Standard Agent Handoff
 
