@@ -46,6 +46,24 @@ Dependency resolution enforces a seven-day release cooldown: registry packages
 uploaded within the preceding week are not eligible for a new lockfile. Locked
 installs continue to use the reviewed versions recorded in `uv.lock`.
 
+### Make Commands
+
+The root `Makefile` provides shortcuts for the common development workflow:
+
+```shell
+make help
+make setup
+make dev
+make test
+make build
+```
+
+`make dev` starts the FastAPI and Vite development servers together. Run
+`make backend` and `make frontend` in separate terminals when independent logs
+or restarts are more convenient. `make build` type-checks the frontend and
+creates its production bundle in `frontend/dist/`; the FastAPI backend runs
+directly from its Python package and does not require a separate build artifact.
+
 ## Project Layout
 
 The application follows the same high-level boundary used by the FastAPI Full
