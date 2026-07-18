@@ -110,6 +110,33 @@ design principles through clear hierarchy, purposeful restraint, immediate
 interaction feedback, consistent spatial behavior, polished typography, and
 reduced-motion support.
 
+For decision and comparison workflows, the frontend must provide access to every
+field defined by the current canonical Agent Project Card contract. The current
+versioned contract and card data determine field coverage; a fixed list copied
+from a mock fixture or final screen design must not become a competing field
+contract. When the canonical contract adds a field or a card supplies additional
+data, the frontend must make it available in the experience while preserving the
+field's card semantics.
+
+To satisfy the
+[Customer-Facing Presentation requirement](../requirements.md#customer-facing-presentation),
+the public interface must use customer-facing product language and omit
+hackathon, implementation, project-infrastructure, and internal review labels.
+Search and comparison copy must explain the experience in plain terms rather
+than expose internal contract or processing terminology.
+
+To satisfy the
+[Compact Comparison Hierarchy requirement](../requirements.md#compact-comparison-hierarchy),
+the comparison must group fields into understandable customer sections and
+avoid repeating information already shown in the surrounding project or
+comparison context. Purpose and fit, material capability differences,
+constraints, prerequisites, and integration details have the highest initial
+priority. Supporting source detail and technical record metadata have secondary
+priority and remain available through collapsed disclosure. Card identifiers,
+schema versions, and similar record metadata must not create standalone
+sections. Presentation priority controls initial visibility only; it must not
+remove fields supplied by the canonical contract or selected card data.
+
 ### Implementation Technology
 
 The [Implementation Technology requirements](../requirements.md#implementation-technology)
@@ -156,12 +183,18 @@ For the preprocessed catalog, the system must:
 
 For the preprocessed catalog, the system must:
 
-* Compare projects using a shared schema
+* Compare projects using the current shared canonical Agent Project Card contract
 * Highlight meaningful differences
+* Make every canonical card field available for each selected project, including
+  fields that are equal across the selected cards
+* Derive the comparison field inventory from the current card contract and card
+  data rather than a fixture-specific or screen-specific field list
 * Avoid comparing projects that serve fundamentally different roles without explaining the distinction
 * Identify complementary rather than only competing projects
 * State the comparison cohort, use case, requirements, and source snapshots
 * Compare interface compatibility and prerequisites as well as capabilities
+* Preserve claim, evidence, confidence, verification, Source Snapshot, and
+  unavailable-value semantics when presenting any field
 * Preserve unknown, not-applicable, not-analyzed, and no-evidence-found states
   rather than presenting them as negative differences
 

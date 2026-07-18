@@ -194,6 +194,31 @@ frontend release.
 
 ## Frontend Experience
 
+### Canonical Card Field Coverage
+
+The decision and comparison experience should make every field defined by the
+current canonical Agent Project Card data contract available for inspection.
+
+The available field set should be derived from the current card contract and
+card data rather than from a final user-interface design or mock fixture. As
+teammates add card data or extend the canonical contract with fields, the
+experience should make that data and those fields available.
+
+### Customer-Facing Presentation
+
+The website prototype should present only customer-facing product information.
+Remove hackathon, implementation, project-infrastructure, and internal review
+language, and use terms that customers can understand in search results and
+comparison views.
+
+### Compact Comparison Hierarchy
+
+The comparison experience should be compact and avoid duplicate information.
+Group fields into understandable sections, identify their presentation
+priority, show the highest-priority fields first, and keep the remaining fields
+available in collapsed lists. Technical metadata such as schema version and
+card identifier should not appear as standalone sections.
+
 ### Visual Refinement
 
 The Agent Rumble website should apply the referenced Apple design principles to
@@ -313,6 +338,8 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Frontend experience | Required customer-facing product language and a compact comparison hierarchy that groups fields, prioritizes the most useful details, collapses the remainder, removes duplication, and avoids standalone sections for card and schema identifiers. |
+| 2026-07-18 | Frontend experience | Required the decision and comparison experience to make every current canonical card field available, derive field coverage from the card contract rather than UI mocks, and stay aligned as card data and fields evolve. |
 | 2026-07-18 | Core tool and access | Required tools to be provided as skills and services, with a Codex plugin supported first and Codex used heavily as the core harness. |
 | 2026-07-18 | Documentation governance | Required writing to contain only the content the user requested. |
 | 2026-07-18 | Documentation governance | Required one notes document focused on the project's building stories and how the project is built. |

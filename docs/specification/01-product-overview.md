@@ -285,6 +285,12 @@ that make the comparison meaningful. The system compares their purpose,
 capabilities, architecture, maturity, integration requirements, strengths,
 weaknesses, and gaps using their recorded source snapshots.
 
+The decision and comparison experience makes every field defined by the current
+canonical Agent Project Card contract available for inspection. Its field
+coverage follows the current versioned contract and selected card data rather
+than a fixed field list taken from a user-interface design or mock fixture, so
+new card data and contract fields remain available as the card evolves.
+
 ### 7.3 Recommend Projects for a Use Case
 
 A downstream Agent Architect receives a use-case description and retrieves relevant project cards.

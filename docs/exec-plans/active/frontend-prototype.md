@@ -1,6 +1,6 @@
 # Frontend Prototype Execution Plan
 
-**Status:** Active — implementation checks pass; user local validation remains
+**Status:** Active — user local validation remains
 
 **Date:** 2026-07-18
 
@@ -18,6 +18,8 @@ Deliver one fixture-backed path that lets a user:
 4. Compare material differences without declaring a universal winner.
 5. Open the claim, confidence, source revision, and precise evidence behind a
    consequential comparison cell.
+6. Inspect every field in the current canonical Agent Project Card contract,
+   including shared or equal fields through progressive disclosure.
 
 The prototype must run locally without a backend, model call, repository
 analysis, account, or user-provided repository intake. Illustrative data must be
@@ -30,13 +32,34 @@ The implementation now consumes schema-valid, illustrative draft-v0.2 Agent
 Project Card fixtures through a versioned canonical-card adapter. UI projections
 remain derived views rather than a second card source of truth. The adapter
 preserves card and schema versions, exact field states, Assessment Context, and
-the claim-to-supporting-or-conflicting-evidence-to-source chain.
+the claim-to-supporting-or-conflicting-evidence-to-source chain. Comparison now
+recursively inventories the selected card payloads rather than using a
+screen-specific row list. It keeps shared fields, computes difference counts,
+preserves exact JSON Pointers internally, and provides a generic presentation
+path for new card properties. The comparison also reads field definitions and
+top-level order directly from the schema packaged with the Agent Project Card
+skill, while keeping schema-only array fields separate from real project rows.
+
+Customer-facing copy no longer exposes hackathon, implementation, or internal
+review language. A presentation-only projection groups the exhaustive field
+inventory into customer-readable sections, ranks decision-relevant details,
+shows at most four highlights per primary section, and keeps all remaining
+fields in collapsed disclosures. Card identifiers, schema versions, field-state
+maps, sources, and future unknown groups remain reachable without becoming
+standalone primary sections.
 
 The packaged Agent Project Card structural and semantic validation passes for
 all prototype fixtures. Frontend type checking, behavior tests, and the
-production build also pass. The data remains illustrative rather than validated
-project intelligence, and the user has not yet completed local browser
-validation; this plan therefore remains **Active**.
+production build also pass. Twenty-one behavior tests verify every reachable
+scalar, explicit null, primitive collection, and known-empty container; shared
+fields; all four formal non-value states; and runtime discovery of an added
+property without a presentation whitelist. They also verify schema-derived
+field coverage, customer section partitioning, highlight limits, future-field
+fallback, customer-facing copy, and the complete interaction path. A local Vite
+development smoke test confirms that the packaged schema is served directly.
+The data remains illustrative, and the user has not yet completed responsive,
+zoom, reduced-motion, and browser keyboard validation; this plan therefore
+remains **Active**.
 
 ## Source Traceability
 
@@ -57,6 +80,15 @@ The implementation must preserve these accepted inputs:
 * MVP boundaries and acceptance behavior:
   [`MVP Scope`](../../specification/06-mvp-scope-and-evaluation.md#19-mvp-scope)
   and [`MVP Acceptance Criteria`](../../specification/06-mvp-scope-and-evaluation.md#20-mvp-acceptance-criteria).
+* Contract-driven frontend field coverage:
+  [`Canonical Card Field Coverage`](../../requirements.md#canonical-card-field-coverage),
+  [`Compare Similar Projects`](../../specification/01-product-overview.md#72-compare-similar-projects),
+  [`Comparison`](../../specification/05-system-behavior-and-quality.md#comparison),
+  and [`MVP Acceptance Criteria`](../../specification/06-mvp-scope-and-evaluation.md#20-mvp-acceptance-criteria).
+* Customer-facing and compact comparison presentation:
+  [`Customer-Facing Presentation`](../../requirements.md#customer-facing-presentation),
+  [`Compact Comparison Hierarchy`](../../requirements.md#compact-comparison-hierarchy),
+  and [`Frontend Presentation`](../../specification/05-system-behavior-and-quality.md#frontend-presentation).
 * Required React framework:
   [`Frontend Framework`](../../requirements.md#frontend-framework) and the
   accepted [`React Frontend`](../../decisions.md#react-frontend) decision.
@@ -105,7 +137,9 @@ Implement a small system with five layers:
    dialog or drawer, and visually hidden/live-region helpers.
 4. **Product patterns:** search intent, interpreted-requirement group, result
    card, shortlist tray, comparison row and cell, source snapshot, and evidence
-   inspector.
+   inspector. A contract-field presenter derives its inventory from the current
+   versioned contract and selected card data, with a generic fallback for fields
+   without specialized presentation.
 5. **Page compositions:** Explore/results, contextual comparison, and a compact
    Project Card/JSON view if the primary path is already complete.
 
@@ -137,12 +171,28 @@ least 44 by 44 CSS pixels.
 
 * Restate the decision context and role relationship before feature differences.
 * Show material differences first and collapse shared attributes.
+* Keep every field in the current canonical contract reachable, including equal
+  and shared fields, while using progressive disclosure to preserve a compact
+  decision-first view.
 * Preserve exact non-value states and avoid scores, winner labels, and red-cross
   treatment of missing evidence.
 * Open a keyboard-safe evidence inspector from a consequential cell without
   losing comparison position.
 
-### 4. Responsive and Local Validation
+### 4. Complete Contract Field Coverage
+
+* Replace the fixture-specific comparison row inventory with one derived from
+  the current versioned contract and selected card data.
+* Keep the Card Summary compact and the comparison difference-first while making
+  every canonical field available through complete-field sections and
+  progressive disclosure.
+* Provide a generic presentation path for newly added fields until a specialized
+  component is warranted.
+* Add coverage tests that compare the contract field inventory with the
+  presentation inventory and exercise populated, newly added, equal, shared,
+  and formal non-value fields.
+
+### 5. Responsive and Local Validation
 
 * Support narrow mobile, intermediate, and wide desktop layouts.
 * Add the compact Project Card/JSON view only after the primary path is stable.
@@ -187,7 +237,10 @@ Current recorded result:
 
 * Packaged structural and semantic validation passes for every illustrative
   draft-v0.2 Agent Project Card fixture.
-* Frontend type checking, behavior tests, and production build pass.
+* Frontend type checking, 21 behavior tests, and production build pass.
+* Development-mode loading of the packaged schema through Vite passes.
+* Contract-derived field inventory and complete-field presentation coverage
+  tests pass.
 * User-run local browser, responsive, zoom, reduced-motion, keyboard, and network
   inspection remain outstanding.
 
@@ -216,6 +269,10 @@ The local tester should be able to answer yes to each item:
 * Does comparison explain whether projects are substitutes, adjacent, or
   complementary before comparing capabilities?
 * Are consequential differences visible before shared attributes?
+* Can I inspect every field in the current canonical card contract, including
+  fields that are equal or shared across the selected projects?
+* If a fixture supplies more card data or the contract gains a field, does it
+  appear without adding that field to a final-mock or screen-specific whitelist?
 * Can I distinguish capability support, claim verification, confidence, and
   missing-information states without relying on color?
 * Can I open precise evidence, see why it matters, and return to the same place?
@@ -231,5 +288,8 @@ The local tester should be able to answer yes to each item:
 
 Move this plan to `completed/` only after the prototype is runnable locally, the
 validation commands pass, the primary path is keyboard and responsive tested,
-and the user-test findings are either resolved or explicitly accepted. Local
-validation remains outstanding, so the current status is **Active**.
+every current canonical contract field is reachable through contract-derived
+coverage with its semantics preserved, the contract-field coverage tests pass,
+and the user-test findings are either resolved or explicitly accepted. Contract
+field coverage is implemented and automated checks pass; user local validation
+remains outstanding, so the current status is **Active**.

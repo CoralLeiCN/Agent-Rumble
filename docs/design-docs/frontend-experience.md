@@ -163,6 +163,14 @@ Recommended comparison groups:
 * Evidence-backed strengths and limitations
 * Open questions and proof-of-concept checks
 
+These groups organize the current canonical contract but do not limit it. Every
+field in the contract remains available within the decision and comparison
+experience. Material differences lead, while equal, shared, and lower-priority
+fields may use progressive disclosure. The field inventory comes from the
+current versioned contract and selected card data rather than a fixed screen
+list or fixture, allowing newly added fields and data to use the same coverage
+path before they receive specialized presentation.
+
 Cells link to supporting claims. Unknown, not applicable, not analyzed, and no
 evidence found remain distinct. The interface must not turn missing evidence
 into a red cross or imply that one project universally wins.

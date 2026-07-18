@@ -225,8 +225,15 @@ It then provides a short, non-universal conclusion:
 ```
 
 The initial viewport contains only material differences. Shared attributes are
-collapsed behind `Show 12 shared attributes`. Full schema sections remain
-available below.
+collapsed behind a disclosure whose count comes from the selected card data.
+Full schema sections remain available below.
+
+Every field in the current canonical contract remains reachable through the
+matrix or complete-field sections. Difference-first presentation controls
+ordering and progressive disclosure; it is not a field whitelist. A generic
+contract-field presentation handles newly added fields and data until a
+specialized presentation is warranted, so a fixture or final screen design does
+not become a competing field contract.
 
 ### Cell Behavior
 

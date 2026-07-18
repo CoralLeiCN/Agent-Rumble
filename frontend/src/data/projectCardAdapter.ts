@@ -2,7 +2,14 @@ import type {
   AssessmentContextView,
   ClaimEvidenceRecord,
   ComparisonCell,
+  ComparisonContractField,
+  ComparisonGroup,
+  ComparisonJsonValue,
+  ComparisonProvenance,
   ComparisonResponse,
+  ComparisonRow,
+  ComparisonSemanticKind,
+  ComparisonValueKind,
   ProjectSummary,
   Requirement,
   ResolvedEvidence,
@@ -10,13 +17,18 @@ import type {
 } from "../types/catalog";
 import type {
   AgentProjectCard,
-  Capability,
   Claim,
   FieldState,
   Source,
 } from "../types/projectCard";
+import {
+  assertSupportedProjectCardContract,
+  projectCardContract,
+  SUPPORTED_PROJECT_CARD_SCHEMA_VERSION,
+  type ContractFieldDefinition,
+} from "./projectCardContract";
 
-export const SUPPORTED_PROJECT_CARD_SCHEMA_VERSION = "0.2" as const;
+export { SUPPORTED_PROJECT_CARD_SCHEMA_VERSION } from "./projectCardContract";
 
 export interface SearchProjectionContext {
   requirements: Requirement[];
@@ -52,6 +64,7 @@ function primaryRevision(card: AgentProjectCard) {
 }
 
 function assertSupportedCard(card: AgentProjectCard) {
+  assertSupportedProjectCardContract();
   if (card.schema_version !== SUPPORTED_PROJECT_CARD_SCHEMA_VERSION) {
     throw new Error(
       `Unsupported Agent Project Card schema ${card.schema_version}; expected draft ${SUPPORTED_PROJECT_CARD_SCHEMA_VERSION}.`,
@@ -125,91 +138,370 @@ export function projectCardsToSearchResponse(
   };
 }
 
-function claimForCapability(card: AgentProjectCard, capability: Capability) {
-  return capability.claim_ids
-    .map((claimId) => card.claims.find(({ claim_id }) => claim_id === claimId))
-    .find((claim): claim is Claim => Boolean(claim));
+interface InventoryEntry {
+  pointer: string;
+  logicalPath: string;
+  fieldPattern: string;
+  label: string;
+  value: ComparisonJsonValue;
+  state: ComparisonCell["state"];
+  claimIds: string[];
+  semanticKind: ComparisonSemanticKind;
+  valueKind: ComparisonValueKind;
 }
 
-function capabilityCell(
-  card: AgentProjectCard,
-  ontologyId: string,
-): ComparisonCell {
-  const capabilityIndex = card.capabilities.findIndex(({ ontology_id }) => ontology_id === ontologyId);
-  const capability = card.capabilities[capabilityIndex];
-  if (!capability) {
-    throw new Error(`Card ${card.card_id} has no canonical capability projection for ${ontologyId}.`);
+interface InventoryContext {
+  card: AgentProjectCard;
+  entries: InventoryEntry[];
+  pointer: string;
+  logicalPath: string;
+  fieldPattern: string;
+  label: string;
+  entityLabels: string[];
+  claimIds: string[];
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function pointerSegment(value: string) {
+  return value.replace(/~/g, "~0").replace(/\//g, "~1");
+}
+
+function logicalIdentity(value: string) {
+  return encodeURIComponent(value);
+}
+
+function humanLabel(value: string) {
+  return value
+    .replace(/^@[^/]+\//, "")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function unique(values: string[]) {
+  return [...new Set(values)];
+}
+
+function claimsForObject(value: Record<string, unknown>, inherited: string[]) {
+  const direct = Array.isArray(value.claim_ids)
+    ? value.claim_ids.filter((claimId): claimId is string => typeof claimId === "string")
+    : [];
+  const ownClaim = typeof value.claim_id === "string" ? [value.claim_id] : [];
+  return unique([...inherited, ...direct, ...ownClaim]);
+}
+
+function semanticKind(pointer: string): ComparisonSemanticKind {
+  const property = pointer.slice(pointer.lastIndexOf("/") + 1).replace(/~1/g, "/").replace(/~0/g, "~");
+  if (pointer.startsWith("/field_states/")) return "field_state";
+  if (property === "support_status") return "support_status";
+  if (property === "evidence_status") return "evidence_status";
+  if (property === "verification_status") return "verification_status";
+  if (property === "confidence") return "confidence";
+  if (property === "claim_id" || property === "claim_ids" || property.endsWith("_claim_ids")) {
+    return "claim_reference";
   }
-  if (capability.support_status === null) {
-    const pointer = `/capabilities/${capabilityIndex}/support_status`;
-    const state = card.field_states[pointer];
-    if (!state) {
-      throw new Error(`Card ${card.card_id} does not state why ${pointer} is null.`);
+  return "value";
+}
+
+function comparisonValue(value: unknown, pointer: string): ComparisonJsonValue {
+  if (value === null || typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item, index) => comparisonValue(item, `${pointer}/${index}`));
+  }
+  if (isObject(value)) {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, comparisonValue(item, `${pointer}/${pointerSegment(key)}`)]),
+    );
+  }
+  throw new Error(`Canonical comparison value at ${pointer} is not JSON serializable.`);
+}
+
+function valueKind(value: ComparisonJsonValue): ComparisonValueKind {
+  if (value === null) return "null";
+  if (typeof value === "string") return "string";
+  if (typeof value === "number") return "number";
+  if (typeof value === "boolean") return "boolean";
+  if (Array.isArray(value)) return value.length === 0 ? "empty_array" : "primitive_array";
+  return "empty_object";
+}
+
+function addEntry(value: unknown, context: InventoryContext) {
+  const jsonValue = comparisonValue(value, context.pointer);
+  context.entries.push({
+    pointer: context.pointer,
+    logicalPath: context.logicalPath,
+    fieldPattern: context.fieldPattern,
+    label: context.entityLabels.length > 0
+      ? `${context.label} · ${context.entityLabels.join(" · ")}`
+      : context.label,
+    value: jsonValue,
+    state: context.card.field_states[context.pointer] ?? "value",
+    claimIds: context.claimIds,
+    semanticKind: semanticKind(context.pointer),
+    valueKind: valueKind(jsonValue),
+  });
+}
+
+function stableArrayIdentity(
+  fieldPattern: string,
+  value: Record<string, unknown>,
+  index: number,
+  siblings: unknown[],
+) {
+  if (fieldPattern === "/capabilities") {
+    if (typeof value.ontology_id === "string") {
+      const duplicateCount = siblings.filter(
+        (item) => isObject(item) && item.ontology_id === value.ontology_id,
+      ).length;
+      if (duplicateCount === 1) return ["ontology_id", value.ontology_id] as const;
+      if (typeof value.capability_id === "string") {
+        return ["ontology_id+capability_id", `${value.ontology_id}|${value.capability_id}`] as const;
+      }
     }
-    return { state };
+    if (typeof value.capability_id === "string") return ["capability_id", value.capability_id] as const;
   }
-  const claim = claimForCapability(card, capability);
+
+  const stableKeyByPattern: Record<string, string> = {
+    "/project/repositories": "source_id",
+    "/source_snapshot/source_revisions": "source_id",
+    "/components": "component_id",
+    "/assessment/contexts": "context_id",
+    "/claims": "claim_id",
+    "/sources": "source_id",
+    "/evidence": "evidence_id",
+    "/relationships/depends_on": "target_project",
+    "/relationships/integrates_with": "target_project",
+    "/relationships/comparable_projects": "target_project",
+  };
+  const stableKey = stableKeyByPattern[fieldPattern];
+  if (stableKey && typeof value[stableKey] === "string") {
+    return [stableKey, value[stableKey]] as const;
+  }
+  return ["index", String(index)] as const;
+}
+
+function inventoryValue(value: unknown, context: InventoryContext): void {
+  if (value === null || typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+    addEntry(value, context);
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    if (value.length === 0 || value.every((item) => !isObject(item) && !Array.isArray(item))) {
+      addEntry(value, context);
+      return;
+    }
+    value.forEach((item, index) => {
+      if (!isObject(item)) {
+        inventoryValue(item, {
+          ...context,
+          pointer: `${context.pointer}/${index}`,
+          logicalPath: `${context.logicalPath}/@index=${index}`,
+          fieldPattern: `${context.fieldPattern}/*`,
+          label: `${context.label} ${index + 1}`,
+        });
+        return;
+      }
+      const [identityKey, identityValue] = stableArrayIdentity(
+        context.fieldPattern,
+        item,
+        index,
+        value,
+      );
+      inventoryValue(item, {
+        ...context,
+        pointer: `${context.pointer}/${index}`,
+        logicalPath: `${context.logicalPath}/@${identityKey}=${logicalIdentity(identityValue)}`,
+        fieldPattern: `${context.fieldPattern}/*`,
+        entityLabels: [...context.entityLabels, `${humanLabel(identityKey)}: ${identityValue}`],
+        claimIds: claimsForObject(item, context.claimIds),
+      });
+    });
+    return;
+  }
+
+  if (!isObject(value)) {
+    addEntry(value, context);
+    return;
+  }
+
+  const entries = Object.entries(value);
+  if (entries.length === 0) {
+    addEntry(value, context);
+    return;
+  }
+  const claimIds = claimsForObject(value, context.claimIds);
+  entries.forEach(([key, child]) => {
+    const segment = pointerSegment(key);
+    inventoryValue(child, {
+      ...context,
+      pointer: `${context.pointer}/${segment}`,
+      logicalPath: `${context.logicalPath}/${segment}`,
+      fieldPattern: `${context.fieldPattern}/${segment}`,
+      label: humanLabel(key),
+      claimIds,
+    });
+  });
+}
+
+function rowValueKind(entries: InventoryEntry[]): ComparisonValueKind {
+  const concreteKinds = unique(entries.map(({ valueKind: kind }) => kind).filter((kind) => kind !== "null"));
+  if (concreteKinds.includes("primitive_array")) return "primitive_array";
+  if (concreteKinds.length > 0) return concreteKinds[0] as ComparisonValueKind;
+  return "null";
+}
+
+function stableValue(value: ComparisonJsonValue | undefined): string {
+  if (value === undefined) return "undefined";
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableValue).join(",")}]`;
+  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableValue(value[key])}`).join(",")}}`;
+}
+
+function cellSignature(cell: ComparisonCell) {
+  return `${cell.state}:${stableValue(cell.value)}`;
+}
+
+function inventoryGroup(card: AgentProjectCard, key: string): InventoryEntry[] {
+  const value = (card as unknown as Record<string, unknown>)[key];
+  if (value === undefined) return [];
+  const path = `/${pointerSegment(key)}`;
+  const entries: InventoryEntry[] = [];
+  inventoryValue(value, {
+    card,
+    entries,
+    pointer: path,
+    logicalPath: path,
+    fieldPattern: path,
+    label: humanLabel(key),
+    entityLabels: [],
+    claimIds: [],
+  });
+  return entries;
+}
+
+function contractFieldIsCovered(
+  definition: ContractFieldDefinition,
+  fieldPatterns: Set<string>,
+) {
+  if (fieldPatterns.has(definition.fieldPattern)) return true;
+  return definition.coveredByDescendants && [...fieldPatterns].some(
+    (fieldPattern) => fieldPattern.startsWith(`${definition.fieldPattern}/`),
+  );
+}
+
+function buildComparisonGroup(
+  cards: AgentProjectCard[],
+  key: string,
+  contractFields: ContractFieldDefinition[],
+): ComparisonGroup {
+  const inventories = new Map(cards.map((card) => [
+    card.project.project_id,
+    inventoryGroup(card, key),
+  ]));
+  const logicalPaths = unique(cards.flatMap((card) => (
+    inventories.get(card.project.project_id) ?? []
+  ).map(({ logicalPath }) => logicalPath)));
+  const rows: ComparisonRow[] = logicalPaths.map((logicalPath) => {
+    const presentEntries = cards.flatMap((card) => (
+      inventories.get(card.project.project_id)?.find((entry) => entry.logicalPath === logicalPath) ?? []
+    ));
+    const first = presentEntries[0];
+    const cells = Object.fromEntries(cards.map((card) => {
+      const entry = inventories.get(card.project.project_id)?.find(
+        (candidate) => candidate.logicalPath === logicalPath,
+      );
+      return [card.project.project_id, entry
+        ? {
+            pointer: entry.pointer,
+            state: entry.state,
+            value: entry.value,
+            claimIds: entry.claimIds,
+          }
+        : {
+            pointer: null,
+            state: "not_present" as const,
+            claimIds: [],
+          }];
+    }));
+    const isDifferent = unique(Object.values(cells).map(cellSignature)).length > 1;
+    return {
+      id: logicalPath,
+      label: first.label,
+      logicalPath,
+      fieldPattern: first.fieldPattern,
+      semanticKind: first.semanticKind,
+      valueKind: rowValueKind(presentEntries),
+      cells,
+      isDifferent,
+    };
+  });
+  const fieldPatterns = new Set(rows.map(({ fieldPattern }) => fieldPattern));
+  const contractOnlyFields: ComparisonContractField[] = contractFields
+    .filter((definition) => !contractFieldIsCovered(definition, fieldPatterns))
+    .map((definition) => ({
+      label: definition.label,
+      fieldPattern: definition.fieldPattern,
+      semanticKind: semanticKind(definition.fieldPattern),
+      valueKind: definition.valueKind,
+    }));
   return {
-    state: "value",
-    value: capability.description ?? capability.name,
-    supportStatus: capability.support_status,
-    evidenceStatus: capability.evidence_status,
-    verificationStatus: claim?.verification_status,
-    confidence: capability.confidence,
-    claimConfidence: claim?.confidence,
-    claimId: claim?.claim_id,
+    id: key,
+    label: humanLabel(key),
+    path: `/${pointerSegment(key)}`,
+    rows,
+    contractOnlyFields,
   };
 }
 
 export function projectCardsToComparison(
   cards: AgentProjectCard[],
   projectIds: string[],
+  provenance: ComparisonProvenance,
 ): ComparisonResponse {
   const selected = projectIds
     .map((id) => cards.find(({ project }) => project.project_id === id))
     .filter((card): card is AgentProjectCard => Boolean(card));
-  const cells = (project: (card: AgentProjectCard) => ComparisonCell) =>
-    Object.fromEntries(selected.map((card) => [card.project.project_id, project(card)]));
+  selected.forEach(assertSupportedCard);
+  const knownGroups = projectCardContract.topLevelOrder;
+  const knownGroupSet = new Set<string>(knownGroups);
+  const unknownGroups = unique(selected.flatMap((card) => Object.keys(card)))
+    .filter((key) => !knownGroupSet.has(key))
+    .sort();
+  const groups = [...knownGroups, ...unknownGroups]
+    .map((key) => buildComparisonGroup(
+      selected,
+      key,
+      projectCardContract.fields.filter(({ group }) => group === key),
+    ))
+    .filter(({ rows, contractOnlyFields }) => rows.length > 0 || contractOnlyFields.length > 0);
+  const allRows = groups.flatMap(({ rows }) => rows);
+  const allContractOnlyFields = groups.flatMap(({ contractOnlyFields }) => contractOnlyFields);
+  const differentAttributeCount = allRows.filter(({ isDifferent }) => isDifferent).length;
+  const contractOnlyAttributeCount = allContractOnlyFields.length;
+  const sharedAttributeCount = allRows.filter((row) => !row.isDifferent).length;
 
   return {
     assessmentContexts: selected.flatMap(assessmentContexts),
     projectIds: selected.map(({ project }) => project.project_id),
-    sharedAttributeCount: 12,
-    rows: [
-      {
-        id: "role",
-        label: "Architecture role",
-        group: "Role and fit",
-        cells: cells((card) => ({ state: "value", value: projectRole(card) })),
-      },
-      {
-        id: "approval",
-        label: "Human approval",
-        group: "Material differences",
-        cells: cells((card) => capabilityCell(card, "capability:human-approval")),
-      },
-      {
-        id: "state",
-        label: "Durable state",
-        group: "Material differences",
-        cells: cells((card) => capabilityCell(card, "capability:durable-state")),
-      },
-      {
-        id: "boundary",
-        label: "Hosted dependency",
-        group: "Material differences",
-        cells: cells((card) => capabilityCell(card, "capability:self-hosted-core")),
-      },
-      {
-        id: "prototype-when",
-        label: "Prototype when…",
-        group: "Prototype guidance",
-        cells: cells((card) => ({
-          state: "value",
-          value: card.assessment.best_fit[0]?.statement ?? "Contextual fit is not analyzed.",
-        })),
-      },
-    ],
+    cards: selected,
+    cardRefs: selected.map((card) => ({
+      projectId: card.project.project_id,
+      cardId: card.card_id,
+      cardVersion: card.card_version,
+      schemaVersion: card.schema_version,
+    })),
+    schemaVersions: unique(selected.map(({ schema_version: version }) => version)),
+    provenance,
+    groups,
+    totalAttributeCount: allRows.length + contractOnlyAttributeCount,
+    differentAttributeCount,
+    sharedAttributeCount,
+    contractOnlyAttributeCount,
   };
 }
 

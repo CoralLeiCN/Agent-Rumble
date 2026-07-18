@@ -198,7 +198,11 @@ the full label.
 
 * `AssessmentContextHeader` defines the decision before the matrix.
 * `CompareMatrix` presents roles and material differences before collapsed shared
-  attributes and retains every formal null state.
+  attributes, keeps every current contract field reachable through progressive
+  disclosure, and retains every formal null state.
+* `ContractFieldView` derives its field inventory from the current versioned
+  contract and card data, preserves card semantics, and provides a generic
+  presentation for fields that do not yet have a specialized component.
 * `StatusMark` renders one semantic dimension with text and icon.
 * `EvidenceAnchor` uses a stable monospace identifier and evidence count.
 * `ClaimBlock` separates statement, importance, verification, confidence, and
@@ -208,10 +212,11 @@ the full label.
 
 ### Card views
 
-* `CardSummary` is a projection of the canonical Agent Project Card.
+* `CardSummary` is an intentionally compact projection of the canonical Agent
+  Project Card, not the complete-field inspection surface.
 * `NullState` gives each formal non-value a distinct explanation.
-* `CanonicalCardView` renders the exact API response without creating a second
-  frontend-owned card model.
+* `CanonicalCardView` renders the exact API response and keeps every contract
+  field available without creating a second frontend-owned card model.
 
 ## Responsive and Accessibility Contract
 
@@ -238,3 +243,7 @@ libraries remain reversible prototype choices until accepted in
 Production adoption should add validated canonical fixtures, generated API
 types, contrast and accessibility automation, visual regression coverage,
 content-security policy, performance budgets, and documented token governance.
+Fixture objects and screen-specific row lists must not define field coverage.
+The production contract adapter and coverage tests should detect newly added
+contract fields and ensure they remain available through the generic field
+presentation until specialized treatment is introduced.

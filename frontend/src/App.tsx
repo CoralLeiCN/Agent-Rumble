@@ -1,31 +1,27 @@
 import {
   useEffect,
-  useMemo,
   useRef,
   useState,
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
+import { ContractComparison } from "./comparison/ContractComparison";
 import { catalogGateway } from "./data/catalogGateway";
 import { preparedQuery } from "./data/fixtures";
 import {
-  comparisonStatePresentation,
   confidencePresentation,
   evidenceStatusPresentation,
   requirementPresentation,
-  supportStatusPresentation,
   verificationPresentation,
 } from "./status/statusPresentation";
 import type {
-  AssessmentContextView,
   ClaimEvidenceRecord,
-  ComparisonCell,
   ComparisonResponse,
   ProjectSummary,
   SearchResponse,
   VerificationStatus,
 } from "./types/catalog";
-import type { EvidenceStatus, SupportStatus } from "./types/projectCard";
+import type { EvidenceStatus } from "./types/projectCard";
 
 type View = "explore" | "results" | "comparison";
 type PendingAction = "search" | "comparison" | "evidence" | null;
@@ -50,16 +46,6 @@ function EvidenceStatusBadge({ status }: { status: EvidenceStatus }) {
   );
 }
 
-function SupportStatusBadge({ status }: { status: SupportStatus }) {
-  const presentation = supportStatusPresentation[status];
-  return (
-    <span className={`status-badge status-badge--${presentation.tone}`}>
-      <span aria-hidden="true">{presentation.symbol}</span>
-      {presentation.label}
-    </span>
-  );
-}
-
 function AppHeader({ onExplore }: { onExplore: () => void }) {
   return (
     <header className="site-header">
@@ -67,14 +53,12 @@ function AppHeader({ onExplore }: { onExplore: () => void }) {
         <span className="wordmark__mark" aria-hidden="true">AR</span>
         <span>
           <strong>Agent Rumble</strong>
-          <small>Project intelligence</small>
         </span>
       </button>
       <nav aria-label="Primary navigation">
         <button className="nav-link nav-link--active" type="button" onClick={onExplore}>
           Explore
         </button>
-        <span className="nav-label">Catalog / 03</span>
       </nav>
     </header>
   );
@@ -83,31 +67,9 @@ function AppHeader({ onExplore }: { onExplore: () => void }) {
 function PrototypeNotice() {
   return (
     <div className="prototype-notice" role="note">
-      <span>Illustrative prototype</span>
-      Schema-valid draft v0.2 fixture cards · illustrative project content, not verified project intelligence
+      <span>Sample data</span>
+      Project details and source references are illustrative and may not reflect current capabilities.
     </div>
-  );
-}
-
-function AssessmentContextSummary({ contexts }: { contexts: AssessmentContextView[] }) {
-  const useCases = [...new Set(contexts.map(({ useCase }) => useCase))];
-  const constraints = [...new Set(contexts.flatMap(({ organizationalConstraints }) => organizationalConstraints))];
-  const dates = [...new Set(contexts.map(({ assessedAt }) => assessedAt.slice(0, 10)))];
-  return (
-    <section className="assessment-context" aria-label="Canonical assessment context">
-      <div>
-        <span>Use case</span>
-        <strong>{useCases.join(" · ") || "Not recorded"}</strong>
-      </div>
-      <div>
-        <span>Organizational constraints</span>
-        <strong>{constraints.join(" · ") || "None recorded"}</strong>
-      </div>
-      <div>
-        <span>Assessed</span>
-        <strong>{dates.join(" · ") || "Not recorded"}</strong>
-      </div>
-    </section>
   );
 }
 
@@ -126,11 +88,11 @@ function Explore({ query, pending, onQueryChange, onSubmit }: ExploreProps) {
 
   return (
     <section className="explore" aria-labelledby="explore-title">
-      <div className="eyebrow"><span>Catalog 001</span> Evidence-backed discovery</div>
+      <div className="eyebrow"><span>Find your fit</span> Evidence-backed project discovery</div>
       <h1 id="explore-title">Find the right building block for your agent system.</h1>
       <p className="explore__intro">
-        Search a prepared catalog of agent projects by intent. See how your need was
-        interpreted, compare material differences, then inspect the source behind a claim.
+        Describe what you are building. Compare relevant projects, trade-offs, and supporting
+        sources side by side.
       </p>
       <form className="search-panel" onSubmit={handleSubmit}>
         <label htmlFor="project-need">Describe what you need</label>
@@ -143,22 +105,16 @@ function Explore({ query, pending, onQueryChange, onSubmit }: ExploreProps) {
             placeholder="For example: a framework with human approval and durable state"
           />
           <button className="button button--primary" type="submit" disabled={pending || !query.trim()}>
-            {pending ? "Reading the catalog…" : "Find projects"}
+            {pending ? "Finding projects…" : "Find projects"}
           </button>
         </div>
         <div className="example-line">
-          <span>Prepared scenario</span>
+          <span>Try an example</span>
           <button type="button" onClick={() => onQueryChange(preparedQuery)}>
-            Customer-support architecture ↗
+            Customer support agent ↗
           </button>
         </div>
       </form>
-      <div className="catalog-ledger" aria-label="Illustrative catalog scope">
-        <div><strong>03</strong><span>prepared projects</span></div>
-        <div><strong>02</strong><span>languages</span></div>
-        <div><strong>2026.07.15</strong><span>fixture snapshot</span></div>
-        <div><strong>STATIC</strong><span>analysis mode</span></div>
-      </div>
     </section>
   );
 }
@@ -175,19 +131,17 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
     <section className="results" aria-labelledby="results-title">
       <div className="results__heading">
         <div>
-          <div className="eyebrow"><span>Interpretation</span> Deterministic catalog match</div>
-          <h1 id="results-title">Three projects for review</h1>
+          <div className="eyebrow"><span>Matches</span> Based on your request</div>
+          <h1 id="results-title">{response.projects.length} projects to compare</h1>
         </div>
         <button className="button button--quiet" type="button" onClick={onEdit}>
           ← Edit request
         </button>
       </div>
-      <AssessmentContextSummary contexts={response.assessmentContexts} />
-
       <section className="interpretation" aria-labelledby="interpretation-title">
         <div className="section-heading">
-          <h2 id="interpretation-title">How we read your request</h2>
-          <span>Review before comparing</span>
+          <h2 id="interpretation-title">What matters for your search</h2>
+          <span>Edit your request if this does not look right</span>
         </div>
         <div className="requirement-list">
           {response.requirements.map((requirement) => (
@@ -206,19 +160,10 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
       </section>
 
       <div className="results__layout">
-        <aside className="filter-rail" aria-label="Current catalog filters">
-          <div className="filter-rail__title">Active facets <span>03</span></div>
-          <dl>
-            <div><dt>Language</dt><dd>Python</dd></div>
-            <div><dt>Source</dt><dd>Public GitHub</dd></div>
-            <div><dt>Analysis</dt><dd>Static only</dd></div>
-          </dl>
-          <p>Filters describe this prepared fixture and are not interactive in the prototype.</p>
-        </aside>
         <div className="project-list">
           <div className="list-caption">
-            <span>Catalog matches / {response.projects.length}</span>
-            <span>No universal score</span>
+            <span>{response.projects.length} matches</span>
+            <span>Choose up to 3</span>
           </div>
           {response.projects.map((project, index) => (
             <ProjectRow
@@ -251,7 +196,7 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
       <div className="project-row__main">
         <div className="project-row__heading">
           <div>
-            <p>{project.owner} / primary public source</p>
+            <p>{project.owner} · Open-source project</p>
             <h2>{project.name}</h2>
           </div>
           <button
@@ -270,35 +215,23 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
         </div>
         <p className="project-row__summary">{project.summary}</p>
         <div className="project-row__boundary">
-          <strong>Project boundary</strong>
+          <strong>What is included</strong>
           <span>{project.boundary}</span>
-          <code>{project.sourceCount} source{project.sourceCount === 1 ? "" : "s"}</code>
         </div>
         <div className="project-row__match">
           <span aria-hidden="true">↳</span>
-          <p><strong>Why it surfaced</strong>{project.matchReason}</p>
+          <p><strong>Why it matches</strong>{project.matchReason}</p>
         </div>
         <div className="project-row__constraint">
-          <strong>Important constraint</strong><span>{project.constraint}</span>
+          <strong>Watch out for</strong><span>{project.constraint}</span>
         </div>
         <div className="snapshot-strip">
           <div className="snapshot-strip__primary">
-            <span className="snapshot-strip__label">Match claim</span>
+            <span className="snapshot-strip__label">Match confidence</span>
             <StatusBadge status={project.matchClaim.verificationStatus} />
             <span>{confidencePresentation[project.matchClaim.confidence]}</span>
-            <code>DEPTH {project.analysisDepth}</code>
-            <code>REV {project.revision}</code>
-            <time dateTime={project.analyzedAt}>SNAPSHOT {project.analyzedAt}</time>
+            <time dateTime={project.analyzedAt}>Reviewed {project.analyzedAt}</time>
           </div>
-          <details className="snapshot-strip__metadata">
-            <summary>Card metadata</summary>
-            <div>
-              <code>CLAIM {project.matchClaim.claimId}</code>
-              <code>CARD {project.cardId} / v{project.cardVersion}</code>
-              <code>SCHEMA {project.schemaVersion}</code>
-              <code>TYPE {project.canonicalPrimaryType}</code>
-            </div>
-          </details>
         </div>
       </div>
     </article>
@@ -316,140 +249,25 @@ function Comparison({ comparison, projects, onBack, onOpenEvidence }: Comparison
   const selectedProjects = comparison.projectIds
     .map((id) => projects.find((project) => project.id === id))
     .filter((project): project is ProjectSummary => Boolean(project));
-  const groupedRows = useMemo(() => {
-    return comparison.rows.reduce<Record<string, typeof comparison.rows>>((groups, row) => {
-      (groups[row.group] ??= []).push(row);
-      return groups;
-    }, {});
-  }, [comparison.rows]);
 
   return (
     <section className="comparison" aria-labelledby="comparison-title">
       <button className="back-link" type="button" onClick={onBack}>← Back to search results</button>
       <div className="comparison__heading">
         <div>
-          <div className="eyebrow"><span>Comparison</span> Difference-first review</div>
-          <h1 id="comparison-title" tabIndex={-1}>
-            {selectedProjects.length === 2 ? "Two" : "Three"} approaches, one explicit context.
-          </h1>
+          <h1 id="comparison-title" tabIndex={-1}>Compare {selectedProjects.length} projects</h1>
+          <p>
+            See how your shortlist lines up for {comparison.assessmentContexts[0]?.useCase
+              ?? "the needs in your search"}.
+          </p>
         </div>
       </div>
-      <AssessmentContextSummary contexts={comparison.assessmentContexts} />
-      <div className="comparison-note">
-        <strong>Read roles before features.</strong>
-        These projects overlap but are not always substitutes. This view exposes meaningful
-        differences and leaves the adoption decision with you.
-      </div>
-      <div className="comparison-scroll" tabIndex={0} aria-label="Scrollable project comparison">
-        <table className="comparison-table">
-          <thead>
-            <tr>
-              <th scope="col">Decision field</th>
-              {selectedProjects.map((project) => (
-                <th scope="col" key={project.id}>
-                  <span>{project.projectType}</span>{project.name}
-                  <code>{project.revision}</code>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {Object.entries(groupedRows).map(([group, rows]) => (
-              <TableGroup
-                key={group}
-                group={group}
-                rows={rows}
-                projects={selectedProjects}
-                onOpenEvidence={onOpenEvidence}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="shared-attributes" role="note">
-        <strong>{comparison.sharedAttributeCount} shared attributes are omitted from this difference-first prototype.</strong>
-        <span>Available in the production card projection</span>
-      </div>
-      <p className="fixture-footnote">
-        Prototype safeguard: these fixture cards have contract-valid draft v0.2 shape, but their
-        project claims and locators are illustrative and must not be used for adoption decisions.
-      </p>
+      <ContractComparison
+        comparison={comparison}
+        projects={projects}
+        onOpenEvidence={onOpenEvidence}
+      />
     </section>
-  );
-}
-
-interface TableGroupProps {
-  group: string;
-  rows: ComparisonResponse["rows"];
-  projects: ProjectSummary[];
-  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
-}
-
-function TableGroup({ group, rows, projects, onOpenEvidence }: TableGroupProps) {
-  return (
-    <>
-      <tr className="comparison-table__group"><th colSpan={projects.length + 1}>{group}</th></tr>
-      {rows.map((row) => (
-        <tr key={row.id}>
-          <th scope="row">{row.label}</th>
-          {projects.map((project) => (
-            <td key={project.id}>
-              <ComparisonValue
-                cell={row.cells[project.id] ?? { state: "not_analyzed" }}
-                onOpenEvidence={onOpenEvidence}
-              />
-            </td>
-          ))}
-        </tr>
-      ))}
-    </>
-  );
-}
-
-function ComparisonValue({
-  cell,
-  onOpenEvidence,
-}: {
-  cell: ComparisonCell;
-  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
-}) {
-  if (cell.state !== "value") {
-    const state = comparisonStatePresentation[cell.state];
-    return <span className={`empty-value empty-value--${state.tone}`}><span aria-hidden="true">{state.symbol}</span>{state.label}</span>;
-  }
-  return (
-    <div className="comparison-value">
-      <p>{cell.value}</p>
-      {(cell.supportStatus || cell.evidenceStatus || cell.confidence) && (
-        <div className="comparison-value__semantics">
-          {cell.supportStatus && (
-            <div><span>Capability support</span><SupportStatusBadge status={cell.supportStatus} /></div>
-          )}
-          {cell.evidenceStatus && (
-            <div><span>Evidence status</span><EvidenceStatusBadge status={cell.evidenceStatus} /></div>
-          )}
-          {cell.confidence && (
-            <div><span>Capability confidence</span><strong>{confidencePresentation[cell.confidence]}</strong></div>
-          )}
-          {cell.verificationStatus && (
-            <div>
-              <span>Referenced claim</span>
-              <StatusBadge status={cell.verificationStatus} />
-              {cell.claimConfidence && <small>{confidencePresentation[cell.claimConfidence]}</small>}
-            </div>
-          )}
-        </div>
-      )}
-      {cell.claimId && (
-        <button
-          className="evidence-link"
-          type="button"
-          onClick={(event) => onOpenEvidence(cell.claimId as string, event.currentTarget)}
-        >
-          View source evidence →
-        </button>
-      )}
-    </div>
   );
 }
 
@@ -458,6 +276,16 @@ interface EvidenceDrawerProps {
   pending: boolean;
   error: string | null;
   onClose: () => void;
+}
+
+function sourcePublisherLabel(value: string) {
+  if (value === "first_party") return "Project publisher";
+  if (value === "third_party") return "Third-party publisher";
+  return "Publisher not recorded";
+}
+
+function readableSourceValue(value: string) {
+  return value.replace(/_/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
 function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerProps) {
@@ -496,18 +324,18 @@ function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerPro
         onKeyDown={handleKeyDown}
       >
         <div className="drawer-header">
-          <div><span>Claim evidence inspector</span><code>{evidence?.claimId ?? "LOADING"}</code></div>
-          <button ref={closeRef} type="button" onClick={onClose} aria-label="Close evidence inspector">×</button>
+          <div><span>Source details</span></div>
+          <button ref={closeRef} type="button" onClick={onClose} aria-label="Close source details">×</button>
         </div>
         {pending && (
           <div className="drawer-state" role="status">
-            <h2 className="visually-hidden" id="evidence-title">Evidence inspector</h2>
-            <p>Resolving the illustrative evidence record…</p>
+            <h2 className="visually-hidden" id="evidence-title">Source details</h2>
+            <p>Loading source details…</p>
           </div>
         )}
         {error && (
           <div className="drawer-state drawer-state--error" role="alert">
-            <h2 className="visually-hidden" id="evidence-title">Evidence inspector error</h2>
+            <h2 className="visually-hidden" id="evidence-title">Source details error</h2>
             <p>{error}</p>
           </div>
         )}
@@ -515,61 +343,52 @@ function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerPro
           <div className="drawer-content">
             <div className="drawer-claim-semantics">
               <div>
-                <span>Claim verification</span>
+                <span>Verification</span>
                 <StatusBadge status={evidence.verificationStatus} />
               </div>
               <div>
-                <span>Claim confidence</span>
+                <span>Confidence</span>
                 <strong>{confidencePresentation[evidence.confidence]}</strong>
               </div>
             </div>
             <h2 id="evidence-title">{evidence.claim}</h2>
-            <dl className="claim-ledger">
-              <div><dt>Claim kind</dt><dd>{evidence.claimKind}</dd></div>
-              <div><dt>Applies to</dt><dd><code>{evidence.appliesTo}</code></dd></div>
-              <div>
-                <dt>Assessment context</dt>
-                <dd><code>{evidence.assessmentContextId ?? "Not applicable"}</code></dd>
-              </div>
-            </dl>
             <section>
               <h3>Why this matters</h3>
               <p>{evidence.whyItMatters}</p>
             </section>
             <div className="evidence-stack">
-              <h3>Supporting evidence / {evidence.supportingEvidence.length}</h3>
+              <h3>Supporting sources / {evidence.supportingEvidence.length}</h3>
               {evidence.supportingEvidence.length === 0 && (
-                <p className="empty-evidence">○ No supporting evidence linked</p>
+                <p className="empty-evidence">○ No supporting source linked</p>
               )}
               {evidence.supportingEvidence.map((record) => (
                 <div className="evidence-record" key={record.id}>
                   <div className="evidence-record__heading">
                     <div>
-                      <span>Evidence status</span>
+                      <span>Source status</span>
                       <EvidenceStatusBadge status={record.evidenceStatus} />
                     </div>
                     <div>
-                      <span>Evidence confidence</span>
+                      <span>Confidence</span>
                       <strong>{confidencePresentation[record.confidence]}</strong>
                     </div>
-                    <code>{record.id}</code>
                   </div>
                   <dl className="evidence-ledger">
                     <div><dt>Source</dt><dd>{record.repository}</dd></div>
-                    <div><dt>Source type</dt><dd>{record.sourceType}</dd></div>
-                    <div><dt>Provenance</dt><dd>{record.provenance}</dd></div>
-                    <div><dt>Access</dt><dd>{record.accessScope}</dd></div>
-                    <div><dt>Retrieved</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
-                    <div><dt>Revision</dt><dd><code>{record.revision}</code></dd></div>
-                    <div><dt>Locator</dt><dd>{record.locator}</dd></div>
+                    <div><dt>Source type</dt><dd>{readableSourceValue(record.sourceType)}</dd></div>
+                    <div><dt>Publisher</dt><dd>{sourcePublisherLabel(record.provenance)}</dd></div>
+                    <div><dt>Availability</dt><dd>{readableSourceValue(record.accessScope)}</dd></div>
+                    <div><dt>Checked</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
+                    <div><dt>Version reviewed</dt><dd><code>{record.revision}</code></dd></div>
+                    <div><dt>Location in source</dt><dd>{record.locator}</dd></div>
                   </dl>
-                  <pre aria-label="Illustrative source excerpt"><code>{record.excerpt}</code></pre>
+                  <pre aria-label="Source excerpt"><code>{record.excerpt}</code></pre>
                   {record.sourceUrl ? (
                     <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
-                      Open pinned public source ↗
+                      View source ↗
                     </a>
                   ) : (
-                    <p className="source-unavailable">No public revision-pinned external link is available.</p>
+                    <p className="source-unavailable">No public source link is available.</p>
                   )}
                 </div>
               ))}
@@ -582,31 +401,30 @@ function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerPro
                     <div className="evidence-record evidence-record--conflict" key={record.id}>
                       <div className="evidence-record__heading">
                         <div>
-                          <span>Evidence status</span>
+                            <span>Source status</span>
                           <EvidenceStatusBadge status={record.evidenceStatus} />
                         </div>
                         <div>
-                          <span>Evidence confidence</span>
-                          <strong>{confidencePresentation[record.confidence]}</strong>
+                            <span>Confidence</span>
+                            <strong>{confidencePresentation[record.confidence]}</strong>
+                          </div>
                         </div>
-                        <code>{record.id}</code>
-                      </div>
-                      <dl className="evidence-ledger">
-                        <div><dt>Source</dt><dd>{record.repository}</dd></div>
-                        <div><dt>Source type</dt><dd>{record.sourceType}</dd></div>
-                        <div><dt>Provenance</dt><dd>{record.provenance}</dd></div>
-                        <div><dt>Access</dt><dd>{record.accessScope}</dd></div>
-                        <div><dt>Retrieved</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
-                        <div><dt>Revision</dt><dd><code>{record.revision}</code></dd></div>
-                        <div><dt>Locator</dt><dd>{record.locator}</dd></div>
-                      </dl>
-                      <pre aria-label="Illustrative conflicting source excerpt"><code>{record.excerpt}</code></pre>
-                      {record.sourceUrl ? (
-                        <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
-                          Open pinned public source ↗
-                        </a>
-                      ) : (
-                        <p className="source-unavailable">No public revision-pinned external link is available.</p>
+                        <dl className="evidence-ledger">
+                          <div><dt>Source</dt><dd>{record.repository}</dd></div>
+                          <div><dt>Source type</dt><dd>{readableSourceValue(record.sourceType)}</dd></div>
+                          <div><dt>Publisher</dt><dd>{sourcePublisherLabel(record.provenance)}</dd></div>
+                          <div><dt>Availability</dt><dd>{readableSourceValue(record.accessScope)}</dd></div>
+                          <div><dt>Checked</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
+                          <div><dt>Version reviewed</dt><dd><code>{record.revision}</code></dd></div>
+                          <div><dt>Location in source</dt><dd>{record.locator}</dd></div>
+                        </dl>
+                        <pre aria-label="Conflicting source excerpt"><code>{record.excerpt}</code></pre>
+                        {record.sourceUrl ? (
+                          <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
+                            View source ↗
+                          </a>
+                        ) : (
+                          <p className="source-unavailable">No public source link is available.</p>
                       )}
                     </div>
                   ))}
@@ -614,8 +432,8 @@ function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerPro
               )}
             </div>
             <div className="drawer-warning">
-              <strong>Contract-valid fixture shape.</strong> The project claim, excerpt, and locator
-              are illustrative and have not been verified as project intelligence.
+              <strong>Sample data.</strong> This source excerpt and location are illustrative and
+              should be independently verified.
             </div>
           </div>
         )}
@@ -667,7 +485,7 @@ export function App() {
       setResponse(result);
       announceView("results");
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "The catalog could not be read.");
+      setError(caught instanceof Error ? caught.message : "Projects could not be loaded right now.");
     } finally {
       setPending(null);
     }
@@ -707,7 +525,7 @@ export function App() {
     try {
       setEvidence(await catalogGateway.getClaimEvidence(claimId));
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "The evidence could not be resolved.");
+      setError(caught instanceof Error ? caught.message : "Source details could not be loaded.");
     } finally {
       setPending(null);
     }

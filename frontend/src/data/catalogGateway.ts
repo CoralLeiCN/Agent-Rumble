@@ -28,6 +28,7 @@ export class StaticCatalogGateway implements CatalogGateway {
     return projectCardsToComparison(
       projectCards,
       projectIds,
+      "fixture",
     );
   }
 

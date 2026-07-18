@@ -131,6 +131,10 @@ The MVP is successful when it can analyze a representative set of agent-related 
 16. Compare selected catalog projects under an explicit assessment context while
     preserving evidence, confidence, verification, source-snapshot, and null-state
     distinctions.
+17. Make every field in the current canonical Agent Project Card contract
+    available in the decision and comparison experience, with field coverage
+    derived from the contract and selected card data rather than a fixed mock or
+    user-interface field list.
 
 Numeric acceptance thresholds remain an [open decision](../open-decisions.md#mvp-evaluation-protocol) until the evaluation set, rubric, reviewer process, and denominator are recorded.
 

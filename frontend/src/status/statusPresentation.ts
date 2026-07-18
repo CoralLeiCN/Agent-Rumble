@@ -34,6 +34,7 @@ export const verificationPresentation: Record<VerificationStatus, Presentation> 
 
 export const comparisonStatePresentation: Record<ComparisonState, Presentation> = {
   value: { label: "Value", tone: "neutral", symbol: "" },
+  not_present: { label: "No corresponding entry", tone: "muted", symbol: "·" },
   unknown: { label: "Unknown", tone: "neutral", symbol: "?" },
   not_applicable: { label: "Not applicable", tone: "muted", symbol: "–" },
   not_analyzed: { label: "Not analyzed", tone: "muted", symbol: "—" },
