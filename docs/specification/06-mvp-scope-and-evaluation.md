@@ -80,6 +80,22 @@ The MVP should focus on producing trustworthy Agent Project Cards for public Git
 * Detailed code-level benchmarking
 * Organization-wide access controls
 
+### Repository Test Data
+
+The project repository provides `test-data/repos/` as the designated local
+corpus for downloaded GitHub repositories that will be used as inputs to Agent
+Project Card creation tests.
+
+The entire corpus directory is excluded from Git tracking so downloaded
+third-party source and nested Git repositories are not committed accidentally.
+When a checkout is used for testing, the test or generated card must still
+record the repository URL, exact revision, and retrieval time needed to identify
+its source snapshot.
+
+Repository content in this corpus is untrusted test input. Its presence does
+not authorize executing that content; MVP analysis and card-creation tests
+remain static-only.
+
 ---
 
 ## 20. MVP Acceptance Criteria

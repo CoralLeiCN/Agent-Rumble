@@ -54,6 +54,13 @@ The Project Card should support:
 * Ecosystem trend analysis across projects, including model-provider support
   and agent SDK usage
 
+### Repository Test Data
+
+Provide `test-data/repos/` as the folder where downloaded GitHub repositories
+can be saved and later used as test inputs for Agent Project Card creation.
+
+Keep the downloaded repositories in that folder outside Git tracking.
+
 ## Core Tool and Access
 
 ### Specification Breakdown
@@ -175,5 +182,8 @@ add extra writing rules.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Agent Project Card | Shortened the downloaded repository test-data path to `test-data/repos/`. |
+| 2026-07-18 | Agent Project Card | Required the downloaded repository test-data folder to remain outside Git tracking. |
+| 2026-07-18 | Agent Project Card | Added a repository test-data location for downloaded GitHub repositories used to test Agent Project Card creation. |
 | 2026-07-18 | Documentation governance | Consolidated the existing requirements into this topic-organized record, replaced sequence-numbered tickets with heading-based links, and established this single change log. |
 | 2026-07-18 | Implementation technology | Required separate top-level frontend and backend project areas. |

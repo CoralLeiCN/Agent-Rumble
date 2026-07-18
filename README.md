@@ -165,6 +165,7 @@ Stack Template: the frontend and backend are separate top-level projects.
 backend/                    # FastAPI Python project, source, and tests
 frontend/                   # React project boundary
 docs/                       # Shared product and engineering documentation
+test-data/repos/            # Git-ignored local corpus for card-creation tests
 pyproject.toml              # Root uv workspace and dependency policy
 uv.lock                     # Locked Python workspace dependencies
 ```

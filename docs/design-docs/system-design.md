@@ -44,6 +44,18 @@ Responsibilities:
 * Parse supported files
 * Respect repository size and file-type limits
 
+### Local Repository Test Corpus
+
+The root-level `test-data/repos/` area provides reusable inputs for Agent
+Project Card creation tests. Each downloaded repository uses a stable
+`owner--repository` child-directory name. The whole corpus directory is ignored
+by Git so nested repositories and large third-party sources are not added
+accidentally.
+
+Tests must record the repository URL, exact revision, and retrieval time rather
+than relying on an unrecorded branch tip. Downloaded content remains untrusted
+and is available for static inspection only under the MVP safety boundary.
+
 ### Repository Mapper
 
 Responsibilities:
