@@ -39,9 +39,21 @@ git switch -c codex/<topic>
 
 Review the diff, follow `AGENTS.md`, run relevant checks, and commit only the intended changes. Preserve unrelated changes.
 
-### 3. Update the feature branch from main
+### 3. Refresh main and update the feature branch
 
-Run:
+Fetch the latest remote `main`, then update the local `main` without rewriting
+or discarding local commits:
+
+```bash
+git -C <main-worktree> fetch origin main
+git -C <main-worktree> merge --ff-only origin/main
+```
+
+Stop if the fetch fails, `origin/main` is unavailable, or the fast-forward-only
+merge fails. Do not continue using a stale remote-tracking ref, and do not reset
+local `main` to resolve divergence.
+
+Update the feature branch from the refreshed local `main`:
 
 ```bash
 git merge-base --is-ancestor main <feature-branch>
@@ -59,7 +71,18 @@ Record the output of this command as `<main-before>`:
 git -C <main-worktree> rev-parse main
 ```
 
-Immediately before landing, confirm that `main` still equals `<main-before>`. If it moved, update and validate the feature branch again.
+Immediately before landing, fetch and fast-forward again:
+
+```bash
+git -C <main-worktree> fetch origin main
+git -C <main-worktree> merge --ff-only origin/main
+git -C <main-worktree> rev-parse main
+```
+
+Apply the same stop conditions if the fetch or fast-forward-only merge fails.
+Confirm that `main` still equals `<main-before>`. If it moved, update and
+validate the feature branch again, record the new `<main-before>`, and repeat
+this immediate pre-landing refresh.
 
 ### 4. Squash into main
 
@@ -93,6 +116,7 @@ Require a clean main worktree, exactly one new commit, no new merge commit, and 
 ## Safeguards
 
 - Do not check out `main` in the Codex worktree; use its existing worktree.
+- Never proceed with a cached `origin/main` after a failed fetch.
 - Do not use destructive Git commands, force-push, or delete the branch or worktree.
 - Stop and report conflicts or product decisions that cannot be resolved safely.
 - Do not push or perform cleanup unless the user asks.
