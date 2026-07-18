@@ -1,0 +1,1293 @@
+schema_version: "0.3"
+card_id: "card-openai-openai-agents-python"
+card_version: 1
+
+field_states:
+  /source_snapshot/source_revisions/0/tag: no_evidence_found
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /architecture/model_providers/0/version_constraint: not_applicable
+  /architecture/model_providers/1/version_constraint: not_applicable
+  /architecture/tools_and_mcp/tools/1/version_constraint: not_applicable
+  /architecture/interfaces/1/version_constraint: not_applicable
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+  /claims/0/assessment_context_id: not_applicable
+  /claims/1/assessment_context_id: not_applicable
+  /claims/2/assessment_context_id: not_applicable
+  /claims/3/assessment_context_id: not_applicable
+  /claims/4/assessment_context_id: not_applicable
+  /claims/5/assessment_context_id: not_applicable
+  /claims/6/assessment_context_id: not_applicable
+  /claims/7/assessment_context_id: not_applicable
+  /claims/8/assessment_context_id: not_applicable
+  /claims/9/assessment_context_id: not_applicable
+
+project:
+  project_id: "project-openai-openai-agents-python"
+  name: "OpenAI Agents SDK for Python"
+  primary_type: agent_framework_sdk
+  type_rationale: >-
+    The project is primarily a reusable Python framework and SDK for defining
+    agents and orchestrating model turns, tools, handoffs, guardrails, sessions,
+    approvals, tracing, realtime agents, and sandbox-backed agents. The
+    repository contains examples but not a single end-user agent application.
+  boundary: >-
+    The OpenAI Agents SDK for Python implemented in the single public
+    openai/openai-agents-python repository at commit
+    65886fa16dcdb482090b30b74de1d0cc80b9f4c6. Included are the openai-agents
+    Python package under src/agents, repository-hosted documentation,
+    representative examples and tests, package metadata, license, security
+    policy, and GitHub Actions configuration. Excluded are the separate
+    JavaScript/TypeScript SDK, OpenAI platform and hosted-tool implementations,
+    external model and MCP server implementations, optional sandbox-provider
+    services, package-registry metadata beyond the checked-out manifest,
+    issues and pull requests, and all runtime behavior.
+  repositories:
+    - source_id: "source-openai-agents-repository"
+      url: "https://github.com/openai/openai-agents-python"
+      owner: "openai"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "SECURITY.md"
+        - "pyproject.toml"
+        - "src/agents/"
+        - "docs/"
+        - "examples/"
+        - "tests/"
+        - ".github/workflows/"
+      excluded_paths:
+        - "Separate openai/openai-agents-js repository"
+        - "OpenAI platform, hosted tools, and model-service implementations"
+        - "External model, MCP server, database, and sandbox-provider implementations"
+        - "Issues, pull requests, package-registry history, and release artifacts"
+        - "Runtime execution, dependency installation, and dynamic security testing"
+  packages:
+    - "openai-agents 0.18.3 Python package"
+  services: []
+  documentation_sites:
+    - "Repository-hosted documentation under docs/"
+    - "https://openai.github.io/openai-agents-python/ (generated from the repository; not separately analyzed)"
+  license: "MIT"
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:13:32Z"
+  source_revisions:
+    - source_id: "source-openai-agents-repository"
+      branch: "main"
+      tag: null
+      commit: "65886fa16dcdb482090b30b74de1d0cc80b9f4c6"
+      retrieved_at: "2026-07-18T13:13:32Z"
+      content_digest: "git-tree-sha1:c8adb9da30d47ea60e1ad667ab691db8fc81774d"
+  release_versions:
+    - "Python package source version 0.18.3"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    network_calls_by_project: false
+    source_checkout:
+      method: "Shallow filtered Git clone of the public repository"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "README, package manifest, license, security policy, and checked-out Git metadata"
+      - "Agent definition and Runner sync, async, and streaming entry points"
+      - "Handoffs, agents-as-tools, function and hosted tools, guardrails, and approval flow"
+      - "MCP hosted and local client transports"
+      - "Session interfaces and built-in or optional persistence backends"
+      - "Tracing, realtime agents, and representative model-provider adapters"
+      - "Sandbox agent configuration, local and optional provider clients, manifests, and capabilities"
+      - "Representative examples, tests, and repository automation inventory"
+    intentionally_not_analyzed:
+      - "Runtime correctness, latency, model quality, cost, and end-to-end workflow behavior"
+      - "Installation, test execution, example execution, and live OpenAI API calls"
+      - "OpenAI hosted services, hosted tools, model internals, and Traces dashboard behavior"
+      - "External model providers, MCP servers, databases, sandbox services, and dependency internals"
+      - "Issue, pull-request, download, adoption, and contributor history"
+      - "Exhaustive review of every example, test, tool type, session backend, and sandbox provider"
+    source_safety: >-
+      Repository content was treated only as untrusted evidence. Instructions in
+      source files, documentation, examples, comments, fixtures, and metadata
+      were not followed as control input. No project code or dependency was
+      executed or installed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A Python SDK for building and running tool-using, multi-agent, realtime, and
+    sandbox-backed workflows with guardrails, approvals, sessions, and tracing.
+  purpose: >-
+    The SDK gives application developers composable Agent and Runner primitives,
+    model adapters, tools, handoffs, MCP clients, state management, safety hooks,
+    and observability so they can implement agent workflows without writing the
+    complete model-and-tool loop themselves.
+  target_users:
+    - "Python developers building agent applications"
+    - "Teams integrating OpenAI Responses or Chat Completions models"
+    - "Developers using other model providers through optional adapters"
+    - "Platform teams requiring reusable orchestration, approval, state, and tracing primitives"
+    - "Developers building realtime voice or workspace-oriented sandbox agents"
+  primary_use_cases:
+    - "Define agents with instructions, tools, structured outputs, guardrails, and hooks"
+    - "Build manager-style or handoff-based multi-agent workflows"
+    - "Run synchronous, asynchronous, or streaming agent loops"
+    - "Connect hosted and locally managed MCP servers"
+    - "Persist conversation state and resume approval-interrupted runs"
+    - "Trace agent, model, tool, handoff, guardrail, and audio activity"
+    - "Build realtime voice agents and sandbox-backed long-horizon agents"
+
+classification:
+  secondary_characteristics:
+    - "multi-agent orchestration SDK"
+    - "tool-calling framework"
+    - "provider-extensible model abstraction"
+    - "MCP client"
+    - "realtime voice-agent SDK"
+    - "sandbox-agent execution harness"
+    - "session and tracing library"
+  domains:
+    - "general-purpose agent application development"
+    - "multi-agent workflows"
+    - "realtime voice and multimodal interaction"
+    - "workspace and coding automation"
+  delivery_forms:
+    - "Python package"
+    - "Python API"
+    - "repository-hosted examples and documentation"
+  agent_patterns:
+    - "model-tool loop"
+    - "agents as tools"
+    - "handoff delegation"
+    - "code-directed orchestration"
+    - "human approval and resumable execution"
+    - "session-backed conversation memory"
+    - "persistent realtime session"
+    - "sandbox workspace execution"
+  architecture_layers:
+    - "Agent configuration and typed outputs"
+    - "Runner orchestration and streaming"
+    - "model-provider adapters"
+    - "local, hosted, and MCP tools"
+    - "handoffs, guardrails, and approvals"
+    - "sessions and run-state persistence"
+    - "tracing and visualization"
+    - "realtime and voice agents"
+    - "sandbox agents, manifests, capabilities, and clients"
+  claim_ids:
+    - "claim-classification"
+    - "claim-runner-orchestration"
+    - "claim-tool-and-multi-agent-surface"
+    - "claim-realtime"
+    - "claim-sandbox"
+
+capabilities:
+  - capability_id: "capability-agent-orchestration"
+    ontology_id: "x-openai-agents:agent-orchestration"
+    name: "Agent definition and orchestration"
+    description: >-
+      Defines typed agents and runs a turn loop that handles final outputs,
+      model calls, tools, handoffs, guardrails, context, hooks, and turn limits.
+    support_status: statically_confirmed
+    scope: "Agent, Runner, AgentRunner, RunConfig, and run-internal orchestration"
+    interfaces:
+      - "Runner.run"
+      - "Runner.run_sync"
+      - "Runner.run_streamed"
+      - "Agent and RunConfig Python APIs"
+    prerequisites:
+      - "Python 3.10 or newer"
+      - "A configured supported model endpoint"
+    configuration_requirements:
+      - "Agent name and optional instructions, model, tools, handoffs, output type, and guardrails"
+      - "Provider credentials or endpoint configuration"
+    limitations:
+      - "Workflow correctness, termination, latency, and model behavior depend on application configuration and the selected model."
+      - "The default runner is a model-and-tool loop, not a durable distributed workflow engine."
+      - "No workflow was executed during this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-runner-orchestration"
+      - "claim-tool-and-multi-agent-surface"
+    evidence_refs:
+      - "evidence-agent-configuration"
+      - "evidence-runner-loop"
+
+  - capability_id: "capability-tools-and-delegation"
+    ontology_id: "x-openai-agents:tools-and-delegation"
+    name: "Tools and multi-agent delegation"
+    description: >-
+      Exposes Python functions, agents, hosted OpenAI tools, local execution
+      harnesses, and MCP tools to models, while supporting manager-style agents
+      as tools and conversation handoffs to specialists.
+    support_status: statically_confirmed
+    scope: "Agent tools, Agent.as_tool, handoffs, and Runner tool execution"
+    interfaces:
+      - "function_tool decorator"
+      - "Agent.as_tool"
+      - "handoff and Agent.handoffs"
+      - "Hosted tool classes"
+      - "ComputerTool, ShellTool, and ApplyPatchTool"
+    prerequisites:
+      - "Tool implementations or hosted-tool availability"
+      - "Required credentials, environment access, or approvals"
+    configuration_requirements:
+      - "Tool schemas, implementations, and optional approval policies"
+      - "Agent or handoff descriptions for model-directed delegation"
+    limitations:
+      - "Hosted tools are specific to compatible OpenAI Responses models."
+      - "Local computer, shell, and patch tools execute through application-supplied or configured environments and require separate permission controls."
+      - "Agent-as-tool and handoff behavior are distinct and must be selected deliberately."
+    confidence: high
+    claim_ids:
+      - "claim-tool-and-multi-agent-surface"
+      - "claim-approval-and-guardrails"
+      - "claim-host-execution-risk"
+    evidence_refs:
+      - "evidence-tools"
+      - "evidence-agent-configuration"
+      - "evidence-human-approval"
+
+  - capability_id: "capability-guardrails-and-approvals"
+    ontology_id: "x-openai-agents:guardrails-and-approvals"
+    name: "Guardrails and resumable approvals"
+    description: >-
+      Runs input, output, and function-tool guardrails and can pause runs for
+      tool approval, serialize RunState, record a decision, and resume the
+      original workflow.
+    support_status: statically_confirmed
+    scope: "Runner, agent guardrails, function-tool guardrails, approval-capable tools, and RunState"
+    interfaces:
+      - "input_guardrail and output_guardrail decorators"
+      - "Function-tool input and output guardrails"
+      - "RunResult.interruptions and RunState approve/reject APIs"
+    prerequisites:
+      - "Application-defined guardrail or approval policy"
+      - "Application logic to surface and resolve manual interruptions"
+    configuration_requirements:
+      - "run_in_parallel selection for input guardrails"
+      - "needs_approval or require_approval policy for sensitive tools"
+    limitations:
+      - "Parallel input guardrails may finish after model tokens or tool side effects have begun."
+      - "Tool guardrails do not cover handoffs, hosted tools, built-in execution tools, or Agent.as_tool in the same way as function tools."
+      - "The SDK supplies control points; application-specific safety policy remains the integrator's responsibility."
+    confidence: high
+    claim_ids:
+      - "claim-approval-and-guardrails"
+    evidence_refs:
+      - "evidence-guardrails"
+      - "evidence-human-approval"
+
+  - capability_id: "capability-mcp-client"
+    ontology_id: "x-openai-agents:mcp-client"
+    name: "Hosted and local MCP tool integration"
+    description: >-
+      Connects agents to hosted MCP tools or SDK-managed MCP servers over stdio,
+      HTTP with SSE, and Streamable HTTP, with filtering, caching, metadata,
+      failure formatting, and approval controls.
+    support_status: statically_confirmed
+    scope: "HostedMCPTool and agents.mcp client implementations"
+    interfaces:
+      - "HostedMCPTool"
+      - "MCPServerStdio"
+      - "MCPServerSse"
+      - "MCPServerStreamableHttp"
+      - "Agent.mcp_servers and Agent.mcp_config"
+    prerequisites:
+      - "A reachable or launchable MCP server"
+      - "The server's required credentials and transport dependencies"
+      - "A compatible OpenAI Responses model for HostedMCPTool"
+    configuration_requirements:
+      - "Transport parameters and optional headers or process command"
+      - "Optional tool filters, cache, approval, and error policies"
+    limitations:
+      - "The SDK is an MCP client in this boundary; it does not provide a general MCP server product."
+      - "Hosted MCP execution is performed by OpenAI infrastructure and was not analyzed."
+      - "Remote server behavior and tool safety remain outside this project boundary."
+    confidence: high
+    claim_ids:
+      - "claim-mcp-client"
+      - "claim-approval-and-guardrails"
+    evidence_refs:
+      - "evidence-mcp-integrations"
+
+  - capability_id: "capability-sessions"
+    ontology_id: "x-openai-agents:session-memory"
+    name: "Conversation sessions and resumable state"
+    description: >-
+      Retrieves and appends conversation history around each run through a
+      session interface, with bundled SQLite and OpenAI-backed options and
+      optional Redis, SQLAlchemy, MongoDB, Dapr, encryption, and compaction
+      implementations.
+    support_status: statically_confirmed
+    scope: "Runner session integration, agents.memory, and extensions.memory"
+    interfaces:
+      - "Session protocol"
+      - "Runner session parameter"
+      - "SQLiteSession and optional session-backend classes"
+      - "RunState serialization for interrupted runs"
+    prerequisites:
+      - "A selected session implementation and its storage backend"
+    configuration_requirements:
+      - "Session identifier or server-managed conversation configuration"
+      - "Optional backend connection and encryption settings"
+    limitations:
+      - "SDK sessions cannot be combined with conversation_id or previous-response continuation in the same run."
+      - "Optional backends require extra dependencies and external services."
+      - "Conversation storage does not itself provide semantic long-term memory or retrieval."
+    confidence: high
+    claim_ids:
+      - "claim-session-state"
+      - "claim-approval-and-guardrails"
+    evidence_refs:
+      - "evidence-sessions"
+      - "evidence-human-approval"
+
+  - capability_id: "capability-tracing"
+    ontology_id: "x-openai-agents:tracing"
+    name: "Agent workflow tracing"
+    description: >-
+      Records traces and spans for runner calls, agents, model generations,
+      tools, guardrails, handoffs, and audio, exporting by default to OpenAI or
+      through replaceable custom trace processors.
+    support_status: statically_confirmed
+    scope: "agents.tracing and automatic Runner instrumentation"
+    interfaces:
+      - "trace and span context managers"
+      - "RunConfig tracing options"
+      - "TracingProcessor extension interface"
+    prerequisites:
+      - "An OpenAI API key for the default export destination, unless tracing is disabled or processors are replaced"
+    configuration_requirements:
+      - "Optional workflow name, grouping, metadata, exporter key, and sensitive-data settings"
+    limitations:
+      - "Tracing is unavailable for OpenAI API organizations using Zero Data Retention."
+      - "Trace spans may include sensitive model, tool, and audio data unless corresponding capture options are disabled."
+      - "No trace export was performed during this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-tracing"
+      - "claim-sensitive-trace-risk"
+    evidence_refs:
+      - "evidence-tracing"
+
+  - capability_id: "capability-realtime"
+    ontology_id: "x-openai-agents:realtime-agents"
+    name: "Realtime voice and multimodal agents"
+    description: >-
+      Maintains a persistent server-side WebSocket model session with local
+      history, tools, guardrails, handoffs, and bidirectional event streaming.
+    support_status: statically_confirmed
+    scope: "agents.realtime and OpenAI realtime model adapter"
+    interfaces:
+      - "RealtimeAgent"
+      - "RealtimeRunner"
+      - "RealtimeSession async event interface"
+    prerequisites:
+      - "A compatible realtime model endpoint and credentials"
+      - "WebSocket connectivity"
+      - "Application audio or event transport"
+    configuration_requirements:
+      - "Realtime agent, model configuration, audio formats, tools, and optional guardrails"
+    limitations:
+      - "The default model layer targets OpenAI Realtime over WebSocket."
+      - "Client audio capture, playback, telephony infrastructure, and user interface are application responsibilities."
+      - "Realtime latency and media behavior were not verified."
+    confidence: high
+    claim_ids:
+      - "claim-realtime"
+    evidence_refs:
+      - "evidence-realtime-runner"
+
+  - capability_id: "capability-sandbox-agents"
+    ontology_id: "x-openai-agents:sandbox-agents"
+    name: "Sandbox-backed workspace agents"
+    description: >-
+      Configures agents with workspace manifests, sandbox-native filesystem,
+      shell, skills, memory, and compaction capabilities, plus local, Docker,
+      and optional hosted sandbox clients and resumable sandbox state.
+    support_status: statically_confirmed
+    scope: "agents.sandbox and agents.extensions.sandbox"
+    interfaces:
+      - "SandboxAgent"
+      - "Manifest and capability APIs"
+      - "SandboxRunConfig"
+      - "BaseSandboxClient and provider-specific clients"
+    prerequisites:
+      - "A configured sandbox client"
+      - "Host or provider permissions for staged inputs and execution"
+      - "Provider-specific optional dependency for non-bundled clients"
+    configuration_requirements:
+      - "Manifest, capabilities, sandbox client, and optional run identity"
+      - "Snapshot or session configuration when resuming workspace state"
+    limitations:
+      - "The feature is explicitly documented as beta."
+      - "UnixLocalSandboxClient is local execution, not a security boundary equivalent to a remote or container sandbox."
+      - "Provider isolation, durability, mount behavior, and permissions vary and were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-sandbox"
+      - "claim-host-execution-risk"
+    evidence_refs:
+      - "evidence-sandbox-agents"
+
+  - capability_id: "capability-model-providers"
+    ontology_id: "x-openai-agents:model-provider-abstraction"
+    name: "Extensible model-provider routing"
+    description: >-
+      Uses a model-provider interface with built-in OpenAI Responses and Chat
+      Completions support, configurable OpenAI-compatible endpoints, custom
+      prefix mappings, and optional LiteLLM and AnyLLM adapters.
+    support_status: statically_confirmed
+    scope: "agents.models and agents.extensions.models"
+    interfaces:
+      - "Model and ModelProvider interfaces"
+      - "OpenAIProvider and MultiProvider"
+      - "Optional LitellmProvider and AnyLLMProvider"
+    prerequisites:
+      - "Provider credentials or accessible endpoint"
+      - "Optional adapter dependency for LiteLLM or AnyLLM"
+    configuration_requirements:
+      - "Model identifier and provider or prefix mapping"
+      - "Optional base URL and OpenAI API-mode selection"
+    limitations:
+      - "Feature compatibility differs between Responses, Chat Completions, and third-party adapters."
+      - "The README's claim of support for more than 100 LLMs was not independently enumerated or runtime tested."
+    confidence: high
+    claim_ids:
+      - "claim-model-providers"
+    evidence_refs:
+      - "evidence-model-routing"
+      - "evidence-package-manifest"
+
+architecture:
+  overview: >-
+    Application code creates Agent objects and invokes Runner. The runner selects
+    a model through ModelProvider, prepares instructions, history, tools and MCP
+    tools, calls the model, executes or pauses eligible tools, applies guardrails
+    and handoffs, persists session items, emits trace spans, and repeats until a
+    final output or terminal condition. RealtimeRunner maintains a persistent
+    realtime connection, while SandboxAgent adds manifest and capability
+    preparation around the same core agent model.
+  languages:
+    - "Python"
+  frameworks_and_sdks:
+    - name: "OpenAI Python library"
+      version_constraint: ">=2.45.0,<3"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-model-providers"
+    - name: "Pydantic"
+      version_constraint: ">=2.12.2,<3"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-classification"
+    - name: "GriffeLib"
+      version_constraint: ">=2,<3"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-tool-and-multi-agent-surface"
+    - name: "Requests"
+      version_constraint: ">=2.0,<3"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-classification"
+    - name: "WebSockets"
+      version_constraint: ">=15.0,<17"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-realtime"
+  model_providers:
+    - name: "OpenAI Responses API"
+      version_constraint: null
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+    - name: "OpenAI Chat Completions API"
+      version_constraint: null
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+    - name: "LiteLLM"
+      version_constraint: ">=1.83.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+    - name: "AnyLLM SDK"
+      version_constraint: ">=1.11.0,<2; Python >=3.11"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+  runtime_and_orchestration:
+    - name: "Agent and Runner orchestration runtime"
+      version_constraint: "bundled with openai-agents 0.18.3"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-runner-orchestration"
+  tools_and_mcp:
+    tools:
+      - name: "MCP Python SDK"
+        version_constraint: ">=1.19.0,<2; Python >=3.10"
+        dependency_relation: direct
+        required: true
+        claim_ids:
+          - "claim-mcp-client"
+      - name: "OpenAI hosted tools"
+        version_constraint: null
+        dependency_relation: hosted
+        required: false
+        claim_ids:
+          - "claim-tool-and-multi-agent-surface"
+      - name: "Local computer, shell, and patch harnesses"
+        version_constraint: "bundled"
+        dependency_relation: bundled
+        required: false
+        claim_ids:
+          - "claim-tool-and-multi-agent-surface"
+          - "claim-host-execution-risk"
+    mcp_role: client
+    mcp_details:
+      - "Hosted MCP is delegated through compatible OpenAI Responses models."
+      - "Locally managed client transports include stdio, HTTP with SSE, and Streamable HTTP."
+      - "Client-side MCP supports tool filtering, caching, approval policies, failure formatting, request metadata, and custom output data."
+  skills:
+    - name: "Sandbox skill capability"
+      version_constraint: "bundled beta capability"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-sandbox"
+  memory_and_state:
+    - name: "SQLiteSession"
+      version_constraint: "bundled"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-session-state"
+    - name: "Redis session backend"
+      version_constraint: ">=7"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-session-state"
+    - name: "SQLAlchemy session backend"
+      version_constraint: ">=2.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-session-state"
+    - name: "MongoDB session backend"
+      version_constraint: "pymongo>=4.14"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-session-state"
+    - name: "Dapr session backend"
+      version_constraint: ">=1.16.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-session-state"
+  retrieval_and_knowledge: []
+  document_processing: []
+  execution_and_sandbox:
+    - name: "UnixLocalSandboxClient"
+      version_constraint: "bundled beta client"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-sandbox"
+        - "claim-host-execution-risk"
+    - name: "DockerSandboxClient"
+      version_constraint: "docker>=6.1"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-sandbox"
+    - name: "Hosted sandbox provider clients"
+      version_constraint: "provider-specific optional dependencies"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-sandbox"
+  gateways_and_routing:
+    - name: "MultiProvider model-prefix router"
+      version_constraint: "bundled"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+  storage_and_databases:
+    - name: "SQLite"
+      version_constraint: "Python standard-library driver"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-session-state"
+  interfaces:
+    - name: "Python API"
+      version_constraint: "Python >=3.10"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-classification"
+    - name: "OpenAI Realtime WebSocket interface"
+      version_constraint: null
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-realtime"
+  deployment: []
+  observability_and_evaluation:
+    - name: "Built-in tracing and OpenAI trace exporter"
+      version_constraint: "bundled"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-tracing"
+        - "claim-sensitive-trace-risk"
+  security_and_permissions:
+    - name: "Input, output, and function-tool guardrails"
+      version_constraint: "bundled"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-approval-and-guardrails"
+    - name: "Tool approval and resumable RunState"
+      version_constraint: "bundled"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-approval-and-guardrails"
+    - name: "Sandbox capability and run-identity controls"
+      version_constraint: "bundled beta capability"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-sandbox"
+  data_flows:
+    - "Application input and optional session history flow through Runner to the configured model provider."
+    - "Model outputs become final outputs, handoffs, hosted-tool calls, or SDK-executed tool calls whose results feed the next turn."
+    - "Session implementations load prior items before a run and append new turn items afterward."
+    - "Trace spans may carry model, tool, handoff, guardrail, and audio data to the configured processors and exporter."
+    - "Realtime events flow bidirectionally over a persistent model connection."
+    - "Sandbox manifests stage workspace inputs and sandbox capabilities expose model-facing filesystem, shell, skill, memory, and compaction tools."
+  control_flows:
+    - "Runner invokes a model, terminates on final output, switches agents on handoff, or executes tools and repeats until completion or a limit/error."
+    - "Guardrails may run before, alongside, or after relevant work and can raise tripwires."
+    - "Approval-capable tool calls can interrupt a run, persist a decision in RunState, and resume the original top-level workflow."
+    - "RealtimeRunner creates a persistent session that manages history, tools, guardrails, and handoffs."
+
+components:
+  - component_id: "component-agent-api"
+    name: "Agent configuration API"
+    path: "src/agents/agent.py"
+    project_type: "agent framework component"
+    purpose: "Defines agent instructions, tools, handoffs, models, guardrails, outputs, hooks, and model context."
+    claim_ids:
+      - "claim-tool-and-multi-agent-surface"
+
+  - component_id: "component-runner"
+    name: "Runner and run internals"
+    path: "src/agents/run.py; src/agents/run_internal/"
+    project_type: "agent orchestration runtime"
+    purpose: "Coordinates model turns, tools, handoffs, guardrails, streaming, state, and terminal results."
+    claim_ids:
+      - "claim-runner-orchestration"
+
+  - component_id: "component-tools-mcp"
+    name: "Tool and MCP layer"
+    path: "src/agents/tool.py; src/agents/mcp/"
+    project_type: "agent tool and MCP client component"
+    purpose: "Defines function, hosted, local-execution, and MCP tools plus client transport and policy integration."
+    claim_ids:
+      - "claim-tool-and-multi-agent-surface"
+      - "claim-mcp-client"
+
+  - component_id: "component-models"
+    name: "Model providers"
+    path: "src/agents/models/; src/agents/extensions/models/"
+    project_type: "model adapter component"
+    purpose: "Abstracts OpenAI Responses and Chat Completions models and optional third-party provider adapters."
+    claim_ids:
+      - "claim-model-providers"
+
+  - component_id: "component-memory"
+    name: "Session memory"
+    path: "src/agents/memory/; src/agents/extensions/memory/"
+    project_type: "state and memory component"
+    purpose: "Provides conversation-session protocols, bundled implementations, optional persistence adapters, and compaction or encryption wrappers."
+    claim_ids:
+      - "claim-session-state"
+
+  - component_id: "component-tracing"
+    name: "Tracing"
+    path: "src/agents/tracing/"
+    project_type: "observability component"
+    purpose: "Creates traces and spans and sends them to configurable processors and exporters."
+    claim_ids:
+      - "claim-tracing"
+
+  - component_id: "component-realtime"
+    name: "Realtime agents"
+    path: "src/agents/realtime/"
+    project_type: "realtime agent runtime"
+    purpose: "Runs persistent, event-driven realtime agent sessions with tools, guardrails, and handoffs."
+    claim_ids:
+      - "claim-realtime"
+
+  - component_id: "component-sandbox"
+    name: "Sandbox agents"
+    path: "src/agents/sandbox/; src/agents/extensions/sandbox/"
+    project_type: "sandbox agent harness"
+    purpose: "Defines workspace manifests, capabilities, sessions, snapshots, and local or optional provider clients for sandbox-backed agents."
+    claim_ids:
+      - "claim-sandbox"
+      - "claim-host-execution-risk"
+
+usage:
+  installation: "Install with `pip install openai-agents` or `uv add openai-agents`; select extras such as docker, redis, litellm, any-llm, or provider-specific sandbox clients when required."
+  minimal_start: "Create an Agent, configure provider credentials such as OPENAI_API_KEY, then call Runner.run, Runner.run_sync, or Runner.run_streamed with an input."
+  configuration:
+    - "Agent name, instructions, model, model settings, tools, handoffs, guardrails, hooks, and output type"
+    - "RunConfig for tracing, tool execution, handoffs, session behavior, model provider, and sandbox settings"
+    - "Provider-specific API keys, base URLs, or model-prefix mappings"
+    - "Optional session backend, MCP transport, tool approval, and sandbox manifest settings"
+  required_services:
+    - "At least one compatible model endpoint"
+    - "Optional OpenAI hosted tools and tracing services"
+    - "Optional MCP, database, and sandbox-provider services selected by the application"
+  extension_points:
+    - "Model and ModelProvider implementations"
+    - "Python function tools and custom local execution harnesses"
+    - "Agents as tools and handoff filters"
+    - "Guardrails, approval callbacks, lifecycle hooks, and run error handlers"
+    - "Session implementations"
+    - "Tracing processors and exporters"
+    - "RealtimeModel implementations"
+    - "Sandbox clients, capabilities, manifest entries, and skill sources"
+
+assessment:
+  contexts:
+    - context_id: "context-python-agent-sdk-evaluation"
+      use_case: "Select a Python SDK for building production-oriented tool-using and multi-agent applications with optional realtime and sandbox workflows."
+      comparison_cohort:
+        - "Python agent frameworks and SDKs"
+        - "Direct OpenAI Responses API orchestration"
+        - "Model-provider abstraction libraries"
+      requirements:
+        - "Composable agent, tool, handoff, guardrail, approval, session, and tracing APIs"
+        - "Static evidence of implementation and documented extension points"
+        - "Clear integration boundaries for model providers, tools, MCP, persistence, and execution"
+        - "No assumption that static inspection verifies runtime correctness, security, or model quality"
+      organizational_constraints:
+        - "Python 3.10 or newer"
+        - "Ability to manage model, storage, MCP, and sandbox-provider credentials"
+        - "Application-owned policy for tool permissions, sensitive data, and human approvals"
+      assessed_at: "2026-07-18T13:13:32Z"
+  maturity: established
+  maturity_signals:
+    - statement: "The repository presents a versioned 0.18.3 package with broad documentation, examples, tests, typing, CI configuration, and a security policy."
+      reasoning: "These are strong static maintenance and engineering signals, although release history and CI results were not analyzed."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-established-maturity"
+    - statement: "Core agent, runner, tools, MCP, sessions, tracing, and realtime surfaces are implemented, while sandbox agents remain explicitly beta."
+      reasoning: "The core has broad source and documentation coverage; the sandbox documentation warns that its API and defaults may change."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-established-maturity"
+        - "claim-sandbox"
+  strengths:
+    - statement: "The SDK combines core orchestration with handoffs, tools, approvals, guardrails, sessions, MCP, and tracing behind composable Python APIs."
+      reasoning: "The integrated control surfaces reduce the amount of runner and state plumbing an application must implement itself."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-runner-orchestration"
+        - "claim-tool-and-multi-agent-surface"
+        - "claim-approval-and-guardrails"
+        - "claim-session-state"
+        - "claim-mcp-client"
+        - "claim-tracing"
+    - statement: "Realtime and sandbox-agent layers extend the same Agent concepts into persistent media sessions and workspace-oriented execution."
+      reasoning: "Both layers reuse agent configuration while adding specialized session, manifest, capability, and transport abstractions."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-realtime"
+        - "claim-sandbox"
+  limitations:
+    - statement: "Some features remain OpenAI Responses-specific even though the SDK has model-provider abstractions."
+      reasoning: "Hosted tools, prompt-managed requests, server-managed conversations, and some tool surfaces do not have equivalent semantics across adapters."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+        - "claim-tool-and-multi-agent-surface"
+    - statement: "Sandbox agents are a beta surface whose APIs, defaults, and capabilities may change."
+      reasoning: "The first-party quickstart labels the feature beta explicitly."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-sandbox"
+  risks:
+    - statement: "Local tools and Unix-local sandbox clients can expose host files, commands, credentials, and side effects if an application grants broad capabilities."
+      reasoning: "The SDK provides approval and capability hooks, but safe policies and isolation depend on the selected execution environment and application configuration."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-host-execution-risk"
+        - "claim-approval-and-guardrails"
+    - statement: "Default tracing can transmit potentially sensitive model, tool, and audio data unless configured otherwise."
+      reasoning: "The tracing guide documents default capture and explicit controls for excluding sensitive content."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-sensitive-trace-risk"
+  best_fit:
+    - statement: "Python teams that want an integrated SDK for OpenAI-centered agent workflows with explicit tools, delegation, approvals, sessions, and traces."
+      reasoning: "The default model and hosted-tool paths are OpenAI-native, while the provider interface and adapters retain some portability."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-runner-orchestration"
+        - "claim-model-providers"
+    - statement: "Applications that need optional realtime voice or workspace-oriented sandbox execution in the same conceptual agent model."
+      reasoning: "The repository implements both dedicated layers and documents their integration with Agent and Runner concepts."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-realtime"
+        - "claim-sandbox"
+  poor_fit:
+    - statement: "Teams requiring identical features and semantics across every third-party model provider."
+      reasoning: "Several hosted and Responses-specific capabilities are not portable through all model adapters."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+    - statement: "Deployments that cannot accept application-controlled tool permissions, external service credentials, or potentially sensitive observability data."
+      reasoning: "Tools, MCP, sessions, sandboxes, and tracing cross trust boundaries that require deployment-specific controls."
+      context_id: "context-python-agent-sdk-evaluation"
+      confidence: medium
+      claim_ids:
+        - "claim-host-execution-risk"
+        - "claim-sensitive-trace-risk"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "OpenAI Python library"
+      scope: "Direct required dependency for OpenAI model and API integration."
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+    - target_project: "Pydantic"
+      scope: "Direct required dependency for typed SDK configuration and schemas."
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+    - target_project: "MCP Python SDK"
+      scope: "Direct required dependency for locally managed MCP client transports and types."
+      confidence: high
+      claim_ids:
+        - "claim-mcp-client"
+  integrates_with:
+    - target_project: "OpenAI platform"
+      scope: "Responses, Chat Completions, Realtime, hosted tools, conversations, prompts, and default trace export."
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+        - "claim-realtime"
+        - "claim-tracing"
+    - target_project: "LiteLLM and AnyLLM"
+      scope: "Optional model-provider adapters."
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+    - target_project: "MCP servers"
+      scope: "Hosted or SDK-managed MCP tool consumption."
+      confidence: high
+      claim_ids:
+        - "claim-mcp-client"
+    - target_project: "Redis, SQLAlchemy databases, MongoDB, and Dapr"
+      scope: "Optional session persistence backends."
+      confidence: high
+      claim_ids:
+        - "claim-session-state"
+    - target_project: "Docker and hosted sandbox providers"
+      scope: "Optional execution backends for sandbox agents."
+      confidence: high
+      claim_ids:
+        - "claim-sandbox"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "OpenAI Agents SDK for Python is an actively developed MIT-licensed Python framework/SDK package, with source version 0.18.3 requiring Python 3.10 or newer."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The analyzed repository and openai-agents package at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-classification"
+      - "evidence-package-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The repository description and package manifest agree on the framework/SDK role, package identity, version, Python requirement, and license."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-runner-orchestration"
+    statement: "Runner implements asynchronous, synchronous, and streaming loops that call an agent, terminate on final output, switch on handoff, or execute tools and continue, subject to turn limits and guardrail failures."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Runner and run internals at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-runner-loop"
+    conflicting_evidence_ids: []
+    reasoning: "The public Runner source defines all three entry points and documents the same control loop."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-tool-and-multi-agent-surface"
+    statement: "Agents can be configured with function, hosted, local-execution, and MCP tools, and can delegate through agents-as-tools or handoffs."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Agent and tool APIs at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-agent-configuration"
+      - "evidence-tools"
+    conflicting_evidence_ids: []
+    reasoning: "First-party API documentation and source enumerate the tool and delegation surfaces."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-approval-and-guardrails"
+    statement: "The SDK provides input, output, and function-tool guardrails plus approval interruptions that can be resolved in RunState and resumed."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Guardrail, tool, Runner, result, and run-state APIs at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-guardrails"
+      - "evidence-human-approval"
+    conflicting_evidence_ids: []
+    reasoning: "The documentation describes guardrail boundaries and the interruption-resume state machine, with corresponding implementation paths mapped during static analysis."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-mcp-client"
+    statement: "The SDK consumes MCP tools through hosted OpenAI integration and SDK-managed stdio, HTTP with SSE, and Streamable HTTP clients."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "HostedMCPTool and agents.mcp at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-mcp-integrations"
+    conflicting_evidence_ids: []
+    reasoning: "The MCP guide enumerates execution placement and transports, and the repository contains the corresponding client classes."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-session-state"
+    statement: "Runner can automatically load and persist conversation history through sessions, with bundled and optional storage implementations."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Session and Runner APIs at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-sessions"
+    conflicting_evidence_ids: []
+    reasoning: "The session guide describes the before/after-run behavior and enumerates the provided backends."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-tracing"
+    statement: "The SDK automatically traces runner, agent, generation, tool, guardrail, handoff, and audio operations and permits custom trace processors."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Tracing subsystem and Runner instrumentation at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-tracing"
+    conflicting_evidence_ids: []
+    reasoning: "The tracing guide enumerates automatic spans and processor replacement, and the source contains the provider, processor, trace, and span abstractions."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-realtime"
+    statement: "RealtimeRunner creates a persistent server-side model session that manages local history, tools, guardrails, handoffs, and bidirectional events, defaulting to an OpenAI Realtime WebSocket model."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "agents.realtime at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-realtime-runner"
+    conflicting_evidence_ids: []
+    reasoning: "The RealtimeRunner implementation states and constructs this behavior directly."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-sandbox"
+    statement: "SandboxAgent adds manifests, capabilities, run identity, sandbox clients, and resumable workspace state to the Agent/Runner model, and the feature is documented as beta."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "agents.sandbox and extensions.sandbox at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-sandbox-agents"
+    conflicting_evidence_ids: []
+    reasoning: "The quickstart identifies the beta status and main abstractions, while SandboxAgent source defines its configuration surface."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-model-providers"
+    statement: "The model layer defaults to OpenAI while supporting custom provider mappings and optional LiteLLM and AnyLLM routing; feature parity across providers is not guaranteed."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Model provider layer at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-model-routing"
+      - "evidence-package-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "MultiProvider source implements the prefix routing and custom mapping, while the package manifest records optional adapters."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-established-maturity"
+    statement: "For the declared Python SDK evaluation context, the analyzed core presents established engineering maturity, while the sandbox-agent subsystem remains beta."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: medium
+    applies_to: "The analyzed repository at the recorded snapshot under context-python-agent-sdk-evaluation"
+    assessment_context_id: "context-python-agent-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+      - "evidence-readme-classification"
+      - "evidence-sandbox-agents"
+    conflicting_evidence_ids: []
+    reasoning: "Versioned package metadata, extensive typed source, documentation, examples, tests, CI files, and a security policy support the assessment; release history, CI outcomes, and runtime reliability were not evaluated."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-host-execution-risk"
+    statement: "For the declared evaluation context, local execution tools and Unix-local sandbox clients can create host-side effects unless applications constrain capabilities, approvals, credentials, and execution environments."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Local tool and sandbox configurations under context-python-agent-sdk-evaluation"
+    assessment_context_id: "context-python-agent-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-tools"
+      - "evidence-human-approval"
+      - "evidence-sandbox-agents"
+    conflicting_evidence_ids: []
+    reasoning: "The documented local tools execute in application-provided environments, and the Unix-local sandbox is a local client; approval and capability controls mitigate but do not eliminate deployment responsibility."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+  - claim_id: "claim-sensitive-trace-risk"
+    statement: "For the declared evaluation context, default trace capture can include sensitive model, tool, and audio content unless operators disable or replace the relevant capture and export behavior."
+    claim_kind: assessment
+    verification_status: documented
+    confidence: high
+    applies_to: "Tracing configuration under context-python-agent-sdk-evaluation"
+    assessment_context_id: "context-python-agent-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-tracing"
+    conflicting_evidence_ids: []
+    reasoning: "The first-party tracing guide explicitly describes the captured content and controls. Export behavior was not executed."
+    last_verified_at: "2026-07-18T13:13:32Z"
+
+sources:
+  - source_id: "source-openai-agents-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/openai/openai-agents-python"
+    revision_or_version: "commit 65886fa16dcdb482090b30b74de1d0cc80b9f4c6; git tree c8adb9da30d47ea60e1ad667ab691db8fc81774d"
+    retrieved_at: "2026-07-18T13:13:32Z"
+    content_digest: "git-tree-sha1:c8adb9da30d47ea60e1ad667ab691db8fc81774d"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-readme-classification"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Project introduction and Core concepts"
+      line_start: 1
+      line_end: 22
+    confidence: high
+    excerpt_or_symbol: "OpenAI Agents SDK; framework for building multi-agent workflows"
+    note: "First-party overview enumerates agents, delegation, tools, guardrails, HITL, sessions, tracing, and realtime agents."
+
+  - evidence_id: "evidence-package-manifest"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "pyproject.toml"
+      symbol_or_section: "[project] and [project.optional-dependencies]"
+      line_start: 1
+      line_end: 59
+    confidence: high
+    excerpt_or_symbol: "openai-agents 0.18.3; Python >=3.10; MIT; direct and optional dependencies"
+    note: "Defines package version, runtime floor, license, core dependencies, and optional model, state, realtime, and sandbox integrations."
+
+  - evidence_id: "evidence-agent-configuration"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "src/agents/agent.py"
+      symbol_or_section: "Agent"
+      line_start: 269
+      line_end: 350
+    confidence: high
+    excerpt_or_symbol: "Agent"
+    note: "Defines instructions, prompt, handoffs, model, model settings, input/output guardrails, output type, hooks, and tool behavior."
+
+  - evidence_id: "evidence-runner-loop"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "src/agents/run.py"
+      symbol_or_section: "Runner.run, Runner.run_sync, and Runner.run_streamed"
+      line_start: 201
+      line_end: 430
+    confidence: high
+    excerpt_or_symbol: "Runner"
+    note: "Defines async, sync, and streaming public entry points and documents the final-output, handoff, and tool-call control loop."
+
+  - evidence_id: "evidence-tools"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "docs/tools.md"
+      symbol_or_section: "Tools; Hosted tools; Local runtime tools"
+      line_start: 1
+      line_end: 33
+    confidence: high
+    excerpt_or_symbol: "Hosted, local/runtime, function, agent-as-tool, and experimental tool categories"
+    note: "The same page later distinguishes application-provided local execution from hosted execution."
+
+  - evidence_id: "evidence-guardrails"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "docs/guardrails.md"
+      symbol_or_section: "Workflow boundaries; Execution modes; Tool guardrails"
+      line_start: 3
+      line_end: 67
+    confidence: high
+    excerpt_or_symbol: "Input, output, and function-tool guardrails with tripwires"
+    note: "Documents execution timing, parallel-mode side-effect caveat, and tool types outside the function-tool guardrail pipeline."
+
+  - evidence_id: "evidence-human-approval"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "docs/human_in_the_loop.md"
+      symbol_or_section: "Human-in-the-loop; Marking tools; How approval works"
+      line_start: 1
+      line_end: 52
+    confidence: high
+    excerpt_or_symbol: "interruptions, RunState approve/reject, and resume"
+    note: "Documents approval scope across top-level, handoff, and nested agents and enumerates approval-capable tool types."
+
+  - evidence_id: "evidence-mcp-integrations"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "docs/mcp.md"
+      symbol_or_section: "Choosing an MCP integration; Agent-level MCP configuration"
+      line_start: 10
+      line_end: 68
+    confidence: high
+    excerpt_or_symbol: "HostedMCPTool, MCPServerStreamableHttp, MCPServerSse, MCPServerStdio"
+    note: "Enumerates hosted and client-managed transports plus filters, prompts, caching, tracing, approvals, and metadata."
+
+  - evidence_id: "evidence-sessions"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "docs/sessions/index.md"
+      symbol_or_section: "Sessions; Core session behavior; Built-in session implementations"
+      line_start: 1
+      line_end: 214
+    confidence: high
+    excerpt_or_symbol: "Session history loading and persistence; built-in backend table"
+    note: "Documents the session lifecycle, continuation incompatibilities, and bundled or optional implementations."
+
+  - evidence_id: "evidence-tracing"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "docs/tracing.md"
+      symbol_or_section: "Tracing; Default tracing; Sensitive data; Custom tracing processors"
+      line_start: 1
+      line_end: 163
+    confidence: high
+    excerpt_or_symbol: "Automatic agent-workflow traces and configurable processors"
+    note: "Documents default enablement, automatic spans, sensitive-data capture, ZDR limitation, and processor replacement."
+
+  - evidence_id: "evidence-realtime-runner"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "src/agents/realtime/runner.py"
+      symbol_or_section: "RealtimeRunner"
+      line_start: 18
+      line_end: 79
+    confidence: high
+    excerpt_or_symbol: "RealtimeRunner"
+    note: "Defines the persistent model connection, local session behavior, default OpenAI WebSocket model, and returned RealtimeSession."
+
+  - evidence_id: "evidence-sandbox-agents"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "docs/sandbox_agents.md"
+      symbol_or_section: "Quickstart; Prerequisites; Key choices"
+      line_start: 1
+      line_end: 113
+    confidence: high
+    excerpt_or_symbol: "Beta Sandbox Agents with manifests, capabilities, clients, sessions, and snapshots"
+    note: "The first-party guide explicitly labels the feature beta and describes workspace, execution, and resume abstractions."
+
+  - evidence_id: "evidence-model-routing"
+    source_id: "source-openai-agents-repository"
+    locator:
+      path: "src/agents/models/multi_provider.py"
+      symbol_or_section: "MultiProviderMap and MultiProvider"
+      line_start: 17
+      line_end: 196
+    confidence: high
+    excerpt_or_symbol: "MultiProvider"
+    note: "Implements custom prefix mappings, OpenAI defaults, and optional LiteLLM or AnyLLM fallbacks."
+
+open_questions:
+  - question: "Which capabilities of the rapidly evolving 0.18.3 source are covered by stability guarantees, and which remain preview or beta beyond the explicitly labeled sandbox-agent surface?"
+    reason: "Targeted static analysis did not inspect a complete API-stability policy or release history."
+    related_claim_ids:
+      - "claim-established-maturity"
+      - "claim-sandbox"
+  - question: "What feature and behavioral compatibility is maintained across OpenAI, LiteLLM, AnyLLM, and custom ModelProvider implementations?"
+    reason: "Adapters expose a shared interface, but hosted and Responses-specific features do not have uniform provider semantics."
+    related_claim_ids:
+      - "claim-model-providers"
+  - question: "What isolation and permission properties do each sandbox client and mount strategy provide in deployed environments?"
+    reason: "Provider internals and runtime behavior were outside the static project boundary."
+    related_claim_ids:
+      - "claim-sandbox"
+      - "claim-host-execution-risk"

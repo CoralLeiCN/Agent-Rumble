@@ -4,6 +4,7 @@ import {
   HttpRumbleGateway,
   ResilientRumbleGateway,
   toCatalogEvidenceRecord,
+  findPreparedMatchup,
   isPreparedRumblePair,
 } from "./rumbleGateway";
 import { bundledRumbleDemo, projectBundledRumble } from "./rumbleFallback";
@@ -44,11 +45,29 @@ describe("Rumble gateways", () => {
     );
   });
 
-  it("recognizes only the exact prepared project pair", () => {
-    expect(isPreparedRumblePair(["openai-agents-sdk", "langgraph"])).toBe(true);
-    expect(isPreparedRumblePair(["langgraph", "openai-agents-sdk"])).toBe(true);
-    expect(isPreparedRumblePair(["openai-agents-sdk", "crewai"])).toBe(false);
-    expect(isPreparedRumblePair(["openai-agents-sdk", "langgraph", "crewai"])).toBe(false);
+  it("allows every pair of two distinct catalog projects into Rumble", () => {
+    const openAiCatalogId = "project-openai-openai-agents-python";
+    const langGraphCatalogId = "project-langchain-ai-langgraph";
+
+    expect(isPreparedRumblePair([openAiCatalogId, langGraphCatalogId])).toBe(true);
+    expect(isPreparedRumblePair([langGraphCatalogId, openAiCatalogId])).toBe(true);
+    expect(isPreparedRumblePair([openAiCatalogId, "project-crewai-crewai"])).toBe(true);
+    expect(isPreparedRumblePair([openAiCatalogId, openAiCatalogId])).toBe(false);
+    expect(isPreparedRumblePair([openAiCatalogId, langGraphCatalogId, "project-crewai-crewai"]))
+      .toBe(false);
+  });
+
+  it("resolves canonical catalog IDs to the prepared matchup bundle", () => {
+    const matchup = findPreparedMatchup(bundledRumbleDemo, [
+      "project-openai-openai-agents-python",
+      "project-langchain-ai-langgraph",
+    ]);
+
+    expect(matchup?.matchup_id).toBe("openai-agents-sdk-vs-langgraph-support-poc");
+    expect(findPreparedMatchup(bundledRumbleDemo, [
+      "project-openai-openai-agents-python",
+      "project-crewai-crewai",
+    ])).toBeUndefined();
   });
 
   it("labels a bundled fallback and adapts its claim evidence for the existing drawer", async () => {

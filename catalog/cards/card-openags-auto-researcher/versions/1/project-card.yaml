@@ -1,0 +1,1433 @@
+schema_version: "0.3"
+card_id: "card-openags-auto-researcher"
+card_version: 1
+
+field_states:
+  /source_snapshot/source_revisions/0/tag: not_applicable
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+
+project:
+  project_id: "project-openags-auto-researcher"
+  name: "OpenAGS"
+  primary_type: agent_application
+  type_rationale: >-
+    OpenAGS is primarily a deployable autonomous-science application: it ships
+    an Electron/React workspace and a Node.js server that coordinate research
+    roles through projects, chats, workflow files, scientific-data tools,
+    experiment execution, and manuscript interfaces. Although its README calls
+    it a framework and it contains reusable orchestration concepts, the analyzed
+    boundary is organized around an end-user research product.
+  boundary: >-
+    The OpenAGS desktop and browser application, Node.js application server,
+    research workflow orchestrator, provider adapters, project templates,
+    bundled skills, optional Rust CLI placeholder, tests, and repository-hosted
+    documentation in openags/auto-researcher at commit
+    9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f, one commit after tag v0.0.6.
+    Excluded are the source and runtime behavior of Claude Code, Codex, Gemini,
+    Copilot, hosted model providers, arXiv, Semantic Scholar, Docker, SSH hosts,
+    robots, messaging services, externally linked papers and sites, dependency
+    source, issues and pull requests, and all dynamic execution.
+  repositories:
+    - source_id: "source-openags-repository"
+      url: "https://github.com/openags/auto-researcher"
+      owner: "openags"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "package.json"
+        - "packages/app/"
+        - "packages/desktop/"
+        - "skills/"
+        - "templates/"
+        - "cli/"
+        - "docs/architecture.md"
+        - "docs/workflow-protocol.md"
+        - ".github/workflows/"
+        - "Dockerfile"
+        - "docker-compose.yml"
+      excluded_paths:
+        - "Translated README duplication"
+        - "Binary images and the bundled PDF under docs/"
+        - "External agent-provider, model, research API, container, SSH, robot, and messaging implementations"
+        - "Third-party dependency source, issues, pull requests, and release binaries"
+        - "Runtime execution, dependency installation, network calls, and dynamic security testing"
+  packages:
+    - "openags 0.0.4 private pnpm workspace root"
+    - "@openags/app 0.0.6 Node.js application server"
+    - "@openags/desktop 0.0.6 Electron and React application"
+    - "openags-cli 0.1.0 Rust package marked as a future CLI in the README"
+  services:
+    - "Loopback Express HTTP and WebSocket application server"
+    - "Electron desktop host and React renderer"
+    - "Optional Docker experiment engine"
+    - "Optional remote SSH experiment execution"
+  documentation_sites:
+    - "Repository README and docs/"
+  license: "MIT"
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:18:51Z"
+  source_revisions:
+    - source_id: "source-openags-repository"
+      branch: "main"
+      tag: null
+      commit: "9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+      retrieved_at: "2026-07-18T13:18:51Z"
+      content_digest: "git-tree-sha1:9d595c6f56082cb4754e1b457e267f402c51bd0d"
+  release_versions:
+    - "Nearest reachable tag v0.0.6, one commit behind the analyzed revision"
+    - "@openags/app 0.0.6"
+    - "@openags/desktop 0.0.6"
+    - "private root workspace 0.0.4"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    source_checkout:
+      method: "Filtered Git clone of the public repository at its exact default-branch revision"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "README, license, package manifests, workspace layout, and release ancestry"
+      - "Node.js HTTP/WebSocket server, desktop/browser delivery, and local project management"
+      - "File-driven research workflow orchestration, directive/status parsing, timeout, and recovery paths"
+      - "Claude Agent SDK, Codex SDK, and Gemini CLI provider adapters"
+      - "Research lookup and citation routes, Docker experiment engine, SSH adapter, and skills management"
+      - "Representative schemas, tests, CI, templates, and deployment configuration"
+    intentionally_not_analyzed:
+      - "Live research quality, autonomous completion rate, cost, latency, or scientific validity"
+      - "Agent-provider CLIs and SDK internals, hosted APIs, external research services, and messaging platforms"
+      - "Dynamic Docker, SSH, PTY, LaTeX, network, or robot execution"
+      - "Historical CI results, release artifacts, vulnerability enumeration, and penetration testing"
+      - "Issues, pull requests, community history, translated documentation, and exhaustive UI coverage"
+    source_safety: >-
+      Repository files, agent-role prompts, skill definitions, workflow protocol
+      text, examples, and source comments were treated only as untrusted
+      evidence. Their embedded instructions were not followed; dependencies
+      were not installed and project code was not executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A local desktop and browser application for orchestrating specialized AI
+    agents across literature, proposal, experiment, manuscript, and review phases.
+  purpose: >-
+    OpenAGS provides a research workspace where users create projects, converse
+    with selectable CLI-backed agents, automate a file-driven multi-agent
+    pipeline, search scholarly sources, manage citations and LaTeX artifacts,
+    and optionally run experiments in Docker or on remote hosts.
+  target_users:
+    - "Researchers evaluating agent-assisted scientific workflows"
+    - "Technical teams operating local multi-agent research workspaces"
+    - "Developers extending research roles, skills, providers, tools, and templates"
+  primary_use_cases:
+    - "Coordinate literature, proposal, experiment, manuscript, and review agents"
+    - "Run interactive Claude Code, Codex, or Gemini CLI research chats"
+    - "Search arXiv and Semantic Scholar and verify citations"
+    - "Manage projects, references, LaTeX manuscripts, and version history"
+    - "Run bounded Docker experiments or remote SSH commands"
+    - "Edit and discover SKILL.md and SOUL.md extensions"
+
+classification:
+  secondary_characteristics:
+    - "autonomous scientific-research workspace"
+    - "file-driven multi-agent application"
+    - "desktop and browser application"
+    - "multi-provider CLI agent host"
+    - "research artifact and experiment workbench"
+  domains:
+    - "scientific research"
+    - "literature review"
+    - "experimental computing"
+    - "academic writing"
+    - "citation management"
+  delivery_forms:
+    - "Electron desktop application"
+    - "React browser interface"
+    - "Express HTTP and WebSocket server"
+    - "Docker image and Compose configuration"
+  agent_patterns:
+    - "coordinator and specialized research agents"
+    - "file-based task directives and completion statuses"
+    - "dependency-ordered pipeline"
+    - "refine and pivot decisions"
+    - "session resume per research module"
+    - "human intervention and wait state"
+  architecture_layers:
+    - "Electron host and React renderer"
+    - "Express REST and WebSocket server"
+    - "workflow orchestrator and file protocol"
+    - "agent provider adapters"
+    - "research tools and artifact services"
+    - "local project filesystem"
+    - "optional Docker and SSH execution"
+  claim_ids:
+    - "claim-classification"
+    - "claim-workflow"
+    - "claim-ui-server"
+
+capabilities:
+  - capability_id: "capability-research-workflow"
+    ontology_id: "x-openags:research-workflow"
+    name: "Automated multi-agent research workflow"
+    description: >-
+      Coordinates literature, proposal, experiments, manuscript, and review
+      modules through DIRECTIVE.md and STATUS.md files, timeouts, session reuse,
+      provider dispatch, pause/resume, intervention, and completion handling.
+    support_status: statically_confirmed
+    scope: "CLI-provider workflow path in the Node.js orchestrator"
+    interfaces:
+      - "Workflow WebSocket"
+      - "Workflow REST controls"
+      - "DIRECTIVE.md and STATUS.md files"
+      - "Per-module chat sessions"
+    prerequisites:
+      - "A project created from a template with research-role directories"
+      - "At least one configured CLI-backed agent provider"
+    configuration_requirements:
+      - "Provider credentials or CLI authentication"
+      - "Timeout, retry, refine, and pivot limits"
+    limitations:
+      - "The orchestrator uses a fixed list of five research subagents."
+      - "The builtin-provider path references Python agent routes not implemented in the analyzed TypeScript server."
+      - "No full pipeline was executed in this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-workflow"
+      - "claim-file-protocol"
+      - "claim-builtin-gap"
+    evidence_refs:
+      - "evidence-orchestrator"
+      - "evidence-file-protocol"
+      - "evidence-builtin-gap"
+
+  - capability_id: "capability-research-workspace"
+    ontology_id: "x-openags:research-workspace"
+    name: "Desktop and browser research workspace"
+    description: >-
+      Exposes project dashboards, chats, a PTY terminal, settings, references,
+      skills, manuscript editors, PDF views, and workflow state through Electron
+      or a browser connected to a local server.
+    support_status: statically_confirmed
+    scope: "Electron/React frontend and Node.js application server"
+    interfaces:
+      - "Electron desktop window"
+      - "Browser at the loopback application-server address"
+      - "REST and WebSocket APIs"
+    prerequisites:
+      - "Node.js 20+ and pnpm 9+ for source installation"
+    configuration_requirements:
+      - "Local workspace directory and optional provider settings"
+    limitations:
+      - "The application is designed as a local loopback service, not a hardened shared multi-tenant server."
+      - "UI behavior was not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-ui-server"
+      - "claim-local-security-boundary"
+    evidence_refs:
+      - "evidence-readme-architecture"
+      - "evidence-server"
+
+  - capability_id: "capability-provider-adapters"
+    ontology_id: "x-openags:provider-adapters"
+    name: "Multiple CLI-backed agent providers"
+    description: >-
+      Adapts Claude Agent SDK, Codex SDK, and Gemini CLI streaming sessions to a
+      shared WebSocket writer with session creation, resume, tool events, token
+      reporting, completion, and abort operations.
+    support_status: statically_confirmed
+    scope: "Node.js provider adapters and chat WebSocket"
+    interfaces:
+      - "Claude Agent SDK"
+      - "OpenAI Codex SDK"
+      - "Gemini CLI stream-json subprocess"
+    prerequisites:
+      - "Installed or bundled provider runtime and valid authentication"
+    configuration_requirements:
+      - "Provider, model, working directory, session, and permission mode"
+    limitations:
+      - "The workflow auto-dispatch path explicitly requests bypass-style permissions for CLI providers."
+      - "Provider runtime behavior and compatibility were not tested."
+    confidence: high
+    claim_ids:
+      - "claim-providers"
+      - "claim-provider-permissions"
+    evidence_refs:
+      - "evidence-provider-claude"
+      - "evidence-provider-codex"
+      - "evidence-provider-gemini"
+      - "evidence-orchestrator-dispatch"
+
+  - capability_id: "capability-research-tools"
+    ontology_id: "x-openags:research-tools"
+    name: "Scholarly search and citation tools"
+    description: >-
+      Provides REST routes for arXiv and Semantic Scholar search, paper metadata,
+      citation and reference retrieval, BibTeX parsing, and citation verification.
+    support_status: statically_confirmed
+    scope: "Node.js research routes and tools"
+    interfaces:
+      - "REST API"
+      - "arXiv API"
+      - "Semantic Scholar API"
+    prerequisites:
+      - "Network access to external scholarly services"
+    configuration_requirements: []
+    limitations:
+      - "External service availability, rate limits, and result correctness were not tested."
+      - "Citation verification is not equivalent to validating scientific claims."
+    confidence: high
+    claim_ids:
+      - "claim-research-tools"
+    evidence_refs:
+      - "evidence-research-routes"
+
+  - capability_id: "capability-experiment-execution"
+    ontology_id: "x-openags:experiment-execution"
+    name: "Containerized and remote experiment execution"
+    description: >-
+      Runs commands, Python scripts, or shell scripts in Docker containers with
+      memory, CPU, timeout, network, and workspace settings, and also provides an
+      SSH execution adapter for remote compute.
+    support_status: statically_confirmed
+    scope: "ExperimentEngine and SSH adapter"
+    interfaces:
+      - "Docker daemon through dockerode"
+      - "SSH hosts through ssh2"
+    prerequisites:
+      - "Docker daemon or configured SSH host"
+      - "Images, scripts, requirements, and credentials appropriate to the experiment"
+    configuration_requirements:
+      - "Container image, command, resource limits, timeout, and optional network"
+    limitations:
+      - "The Docker workspace mount is read-write and root filesystem is not read-only."
+      - "Installing requested Python requirements enables container networking."
+      - "No sandbox or remote command was executed in this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-experiments"
+    evidence_refs:
+      - "evidence-experiment-engine"
+      - "evidence-ssh-executor"
+
+  - capability_id: "capability-skills-roles"
+    ontology_id: "x-openags:skills-and-roles"
+    name: "Filesystem-defined skills and agent roles"
+    description: >-
+      Discovers and edits SKILL.md and SOUL.md files, scaffolds skills, and uses
+      project folders plus role and status files as the research-agent boundary.
+    support_status: statically_confirmed
+    scope: "Skills routes, bundled skills, and project templates"
+    interfaces:
+      - "REST skill and file-management routes"
+      - "SKILL.md and SOUL.md frontmatter"
+      - "Project-template directories"
+    prerequisites:
+      - "Writable local skills and project directories"
+    configuration_requirements:
+      - "Valid skill names and frontmatter"
+    limitations:
+      - "Skill content is executable agent context and must be governed as untrusted input."
+      - "String-prefix path containment checks require deployment-specific security review."
+    confidence: high
+    claim_ids:
+      - "claim-skills"
+    evidence_refs:
+      - "evidence-skills"
+      - "evidence-file-protocol"
+
+architecture:
+  overview: >-
+    An Electron main process or standalone Node.js entry point starts an Express
+    server on loopback. A React UI calls REST endpoints and Shell, Chat, and
+    Workflow WebSockets. Provider adapters stream agent events from Claude,
+    Codex, or Gemini. A file-driven orchestrator watches project role folders,
+    parses directives and status files, and dispatches research phases. Project,
+    manuscript, reference, skill, and version services operate on local files;
+    experiments optionally cross Docker or SSH trust boundaries.
+  languages:
+    - "TypeScript 5.6+"
+    - "Rust 2021 for the optional future CLI placeholder"
+    - "Markdown, YAML, JSON, LaTeX, and BibTeX artifacts"
+  frameworks_and_sdks:
+    - name: "Express"
+      version_constraint: "^5.0.1 in @openags/app"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-ui-server"
+    - name: "React"
+      version_constraint: "^19.0.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-ui-server"
+    - name: "Electron"
+      version_constraint: "33.4.11"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-ui-server"
+    - name: "Zod"
+      version_constraint: "^3.23.8"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-metadata"
+  model_providers:
+    - name: "Anthropic Claude"
+      version_constraint: "via @anthropic-ai/claude-agent-sdk ^0.2.79"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-providers"
+    - name: "OpenAI Codex"
+      version_constraint: "via @openai/codex-sdk ^0.115.0"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-providers"
+    - name: "Google Gemini"
+      version_constraint: "via locally available Gemini CLI"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-providers"
+  runtime_and_orchestration:
+    - name: "Node.js"
+      version_constraint: ">=20.0.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-metadata"
+    - name: "WorkflowOrchestrator"
+      version_constraint: "@openags/app 0.0.6 source snapshot"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-workflow"
+        - "claim-file-protocol"
+  tools_and_mcp:
+    tools:
+      - name: "arXiv and Semantic Scholar research tools"
+        version_constraint: "@openags/app 0.0.6 source snapshot"
+        dependency_relation: direct
+        required: false
+        claim_ids:
+          - "claim-research-tools"
+      - name: "Provider built-in tools"
+        version_constraint: "Selected provider runtime"
+        dependency_relation: hosted
+        required: false
+        claim_ids:
+          - "claim-providers"
+    mcp_role: client
+    mcp_details:
+      - "Gemini CLI adapter can pass MCP configuration from ~/.gemini.json."
+      - "Provider SDKs may expose their own MCP tools; OpenAGS does not implement a standalone MCP server in the analyzed boundary."
+  skills:
+    - name: "OpenAGS SKILL.md extensions"
+      version_constraint: "Repository and user-authored filesystem format"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-skills"
+  memory_and_state:
+    - name: "Project role folders and Markdown state files"
+      version_constraint: "DIRECTIVE.md, STATUS.md, TASKS.md, memory.md protocol"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-file-protocol"
+    - name: "Provider session identifiers"
+      version_constraint: "Provider-specific runtime sessions"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-providers"
+  retrieval_and_knowledge:
+    - name: "arXiv API"
+      version_constraint: "Public API behavior at runtime"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-research-tools"
+    - name: "Semantic Scholar API"
+      version_constraint: "Public API behavior at runtime"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-research-tools"
+  document_processing:
+    - name: "PDF.js"
+      version_constraint: "^4.7.76"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-ui-server"
+    - name: "LaTeX toolchain"
+      version_constraint: "TeX Live or BasicTeX, optional"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-ui-server"
+  execution_and_sandbox:
+    - name: "Docker Engine through dockerode"
+      version_constraint: "dockerode ^4.0.2"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-experiments"
+    - name: "SSH2"
+      version_constraint: "^1.16.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-experiments"
+    - name: "node-pty"
+      version_constraint: "^1.0.0 in app; ^1.1.0 in desktop"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-ui-server"
+  gateways_and_routing:
+    - name: "Provider adapter routing"
+      version_constraint: "Claude, Codex, and Gemini branches in the chat server"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-providers"
+  storage_and_databases:
+    - name: "Local filesystem"
+      version_constraint: "~/.openags and configured workspace directories"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-projects"
+        - "claim-file-protocol"
+  interfaces:
+    - name: "REST API"
+      version_constraint: "@openags/app 0.0.6"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-ui-server"
+    - name: "Shell, Chat, and Workflow WebSockets"
+      version_constraint: "@openags/app 0.0.6"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-ui-server"
+        - "claim-workflow"
+  deployment:
+    - name: "Electron desktop packages"
+      version_constraint: "@openags/desktop 0.0.6"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-ui-server"
+    - name: "Node.js browser-mode server"
+      version_constraint: "@openags/app 0.0.6"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-ui-server"
+    - name: "Docker Compose"
+      version_constraint: "Repository deployment configuration"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-ui-server"
+  observability_and_evaluation:
+    - name: "Provider stream events and token/cost messages"
+      version_constraint: "Provider-dependent"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-providers"
+    - name: "Workflow status files and UI broadcasts"
+      version_constraint: "@openags/app 0.0.6"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-workflow"
+  security_and_permissions:
+    - name: "File-based users and bearer tokens"
+      version_constraint: "@openags/app 0.0.6"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-local-security-boundary"
+    - name: "Provider permission modes"
+      version_constraint: "Provider-specific"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-provider-permissions"
+    - name: "Docker resource and network controls"
+      version_constraint: "ExperimentEngine snapshot"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-experiments"
+  data_flows:
+    - "The React UI sends project, research, artifact, and settings requests to the local REST API."
+    - "Chat WebSocket requests are routed to a provider adapter and streamed back as text, tool, result, and completion events."
+    - "Workflow agents read directives and write statuses and artifacts in project role folders; filesystem watchers trigger the next orchestration step."
+    - "Research routes exchange queries and metadata with arXiv and Semantic Scholar."
+    - "Experiment requests may mount a workspace into Docker or cross SSH to a remote host."
+  control_flows:
+    - "A user starts, pauses, resumes, stops, or intervenes in a project workflow through WebSocket or REST controls."
+    - "The orchestrator watches status and directive files, dispatches eligible agents, enforces timeouts, and broadcasts state."
+    - "CLI-backed agent sessions are reused per module and run in the module directory."
+    - "Terminal WebSockets create or reconnect local PTY sessions and replay buffered output."
+
+components:
+  - component_id: "component-app-server"
+    name: "OpenAGS application server"
+    path: "packages/app/src/server.ts"
+    project_type: "agent_application"
+    purpose: "Hosts REST routes, provider chat, PTY terminals, workflow WebSockets, and static browser assets."
+    claim_ids:
+      - "claim-ui-server"
+      - "claim-local-security-boundary"
+  - component_id: "component-desktop"
+    name: "Electron and React desktop"
+    path: "packages/desktop/"
+    project_type: "agent_application"
+    purpose: "Provides the research dashboard, chats, editors, terminal, settings, and artifact views."
+    claim_ids:
+      - "claim-ui-server"
+  - component_id: "component-orchestrator"
+    name: "WorkflowOrchestrator"
+    path: "packages/app/src/workflow/orchestrator.ts"
+    project_type: "agent_harness_runtime"
+    purpose: "Coordinates research roles through file state, provider dispatch, timeouts, and UI broadcasts."
+    claim_ids:
+      - "claim-workflow"
+      - "claim-builtin-gap"
+  - component_id: "component-file-protocol"
+    name: "Directive and status protocol"
+    path: "packages/app/src/workflow/parser.ts; templates/default/"
+    project_type: "x-supporting-component"
+    purpose: "Parses and writes persistent task and completion state for agent modules."
+    claim_ids:
+      - "claim-file-protocol"
+  - component_id: "component-providers"
+    name: "Agent provider adapters"
+    path: "packages/app/src/providers/"
+    project_type: "agent_harness_runtime"
+    purpose: "Normalizes Claude, Codex, and Gemini sessions and streamed events."
+    claim_ids:
+      - "claim-providers"
+      - "claim-provider-permissions"
+  - component_id: "component-research-tools"
+    name: "Research and citation tools"
+    path: "packages/app/src/research/tools/; packages/app/src/routes/research.ts"
+    project_type: "agent_tool_mcp"
+    purpose: "Searches scholarly sources and parses or verifies citations."
+    claim_ids:
+      - "claim-research-tools"
+  - component_id: "component-experiments"
+    name: "Experiment execution"
+    path: "packages/app/src/research/experiment.ts; packages/app/src/research/ssh.ts"
+    project_type: "x-supporting-component"
+    purpose: "Runs bounded container commands or remote SSH work."
+    claim_ids:
+      - "claim-experiments"
+  - component_id: "component-skills"
+    name: "Skills and role management"
+    path: "packages/app/src/routes/skills.ts; skills/; templates/default/"
+    project_type: "agent_skill"
+    purpose: "Discovers and edits SKILL.md and SOUL.md extension files."
+    claim_ids:
+      - "claim-skills"
+
+usage:
+  installation: "Clone the repository, run `pnpm install` and `pnpm build`; Node.js 20+ and pnpm 9+ are required."
+  minimal_start: >-
+    Run the Electron development command for the desktop product, or start
+    @openags/app and open its loopback address in a browser; create an account
+    and then a research project from the dashboard.
+  configuration:
+    - "~/.openags/config.yaml or OPENAGS_* environment overrides configure workspace, logging, backend, models, sandbox mode, remote servers, and notifications."
+    - "Provider-specific CLI settings and authentication are required for agent chat."
+    - "Project templates supply role folders and state files."
+  required_services:
+    - "At least one agent provider runtime and its hosted model access"
+  extension_points:
+    - "SKILL.md and SOUL.md files"
+    - "Project templates and role folders"
+    - "Agent provider adapters"
+    - "Research routes and tools"
+    - "Messaging connectors"
+    - "Docker images and SSH compute targets"
+
+assessment:
+  contexts:
+    - context_id: "context-static-autonomous-research-evaluation"
+      use_case: "Static evaluation of a local multi-agent application for agent-assisted scientific research."
+      comparison_cohort:
+        - "Open-source autonomous-research applications"
+        - "Multi-agent scientific workspaces"
+      requirements:
+        - "Traceable phase and artifact state"
+        - "Human visibility and intervention"
+        - "Provider and research-tool integrations"
+        - "Governed experiment execution"
+      organizational_constraints:
+        - "Public repository evidence only"
+        - "No project code, agents, containers, shells, or network services executed"
+        - "Scientific quality and provider behavior remain unverified"
+      assessed_at: "2026-07-18T13:18:51Z"
+  maturity: early
+  maturity_signals:
+    - statement: "OpenAGS has tagged 0.0.x packages, a packaged desktop/server architecture, schemas, focused tests, and lint, type-check, test, and build CI."
+      reasoning: "These are credible implementation signals, but the version line is pre-1.0 and targeted inspection found an active builtin-backend inconsistency."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-ci"
+        - "claim-builtin-gap"
+        - "claim-maturity"
+  strengths:
+    - statement: "Research roles exchange explicit, inspectable directive, status, and artifact files."
+      reasoning: "The filesystem protocol makes phase state visible outside opaque model conversations."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-file-protocol"
+        - "claim-workflow"
+    - statement: "The product combines agent chat, research lookup, citations, manuscripts, experiments, and provider choice in one local workspace."
+      reasoning: "The UI/server and tool modules cover multiple steps of a research lifecycle."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-ui-server"
+        - "claim-providers"
+        - "claim-research-tools"
+        - "claim-experiments"
+  limitations:
+    - statement: "The default builtin backend is not reproducibly implemented by the analyzed TypeScript repository snapshot."
+      reasoning: "The orchestrator and UI reference /api/agents routes and Python behavior, but the server declares TypeScript-only logic and does not register those routes."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-builtin-gap"
+    - statement: "Workflow automation is specialized to a fixed research-role sequence and local file conventions."
+      reasoning: "The orchestrator enumerates five role names and parses specific Markdown state formats."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-workflow"
+        - "claim-file-protocol"
+  risks:
+    - statement: "Exposing the local server outside a trusted loopback environment could expose powerful file, terminal, provider, and workflow operations without general route or WebSocket authentication."
+      reasoning: "The default entry point binds loopback, but server registration applies wildcard CORS and no shared authorization middleware; only /auth/me performs token validation."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-local-security-boundary"
+    - statement: "Automated provider dispatch uses bypass-style permission modes."
+      reasoning: "The orchestrator passes bypassPermissions; provider adapters map it to broad Claude or Codex execution privileges."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-provider-permissions"
+    - statement: "Container experiments still cross significant host and supply-chain trust boundaries."
+      reasoning: "The engine may pull images, mount a host directory read-write, enable network for dependency installation, and execute caller-supplied commands."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-experiments"
+  best_fit:
+    - statement: "Technical researchers piloting transparent, local, agent-assisted research workflows with human oversight."
+      reasoning: "The product exposes chats, state files, artifacts, providers, and intervention controls in a unified workspace."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-workflow"
+        - "claim-ui-server"
+  poor_fit:
+    - statement: "Unattended high-assurance scientific conclusions or internet-exposed multi-tenant operation."
+      reasoning: "Scientific validity was not evaluated, powerful execution paths require governance, and the server security boundary is local-first."
+      context_id: "context-static-autonomous-research-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-local-security-boundary"
+        - "claim-provider-permissions"
+        - "claim-experiments"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "Claude Agent SDK, OpenAI Codex SDK, or Gemini CLI"
+      scope: "At least one external runtime supplies model-backed agent execution for the confirmed CLI path."
+      confidence: high
+      claim_ids:
+        - "claim-providers"
+    - target_project: "Node.js and local filesystem"
+      scope: "Application server, UI tooling, project data, workflow state, and artifacts."
+      confidence: high
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-file-protocol"
+  integrates_with:
+    - target_project: "arXiv and Semantic Scholar"
+      scope: "Scholarly search, paper, citation, and reference metadata."
+      confidence: high
+      claim_ids:
+        - "claim-research-tools"
+    - target_project: "Docker Engine and SSH servers"
+      scope: "Local containerized and remote experiment execution."
+      confidence: high
+      claim_ids:
+        - "claim-experiments"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "OpenAGS is primarily a deployable multi-agent scientific-research application."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Project boundary at the recorded source snapshot"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-purpose"
+      - "evidence-readme-architecture"
+      - "evidence-orchestrator"
+    conflicting_evidence_ids: []
+    reasoning: "The repository calls itself a framework, but its primary delivery is an end-user desktop/browser research workspace and server."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-package-metadata"
+    statement: "The analyzed monorepo targets Node.js 20+, pnpm 9, TypeScript 5.6+, @openags/app 0.0.6, and @openags/desktop 0.0.6."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Package manifests at commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-package-metadata"
+      - "evidence-package-metadata"
+      - "evidence-desktop-package-metadata"
+    conflicting_evidence_ids: []
+    reasoning: "Direct manifest evidence."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-ui-server"
+    statement: "OpenAGS provides Electron and browser clients over a loopback Express REST/WebSocket server with chat, terminal, project, research, workflow, skill, reference, and manuscript surfaces."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Application and desktop packages"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-architecture"
+      - "evidence-server"
+    conflicting_evidence_ids: []
+    reasoning: "README architecture matches registered server and WebSocket code."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-projects"
+    statement: "The local server creates, lists, loads, updates, and deletes filesystem-backed research projects from templates."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Project routes and ProjectManager"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-project-routes"
+    conflicting_evidence_ids: []
+    reasoning: "Direct route implementation."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-workflow"
+    statement: "The Node.js orchestrator watches five research-role folders and dispatches their directives through builtin or CLI-provider chat paths with timeout and recovery handling."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "WorkflowOrchestrator"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-orchestrator"
+      - "evidence-orchestrator-dispatch"
+    conflicting_evidence_ids:
+      - "evidence-builtin-gap"
+    reasoning: "The control flow exists statically; the builtin branch is conflicted by missing server routes."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-file-protocol"
+    statement: "Research agents exchange work through parsed DIRECTIVE.md and STATUS.md files with explicit state, decision, dependency, acceptance, artifact, and failure fields."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Workflow file protocol"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-file-protocol"
+    conflicting_evidence_ids: []
+    reasoning: "Direct type and parser implementation."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-providers"
+    statement: "The application server implements streaming adapters for Claude Agent SDK, OpenAI Codex SDK, and Gemini CLI with session resume and abort behavior."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Node.js provider adapters"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-provider-claude"
+      - "evidence-provider-codex"
+      - "evidence-provider-gemini"
+      - "evidence-server-chat"
+    conflicting_evidence_ids: []
+    reasoning: "Direct adapter and routing implementation; provider runtime behavior was not executed."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-provider-permissions"
+    statement: "Automated CLI-agent workflow dispatch requests bypass-style permissions, which Claude and Codex adapters map to their broad execution modes."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Automated CLI workflow path"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-orchestrator-dispatch"
+      - "evidence-provider-claude"
+      - "evidence-provider-codex"
+    conflicting_evidence_ids: []
+    reasoning: "Direct option construction and provider mapping."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-research-tools"
+    statement: "The REST API implements arXiv and Semantic Scholar lookup plus citation verification and BibTeX parsing endpoints."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Research routes"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-research-routes"
+    conflicting_evidence_ids: []
+    reasoning: "Direct route implementation."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-experiments"
+    statement: "Experiment support includes Docker execution with resource limits, default network isolation, no-new-privileges, optional read-write workspace mounts, and timeout cleanup, plus an SSH command and file-transfer executor."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Docker experiment engine"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-experiment-engine"
+      - "evidence-ssh-executor"
+    conflicting_evidence_ids: []
+    reasoning: "Direct container and SSH implementation evidence; isolation effectiveness and remote execution were not tested."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-skills"
+    statement: "The server discovers, reads, scaffolds, edits, renames, and deletes SKILL.md files and discovers SOUL.md role files."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Skills routes and filesystem discovery"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-skills"
+    conflicting_evidence_ids: []
+    reasoning: "Direct route and discovery implementation."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-local-security-boundary"
+    statement: "The standard server entry point binds loopback, but REST and WebSocket registration do not apply general bearer-token enforcement and CORS allows any origin."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Node.js application server"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-server"
+      - "evidence-auth"
+      - "evidence-entrypoint"
+    conflicting_evidence_ids: []
+    reasoning: "The auth router validates tokens only for /auth/me and logout; server route registration has no shared auth middleware. Loopback binding limits the default exposure."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-builtin-gap"
+    statement: "The builtin agent backend is partially implemented in this snapshot because callers reference /api/agents routes that the TypeScript-only server does not register."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Builtin agent backend at the recorded snapshot"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-builtin-gap"
+      - "evidence-server-no-agent-routes"
+    conflicting_evidence_ids: []
+    reasoning: "Repository documentation and UI retain a Python/builtin path, while current server source explicitly states there is no Python backend and exposes no matching route."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-license"
+    statement: "The repository distributes its source under the MIT License."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Repository license at the recorded snapshot"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-license"
+    conflicting_evidence_ids: []
+    reasoning: "Direct first-party LICENSE text; no legal interpretation is made."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-ci"
+    statement: "Repository CI defines lint, type-check, test, and dependent build jobs on Node.js 20 with frozen lockfile installation."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "GitHub Actions CI definition"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-ci"
+    conflicting_evidence_ids: []
+    reasoning: "Workflow definition is evidence that checks are configured, not that a historical run passed."
+    last_verified_at: "2026-07-18T13:18:51Z"
+  - claim_id: "claim-maturity"
+    statement: "OpenAGS is assessed as early maturity for autonomous-research deployment."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Recorded assessment context"
+    assessment_context_id: "context-static-autonomous-research-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-metadata"
+      - "evidence-ci"
+      - "evidence-builtin-gap"
+    conflicting_evidence_ids: []
+    reasoning: "Implemented product and CI signals coexist with pre-1.0 versions, limited targeted tests, and an active backend inconsistency."
+    last_verified_at: "2026-07-18T13:18:51Z"
+
+sources:
+  - source_id: "source-openags-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f; one commit after v0.0.6"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-tree-sha1:9d595c6f56082cb4754e1b457e267f402c51bd0d"
+    access_scope: public
+  - source_id: "source-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/README.md"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:f7a3c0de76830c622f706634b1231acbd3abdbce"
+    access_scope: public
+  - source_id: "source-root-package"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/package.json"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:387a1948db7aef0fd33a9ad8fb46322c8ea7650f"
+    access_scope: public
+  - source_id: "source-app-package"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/package.json"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:f2784c374b6e54858865213b8da1e62a4d197f66"
+    access_scope: public
+  - source_id: "source-desktop-package"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/desktop/package.json"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:91d0b6a3f0ce58c1f77ee923fb720a625416b10f"
+    access_scope: public
+  - source_id: "source-server"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/server.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:ded41d5968fe46563d1e0471c2cedd7a89992aad"
+    access_scope: public
+  - source_id: "source-orchestrator"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/workflow/orchestrator.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:ee80882254411375d074a1d4d3a75d7129aa6d4c"
+    access_scope: public
+  - source_id: "source-parser"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/workflow/parser.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:bc3b8effa460b9dd5125fa75a55f209f21558478"
+    access_scope: public
+  - source_id: "source-claude-provider"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/providers/claude-sdk.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:63ef73087dd7ff14c5b999a166527f349d0a7524"
+    access_scope: public
+  - source_id: "source-codex-provider"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/providers/codex-sdk.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:e02e047fec3a85a5af3733844013e0642f9134dd"
+    access_scope: public
+  - source_id: "source-gemini-provider"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/providers/gemini-cli.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:6fe145ca9b8abcd873f9946fa2f46a6a685795a1"
+    access_scope: public
+  - source_id: "source-research-routes"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/routes/research.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:4e9d91d7cf1ee3e97ab439c0a4292ecd0db2a0fb"
+    access_scope: public
+  - source_id: "source-experiment"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/research/experiment.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:70f10895b753c062469952be92332fd2e5a94294"
+    access_scope: public
+  - source_id: "source-ssh"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/research/ssh.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:b0bc0f60a8fdf35a3baacff15c181656a1395018"
+    access_scope: public
+  - source_id: "source-skills"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/routes/skills.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:cd7d23fa54a5d804973383c00a74be6876034ca4"
+    access_scope: public
+  - source_id: "source-project-routes"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/routes/projects.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:ac4f6eb106d27c938426139294a4ef5def05ccf1"
+    access_scope: public
+  - source_id: "source-auth"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/routes/auth.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:1e13623e2e1fb6227d5b0904b25aafaf73293476"
+    access_scope: public
+  - source_id: "source-entrypoint"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/packages/app/src/index.ts"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:b40fa94dd8eab053c1b0f3c8df78e888ba9baa9d"
+    access_scope: public
+  - source_id: "source-ci"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/.github/workflows/ci.yml"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:2e6f2f65a59e13520d930d3275b1437f55e35e9c"
+    access_scope: public
+  - source_id: "source-license"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/openags/auto-researcher/blob/9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f/LICENSE"
+    revision_or_version: "commit 9bb9dfc6d5e66ad92e3652c8a2ed250d62f8c11f"
+    retrieved_at: "2026-07-18T13:18:51Z"
+    content_digest: "git-blob-sha1:c1eadb0374ef870530c89631b27b5384fedf9fa7"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-readme-purpose"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "OpenAGS introduction"
+      line_start: 3
+      line_end: 26
+    confidence: high
+    excerpt_or_symbol: "Describes autonomous scientific research from literature review through manuscript writing and a multi-agent desktop workspace."
+    note: "First-party product description; autonomy and quality were not runtime verified."
+  - evidence_id: "evidence-readme-architecture"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Quick Start, Architecture, and Project Structure"
+      line_start: 39
+      line_end: 158
+    confidence: high
+    excerpt_or_symbol: "Documents Electron/browser launch, React UI, Node.js server, provider chat, terminal, workflow, APIs, research services, and monorepo layout."
+    note: "Documentation is consistent with representative implementation files."
+  - evidence_id: "evidence-package-metadata"
+    source_id: "source-app-package"
+    locator:
+      path: "packages/app/package.json"
+      symbol_or_section: "package manifest"
+      line_start: 1
+      line_end: 56
+    confidence: high
+    excerpt_or_symbol: "@openags/app 0.0.6 with Claude and Codex SDKs, Express, Dockerode, node-pty, SSH2, WebSocket, and Zod dependencies."
+    note: "Direct application-server manifest evidence."
+  - evidence_id: "evidence-root-package-metadata"
+    source_id: "source-root-package"
+    locator:
+      path: "package.json"
+      symbol_or_section: "root workspace manifest"
+      line_start: 1
+      line_end: 26
+    confidence: high
+    excerpt_or_symbol: "openags 0.0.4 private workspace with TypeScript ^5.6.0, pnpm 9.15.0, and Node.js >=20.0.0."
+    note: "Direct root manifest evidence."
+  - evidence_id: "evidence-desktop-package-metadata"
+    source_id: "source-desktop-package"
+    locator:
+      path: "packages/desktop/package.json"
+      symbol_or_section: "desktop package manifest"
+      line_start: 1
+      line_end: 73
+    confidence: high
+    excerpt_or_symbol: "@openags/desktop 0.0.6 with React ^19.0.0, Electron 33.4.11, provider SDKs, terminal, and desktop packaging dependencies."
+    note: "Direct desktop manifest evidence."
+  - evidence_id: "evidence-server"
+    source_id: "source-server"
+    locator:
+      path: "packages/app/src/server.ts"
+      symbol_or_section: "createServer and WebSocket registration"
+      line_start: 436
+      line_end: 528
+    confidence: high
+    excerpt_or_symbol: "Registers wildcard CORS, REST routers, static files, and unauthenticated Shell, Chat, and Workflow WebSocket upgrades."
+    note: "The standard entry point binds this server to 127.0.0.1."
+  - evidence_id: "evidence-server-chat"
+    source_id: "source-server"
+    locator:
+      path: "packages/app/src/server.ts"
+      symbol_or_section: "handleChatConnection"
+      line_start: 223
+      line_end: 321
+    confidence: high
+    excerpt_or_symbol: "Routes chat, abort, provider-config, and sync messages to Claude, Codex, or Gemini adapters."
+    note: "Static routing evidence."
+  - evidence_id: "evidence-project-routes"
+    source_id: "source-project-routes"
+    locator:
+      path: "packages/app/src/routes/projects.ts"
+      symbol_or_section: "createProjectRoutes"
+      line_start: 23
+      line_end: 147
+    confidence: high
+    excerpt_or_symbol: "Implements project list, get, create from template, stage update, delete, module discovery, and template list endpoints."
+    note: "Static implementation evidence."
+  - evidence_id: "evidence-orchestrator"
+    source_id: "source-orchestrator"
+    locator:
+      path: "packages/app/src/workflow/orchestrator.ts"
+      symbol_or_section: "WorkflowOrchestrator lifecycle and file watchers"
+      line_start: 1
+      line_end: 185
+    confidence: high
+    excerpt_or_symbol: "Initializes fixed research roles, recovers stale state, watches status/directive files, applies dispatch locks, and handles timeouts."
+    note: "Static implementation; no workflow was run."
+  - evidence_id: "evidence-orchestrator-dispatch"
+    source_id: "source-orchestrator"
+    locator:
+      path: "packages/app/src/workflow/orchestrator.ts"
+      symbol_or_section: "dispatchViaChat and dispatchCli"
+      line_start: 267
+      line_end: 356
+    confidence: high
+    excerpt_or_symbol: "Routes builtin or CLI dispatch, reuses per-module sessions, sets cwd, requests bypassPermissions, and selects Claude, Codex, or Gemini."
+    note: "Broad permission mapping is confirmed further in provider sources."
+  - evidence_id: "evidence-file-protocol"
+    source_id: "source-parser"
+    locator:
+      path: "packages/app/src/workflow/parser.ts"
+      symbol_or_section: "parseStatusMd and parseDirectiveMd"
+      line_start: 86
+      line_end: 249
+    confidence: high
+    excerpt_or_symbol: "Parses terminal status, failure, task, acceptance, context, upstream data, dependencies, decisions, and atomically writes state files."
+    note: "The parser includes layered fallbacks for malformed status content."
+  - evidence_id: "evidence-builtin-gap"
+    source_id: "source-orchestrator"
+    locator:
+      path: "packages/app/src/workflow/orchestrator.ts"
+      symbol_or_section: "dispatchBuiltin"
+      line_start: 293
+      line_end: 320
+    confidence: high
+    excerpt_or_symbol: "Calls POST http://127.0.0.1:19836/api/agents/{projectId}/chat for builtin execution."
+    note: "Confirms that the builtin workflow branch depends on a separate agent chat route."
+  - evidence_id: "evidence-server-no-agent-routes"
+    source_id: "source-server"
+    locator:
+      path: "packages/app/src/server.ts"
+      symbol_or_section: "createServer REST route registration"
+      line_start: 470
+      line_end: 487
+    confidence: high
+    excerpt_or_symbol: "Registers auth, project, research, config, skill, workflow, reference, version, and manuscript routers, but no /api/agents router."
+    note: "Supports the bounded conclusion that the analyzed TypeScript server does not implement the route used by dispatchBuiltin."
+  - evidence_id: "evidence-provider-claude"
+    source_id: "source-claude-provider"
+    locator:
+      path: "packages/app/src/providers/claude-sdk.ts"
+      symbol_or_section: "queryClaudeSDK"
+      line_start: 76
+      line_end: 166
+    confidence: high
+    excerpt_or_symbol: "Creates a Claude Agent SDK query with Claude Code tools, session resume, optional bypassPermissions, streamed tool events, usage, and abort tracking."
+    note: "Provider runtime was not executed."
+  - evidence_id: "evidence-provider-codex"
+    source_id: "source-codex-provider"
+    locator:
+      path: "packages/app/src/providers/codex-sdk.ts"
+      symbol_or_section: "queryCodex"
+      line_start: 17
+      line_end: 105
+    confidence: high
+    excerpt_or_symbol: "Starts or resumes Codex threads, maps bypassPermissions to danger-full-access with never approvals, streams agent, command, MCP, and usage events."
+    note: "Provider runtime was not executed."
+  - evidence_id: "evidence-provider-gemini"
+    source_id: "source-gemini-provider"
+    locator:
+      path: "packages/app/src/providers/gemini-cli.ts"
+      symbol_or_section: "spawnGemini and abortGeminiSession"
+      line_start: 32
+      line_end: 258
+    confidence: high
+    excerpt_or_symbol: "Builds Gemini CLI stream-json arguments, maps resume and approval modes, parses text/tool/result events, enforces an inactivity timeout, cleans temporary images, and exposes abort."
+    note: "Static adapter evidence; the Gemini CLI was not executed."
+  - evidence_id: "evidence-research-routes"
+    source_id: "source-research-routes"
+    locator:
+      path: "packages/app/src/routes/research.ts"
+      symbol_or_section: "createResearchRoutes"
+      line_start: 16
+      line_end: 164
+    confidence: high
+    excerpt_or_symbol: "Registers arXiv, Semantic Scholar, citation verification, batch verification, and BibTeX parsing endpoints."
+    note: "External service responses were not queried."
+  - evidence_id: "evidence-experiment-engine"
+    source_id: "source-experiment"
+    locator:
+      path: "packages/app/src/research/experiment.ts"
+      symbol_or_section: "ExperimentEngine"
+      line_start: 12
+      line_end: 249
+    confidence: high
+    excerpt_or_symbol: "Configures Docker image, command, memory, CPU, timeout, network, read-write workspace bind, no-new-privileges, image pull, cleanup, and Python/shell helpers."
+    note: "Static configuration evidence; the Docker daemon was not contacted."
+  - evidence_id: "evidence-ssh-executor"
+    source_id: "source-ssh"
+    locator:
+      path: "packages/app/src/research/ssh.ts"
+      symbol_or_section: "SSHExecutor and sshExec"
+      line_start: 9
+      line_end: 220
+    confidence: high
+    excerpt_or_symbol: "Implements password or key SSH connection, command execution with timeout, upload, download, script execution, filesystem helpers, and one-shot cleanup."
+    note: "Static adapter evidence; no remote host was contacted."
+  - evidence_id: "evidence-skills"
+    source_id: "source-skills"
+    locator:
+      path: "packages/app/src/routes/skills.ts"
+      symbol_or_section: "Skills routes and discovery"
+      line_start: 41
+      line_end: 406
+    confidence: high
+    excerpt_or_symbol: "Implements SKILL.md list/read/scaffold/file operations and recursive SKILL.md and SOUL.md discovery with YAML frontmatter parsing."
+    note: "Source skill content was not executed or treated as instruction."
+  - evidence_id: "evidence-auth"
+    source_id: "source-auth"
+    locator:
+      path: "packages/app/src/routes/auth.ts"
+      symbol_or_section: "createAuthRoutes"
+      line_start: 76
+      line_end: 192
+    confidence: high
+    excerpt_or_symbol: "Implements register/login token issuance and validates bearer tokens only in /auth/me; logout conditionally invalidates them."
+    note: "No general authentication middleware is exported or registered in server.ts."
+  - evidence_id: "evidence-entrypoint"
+    source_id: "source-entrypoint"
+    locator:
+      path: "packages/app/src/index.ts"
+      symbol_or_section: "main"
+      line_start: 23
+      line_end: 35
+    confidence: high
+    excerpt_or_symbol: "The standard application-server entry point listens on 127.0.0.1 at the configured port."
+    note: "Confirms the default loopback boundary; imported createServer callers may choose a different bind."
+  - evidence_id: "evidence-ci"
+    source_id: "source-ci"
+    locator:
+      path: ".github/workflows/ci.yml"
+      symbol_or_section: "CI jobs"
+      line_start: 1
+      line_end: 72
+    confidence: high
+    excerpt_or_symbol: "Defines lint/typecheck, test, and dependent build jobs with Node.js 20 and frozen pnpm lockfile installation."
+    note: "Workflow definition only; historical run status was not inspected."
+  - evidence_id: "evidence-license"
+    source_id: "source-license"
+    locator:
+      path: "LICENSE"
+      symbol_or_section: "MIT License"
+      line_start: 1
+      line_end: 20
+    confidence: high
+    excerpt_or_symbol: "MIT License for the repository source."
+    note: "First-party license text; no legal interpretation is made."
+
+open_questions:
+  - question: "Is the builtin Python agent backend intentionally removed, external, or pending a TypeScript replacement?"
+    reason: "Current callers and documentation reference its routes, but the analyzed server does not register them."
+    related_claim_ids:
+      - "claim-builtin-gap"
+      - "claim-workflow"
+  - question: "What deployment boundary is supported beyond the default loopback-only local application?"
+    reason: "Powerful REST and WebSocket operations lack general authentication in the analyzed server registration."
+    related_claim_ids:
+      - "claim-local-security-boundary"
+  - question: "What evaluation demonstrates scientific correctness, reproducibility, citation quality, and useful autonomous completion rates?"
+    reason: "The targeted static analysis did not include benchmarks or execute a research workflow."
+    related_claim_ids:
+      - "claim-classification"
+      - "claim-maturity"

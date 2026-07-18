@@ -124,21 +124,31 @@ describe("HttpCatalogGateway", () => {
         organizational_constraints: ["Static evidence only"],
       },
     });
+
+    await gateway.searchProjects("");
+    const browseCall = request.mock.calls
+      .filter(([path]) => path === "/api/v1/catalog/search")
+      .at(-1);
+    expect(JSON.parse(browseCall?.[1]?.body as string)).toEqual({
+      text: "",
+      page: 1,
+      page_size: 100,
+    });
   });
 });
 
 describe("catalog transport configuration", () => {
-  it("uses the backend by default while keeping an explicit static mode", () => {
-    expect(readCatalogGatewayConfig({})).toEqual({ mode: "http", apiBaseUrl: "" });
+  it("uses the backend exclusively", () => {
+    expect(readCatalogGatewayConfig({})).toEqual({ apiBaseUrl: "" });
     expect(readCatalogGatewayConfig({
       VITE_CATALOG_GATEWAY: "http",
       VITE_CATALOG_API_BASE_URL: "http://localhost:8000",
-    })).toEqual({ mode: "http", apiBaseUrl: "http://localhost:8000" });
-    expect(readCatalogGatewayConfig({
-      VITE_CATALOG_GATEWAY: "static",
-    })).toEqual({ mode: "static", apiBaseUrl: "" });
+    })).toEqual({ apiBaseUrl: "http://localhost:8000" });
+    expect(() => readCatalogGatewayConfig({ VITE_CATALOG_GATEWAY: "static" })).toThrow(
+      /only the live HTTP catalog is supported/,
+    );
     expect(() => readCatalogGatewayConfig({ VITE_CATALOG_GATEWAY: "automatic" })).toThrow(
-      /expected "http" or "static"/,
+      /only the live HTTP catalog is supported/,
     );
   });
 

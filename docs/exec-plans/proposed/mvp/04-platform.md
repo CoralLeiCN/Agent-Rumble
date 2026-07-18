@@ -139,17 +139,16 @@ unknown states are preserved, and no output declares a universal winner.
 **Owns:** U-01 through U-03 only for catalog access selected for the release
 
 Align the frontend gateway with the OpenAPI contract. Capability support, Claim
-verification, confidence, and field state remain independent types. Add catalog
-context and current-card operations, pass an explicit
-Assessment Context and pinned card versions to comparison, and retain a visibly
-labeled static fallback.
+verification, Evidence status, confidence, and field state remain independent
+types. Add catalog context and current-card operations, pass an explicit
+Assessment Context and pinned card versions to comparison, and retain a visible
+API failure state without substituting frontend card fixtures.
 
 The generated-client workflow, production routing, and production rendering
 mode remain decision boundaries unless separately accepted.
 
-**Complete when:** HTTP and static gateway adapters expose equivalent response
-semantics, the selected catalog flow uses validated cards, and illustrative
-fixtures remain visibly labeled when used as fallback data.
+**Complete when:** The HTTP gateway exposes the selected catalog flow using the
+complete validated backend catalog, and illustrative fixtures remain test-only.
 
 ## PLAT-6 — Publication and Manual Refresh
 
@@ -177,9 +176,10 @@ contract.
 **Owns:** Catalog portions of S-05 and E-02
 
 Verify safe path encoding, all-or-nothing catalog loading, source-content
-inertness, cross-card and cross-request isolation, exact status semantics,
-OpenAPI contracts, direct/hosted contract parity, HTTP/static parity,
-deterministic search, contextual comparison, and any selected frontend flow.
+inertness, cross-card and cross-request reference isolation, exact status
+semantics, OpenAPI contracts, direct/hosted contract parity, complete-catalog
+parity, deterministic search, contextual comparison, and any selected frontend
+flow.
 
 **Complete when:** Adversarial cards cannot influence configuration, authority,
 scope, HTML rendering, or another card's results, and applicable regression

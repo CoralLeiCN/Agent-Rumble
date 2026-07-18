@@ -26,10 +26,12 @@ interface ArenaSession {
   bundle: LoadedRumbleData<RumbleDemoBundle>;
   matchup: RumbleDemoMatchup;
   projection: LoadedRumbleData<RumbleProjectionResponse>;
+  evidenceBacked: boolean;
 }
 
 export interface ArenaScreenProps {
   projectIds: readonly string[];
+  projectNames?: readonly string[];
   onExit: () => void;
   onOpenEvidence: (evidence: EvidenceRecord, trigger: HTMLButtonElement) => void;
   gateway?: RumbleGateway;
@@ -37,6 +39,7 @@ export interface ArenaScreenProps {
 
 export function ArenaScreen({
   projectIds,
+  projectNames = projectIds,
   onExit,
   onOpenEvidence,
   gateway = rumbleGateway,
@@ -52,6 +55,82 @@ export function ArenaScreen({
   const stageRef = useRef<HTMLDivElement>(null);
   const projectAId = projectIds[0];
   const projectBId = projectIds[1];
+
+  const createGameplayOnlySession = (
+    bundle: LoadedRumbleData<RumbleDemoBundle>,
+  ): ArenaSession => {
+    const preparedAt = new Date().toISOString();
+    const entrants = [projectAId, projectBId].map((projectId, index) => ({
+      project_id: projectId as string,
+      project_name: projectNames[index] ?? (projectId as string),
+      project_roles: ["gameplay_exhibition"],
+      source_snapshot: {
+        card_id: `gameplay-${projectId as string}`,
+        card_version: 1,
+        revision: "gameplay-only",
+        analyzed_at: preparedAt,
+      },
+    }));
+    const neutralCell = {
+      state: "not_analyzed" as const,
+      alignment: "unclear" as const,
+      verification_status: "unverified" as const,
+      confidence: "unknown" as const,
+      claim_ids: [],
+    };
+    const comparisonRow = {
+      dimension: "gameplay",
+      label: "Neutral exhibition",
+      requirement: "No evidence-backed comparison has been prepared for this pair.",
+      entrant_a: neutralCell,
+      entrant_b: neutralCell,
+    };
+    const assessmentContext = {
+      title: `${entrants[0]?.project_name} vs ${entrants[1]?.project_name}`,
+      use_case: "Gameplay-only exhibition using neutral, equally powered fighters.",
+      cohort_project_ids: [projectAId as string, projectBId as string],
+      requirements: ["Entertainment only — no project comparison is implied."],
+      organizational_constraints: [],
+      assessed_at: preparedAt,
+    };
+    const matchup: RumbleDemoMatchup = {
+      matchup_id: `gameplay-${projectAId as string}-vs-${projectBId as string}`,
+      display_label: `${entrants[0]?.project_name} vs ${entrants[1]?.project_name}`,
+      request: { assessment_context: assessmentContext, entrants, comparison_rows: [comparisonRow] },
+      claims: [],
+    };
+    const projection: RumbleProjectionResponse = {
+      mode: "rumble_arena",
+      assessment_context: assessmentContext,
+      entrants,
+      role_relationship: "different",
+      role_notice: "Gameplay-only exhibition. No claims, evidence, fit assessment, or project advantage is asserted.",
+      rounds: [{
+        ...comparisonRow,
+        round_number: 1,
+        round_id: "neutral-exhibition",
+        title: "Neutral Exhibition",
+        verdict: "inconclusive",
+        callout: "The result comes only from player actions.",
+      }],
+      overall_result: "no_universal_winner",
+      ring_call: "No project comparison was made.",
+    };
+    return {
+      bundle: {
+        ...bundle,
+        data: {
+          fixture_label: "Gameplay-only exhibition",
+          prepared_at: preparedAt,
+          coverage_notice: "This pair has no prepared evidence comparison. Fighters are neutral entertainment identities only.",
+          matchups: [],
+        },
+      },
+      matchup,
+      projection: { data: projection, source: bundle.source },
+      evidenceBacked: false,
+    };
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -72,14 +151,18 @@ export function ArenaScreen({
         const bundle = await gateway.getDemo();
         const matchup = findPreparedMatchup(bundle.data, [projectAId, projectBId]);
         if (!matchup) {
-          throw new Error("This pair does not have a prepared evidence-backed matchup yet.");
+          if (!cancelled) {
+            setSession(createGameplayOnlySession(bundle));
+            setStage("intro");
+          }
+          return;
         }
         const projection = await gateway.project(matchup);
         if (projection.data.rounds.length === 0) {
           throw new Error("The prepared matchup does not contain any playable rounds.");
         }
         if (!cancelled) {
-          setSession({ bundle, matchup, projection });
+          setSession({ bundle, matchup, projection, evidenceBacked: true });
           setStage("intro");
         }
       } catch (caught) {
@@ -94,7 +177,7 @@ export function ArenaScreen({
     return () => {
       cancelled = true;
     };
-  }, [gateway, loadAttempt, projectAId, projectBId, projectIds.length]);
+  }, [gateway, loadAttempt, projectAId, projectBId, projectIds.length, projectNames]);
 
   useEffect(() => {
     if (stage === "loading") return;
@@ -199,9 +282,11 @@ export function ArenaScreen({
         className={`arena-source${usingFallback ? " arena-source--fallback" : ""}`}
         role="note"
       >
-        <strong>{usingFallback ? "Bundled fallback in play" : "Prepared API matchup"}</strong>
+        <strong>{!session.evidenceBacked ? "Gameplay-only exhibition" : usingFallback ? "Bundled fallback in play" : "Prepared API matchup"}</strong>
         <span>
-          {usingFallback
+          {!session.evidenceBacked
+            ? "Neutral hardcoded fighters are active; no project evidence or advantage is being inferred."
+            : usingFallback
             ? "The live API was unavailable for part of this session. Results use the clearly labelled bundled snapshot."
             : `${session.bundle.data.fixture_label} · prepared ${shortDate(session.bundle.data.prepared_at)}`}
         </span>
@@ -217,7 +302,7 @@ export function ArenaScreen({
         {stage === "intro" && (
           <div className="arena-intro">
             <div className="arena-intro__heading">
-              <span>Prepared exhibition · no power scores</span>
+                <span>{session.evidenceBacked ? "Prepared exhibition · no power scores" : "Gameplay-only exhibition · no project claims"}</span>
               <h1>{projection.assessment_context.title}</h1>
               <p>{projection.assessment_context.use_case}</p>
             </div>
@@ -254,10 +339,9 @@ export function ArenaScreen({
               <div>
                 <span>Classic 2D versus-fighter mode</span>
                 <h2 id="arcade-launch-title">Choose your project fighter.</h2>
-                <p>
-                  Each fighter keeps its exact project name. Guard, jab, and unleash
-                  a distinct signature attack themed from its contextual comparison edge;
-                  take two rounds by depleting the opponent&apos;s HP.
+                <p>{session.evidenceBacked
+                  ? "Each fighter keeps its exact project name. Guard, jab, and unleash a distinct signature attack themed from its contextual comparison edge; take two rounds by depleting the opponent's HP."
+                  : "Each fighter keeps its exact project name and uses a neutral, equally powered move set. Take two rounds by depleting the opponent's HP."}
                 </p>
               </div>
               <div className="arcade-launch__actions">
@@ -270,15 +354,18 @@ export function ArenaScreen({
                 <button className="button button--arcade-secondary" type="button" onClick={() => startArcade("solo", true)}>
                   Solo fullscreen ⛶
                 </button>
-                <button className="button button--quiet" type="button" onClick={startRumble}>
-                  Guided evidence tour →
-                </button>
+                {session.evidenceBacked && (
+                  <button className="button button--quiet" type="button" onClick={startRumble}>
+                    Guided evidence tour →
+                  </button>
+                )}
               </div>
               <p className="arcade-launch__boundary">
-                Trait specials translate contextual comparison findings into different,
-                equally budgeted game identities. HP, round score, KO, and the player
-                result remain entertainment state—not project evidence, fit, or a
-                universal project winner.
+                {session.evidenceBacked
+                  ? "Trait specials translate contextual comparison findings into different, equally budgeted game identities. "
+                  : "Neutral specials are assigned only for gameplay variety. "}
+                HP, round score, KO, and the player result remain entertainment
+                state—not project evidence, fit, or a universal project winner.
               </p>
             </section>
           </div>
@@ -287,8 +374,9 @@ export function ArenaScreen({
         {stage === "arcade" && (
           <div className="arena-arcade">
             <p className="arena-arcade__boundary" role="note">
-              HP and round result = entertainment state. Move themes come from the
-              prepared comparison; project conclusions still come only from its evidence.
+              HP and round result = entertainment state. {!session.evidenceBacked
+                ? "This pair uses neutral moves and makes no project comparison."
+                : "Move themes come from the prepared comparison; project conclusions still come only from its evidence."}
             </p>
             <Suspense
               fallback={(
@@ -306,7 +394,7 @@ export function ArenaScreen({
                 onStatusChange={(status) => setArcadeStatus(status.message)}
               />
             </Suspense>
-            {arcadeRound && (
+            {session.evidenceBacked && arcadeRound && (
               <aside className="arcade-evidence-bridge" aria-labelledby="arcade-evidence-title">
                 <div>
                   <span>Read-only comparison phase {arcadePhase + 1} of {projection.rounds.length}</span>

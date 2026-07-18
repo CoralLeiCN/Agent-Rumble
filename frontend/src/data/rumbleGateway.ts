@@ -134,12 +134,26 @@ export class ResilientRumbleGateway implements RumbleGateway {
   }
 }
 
-export const preparedRumbleProjectIds = ["openai-agents-sdk", "langgraph"] as const;
+export const preparedRumbleProjectIds = [
+  "project-openai-openai-agents-python",
+  "project-langchain-ai-langgraph",
+] as const;
+
+const preparedBundleProjectIdByCatalogId: Readonly<Record<string, string>> = {
+  "project-openai-openai-agents-python": "openai-agents-sdk",
+  "project-langchain-ai-langgraph": "langgraph",
+  // Keep bundled fixture IDs readable so the checked-in frontend fallback and
+  // older bookmarked test data remain compatible with the prepared matchup.
+  "openai-agents-sdk": "openai-agents-sdk",
+  langgraph: "langgraph",
+};
+
+function toPreparedBundleProjectId(projectId: string) {
+  return preparedBundleProjectIdByCatalogId[projectId];
+}
 
 export function isPreparedRumblePair(projectIds: readonly string[]) {
-  if (projectIds.length !== preparedRumbleProjectIds.length) return false;
-  const selected = new Set(projectIds);
-  return preparedRumbleProjectIds.every((projectId) => selected.has(projectId));
+  return projectIds.length === 2 && new Set(projectIds).size === 2;
 }
 
 export function findPreparedMatchup(
@@ -147,7 +161,10 @@ export function findPreparedMatchup(
   projectIds: readonly string[],
 ): RumbleDemoMatchup | undefined {
   if (projectIds.length !== 2 || projectIds[0] === projectIds[1]) return undefined;
-  const requested = new Set(projectIds);
+  const preparedProjectIds = projectIds.map(toPreparedBundleProjectId);
+  if (preparedProjectIds.some((projectId) => projectId === undefined)) return undefined;
+  const requested = new Set(preparedProjectIds);
+  if (requested.size !== 2) return undefined;
   return bundle.matchups.find((matchup) => {
     const entrants = matchup.request.entrants.map((entrant) => entrant.project_id);
     return entrants.length === 2 && entrants.every((projectId) => requested.has(projectId));

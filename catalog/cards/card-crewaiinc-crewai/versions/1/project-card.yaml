@@ -1,0 +1,1541 @@
+schema_version: "0.3"
+card_id: "card-crewaiinc-crewai"
+card_version: 1
+
+field_states:
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /claims/0/assessment_context_id: not_applicable
+  /claims/1/assessment_context_id: not_applicable
+  /claims/2/assessment_context_id: not_applicable
+  /claims/3/assessment_context_id: not_applicable
+  /claims/4/assessment_context_id: not_applicable
+  /claims/5/assessment_context_id: not_applicable
+  /claims/6/assessment_context_id: not_applicable
+  /claims/7/assessment_context_id: not_applicable
+  /claims/8/assessment_context_id: not_applicable
+  /claims/9/assessment_context_id: not_applicable
+  /claims/10/assessment_context_id: not_applicable
+
+project:
+  project_id: "project-crewaiinc-crewai"
+  name: "CrewAI"
+  primary_type: agent_framework_sdk
+  type_rationale: >-
+    CrewAI is primarily a Python framework and SDK for developers to construct
+    agent systems. Its public primitives model role-based agents, tasks, Crews,
+    and event-driven Flows, while tool, memory, knowledge, skills, MCP, A2A,
+    checkpointing, and tracing APIs provide supporting runtime capabilities.
+    The repository contains examples and developer tooling, but it is not one
+    fixed end-user agent application.
+  boundary: >-
+    The open-source Python packages, CLI, repository-hosted documentation,
+    tests, and automation in crewAIInc/crewAI at commit
+    69c0308f2cf4fa17214eab4db10071abc08602fd (tag 1.15.4). The logical
+    project includes the crewai, crewai-core, crewai-cli, crewai-tools, and
+    crewai-files workspace packages because they are versioned and developed
+    together as the framework distribution. Static inspection only was used.
+    Excluded are CrewAI AMP, the hosted Crew Control Plane and app, external
+    examples repositories, official skills in crewAIInc/skills, third-party
+    services and package internals, issues and pull requests, and all runtime
+    behavior.
+  repositories:
+    - source_id: "source-crewai-repository"
+      url: "https://github.com/crewAIInc/crewAI"
+      owner: "crewAIInc"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "pyproject.toml"
+        - "uv.lock"
+        - "lib/crewai/"
+        - "lib/crewai-core/"
+        - "lib/cli/"
+        - "lib/crewai-tools/"
+        - "lib/crewai-files/"
+        - "docs/edge/en/"
+        - ".github/workflows/"
+      excluded_paths:
+        - "Frozen non-English and historical documentation snapshots beyond representative mapping"
+        - "Binary images and test cassette payload contents"
+        - "CrewAI AMP, hosted control plane, and app.crewai.com behavior"
+        - "crewAIInc/crewAI-examples and crewAIInc/skills repositories"
+        - "Third-party provider, MCP server, tool, and storage implementations"
+        - "Issues, pull requests, discussions, and community metadata"
+  packages:
+    - "crewai 1.15.4"
+    - "crewai-core 1.15.4"
+    - "crewai-cli 1.15.4"
+    - "crewai-tools 1.15.4"
+    - "crewai-files 1.15.4"
+  services: []
+  documentation_sites:
+    - "https://docs.crewai.com (published from repository docs/)"
+  license: "MIT"
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:24:00Z"
+  source_revisions:
+    - source_id: "source-crewai-repository"
+      branch: "main"
+      tag: "1.15.4"
+      commit: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+      retrieved_at: "2026-07-18T13:14:20Z"
+      content_digest: "git-tree-sha1:639d02c78d4e99be29ec13f1059ced279142c01e"
+  release_versions:
+    - "Git tag 1.15.4"
+    - "Python workspace packages 1.15.4"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    network_calls_by_project: false
+    source_checkout:
+      method: "Git partial clone and exact detached checkout of the public default branch"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "README, license, workspace and package manifests"
+      - "Crew, Agent, Task, and Flow public runtime primitives"
+      - "Representative tool, MCP, A2A, skill, memory, knowledge, checkpoint, and tracing paths"
+      - "Repository test matrix, vulnerability workflow, and security configuration"
+      - "Repository-hosted English documentation inventory and package layout"
+    intentionally_not_analyzed:
+      - "Runtime correctness, performance, model quality, or production reliability"
+      - "Hosted CrewAI AMP features, authentication, deployment, governance, and control-plane behavior"
+      - "Every provider adapter, optional tool implementation, test, example, and documentation page"
+      - "Dependency internals, live vulnerability results, penetration testing, or security audit"
+      - "Issues, pull requests, release history beyond the checked-out tag, and external community claims"
+    source_safety: >-
+      Repository content was treated only as untrusted evidence. Instructions in
+      documentation, source, comments, tests, examples, skills, and metadata were
+      not followed as control input. No CrewAI code, tool, MCP server, dependency,
+      workflow, or example was executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A Python agent framework combining autonomous, role-based multi-agent Crews
+    with stateful, event-driven Flows and extensible tools, memory, knowledge,
+    skills, MCP, and A2A integrations.
+  purpose: >-
+    CrewAI provides application developers with high- and low-level primitives
+    for composing agents, tasks, and deterministic Python workflow logic into
+    multi-step agentic automations.
+  target_users:
+    - "Python developers building agentic applications"
+    - "Teams coordinating multiple role-specialized agents"
+    - "Automation engineers mixing LLM decisions with deterministic workflow logic"
+    - "Platform teams integrating tools, memory, knowledge, MCP, and A2A endpoints"
+  primary_use_cases:
+    - "Coordinate role-based agents and tasks in sequential or hierarchical Crews"
+    - "Build event-driven Flows with state, listeners, conditions, and routing"
+    - "Connect agents to Python tools, MCP servers, external agents, and model providers"
+    - "Add memory, retrieval-backed knowledge, skills, checkpointing, and tracing"
+    - "Scaffold and run agent projects through the CrewAI CLI"
+
+classification:
+  secondary_characteristics:
+    - "multi-agent orchestration framework"
+    - "event-driven agent workflow runtime"
+    - "Python-native SDK and CLI"
+    - "tool and protocol integration layer"
+    - "stateful agent runtime"
+  domains:
+    - "general-purpose agentic automation"
+    - "multi-agent systems"
+    - "business process automation"
+    - "developer tooling"
+  delivery_forms:
+    - "Python packages"
+    - "Python API"
+    - "command-line interface"
+    - "repository-hosted documentation"
+  agent_patterns:
+    - "role-based agent teams"
+    - "sequential task orchestration"
+    - "manager-led hierarchical orchestration"
+    - "tool-using iterative agents"
+    - "event-driven workflows"
+    - "conditional routing"
+    - "agent-to-agent delegation"
+  architecture_layers:
+    - "CLI and Python authoring APIs"
+    - "Crew, Agent, and Task orchestration"
+    - "Flow DSL and asynchronous runtime"
+    - "model-provider and structured-output adapters"
+    - "tool, MCP, and A2A interoperability"
+    - "memory, knowledge, and storage"
+    - "events, checkpointing, and tracing"
+  claim_ids:
+    - "claim-classification"
+    - "claim-crews"
+    - "claim-flows"
+    - "claim-agent-tools"
+    - "claim-mcp"
+    - "claim-a2a"
+
+capabilities:
+  - capability_id: "capability-crews"
+    ontology_id: "x-crewai:multi-agent-crews"
+    name: "Role-based multi-agent Crews"
+    description: >-
+      Defines agents and tasks as a Crew and executes them through sequential or
+      manager-led hierarchical processes, with delegation and callbacks available
+      through the agent and crew APIs.
+    support_status: statically_confirmed
+    scope: "Crew, Agent, Task, Process, and kickoff APIs in the crewai package"
+    interfaces:
+      - "Crew(...).kickoff(inputs=...)"
+      - "Crew.kickoff_async(...)"
+      - "Crew.kickoff_for_each(...)"
+      - "Agent.execute_task(...)"
+    prerequisites:
+      - "Python 3.10 through 3.13"
+      - "A configured supported LLM or compatible endpoint"
+      - "Credentials for selected model providers and tools"
+    configuration_requirements:
+      - "Agents, tasks, and a Process"
+      - "Role, goal, backstory, and task expected outputs"
+      - "Provider-specific model credentials"
+    limitations:
+      - "Only sequential and hierarchical processes are dispatched by Crew.kickoff at this snapshot."
+      - "Autonomy, delegation quality, and concurrency behavior were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-crews"
+      - "claim-agent-tools"
+    evidence_refs:
+      - "evidence-readme-framework"
+      - "evidence-crew-process-dispatch"
+      - "evidence-base-agent-contract"
+
+  - capability_id: "capability-flows"
+    ontology_id: "x-crewai:event-driven-flows"
+    name: "Event-driven Flows"
+    description: >-
+      Authors stateful workflows with start, listen, and router decorators and
+      executes them synchronously or asynchronously with optional persistence,
+      restoration, checkpointing, and streaming.
+    support_status: statically_confirmed
+    scope: "crewai.flow DSL, Flow Definition, and runtime"
+    interfaces:
+      - "Flow subclasses"
+      - "@start, @listen, @router, or_, and_"
+      - "Flow.kickoff(...) and Flow.kickoff_async(...)"
+      - "Flow.from_declaration(...)"
+    prerequisites:
+      - "Python 3.10 through 3.13"
+      - "Application-defined Flow methods or a Flow Definition"
+    configuration_requirements:
+      - "Start methods and downstream trigger conditions"
+      - "Optional state model, persistence, input provider, and checkpoint configuration"
+    limitations:
+      - "Flow execution, persistence recovery, and concurrent event behavior were not runtime verified."
+      - "Some conversational Flow behavior is explicitly marked experimental in source."
+    confidence: high
+    claim_ids:
+      - "claim-flows"
+      - "claim-checkpoint-tracing"
+    evidence_refs:
+      - "evidence-readme-crews-flows"
+      - "evidence-flow-runtime"
+      - "evidence-flow-dsl"
+
+  - capability_id: "capability-tools"
+    ontology_id: "x-crewai:agent-tools-and-delegation"
+    name: "Agent tools, structured outputs, and delegation"
+    description: >-
+      Gives agents typed tools, iteration and time limits, optional delegation,
+      provider-specific tool calling, and Pydantic or JSON-oriented output paths.
+    support_status: statically_confirmed
+    scope: "BaseAgent and Agent execution surfaces plus optional crewai-tools package"
+    interfaces:
+      - "Agent(tools=[...], allow_delegation=...)"
+      - "BaseTool and CrewStructuredTool"
+      - "Task output_pydantic and output_json"
+      - "Optional crewai-tools integrations"
+    prerequisites:
+      - "A configured LLM"
+      - "Tool-specific packages, services, credentials, and permissions"
+    configuration_requirements:
+      - "Explicit tool instances or integrations"
+      - "Per-tool input schemas and credentials"
+    limitations:
+      - "Tool side effects and permissions are defined by each tool and deployment."
+      - "The former built-in CodeInterpreterTool path is deprecated and returns no execution tools."
+    confidence: high
+    claim_ids:
+      - "claim-agent-tools"
+      - "claim-package-surface"
+      - "claim-execution-boundary"
+    evidence_refs:
+      - "evidence-base-agent-contract"
+      - "evidence-agent-execution-boundary"
+      - "evidence-code-execution-deprecated"
+      - "evidence-package-manifest"
+
+  - capability_id: "capability-mcp"
+    ontology_id: "x-crewai:mcp-client"
+    name: "MCP client tool integration"
+    description: >-
+      Connects agents to MCP servers over stdio, Streamable HTTP, or SSE,
+      resolves remote tool schemas into CrewAI tools, filters tool lists, and
+      manages client cleanup.
+    support_status: statically_confirmed
+    scope: "crewai.mcp configuration, transports, client, and tool resolver"
+    interfaces:
+      - "Agent(mcps=[...])"
+      - "MCPServerStdio"
+      - "MCPServerHTTP"
+      - "MCPServerSSE"
+    prerequisites:
+      - "mcp Python package"
+      - "A reachable MCP server or executable command"
+      - "Server-specific credentials and authorization"
+    configuration_requirements:
+      - "Transport command or URL"
+      - "Optional headers, environment variables, tool filters, and cache behavior"
+    limitations:
+      - "CrewAI acts as an MCP client in the inspected open-source runtime; no general MCP server surface was confirmed."
+      - "Remote tool trust, authorization, and side effects remain deployment concerns."
+    confidence: high
+    claim_ids:
+      - "claim-mcp"
+      - "claim-execution-boundary"
+    evidence_refs:
+      - "evidence-mcp-config"
+      - "evidence-mcp-resolver"
+
+  - capability_id: "capability-a2a"
+    ontology_id: "x-crewai:a2a-interoperability"
+    name: "A2A agent delegation"
+    description: >-
+      Wraps agent task and kickoff methods so configured remote A2A agents can be
+      discovered from Agent Cards and participate in synchronous or asynchronous
+      delegation.
+    support_status: statically_confirmed
+    scope: "Optional a2a extra and crewai.a2a package"
+    interfaces:
+      - "Agent a2a configuration"
+      - "Wrapped execute_task and aexecute_task"
+      - "Wrapped kickoff and kickoff_async"
+    prerequisites:
+      - "crewai[a2a] optional dependencies"
+      - "Reachable A2A endpoints with compatible Agent Cards"
+    configuration_requirements:
+      - "A2A client or server configuration"
+      - "Authentication and timeout settings where required"
+    limitations:
+      - "Protocol interoperability and remote-agent behavior were not exercised."
+      - "Remote agents expand the deployment trust boundary."
+    confidence: high
+    claim_ids:
+      - "claim-a2a"
+      - "claim-execution-boundary"
+    evidence_refs:
+      - "evidence-a2a-wrapper"
+      - "evidence-package-manifest"
+
+  - capability_id: "capability-memory-knowledge"
+    ontology_id: "x-crewai:memory-and-knowledge"
+    name: "Memory and retrieval-backed knowledge"
+    description: >-
+      Provides a unified, scoped memory abstraction with LLM-assisted analysis
+      and pluggable storage, plus vector-backed knowledge sources for strings,
+      text, PDF, CSV, Excel, JSON, and Docling content.
+    support_status: statically_confirmed
+    scope: "crewai.memory, crewai.knowledge, and crewai.rag packages"
+    interfaces:
+      - "Crew(memory=True or Memory(...))"
+      - "Agent and Crew knowledge_sources"
+      - "Knowledge.query(...) and Knowledge.aquery(...)"
+    prerequisites:
+      - "Embedding model or provider"
+      - "LLM for default memory analysis"
+      - "Storage and document-processing dependencies required by selected sources"
+    configuration_requirements:
+      - "Memory storage, embedder, and optional scope settings"
+      - "Knowledge source types and collection name"
+    limitations:
+      - "The default memory configuration uses an OpenAI model and embedder unless overridden."
+      - "Retrieval quality, data isolation, persistence durability, and concurrent writes were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-memory-knowledge"
+      - "claim-package-surface"
+    evidence_refs:
+      - "evidence-memory"
+      - "evidence-knowledge"
+      - "evidence-package-manifest"
+
+  - capability_id: "capability-skills"
+    ontology_id: "x-crewai:agent-skills"
+    name: "Agent Skills loading"
+    description: >-
+      Discovers SKILL.md directories, inline skill definitions, and registry
+      references, progressively loads instructions and resources, and formats
+      selected skills into agent context.
+    support_status: statically_confirmed
+    scope: "crewai.skills and Agent or Crew skills configuration"
+    interfaces:
+      - "Agent(skills=[...])"
+      - "Crew(skills=[...])"
+      - "Filesystem paths, inline SKILL.md strings, Skill objects, and @org/name references"
+    prerequisites:
+      - "Valid SKILL.md frontmatter or a reachable configured registry for registry references"
+    configuration_requirements:
+      - "Skill search path, inline content, object, or registry reference"
+    limitations:
+      - "Skill content is injected into model context and must be treated as untrusted application data."
+      - "Registry retrieval and resource use were not analyzed dynamically."
+    confidence: high
+    claim_ids:
+      - "claim-skills"
+      - "claim-execution-boundary"
+    evidence_refs:
+      - "evidence-skills-loader"
+
+  - capability_id: "capability-checkpoint-tracing"
+    ontology_id: "x-crewai:checkpointing-and-tracing"
+    name: "Checkpointing, events, and tracing"
+    description: >-
+      Emits runtime events, can restore Crew and Flow executions from checkpoints,
+      and instruments execution through OpenTelemetry-based tracing hooks.
+    support_status: statically_confirmed
+    scope: "Crew and Flow checkpoint APIs, event bus, and tracing listeners"
+    interfaces:
+      - "Crew.from_checkpoint(...)"
+      - "Crew.kickoff(from_checkpoint=...)"
+      - "Flow.kickoff(from_checkpoint=...)"
+      - "tracing configuration and event listeners"
+    prerequisites:
+      - "Writable checkpoint or persistence storage when enabled"
+      - "Optional trace destination and user configuration"
+    configuration_requirements:
+      - "CheckpointConfig or checkpoint=True"
+      - "Tracing override, environment, or user choice"
+    limitations:
+      - "Recovery guarantees and exported trace behavior were not runtime verified."
+      - "Trace content can include agent decisions, task flow, and tool details and therefore requires data-governance review."
+    confidence: high
+    claim_ids:
+      - "claim-checkpoint-tracing"
+      - "claim-execution-boundary"
+    evidence_refs:
+      - "evidence-crew-checkpoint-tracing"
+      - "evidence-flow-runtime"
+      - "evidence-tracing-prompt"
+
+architecture:
+  overview: >-
+    A Python monorepo exposes Agent, Task, and Crew models for autonomous
+    collaboration and a separate Flow DSL/runtime for explicit event-driven
+    control. Provider adapters supply LLM calls and structured outputs; tools,
+    MCP, A2A, skills, memory, and knowledge extend agent context and actions.
+    A shared event bus, checkpoint state, and OpenTelemetry instrumentation span
+    the runtime. Optional hosted AMP integrations are outside this card boundary.
+  languages:
+    - "Python 3.10-3.13"
+    - "YAML and JSON configuration"
+  frameworks_and_sdks:
+    - name: "Pydantic"
+      version_constraint: ">=2.11.9,<2.13"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-surface"
+    - name: "OpenTelemetry API and SDK"
+      version_constraint: "~=1.42.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-checkpoint-tracing"
+  model_providers:
+    - name: "OpenAI Python SDK"
+      version_constraint: ">=2.30.0,<3"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-surface"
+    - name: "Anthropic Python SDK"
+      version_constraint: "~=0.73.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-package-surface"
+    - name: "Google Gen AI SDK"
+      version_constraint: "~=1.65.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-package-surface"
+  runtime_and_orchestration:
+    - name: "CrewAI Crew and Agent runtime"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-crews"
+        - "claim-agent-tools"
+    - name: "CrewAI Flow runtime"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-flows"
+  tools_and_mcp:
+    tools:
+      - name: "crewai-tools"
+        version_constraint: "1.15.4"
+        dependency_relation: optional
+        required: false
+        claim_ids:
+          - "claim-agent-tools"
+      - name: "MCP Python SDK"
+        version_constraint: "~=1.28.1"
+        dependency_relation: direct
+        required: true
+        claim_ids:
+          - "claim-mcp"
+      - name: "A2A Python SDK"
+        version_constraint: "~=0.3.10"
+        dependency_relation: optional
+        required: false
+        claim_ids:
+          - "claim-a2a"
+    mcp_role: client
+    mcp_details:
+      - "Native stdio, Streamable HTTP, and SSE client transports"
+      - "Tool-schema discovery, filtering, wrapping, invocation, caching, and cleanup"
+      - "No general open-source MCP server role was confirmed at targeted depth"
+  skills:
+    - name: "CrewAI Agent Skills loader"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-skills"
+  memory_and_state:
+    - name: "CrewAI unified Memory"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-memory-knowledge"
+    - name: "LanceDB"
+      version_constraint: ">=0.29.2,<0.30.1"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-memory-knowledge"
+    - name: "aiosqlite"
+      version_constraint: "~=0.21.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-checkpoint-tracing"
+  retrieval_and_knowledge:
+    - name: "CrewAI Knowledge and RAG"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-memory-knowledge"
+    - name: "ChromaDB"
+      version_constraint: "~=1.1.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-memory-knowledge"
+  document_processing:
+    - name: "pdfplumber"
+      version_constraint: "~=0.11.4"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-memory-knowledge"
+    - name: "openpyxl"
+      version_constraint: "~=3.1.5"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-memory-knowledge"
+    - name: "Docling"
+      version_constraint: "~=2.97.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-memory-knowledge"
+  execution_and_sandbox: []
+  gateways_and_routing:
+    - name: "LiteLLM"
+      version_constraint: ">=1.84.0,<2"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-package-surface"
+  storage_and_databases:
+    - name: "LanceDB"
+      version_constraint: ">=0.29.2,<0.30.1"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-memory-knowledge"
+    - name: "ChromaDB"
+      version_constraint: "~=1.1.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-memory-knowledge"
+    - name: "Qdrant Client"
+      version_constraint: "~=1.14.3"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-memory-knowledge"
+  interfaces:
+    - name: "CrewAI Python API"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-crews"
+        - "claim-flows"
+    - name: "CrewAI CLI"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-package-surface"
+  deployment:
+    - name: "Operator-managed Python process"
+      version_constraint: "Python >=3.10,<3.14"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-surface"
+  observability_and_evaluation:
+    - name: "OpenTelemetry"
+      version_constraint: "~=1.42.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-checkpoint-tracing"
+  security_and_permissions:
+    - name: "CrewAI fingerprint configuration"
+      version_constraint: "1.15.4"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-security-scope"
+  data_flows:
+    - "Application inputs are interpolated into tasks and agent context, then agents call configured LLMs and optional tools to produce task outputs."
+    - "Crew execution dispatches tasks sequentially or through a manager-led hierarchical process and aggregates CrewOutput plus usage metrics."
+    - "Flows hydrate state and inputs, execute start methods, emit events, trigger listeners and routers, optionally persist snapshots, and return the last result."
+    - "Memory analyzes and embeds records into pluggable storage; recall results are added to agent prompts."
+    - "Knowledge sources are chunked and stored for vector search, with retrieved context added before agent execution."
+    - "MCP and A2A connections send tool arguments, prompts, messages, and task context across deployment trust boundaries."
+  control_flows:
+    - "Crew.kickoff selects Process.sequential or Process.hierarchical and rejects other process values."
+    - "Agent executors iterate model calls and tool use up to configured iteration, time, and request limits."
+    - "Flow @start methods initiate execution; @listen and @router conditions schedule downstream methods and route labels."
+    - "Checkpoint configuration can restore a Crew or Flow before normal kickoff; Flow persistence is a separate state mechanism."
+
+components:
+  - component_id: "component-crewai-package"
+    name: "CrewAI framework package"
+    path: "lib/crewai/src/crewai/"
+    project_type: "agent_framework_sdk"
+    purpose: "Public Agent, Task, Crew, Flow, memory, knowledge, MCP, A2A, skills, events, checkpoint, and tracing APIs."
+    claim_ids:
+      - "claim-crews"
+      - "claim-flows"
+      - "claim-agent-tools"
+      - "claim-memory-knowledge"
+  - component_id: "component-core"
+    name: "CrewAI core package"
+    path: "lib/crewai-core/src/crewai_core/"
+    project_type: "supporting runtime package"
+    purpose: "Shared authentication, settings, telemetry, paths, printer, and platform API primitives."
+    claim_ids:
+      - "claim-package-surface"
+  - component_id: "component-cli"
+    name: "CrewAI CLI"
+    path: "lib/cli/src/crewai_cli/"
+    project_type: "developer tool"
+    purpose: "Scaffolds, installs, runs, tests, and manages CrewAI projects."
+    claim_ids:
+      - "claim-package-surface"
+  - component_id: "component-tools"
+    name: "CrewAI tools package"
+    path: "lib/crewai-tools/src/crewai_tools/"
+    project_type: "agent_tool_mcp"
+    purpose: "Optional prebuilt integrations, search, RAG, browser, data, and sandbox-service tools for agents."
+    claim_ids:
+      - "claim-agent-tools"
+      - "claim-execution-boundary"
+  - component_id: "component-files"
+    name: "CrewAI files package"
+    path: "lib/crewai-files/src/crewai_files/"
+    project_type: "supporting component"
+    purpose: "Optional typed file-input handling for Crew and Flow execution."
+    claim_ids:
+      - "claim-package-surface"
+
+usage:
+  installation: "Install with `uv pip install crewai`; use `uv pip install 'crewai[tools]'` for the optional tools package."
+  minimal_start: >-
+    Run `crewai create crew <project_name>`, define agents and tasks in YAML or
+    Python, construct a Crew with a Process, then call `crewai run` or
+    `Crew.kickoff(inputs=...)`. Flows subclass Flow and decorate methods with
+    @start, @listen, and @router before calling kickoff.
+  configuration:
+    - "Agent role, goal, backstory, model, tools, memory, knowledge, skills, and delegation behavior"
+    - "Task description, expected output, dependencies, guardrails, and structured-output model"
+    - "Crew process, planning, callbacks, checkpointing, tracing, and model defaults"
+    - "Flow state, trigger conditions, persistence, input provider, and checkpointing"
+    - "Provider, tool, MCP, A2A, storage, and observability credentials"
+  required_services:
+    - "At least one selected LLM provider or compatible local endpoint"
+    - "Any external APIs, MCP servers, A2A agents, storage services, or tools selected by the application"
+  extension_points:
+    - "Custom BaseAgent and agent executors"
+    - "BaseTool and structured tools"
+    - "Crew callbacks, hooks, event listeners, and guardrails"
+    - "Flow methods, declarative Flow Definitions, routers, persistence, and input providers"
+    - "LLM providers and compatible endpoints"
+    - "Memory storage and embedding providers"
+    - "Knowledge sources and storage"
+    - "Agent Skills, MCP servers, and A2A agents"
+
+assessment:
+  contexts:
+    - context_id: "context-crewai-framework-evaluation"
+      use_case: >-
+        Selecting an open-source Python framework for multi-agent applications
+        that need both autonomous agent collaboration and explicit workflow
+        control, with static inspection as the only verification method.
+      comparison_cohort:
+        - "Open-source Python agent frameworks and SDKs"
+        - "Graph and event-driven agent workflow runtimes"
+        - "Multi-agent orchestration libraries"
+      requirements:
+        - "Composable agents, tasks, tools, and structured outputs"
+        - "Multi-agent and deterministic workflow orchestration"
+        - "State, memory, retrieval, checkpoint, and observability options"
+        - "Extensible provider and protocol integrations"
+        - "Clear operator control over external effects and data movement"
+      organizational_constraints:
+        - "Python 3.10-3.13 application environment"
+        - "Static repository evidence only; no production deployment evidence"
+        - "Hosted CrewAI AMP is outside the evaluated boundary"
+        - "External providers, tools, and remote agents require separate security and compliance review"
+      assessed_at: "2026-07-18T13:24:00Z"
+  maturity: established
+  maturity_signals:
+    - statement: "The framework is established within the inspected open-source scope."
+      reasoning: >-
+        The repository is at tag 1.15.4, has versioned packages and documentation,
+        a broad Python 3.10-3.13 CI matrix, extensive tests, linting and typing
+        configuration, and a scheduled vulnerability workflow. No runtime or
+        operational reliability evidence was collected, so this does not support
+        a stronger universal maturity judgment.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-established"
+        - "claim-test-automation"
+  strengths:
+    - statement: "CrewAI combines autonomous multi-agent collaboration and explicit event-driven workflow control in one Python framework."
+      reasoning: >-
+        Crews expose role-based agents and sequential or hierarchical processes,
+        while Flows expose state, start/listen/router triggers, persistence, and
+        synchronous or asynchronous execution.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-framework-breadth"
+    - statement: "The inspected runtime has broad extension surfaces for tools, protocols, memory, knowledge, skills, events, and providers."
+      reasoning: >-
+        Separate APIs and packages cover custom tools, MCP, A2A, skills, memory,
+        knowledge, model adapters, callbacks, hooks, and event listeners.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-framework-breadth"
+  limitations:
+    - statement: "The open-source framework does not by itself establish the hosted deployment, governance, and operational assurances described for CrewAI AMP."
+      reasoning: >-
+        The README distinguishes commercial AMP control-plane capabilities from
+        the open-source framework, and those hosted systems were excluded from
+        this project boundary.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-hosted-boundary"
+    - statement: "Several integrations are optional and require external providers, services, packages, credentials, or executable MCP commands."
+      reasoning: >-
+        The package manifest and integration code expose optional extras and
+        remote boundaries rather than a self-contained deployment.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-execution-boundary"
+  risks:
+    - statement: "Configured tools, skills, MCP servers, and A2A agents can move untrusted content or actions across application trust boundaries."
+      reasoning: >-
+        Agents can invoke local or remote tools, Skill instructions are formatted
+        into agent context, stdio MCP configuration can launch commands, and A2A
+        delegates tasks to remote agents. Effective permissions and isolation are
+        application and deployment responsibilities.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-execution-boundary"
+    - statement: "Tracing and memory can retain sensitive prompts, decisions, tool details, or retrieved content if enabled without data-governance controls."
+      reasoning: >-
+        The inspected tracing UI describes agent decisions, task flow, timing,
+        and tool details, while memory persists analyzed records in storage.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: medium
+      claim_ids:
+        - "claim-checkpoint-tracing"
+        - "claim-memory-knowledge"
+  best_fit:
+    - statement: "Python teams that want role-based agent collaboration plus deterministic, stateful workflow control in one framework."
+      reasoning: "The Crew and Flow abstractions directly address both requirements and can be composed."
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-framework-breadth"
+    - statement: "Applications needing selectable model providers and extensibility through tools, MCP, A2A, skills, memory, and knowledge."
+      reasoning: "The repository provides explicit integration surfaces for each of these categories."
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-framework-breadth"
+  poor_fit:
+    - statement: "Organizations seeking a turnkey hosted control plane, governance product, or security assurance solely from this open-source package boundary."
+      reasoning: "Those commercial hosted capabilities are explicitly separate and were not evaluated."
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-hosted-boundary"
+    - statement: "Deployments unable to review and constrain third-party model, tool, MCP, A2A, storage, and telemetry boundaries."
+      reasoning: "Many useful capabilities depend on externally configured code or services with their own permissions and data paths."
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-execution-boundary"
+  gaps:
+    - statement: "The inspected SecurityConfig does not implement the authentication, scoping, or impersonation controls named in its own documentation."
+      reasoning: >-
+        The source marks authentication, scoping rules, and delegation tokens as
+        TODO and currently exposes a fingerprint field. This is a gap for the
+        assessment context's operator-control requirement, not a claim about AMP.
+      context_id: "context-crewai-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-security-scope"
+
+relationships:
+  depends_on:
+    - target_project: "OpenAI Python SDK"
+      scope: "Required direct dependency and default model/embedding path in inspected configuration."
+      confidence: high
+      claim_ids:
+        - "claim-package-surface"
+    - target_project: "Pydantic"
+      scope: "Core data-model and validation substrate."
+      confidence: high
+      claim_ids:
+        - "claim-package-surface"
+  integrates_with:
+    - target_project: "Model Context Protocol"
+      scope: "Client integration for stdio, Streamable HTTP, and SSE tool servers."
+      confidence: high
+      claim_ids:
+        - "claim-mcp"
+    - target_project: "Agent2Agent protocol"
+      scope: "Optional remote-agent delegation and Agent Card integration."
+      confidence: high
+      claim_ids:
+        - "claim-a2a"
+    - target_project: "Anthropic"
+      scope: "Optional direct model-provider adapter."
+      confidence: high
+      claim_ids:
+        - "claim-package-surface"
+    - target_project: "Google Gen AI"
+      scope: "Optional direct model-provider adapter."
+      confidence: high
+      claim_ids:
+        - "claim-package-surface"
+    - target_project: "LiteLLM"
+      scope: "Optional model gateway and provider compatibility layer."
+      confidence: high
+      claim_ids:
+        - "claim-package-surface"
+  comparable_projects:
+    - target_project: "LangGraph"
+      scope: "Open-source Python graph-oriented agent workflow framework in the assessment cohort."
+      confidence: medium
+      claim_ids:
+        - "claim-classification"
+    - target_project: "OpenAI Agents SDK for Python"
+      scope: "Open-source Python agent SDK in the assessment cohort."
+      confidence: medium
+      claim_ids:
+        - "claim-classification"
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "CrewAI is an agent framework and SDK rather than one fixed agent application."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The open-source CrewAI project at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-framework"
+      - "evidence-package-manifest"
+      - "evidence-crew-model"
+      - "evidence-flow-runtime"
+    conflicting_evidence_ids: []
+    reasoning: "The repository provides reusable construction and execution primitives, packages, and a CLI across arbitrary application domains."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-crews"
+    statement: "CrewAI executes role-based agents and tasks through sequential or hierarchical Crew processes."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Crew runtime in crewai 1.15.4"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-crews-flows"
+      - "evidence-crew-model"
+      - "evidence-crew-process-dispatch"
+    conflicting_evidence_ids: []
+    reasoning: "The Crew model and kickoff dispatch directly implement these process branches."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-flows"
+    statement: "CrewAI Flows provide stateful, event-driven start, listen, and routing semantics with synchronous and asynchronous execution."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Flow DSL and runtime in crewai 1.15.4"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-crews-flows"
+      - "evidence-flow-runtime"
+      - "evidence-flow-dsl"
+    conflicting_evidence_ids: []
+    reasoning: "The decorators create Flow method definitions and the runtime executes and restores Flow state."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-agent-tools"
+    statement: "Agents expose configurable tools, delegation, iteration limits, model selection, and task execution APIs."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "BaseAgent and Agent in crewai 1.15.4"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-base-agent-contract"
+      - "evidence-agent-execution-boundary"
+    conflicting_evidence_ids: []
+    reasoning: "The public Pydantic models and methods directly define these extension and control surfaces."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-mcp"
+    statement: "The open-source runtime acts as an MCP client over stdio, Streamable HTTP, and SSE and resolves MCP tools for agents."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "crewai.mcp in crewai 1.15.4"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-mcp-config"
+      - "evidence-mcp-resolver"
+    conflicting_evidence_ids: []
+    reasoning: "Configuration models and resolver branches directly cover these transports and tool conversion."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-a2a"
+    statement: "CrewAI optionally wraps agent execution for synchronous and asynchronous A2A delegation."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Optional crewai.a2a support in crewai 1.15.4"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-a2a-wrapper"
+      - "evidence-package-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The optional dependency extra and wrapper implementation both support the conclusion."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-memory-knowledge"
+    statement: "CrewAI includes LLM-analyzed scoped memory with pluggable storage and retrieval-backed knowledge sources."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Memory, Knowledge, and RAG packages in crewai 1.15.4"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-memory"
+      - "evidence-knowledge"
+      - "evidence-package-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The implementations enumerate storage, embedding, source, and query behavior."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-skills"
+    statement: "CrewAI loads filesystem, inline, object, and registry-referenced Agent Skills with progressive disclosure."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "crewai.skills in crewai 1.15.4"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-skills-loader"
+    conflicting_evidence_ids: []
+    reasoning: "The loader directly enumerates these accepted inputs and disclosure transitions."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-checkpoint-tracing"
+    statement: "CrewAI includes checkpoint restoration, runtime events, and OpenTelemetry-based tracing surfaces for Crews and Flows."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Crew and Flow runtimes at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-crew-checkpoint-tracing"
+      - "evidence-flow-runtime"
+      - "evidence-package-manifest"
+      - "evidence-tracing-prompt"
+    conflicting_evidence_ids: []
+    reasoning: "The runtime fields and methods connect checkpoint and tracing behavior to kickoff paths."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-package-surface"
+    statement: "CrewAI 1.15.4 targets Python >=3.10,<3.14 and directly depends on Pydantic, OpenAI, OpenTelemetry, ChromaDB, MCP, aiosqlite, and LanceDB, with additional optional integrations."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "lib/crewai package manifest at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The package manifest is authoritative for declared dependency relationships, not runtime compatibility."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-test-automation"
+    statement: "Repository automation defines pull-request test matrices for Python 3.10-3.13 and a scheduled dependency vulnerability scan."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "GitHub Actions configuration at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-tests-workflow"
+      - "evidence-vulnerability-workflow"
+    conflicting_evidence_ids: []
+    reasoning: "Workflow configuration demonstrates intended automation; this analysis did not inspect run results."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-established"
+    statement: "CrewAI is established for the declared open-source Python framework evaluation context."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The recorded snapshot under context-crewai-framework-evaluation"
+    assessment_context_id: "context-crewai-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+      - "evidence-tests-workflow"
+      - "evidence-readme-framework"
+    conflicting_evidence_ids: []
+    reasoning: "A versioned 1.x package set, extensive documented surface, CI matrix, tests, type checking, and vulnerability workflow support established maturity, without proving production reliability."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-framework-breadth"
+    statement: "CrewAI's combination of Crews, Flows, tools, MCP, A2A, skills, memory, and knowledge is a strength for the declared framework-selection context."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The recorded snapshot under context-crewai-framework-evaluation"
+    assessment_context_id: "context-crewai-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-crew-process-dispatch"
+      - "evidence-flow-runtime"
+      - "evidence-mcp-resolver"
+      - "evidence-a2a-wrapper"
+      - "evidence-skills-loader"
+      - "evidence-memory"
+      - "evidence-knowledge"
+    conflicting_evidence_ids: []
+    reasoning: "These directly inspected, distinct extension surfaces cover both autonomous and deterministic orchestration needs in the assessment context."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-hosted-boundary"
+    statement: "Hosted AMP deployment, governance, security, and control-plane capabilities are separate from this open-source project boundary."
+    claim_kind: assessment
+    verification_status: documented
+    confidence: high
+    applies_to: "The recorded snapshot under context-crewai-framework-evaluation"
+    assessment_context_id: "context-crewai-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-amp-boundary"
+    conflicting_evidence_ids: []
+    reasoning: "The README explicitly introduces AMP as a commercial control plane added around CrewAI; no AMP source was included."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-execution-boundary"
+    statement: "Configured tools, Skill content, stdio MCP commands, remote MCP services, and A2A agents expand application execution and data trust boundaries."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The recorded snapshot under context-crewai-framework-evaluation"
+    assessment_context_id: "context-crewai-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-agent-execution-boundary"
+      - "evidence-mcp-config"
+      - "evidence-mcp-resolver"
+      - "evidence-skills-loader"
+      - "evidence-a2a-wrapper"
+    conflicting_evidence_ids: []
+    reasoning: "These integration surfaces invoke local or remote capabilities and inject external content; effective permissions depend on the deploying application."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+  - claim_id: "claim-security-scope"
+    statement: "The inspected open-source SecurityConfig implements fingerprints but marks authentication, scoping rules, and delegation tokens as TODO."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "crewai.security.SecurityConfig in crewai 1.15.4"
+    assessment_context_id: "context-crewai-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-security-config"
+    conflicting_evidence_ids: []
+    reasoning: "The class documentation and only defined field directly establish this implementation boundary."
+    last_verified_at: "2026-07-18T13:24:00Z"
+
+sources:
+  - source_id: "source-crewai-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd (tag 1.15.4)"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "git-tree-sha1:639d02c78d4e99be29ec13f1059ced279142c01e"
+    access_scope: public
+  - source_id: "source-crewai-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/README.md"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:ed125e65f6ff31bdc69212e027c8239c552c4470077419868324efabc258adb0"
+    access_scope: public
+  - source_id: "source-crewai-license"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/LICENSE"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:28868731966f4aa37f02879839aabc797137e27ddde4e274ef9cf965f9a71774"
+    access_scope: public
+  - source_id: "source-crewai-manifest"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/pyproject.toml"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:b05980d91bb59065f421dc921ff12f01ba443695ea502f0188fbeb7634b76bbc"
+    access_scope: public
+  - source_id: "source-crewai-crew"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/crew.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:dc79a7467042dc7f33d1f965329ede4cd2c347cd93b77844e65717be8c5b7921"
+    access_scope: public
+  - source_id: "source-crewai-base-agent"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/agents/agent_builder/base_agent.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:24769695879e1cacb7293cb6aaa90031ae18a2b801e247ffb5471063f1c7400d"
+    access_scope: public
+  - source_id: "source-crewai-agent"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/agent/core.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:4c7e3941d69ae75defa72884ff1c744fd8143a6f5eb97e0357589e6d92b4eaf6"
+    access_scope: public
+  - source_id: "source-crewai-flow-runtime"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/flow/runtime/__init__.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:4fb296e19e52cc7d10b1cda3b1af1c355137036f6d48580f247f0d257dd240dc"
+    access_scope: public
+  - source_id: "source-crewai-flow-dsl"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/tree/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/flow/dsl"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256-set:start=57da72c38d14f3f58586deca40d0d7de3ddbc813445a1c43a416dc8d8ba0dec1;listen=1eb427ac78abbaa3ef43cb7dd3d7478b061d404e234abd8e2157bfae05d51a4d;router=fcc83673b55d119649ce501fc3bd3fab99059c2d6380d357e6ec05810257deda"
+    access_scope: public
+  - source_id: "source-crewai-memory"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/memory/unified_memory.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:98e3015cfda600dd18d14dc5cdac4eda2402e1c12bd9df3cb2ef5722abc6acdd"
+    access_scope: public
+  - source_id: "source-crewai-knowledge"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/knowledge/knowledge.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:9d40415a2d354885b39a663ea84a468a5913ad7760c8a9e6b53a54cb2ce6dbf1"
+    access_scope: public
+  - source_id: "source-crewai-mcp-config"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/mcp/config.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:1c58968b18591ad1164a72fce8001eaecea30a25788fdfaffc193175e88d3134"
+    access_scope: public
+  - source_id: "source-crewai-mcp-resolver"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/mcp/tool_resolver.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:6cd20c142b81a7446868c211368b55c013e9c36ba4a523d7a57fd196a9496328"
+    access_scope: public
+  - source_id: "source-crewai-skills"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/skills/loader.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:ae083509c50096d242d18a74c35d00206a15c103defd4552bf0e9a2402adea52"
+    access_scope: public
+  - source_id: "source-crewai-a2a"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/a2a/wrapper.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:91113b060941bf643e6fd829438442eec1524b01b27a87c73aa69055ee649e50"
+    access_scope: public
+  - source_id: "source-crewai-tests-workflow"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/.github/workflows/tests.yml"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:fe011bffe460c45b6a98b729acb7c1a5ce2ff8468cc0dfb202cf6723c38c3b0f"
+    access_scope: public
+  - source_id: "source-crewai-vulnerability-workflow"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/.github/workflows/vulnerability-scan.yml"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:119cd6c97292d8a73ef63387f94a1200971aa58bf6ff9725d1a1bdb6f8467afe"
+    access_scope: public
+  - source_id: "source-crewai-tracing-utils"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/events/listeners/tracing/utils.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:b651fa614921fa3ba30c445a41fb1d7f1f58c43477ceccb7f91031f1c5c2b759"
+    access_scope: public
+  - source_id: "source-crewai-security-config"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/crewAIInc/crewAI/blob/69c0308f2cf4fa17214eab4db10071abc08602fd/lib/crewai/src/crewai/security/security_config.py"
+    revision_or_version: "69c0308f2cf4fa17214eab4db10071abc08602fd"
+    retrieved_at: "2026-07-18T13:14:20Z"
+    content_digest: "sha256:3b5be63193fd6d3b034686558be9a574cd7e564d49d860d9ba35b215960d4c99"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-readme-framework"
+    source_id: "source-crewai-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Fast and Flexible Multi-Agent Automation Framework"
+      line_start: 56
+      line_end: 63
+    confidence: high
+    excerpt_or_symbol: "Open-source Python framework with Crews and Flows"
+    note: "First-party positioning and top-level abstraction summary."
+  - evidence_id: "evidence-readme-amp-boundary"
+    source_id: "source-crewai-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "CrewAI AMP Suite"
+      line_start: 67
+      line_end: 84
+    confidence: high
+    excerpt_or_symbol: "Commercial control plane around CrewAI"
+    note: "Separates hosted commercial capabilities from the open-source framework."
+  - evidence_id: "evidence-readme-crews-flows"
+    source_id: "source-crewai-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Understanding Flows and Crews"
+      line_start: 163
+      line_end: 186
+    confidence: high
+    excerpt_or_symbol: "Crews coordinate agents; Flows provide event-driven control and state"
+    note: "Documents intended roles of the two primary orchestration surfaces."
+  - evidence_id: "evidence-package-manifest"
+    source_id: "source-crewai-manifest"
+    locator:
+      path: "lib/crewai/pyproject.toml"
+      symbol_or_section: "project and optional-dependencies"
+      line_start: 1
+      line_end: 118
+    confidence: high
+    excerpt_or_symbol: "Python range, versioned workspace packages, direct dependencies, and optional extras"
+    note: "Manifest evidence supports declared packaging and dependency relationships only."
+  - evidence_id: "evidence-license"
+    source_id: "source-crewai-license"
+    locator:
+      path: "LICENSE"
+      symbol_or_section: "MIT License grant"
+      line_start: 1
+      line_end: 18
+    confidence: high
+    excerpt_or_symbol: "MIT permission grant and warranty disclaimer"
+    note: "Supports project license field."
+  - evidence_id: "evidence-crew-model"
+    source_id: "source-crewai-crew"
+    locator:
+      path: "lib/crewai/src/crewai/crew.py"
+      symbol_or_section: "Crew"
+      line_start: 159
+      line_end: 199
+    confidence: high
+    excerpt_or_symbol: "Crew represents agents, tasks, collaboration process, memory, callbacks, planning, and security configuration"
+    note: "Static public-model evidence."
+  - evidence_id: "evidence-crew-checkpoint-tracing"
+    source_id: "source-crewai-crew"
+    locator:
+      path: "lib/crewai/src/crewai/crew.py"
+      symbol_or_section: "Crew checkpoint and tracing fields plus from_checkpoint"
+      line_start: 374
+      line_end: 429
+    confidence: high
+    excerpt_or_symbol: "skills, checkpoint, tracing, and restore configuration"
+    note: "Supports bundled runtime surfaces, not recovery guarantees."
+  - evidence_id: "evidence-crew-process-dispatch"
+    source_id: "source-crewai-crew"
+    locator:
+      path: "lib/crewai/src/crewai/crew.py"
+      symbol_or_section: "Crew.kickoff"
+      line_start: 978
+      line_end: 1068
+    confidence: high
+    excerpt_or_symbol: "kickoff restores checkpoints, supports streaming, and dispatches sequential or hierarchical processes"
+    note: "Static control-flow evidence; no Crew was executed."
+  - evidence_id: "evidence-base-agent-contract"
+    source_id: "source-crewai-base-agent"
+    locator:
+      path: "lib/crewai/src/crewai/agents/agent_builder/base_agent.py"
+      symbol_or_section: "BaseAgent"
+      line_start: 200
+      line_end: 307
+    confidence: high
+    excerpt_or_symbol: "Role, goal, tools, delegation, iteration limit, model, and abstract execution interfaces"
+    note: "Supports the agent extension contract."
+  - evidence_id: "evidence-agent-execution-boundary"
+    source_id: "source-crewai-agent"
+    locator:
+      path: "lib/crewai/src/crewai/agent/core.py"
+      symbol_or_section: "Agent fields and get_code_execution_tools"
+      line_start: 171
+      line_end: 275
+    confidence: high
+    excerpt_or_symbol: "Agent model includes tools, MCP, model, execution limits, and deprecated code-execution fields"
+    note: "Lines 238-268 mark the former CodeInterpreterTool settings deprecated."
+  - evidence_id: "evidence-code-execution-deprecated"
+    source_id: "source-crewai-agent"
+    locator:
+      path: "lib/crewai/src/crewai/agent/core.py"
+      symbol_or_section: "Agent.get_code_execution_tools"
+      line_start: 1186
+      line_end: 1194
+    confidence: high
+    excerpt_or_symbol: "The deprecated method returns no tools and directs users to dedicated sandbox services"
+    note: "Supports the limitation that CrewAI no longer supplies the former built-in CodeInterpreterTool at this snapshot."
+  - evidence_id: "evidence-flow-runtime"
+    source_id: "source-crewai-flow-runtime"
+    locator:
+      path: "lib/crewai/src/crewai/flow/runtime/__init__.py"
+      symbol_or_section: "Flow and Flow.kickoff"
+      line_start: 428
+      line_end: 555
+    confidence: high
+    excerpt_or_symbol: "Flow definitions, start/listen/router metadata, state, tracing, streaming, and memory"
+    note: "Kickoff and restore behavior is additionally implemented at lines 1933-2035."
+  - evidence_id: "evidence-flow-dsl"
+    source_id: "source-crewai-flow-dsl"
+    locator:
+      path: "lib/crewai/src/crewai/flow/dsl/"
+      symbol_or_section: "start, listen, and router decorators"
+      line_start: 18
+      line_end: 70
+    confidence: high
+    excerpt_or_symbol: "Decorators build start, listener, and router method definitions"
+    note: "Locator line range applies to _start.py; _listen.py lines 18-57 and _router.py lines 97-150 were also inspected."
+  - evidence_id: "evidence-memory"
+    source_id: "source-crewai-memory"
+    locator:
+      path: "lib/crewai/src/crewai/memory/unified_memory.py"
+      symbol_or_section: "Memory"
+      line_start: 76
+      line_end: 159
+    confidence: high
+    excerpt_or_symbol: "LLM-analyzed scoped memory with pluggable storage and weighted recall"
+    note: "Default model, LanceDB storage, and OpenAI embedder behavior are statically visible."
+  - evidence_id: "evidence-knowledge"
+    source_id: "source-crewai-knowledge"
+    locator:
+      path: "lib/crewai/src/crewai/knowledge/knowledge.py"
+      symbol_or_section: "Knowledge source registry and Knowledge.query"
+      line_start: 23
+      line_end: 152
+    confidence: high
+    excerpt_or_symbol: "Typed document sources, vector storage, and query API"
+    note: "Supports supported source types and retrieval surface, not retrieval quality."
+  - evidence_id: "evidence-mcp-config"
+    source_id: "source-crewai-mcp-config"
+    locator:
+      path: "lib/crewai/src/crewai/mcp/config.py"
+      symbol_or_section: "MCPServerStdio, MCPServerHTTP, MCPServerSSE"
+      line_start: 12
+      line_end: 123
+    confidence: high
+    excerpt_or_symbol: "stdio command, HTTP/Streamable HTTP URL, SSE URL, headers, filters, and caching"
+    note: "Stdio configuration can launch a local command and therefore crosses an execution boundary."
+  - evidence_id: "evidence-mcp-resolver"
+    source_id: "source-crewai-mcp-resolver"
+    locator:
+      path: "lib/crewai/src/crewai/mcp/tool_resolver.py"
+      symbol_or_section: "MCPToolResolver.resolve"
+      line_start: 45
+      line_end: 95
+    confidence: high
+    excerpt_or_symbol: "Converts external, native, and AMP MCP references to tools and owns client cleanup"
+    note: "AMP resolution is present in code but hosted AMP behavior remains outside the project boundary."
+  - evidence_id: "evidence-skills-loader"
+    source_id: "source-crewai-skills"
+    locator:
+      path: "lib/crewai/src/crewai/skills/loader.py"
+      symbol_or_section: "discover_skills, load_skill, and format_skill_context"
+      line_start: 38
+      line_end: 211
+    confidence: high
+    excerpt_or_symbol: "Discovers SKILL.md directories and accepts Skill objects, paths, inline content, and registry references"
+    note: "Formatting into model context is implemented at lines 226-256."
+  - evidence_id: "evidence-a2a-wrapper"
+    source_id: "source-crewai-a2a"
+    locator:
+      path: "lib/crewai/src/crewai/a2a/wrapper.py"
+      symbol_or_section: "wrap_agent_with_a2a_instance"
+      line_start: 97
+      line_end: 237
+    confidence: high
+    excerpt_or_symbol: "Wraps sync and async task execution and kickoff for configured A2A delegation"
+    note: "Static protocol integration evidence; no remote agent was contacted."
+  - evidence_id: "evidence-tests-workflow"
+    source_id: "source-crewai-tests-workflow"
+    locator:
+      path: ".github/workflows/tests.yml"
+      symbol_or_section: "tests-matrix"
+      line_start: 24
+      line_end: 137
+    confidence: high
+    excerpt_or_symbol: "Pull-request matrix across Python 3.10-3.13 with split crewai and crewai-tools tests"
+    note: "Workflow existence was inspected; run status was not."
+  - evidence_id: "evidence-vulnerability-workflow"
+    source_id: "source-crewai-vulnerability-workflow"
+    locator:
+      path: ".github/workflows/vulnerability-scan.yml"
+      symbol_or_section: "pip-audit"
+      line_start: 1
+      line_end: 98
+    confidence: high
+    excerpt_or_symbol: "Pull-request, main-branch, and weekly pip-audit workflow"
+    note: "The scan continues after the pip-audit command and later evaluates its JSON; current scan results were not retrieved."
+  - evidence_id: "evidence-tracing-prompt"
+    source_id: "source-crewai-tracing-utils"
+    locator:
+      path: "lib/crewai/src/crewai/events/listeners/tracing/utils.py"
+      symbol_or_section: "prompt_user_for_trace_viewing"
+      line_start: 467
+      line_end: 530
+    confidence: high
+    excerpt_or_symbol: "Trace viewing describes agent decisions, task flow, timing, and tool usage details"
+    note: "Supports trace-data governance risk; no trace was emitted."
+  - evidence_id: "evidence-security-config"
+    source_id: "source-crewai-security-config"
+    locator:
+      path: "lib/crewai/src/crewai/security/security_config.py"
+      symbol_or_section: "SecurityConfig"
+      line_start: 20
+      line_end: 58
+    confidence: high
+    excerpt_or_symbol: "Authentication, scoping, and delegation tokens are TODO; fingerprint is the implemented field"
+    note: "Supports a gap only for the declared open-source framework assessment context."
+
+open_questions:
+  - question: "What runtime reliability, recovery, throughput, and concurrency characteristics do Crews, Flows, memory, and checkpointing demonstrate under representative production workloads?"
+    reason: "Static inspection cannot establish operational behavior or performance."
+    related_claim_ids:
+      - "claim-crews"
+      - "claim-flows"
+      - "claim-memory-knowledge"
+      - "claim-checkpoint-tracing"
+  - question: "Which security and permission controls are provided by the open-source runtime versus only by hosted CrewAI AMP?"
+    reason: "The open-source SecurityConfig exposes fingerprints while its documentation marks several controls TODO; AMP was excluded."
+    related_claim_ids:
+      - "claim-hosted-boundary"
+      - "claim-security-scope"
+      - "claim-execution-boundary"
+  - question: "How are Skill instructions, MCP tool schemas and responses, A2A messages, retrieved knowledge, and tool outputs isolated or sanitized in real deployments?"
+    reason: "These are untrusted-content and external-effect boundaries whose protections depend on application configuration."
+    related_claim_ids:
+      - "claim-skills"
+      - "claim-mcp"
+      - "claim-a2a"
+      - "claim-execution-boundary"

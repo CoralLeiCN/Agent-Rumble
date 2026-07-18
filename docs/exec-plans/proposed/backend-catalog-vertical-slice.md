@@ -46,16 +46,16 @@ The implemented slice now contains:
   groups, typed error envelopes, catalog services, and passing backend tests.
 * The repository-local Agent Project Card skill, v0.3 executable schema,
   deterministic validator, and focused validator tests.
-* Three structurally and semantically validated real cards under
+* Eleven structurally and semantically validated real cards under
   `project-cards/`, published byte-for-byte to the accepted versioned layout at
   `catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml`.
 * An all-or-nothing YAML repository, immutable catalog snapshot, exact current
   and historical card retrieval, evidence resolution, deterministic search,
   and contextual comparison under `/api/v1`.
-* A React `HttpCatalogGateway` for all six catalog operations plus a visibly
-  labeled bundled-snapshot fallback implementing the same interface.
+* A React `HttpCatalogGateway` for catalog access without a frontend card
+  fallback.
 
-The three published cards do not share one canonical Assessment Context.
+The published cards do not share one canonical Assessment Context.
 Search and general role/capability comparison are available, while the API
 returns `not_analyzed` rather than transferring context-specific fit judgments.
 Selecting a prepared production comparison cohort remains a product/data gate.
@@ -236,14 +236,13 @@ negative facts, and every decision-changing conclusion is traceable.
 * Align frontend types with the five independent status dimensions.
 * Add catalog-context and current-card operations to the gateway.
 * Pass the Assessment Context and pinned card versions into comparison.
-* Implement an HTTP adapter while retaining a visibly labeled static fallback.
+* Implement an API-only HTTP adapter for the browser runtime.
 * Keep evidence excerpts inert and never render repository content as HTML.
 * Decide the generated-client workflow separately if it is to become a binding
   production architecture choice.
 
-**Exit:** HTTP and static adapters satisfy the same contract, the prepared path
-uses validated cards, and the UI no longer labels illustrative fixtures as
-project intelligence.
+**Exit:** The HTTP adapter uses validated cards and the browser runtime cannot
+substitute illustrative fixtures for the backend catalog.
 
 ### Milestone 7 — Hardening and Handoff
 
@@ -310,7 +309,7 @@ The following are outside this slice or require a recorded decision:
 | Search | Controlled synonyms, structured filters, deterministic order, uninterpreted terms, no universal score, unavailable-state behavior |
 | Comparison | Explicit context, role compatibility, field states, Claim/Evidence traceability, two-to-three project limit |
 | Safety | No source execution, no path traversal, no source-to-configuration mapping, cross-card isolation, adversarial text |
-| Integration | OpenAPI contract, HTTP/static gateway parity, frontend typecheck/test/build |
+| Integration | OpenAPI contract, complete-catalog parity, frontend typecheck/test/build |
 
 ## Definition of Done
 

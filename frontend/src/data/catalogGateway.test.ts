@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { preparedQuery, projectCards } from "./fixtures";
-import { StaticCatalogGateway } from "./catalogGateway";
 import { validateProjectCardFixture } from "./projectCardValidation";
 import { projectCardsToClaimEvidence, projectCardsToComparison } from "./projectCardAdapter";
 import { projectCardContract, readProjectCardContract } from "./projectCardContract";
+import { FixtureCatalogGateway } from "../test/FixtureCatalogGateway";
 import type { ComparisonResponse } from "../types/catalog";
 import type { FieldState } from "../types/projectCard";
 
@@ -27,9 +27,9 @@ function terminalPointers(value: unknown, pointer = ""): string[] {
   ));
 }
 
-describe("StaticCatalogGateway", () => {
-  it("keeps fixture access behind the future API seam", async () => {
-    const gateway = new StaticCatalogGateway();
+describe("fixture card projections", () => {
+  it("keeps fixture access in the test-only gateway", async () => {
+    const gateway = new FixtureCatalogGateway();
     const search = await gateway.searchProjects(preparedQuery);
     const comparison = await gateway.compareProjects(search.projects.map(({ id }) => id));
     const record = await gateway.getClaimEvidence("claim-openai-agents-sdk-approval");

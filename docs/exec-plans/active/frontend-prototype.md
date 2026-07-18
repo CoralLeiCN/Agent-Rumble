@@ -10,7 +10,7 @@ scope or accept production architecture choices.
 
 ## Outcome
 
-Deliver one fixture-backed path that lets a user:
+Deliver one API-backed path that lets a user:
 
 1. Search the prepared catalog by a realistic need.
 2. Inspect and edit the visible Assessment Context.
@@ -24,15 +24,16 @@ Deliver one fixture-backed path that lets a user:
    animated fighters, health bars, fullscreen play, and contextual-trait-themed
    attacks while gameplay results remain separate from project assessment.
 
-The prototype must run locally without a backend, model call, repository
-analysis, account, or user-provided repository intake. Illustrative data must be
-clearly labeled as a bundled prototype snapshot rather than validated project
-intelligence.
+The prototype must run locally with the FastAPI backend and the complete
+published preprocessed catalog. It must not make a model call, analyze a
+repository on demand, require an account, accept user-provided repository
+intake, or substitute a three-card frontend bundle.
 
 ## Delivery Progress
 
-The implementation now consumes schema-valid, illustrative pre-release v0.3 Agent
-Project Card fixtures through a versioned canonical-card adapter. UI projections
+The implementation now consumes the 11 schema-valid, preprocessed pre-release
+v0.3 Agent Project Cards through FastAPI and a versioned canonical-card adapter.
+UI projections
 remain derived views rather than a second card source of truth. The adapter
 preserves card and schema versions, exact field states, Assessment Context, and
 the claim-to-supporting-or-conflicting-evidence-to-source chain. Comparison now
@@ -60,9 +61,10 @@ property without a presentation whitelist. They also verify schema-derived
 field coverage, customer section partitioning, highlight limits, future-field
 fallback, customer-facing copy, and the complete interaction path. A local Vite
 development smoke test confirms that the packaged schema is served directly.
-The data remains illustrative, and the user has not yet completed responsive,
-zoom, reduced-motion, and browser keyboard validation; this plan therefore
-remains **Active**.
+The production catalog gateway is API-only. Test-only fixtures remain isolated
+from the browser runtime. The user has not yet completed responsive, zoom,
+reduced-motion, and browser keyboard validation; this plan therefore remains
+**Active**.
 
 The Rumble Arena vertical slice consumes the local FastAPI projection endpoint
 when available and retains a visibly labelled bundled snapshot for reliable
@@ -125,12 +127,12 @@ produce a fast local test surface:
 | Rendering | Client-side SPA | Does not decide public-page rendering, prerendering, or SSR. |
 | Navigation | Lightweight in-app view state | Does not select a production router or URL contract. |
 | State | React local state, with session storage only where the shortlist needs refresh resilience | Does not select a global state or server-cache library. |
-| Data | Typed bundled fixtures behind a small catalog adapter | Does not define a frontend-owned card model or production API contract. |
+| Data | Complete validated backend catalog through a small HTTP adapter | Does not define a frontend-owned card model. |
 | Styling | CSS custom properties plus locally scoped CSS | Does not select a production styling system or component library. |
 | Components | Native semantic elements and small local primitives | Does not accept a production UI dependency. |
 | Arcade runtime | Lazily loaded Phaser 3.90 with Arcade Physics and a vendored CC0 boxer animation set | Does not make Phaser part of card analysis or accept a permanent game-engine architecture. |
 
-The prototype must keep transport, fixture data, status presentation, and visual
+The prototype must keep transport, test fixture data, status presentation, and visual
 tokens behind replaceable seams so later production work can connect canonical
 FastAPI projections without rewriting page compositions.
 
@@ -167,9 +169,9 @@ least 44 by 44 CSS pixels.
 ### 1. Shell, Fixtures, and Foundations
 
 * Scaffold the Vite React TypeScript application and local commands.
-* Add typed bundled catalog, comparison, claim, source, and evidence fixtures.
-* Add tokens, primitives, status mapping, application frame, and fixture label.
-* Confirm the prototype makes no backend or model request.
+* Add typed catalog, comparison, claim, source, and evidence fixtures for isolated tests.
+* Add tokens, primitives, status mapping, and the application frame.
+* Confirm the browser reads cards from FastAPI and makes no model request.
 
 ### 2. Explore, Results, and Shortlist
 
@@ -260,9 +262,10 @@ and formatting workflow.
 
 Current recorded result:
 
-* Packaged structural and semantic validation passes for every illustrative
-  pre-release v0.3 Agent Project Card fixture.
-* Frontend type checking, 21 behavior tests, and production build pass.
+* Packaged structural and semantic validation passes for all 11 preprocessed
+  pre-release v0.3 Agent Project Cards.
+* Backend tests, frontend type checking, 61 frontend behavior tests, and the
+  production build pass.
 * Development-mode loading of the packaged schema through Vite passes.
 * Contract-derived field inventory and complete-field presentation coverage
   tests pass.
@@ -273,7 +276,7 @@ Current recorded result:
 
 Validation must also confirm:
 
-* A clean local browser can complete the prepared path using bundled fixtures.
+* A clean local browser can browse all preprocessed projects through FastAPI.
 * The production build starts without privileged environment variables.
 * Browser network inspection shows no model, repository-analysis, or unexpected
   external request.

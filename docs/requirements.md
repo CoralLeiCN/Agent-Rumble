@@ -52,6 +52,10 @@ The search experience should return meaningful results for the user's query,
 retrieve its data from the backend, and cover basic use cases in a form that is
 usable within the limited hackathon timeframe.
 
+The locally testable website should contain every preprocessed Agent Project
+Card available in the backend catalog. It should not substitute a three-card
+bundle for that catalog.
+
 Users should also be able to provide a public GitHub repository link through
 Agent Project Card as a Service and generate an Agent Project Card on demand.
 
@@ -379,6 +383,7 @@ Do not add content beyond what the user asked to write.
 | Date | Topic | Change |
 | --- | --- | --- |
 | 2026-07-18 | Agent Project Card | Removed backward compatibility among pre-release card schemas from implementation and release scope, including migration paths and compatibility-only fields or projections. |
+| 2026-07-18 | Catalog-first discovery and comparison | Required the locally testable website to contain every preprocessed card from the backend catalog instead of a three-card bundle. |
 | 2026-07-18 | Catalog-first discovery and comparison | Required basic search to return meaningful query-related results from backend data and remain usable within the limited hackathon timeframe. |
 | 2026-07-18 | Core tool and access | Required the Codex-powered Agent Project Card tool to be available both as a published skill packaged as a Codex plugin for users' coding-agent workflows and as a hosted service that generates a card from a public GitHub repository link; on-demand generation is no longer deferred. |
 | 2026-07-18 | Rumble Arena | Requested human-looking fighters with visible body movement, reuse of an existing or open-source character design where available, and a fullscreen option. |

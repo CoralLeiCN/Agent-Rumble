@@ -83,6 +83,9 @@ The first product experience must:
   Agent Project Card as a Service
 * Allow a user to invoke the published skill, packaged as a Codex plugin, in
   their own coding-agent workflow
+* In local end-to-end use, expose every preprocessed card in the configured
+  backend catalog through the API and frontend without substituting a limited
+  frontend card bundle
 
 The public frontend uses the Agent Rumble name. Search-engine indexing and rich
 social previews for public card pages are deferred to P2 and are not required by

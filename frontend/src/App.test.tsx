@@ -2,20 +2,36 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { App } from "./App";
-import { StaticCatalogGateway } from "./data/catalogGateway";
+import { FixtureCatalogGateway } from "./test/FixtureCatalogGateway";
 import type { CatalogGateway } from "./types/catalog";
 
-function renderStaticApp() {
-  return render(<App gateway={new StaticCatalogGateway()} />);
+function renderFixtureApp() {
+  return render(<App gateway={new FixtureCatalogGateway()} />);
+}
+
+class CanonicalPreparedPairCatalogGateway extends FixtureCatalogGateway {
+  override async searchProjects(query: string) {
+    const response = await super.searchProjects(query);
+    const canonicalIdByFixtureId: Readonly<Record<string, string>> = {
+      "openai-agents-sdk": "project-openai-openai-agents-python",
+      langgraph: "project-langchain-ai-langgraph",
+    };
+    return {
+      ...response,
+      projects: response.projects.map((project) => ({
+        ...project,
+        id: canonicalIdByFixtureId[project.id] ?? project.id,
+      })),
+    };
+  }
 }
 
 describe("Agent Rumble customer experience", () => {
   it("completes search, shortlist, comparison, source review, and back navigation", async () => {
     const user = userEvent.setup();
-    const { container } = renderStaticApp();
+    const { container } = renderFixtureApp();
 
-    expect(screen.getByText(/project details and source references are illustrative/i)).toBeInTheDocument();
-    expect(screen.queryByText(/project intelligence/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/complete pinned, statically analyzed catalog/i)).toBeInTheDocument();
     expect(screen.queryByText(/catalog \/ 03/i)).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
@@ -62,7 +78,7 @@ describe("Agent Rumble customer experience", () => {
     expect(within(dialog).getByText("Public")).toBeInTheDocument();
     expect(within(dialog).getByText("2026-07-15T12:00:00Z")).toBeInTheDocument();
     expect(within(dialog).getByText(/src\/agents\/tool.py/)).toBeInTheDocument();
-    expect(within(dialog).getByText(/sample data/i)).toBeInTheDocument();
+    expect(within(dialog).queryByText(/sample data/i)).not.toBeInTheDocument();
     expect(within(dialog).getByRole("link", { name: "View source ↗" })).toBeInTheDocument();
     expect(container.querySelector(".app-shell")).toHaveAttribute("inert");
     expect(document.body.style.overflow).toBe("hidden");
@@ -78,7 +94,7 @@ describe("Agent Rumble customer experience", () => {
 
   it("requires at least two projects before comparison", async () => {
     const user = userEvent.setup();
-    renderStaticApp();
+    renderFixtureApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "3 projects to compare" });
@@ -89,7 +105,7 @@ describe("Agent Rumble customer experience", () => {
 
   it("keeps lower-priority metadata reachable inside customer-facing sections", async () => {
     const user = userEvent.setup();
-    renderStaticApp();
+    renderFixtureApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "3 projects to compare" });
@@ -110,7 +126,7 @@ describe("Agent Rumble customer experience", () => {
 
   it("keeps every interpreted requirement label in its padded pill segment", async () => {
     const user = userEvent.setup();
-    const { container } = renderStaticApp();
+    const { container } = renderFixtureApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "What matters for your search" });
@@ -123,7 +139,7 @@ describe("Agent Rumble customer experience", () => {
   });
   it("enters the prepared two-project Rumble Arena from the shortlist", async () => {
     const user = userEvent.setup();
-    renderStaticApp();
+    render(<App gateway={new CanonicalPreparedPairCatalogGateway()} />);
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "3 projects to compare" });
@@ -136,6 +152,15 @@ describe("Agent Rumble customer experience", () => {
       await screen.findByRole("heading", { name: "Internal support agent proof of concept" }),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Solo fullscreen ⛶" })).toBeEnabled();
+  });
+
+  it("offers a one-click path to browse the complete API catalog", async () => {
+    const user = userEvent.setup();
+    renderFixtureApp();
+
+    await user.click(screen.getByRole("button", { name: "Browse every preprocessed project ↗" }));
+
+    expect(await screen.findByRole("heading", { name: "3 projects to compare" })).toBeInTheDocument();
   });
 
   it("shows a useful empty state for a backend query with no catalog matches", async () => {

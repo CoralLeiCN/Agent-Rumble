@@ -15,7 +15,6 @@ import {
   verificationPresentation,
 } from "./status/statusPresentation";
 import type {
-  CatalogDataSource,
   CatalogGateway,
   ClaimEvidenceRecord,
   ComparisonResponse,
@@ -58,19 +57,11 @@ function AppHeader({ onExplore }: { onExplore: () => void }) {
   );
 }
 
-function CatalogNotice({ dataSource }: { dataSource: CatalogDataSource }) {
-  if (dataSource === "http") {
-    return (
-      <div className="prototype-notice" role="note">
-        <span>Validated catalog</span>
-        Project details are loaded from the backend's pinned, statically analyzed card snapshot.
-      </div>
-    );
-  }
+function CatalogNotice() {
   return (
     <div className="prototype-notice" role="note">
-      <span>Sample data</span>
-      Project details and source references are illustrative and may not reflect current capabilities.
+      <span>Validated catalog</span>
+      Project details are loaded from the backend's complete pinned, statically analyzed catalog.
     </div>
   );
 }
@@ -80,9 +71,10 @@ interface ExploreProps {
   pending: boolean;
   onQueryChange: (query: string) => void;
   onSubmit: () => void;
+  onBrowseAll: () => void;
 }
 
-function Explore({ query, pending, onQueryChange, onSubmit }: ExploreProps) {
+function Explore({ query, pending, onQueryChange, onSubmit, onBrowseAll }: ExploreProps) {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     onSubmit();
@@ -114,6 +106,9 @@ function Explore({ query, pending, onQueryChange, onSubmit }: ExploreProps) {
           <span>Try an example</span>
           <button type="button" onClick={() => onQueryChange(DEFAULT_SEARCH_QUERY)}>
             Biomedical research agent ↗
+          </button>
+          <button type="button" disabled={pending} onClick={onBrowseAll}>
+            Browse every preprocessed project ↗
           </button>
         </div>
       </form>
@@ -529,11 +524,11 @@ export function App({ gateway = catalogGateway }: AppProps) {
     window.requestAnimationFrame(() => mainRef.current?.focus());
   };
 
-  const search = async () => {
+  const search = async (searchQuery = query) => {
     setPending("search");
     setError(null);
     try {
-      const result = await gateway.searchProjects(query);
+      const result = await gateway.searchProjects(searchQuery);
       setResponse(result);
       setShortlist([]);
       setComparison(null);
@@ -613,11 +608,17 @@ export function App({ gateway = catalogGateway }: AppProps) {
     <>
       <div className="app-shell" inert={drawerOpen ? true : undefined}>
         <a className="skip-link" href="#main-content">Skip to content</a>
-        <CatalogNotice dataSource={gateway.dataSource} />
+        <CatalogNotice />
         <AppHeader onExplore={reset} />
         <main id="main-content" ref={mainRef} tabIndex={-1}>
           {view === "explore" && (
-            <Explore query={query} pending={pending === "search"} onQueryChange={setQuery} onSubmit={() => void search()} />
+            <Explore
+              query={query}
+              pending={pending === "search"}
+              onQueryChange={setQuery}
+              onSubmit={() => void search()}
+              onBrowseAll={() => void search("")}
+            />
           )}
           {view === "results" && response && (
             <Results response={response} shortlist={shortlist} onToggle={toggleProject} onEdit={() => announceView("explore")} />
@@ -633,6 +634,9 @@ export function App({ gateway = catalogGateway }: AppProps) {
           {view === "arena" && (
             <ArenaScreen
               projectIds={shortlist}
+              projectNames={shortlist.map((id) =>
+                response?.projects.find((project) => project.id === id)?.name ?? id
+              )}
               onExit={() => announceView("results")}
               onOpenEvidence={openArenaEvidence}
             />
@@ -673,7 +677,7 @@ export function App({ gateway = catalogGateway }: AppProps) {
           evidence={evidence}
           pending={pending === "evidence"}
           error={error}
-          isIllustrative={gateway.dataSource === "bundled-snapshot"}
+          isIllustrative={false}
           onClose={closeDrawer}
         />
       )}

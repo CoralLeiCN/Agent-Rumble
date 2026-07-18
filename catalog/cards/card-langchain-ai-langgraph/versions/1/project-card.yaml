@@ -1,0 +1,1318 @@
+schema_version: "0.3"
+card_id: "card-langchain-ai-langgraph"
+card_version: 1
+
+field_states:
+  /source_snapshot/source_revisions/0/tag: not_applicable
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+
+project:
+  project_id: "project-langchain-ai-langgraph"
+  name: "LangGraph"
+  primary_type: agent_framework_sdk
+  type_rationale: >-
+    LangGraph is primarily a reusable Python framework and SDK ecosystem for
+    constructing and running stateful agent and workflow graphs. The analyzed
+    repository provides graph and functional composition APIs, a Pregel-inspired
+    execution runtime, checkpoint interfaces and database adapters, prebuilt
+    agent/tool components, a CLI, and a client SDK; it is not itself a finished
+    agent application.
+  boundary: >-
+    The open-source Python LangGraph project maintained in the single public
+    langchain-ai/langgraph repository on main at commit
+    49ae27c2ae983cfb92091b0dea9f7bc37a716479. Included are the langgraph core,
+    prebuilt, checkpoint, checkpoint-sqlite, checkpoint-postgres,
+    checkpoint-conformance, CLI, and Python SDK packages; repository-hosted
+    READMEs, examples, representative tests, and GitHub Actions configuration are
+    included as static evidence. Excluded are the separate LangGraph.js
+    repository, external LangChain and LangSmith implementations, hosted
+    LangSmith services and deployments, package-registry and release pages,
+    third-party dependency source, issues and pull requests, notebook output and
+    binary media, and all runtime behavior.
+  repositories:
+    - source_id: "source-langgraph-repository"
+      url: "https://github.com/langchain-ai/langgraph"
+      owner: "langchain-ai"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "libs/langgraph/"
+        - "libs/prebuilt/"
+        - "libs/checkpoint/"
+        - "libs/checkpoint-sqlite/"
+        - "libs/checkpoint-postgres/"
+        - "libs/checkpoint-conformance/"
+        - "libs/cli/"
+        - "libs/sdk-py/"
+        - "examples/"
+        - ".github/workflows/"
+      excluded_paths:
+        - "The separate langchain-ai/langgraphjs repository"
+        - "External LangChain, LangSmith, model-provider, and database implementations"
+        - "Hosted LangSmith products, deployments, and documentation bodies"
+        - "Issues, pull requests, discussions, package registries, and release assets"
+        - "Notebook output, binary media, third-party dependency source, and runtime execution"
+  packages:
+    - "langgraph 1.2.9"
+    - "langgraph-prebuilt 1.1.0"
+    - "langgraph-checkpoint 4.1.1"
+    - "langgraph-checkpoint-sqlite 3.1.0"
+    - "langgraph-checkpoint-postgres 3.1.0"
+    - "langgraph-checkpoint-conformance 0.0.2"
+    - "langgraph-cli 0.4.31"
+    - "langgraph-sdk 0.4.2"
+  services:
+    - "Optional local LangGraph API server launched through langgraph-cli[inmem]"
+    - "Optional Docker-based LangGraph API stack assembled by the CLI"
+  documentation_sites:
+    - "Repository-hosted package READMEs"
+    - "https://docs.langchain.com/oss/python/langgraph/overview (linked but not analyzed)"
+    - "https://reference.langchain.com/python/langgraph (linked but not analyzed)"
+  license: "MIT"
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:14:15Z"
+  source_revisions:
+    - source_id: "source-langgraph-repository"
+      branch: "main"
+      tag: null
+      commit: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+      retrieved_at: "2026-07-18T13:14:15Z"
+      content_digest: "git-tree-sha1:ddcbb546b84d307bfc3be23c4c518a48d779cf09"
+  release_versions:
+    - "langgraph 1.2.9"
+    - "langgraph-prebuilt 1.1.0"
+    - "langgraph-checkpoint 4.1.1"
+    - "langgraph-checkpoint-sqlite 3.1.0"
+    - "langgraph-checkpoint-postgres 3.1.0"
+    - "langgraph-checkpoint-conformance 0.0.2"
+    - "langgraph-cli 0.4.31"
+    - "langgraph-sdk 0.4.2"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    source_checkout:
+      method: "Filtered Git clone of the public repository followed by checkout of all blobs for the exact revision"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "Root and package READMEs, license, package manifests, and default-branch revision"
+      - "StateGraph composition and compilation APIs"
+      - "Pregel invoke and streaming surfaces"
+      - "Functional entrypoint/task API, commands, interrupts, retries, and dynamic sends"
+      - "Prebuilt ReAct-agent and tool-execution components"
+      - "Checkpoint contracts plus SQLite and PostgreSQL adapters"
+      - "CLI local/Docker workflows and Python API client"
+      - "Representative tests and GitHub Actions CI topology"
+    intentionally_not_analyzed:
+      - "Runtime correctness, performance, durability under failure, or agent quality"
+      - "Current status of GitHub Actions runs, package-registry releases, and release signatures"
+      - "Hosted LangSmith deployment, Studio, observability, or evaluation services"
+      - "LangGraph.js and external provider, LangChain, database, or platform implementations"
+      - "Complete API, test, example, security, and dependency-internals coverage"
+      - "Issues, pull requests, community history, vulnerability enumeration, and penetration testing"
+    source_safety: >-
+      Repository content was treated only as untrusted evidence. Instructions in
+      source files and documentation were not followed, dependencies were not
+      installed, and project code was not executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A Python framework and SDK ecosystem for building stateful, durable,
+    interruptible agent and workflow graphs with streaming and persistence.
+  purpose: >-
+    LangGraph gives developers low-level graph and functional APIs for combining
+    deterministic control flow with agentic model/tool steps, persisting state,
+    pausing for human input, streaming execution, and optionally packaging or
+    serving graphs through a CLI and remote API client.
+  target_users:
+    - "Python developers building custom stateful agents and workflows"
+    - "Platform teams that need explicit orchestration, persistence, and human review"
+    - "Framework authors building higher-level agent abstractions"
+    - "Teams operating LangGraph applications locally or through a LangGraph API server"
+  primary_use_cases:
+    - "Compose typed state graphs with sequential, conditional, parallel, and nested flows"
+    - "Persist, resume, replay, and inspect long-running executions"
+    - "Pause graph execution for human review or external input"
+    - "Stream values, updates, messages, checkpoints, task events, and debug data"
+    - "Build model/tool loops from prebuilt components or custom nodes"
+    - "Package, develop, and access LangGraph API applications"
+
+classification:
+  secondary_characteristics:
+    - "low-level agent orchestration framework"
+    - "stateful workflow runtime"
+    - "durable execution substrate"
+    - "checkpoint and storage abstraction"
+    - "prebuilt agent and tool component library"
+    - "local development and deployment tooling"
+    - "remote API client SDK"
+  domains:
+    - "general-purpose agent development"
+    - "workflow orchestration"
+    - "long-running stateful applications"
+    - "human-in-the-loop automation"
+  delivery_forms:
+    - "Python packages"
+    - "Python command-line interface"
+    - "Python API client SDK"
+    - "optional local or Docker API runtime"
+  agent_patterns:
+    - "graph-based orchestration"
+    - "model-directed tool loop"
+    - "conditional routing"
+    - "parallel fan-out and aggregation"
+    - "subgraphs"
+    - "checkpointed durable execution"
+    - "human in the loop"
+    - "functional tasks and entrypoints"
+  architecture_layers:
+    - "graph and functional authoring APIs"
+    - "Pregel-inspired execution runtime"
+    - "channels, state reducers, and streaming"
+    - "checkpoint and store interfaces"
+    - "SQLite and PostgreSQL persistence adapters"
+    - "prebuilt agent and tool nodes"
+    - "CLI packaging and local development"
+    - "remote LangGraph API client"
+  claim_ids:
+    - "claim-classification"
+    - "claim-graph-composition"
+    - "claim-functional-api"
+    - "claim-runtime-tooling"
+
+capabilities:
+  - capability_id: "capability-graph-composition"
+    ontology_id: "x-langgraph:state-graph-composition"
+    name: "Typed state-graph composition"
+    description: >-
+      Builds executable workflows from stateful nodes, reducers, directed edges,
+      conditional routes, sequences, and subgraphs, then exposes synchronous and
+      asynchronous invoke and stream interfaces.
+    support_status: statically_confirmed
+    scope: "langgraph core StateGraph and compiled Pregel runtime"
+    interfaces:
+      - "Python StateGraph builder API"
+      - "Compiled graph invoke, ainvoke, stream, and astream methods"
+      - "LangChain Runnable interface"
+    prerequisites:
+      - "Python 3.10 or later"
+      - "langgraph and its direct Python dependencies"
+    configuration_requirements:
+      - "A state schema and node callables"
+      - "Edges, conditional routes, or entry and finish points"
+    limitations:
+      - "The framework supplies orchestration rather than a domain-specific finished agent."
+      - "Graph and node behavior was not executed in this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-graph-composition"
+      - "claim-parallel-control"
+    evidence_refs:
+      - "evidence-stategraph-contract"
+      - "evidence-routing-primitives"
+      - "evidence-dynamic-send"
+
+  - capability_id: "capability-functional-workflows"
+    ontology_id: "x-langgraph:functional-workflows"
+    name: "Functional workflow and task API"
+    description: >-
+      Wraps synchronous or asynchronous Python functions as checkpointable
+      entrypoints and tasks with futures, retries, caching, timeouts, context,
+      and persistent previous results.
+    support_status: statically_confirmed
+    scope: "langgraph.func task and entrypoint APIs"
+    interfaces:
+      - "Python decorators"
+      - "invoke, ainvoke, stream, and astream workflow methods"
+    prerequisites:
+      - "Python 3.10 or later; Python 3.11 or later for asynchronous task functions"
+    configuration_requirements:
+      - "Optional checkpointer, store, cache, retry, and timeout policies"
+    limitations:
+      - "Checkpointed inputs and outputs must be serializable."
+      - "Synchronous tasks cannot be safely cancelled in-process by timeout."
+    confidence: high
+    claim_ids:
+      - "claim-functional-api"
+    evidence_refs:
+      - "evidence-functional-task"
+      - "evidence-functional-entrypoint"
+
+  - capability_id: "capability-durable-persistence"
+    ontology_id: "x-langgraph:durable-persistence"
+    name: "Checkpointed durable execution and memory"
+    description: >-
+      Persists graph state by thread and checkpoint, keeps pending writes, and
+      supports pause, resume, replay, state history, and memory across invocations
+      through an interface with in-memory, SQLite, and PostgreSQL implementations.
+    support_status: statically_confirmed
+    scope: "compiled graphs and repository-maintained checkpoint packages"
+    interfaces:
+      - "BaseCheckpointSaver sync and async protocol"
+      - "InMemorySaver"
+      - "SqliteSaver and AsyncSqliteSaver"
+      - "PostgresSaver and AsyncPostgresSaver"
+      - "Compiled graph state and history APIs"
+    prerequisites:
+      - "A configured checkpointer"
+      - "A thread_id for independent persisted execution state"
+      - "SQLite or PostgreSQL and their adapter dependencies when selected"
+    configuration_requirements:
+      - "Checkpoint namespace and optional checkpoint ID"
+      - "PostgreSQL setup and connection options when using PostgresSaver"
+      - "A restricted serializer allowlist or strict MessagePack mode for untrusted checkpoint stores"
+    limitations:
+      - "Durability and recovery guarantees were not exercised."
+      - "Persistence security depends on protecting the store and configuring deserialization safely."
+    confidence: high
+    claim_ids:
+      - "claim-durable-persistence"
+      - "claim-checkpoint-security"
+    evidence_refs:
+      - "evidence-compile-persistence"
+      - "evidence-checkpoint-contract"
+      - "evidence-checkpoint-adapters"
+      - "evidence-checkpoint-security"
+
+  - capability_id: "capability-human-interrupts"
+    ontology_id: "x-langgraph:human-interrupts"
+    name: "Resumable human-in-the-loop interrupts"
+    description: >-
+      Pauses execution from within a node, surfaces context to a client, and
+      resumes with a Command value while preserving graph state in a checkpointer.
+    support_status: statically_confirmed
+    scope: "compiled graph nodes and functional entrypoints"
+    interfaces:
+      - "interrupt(value)"
+      - "Command(resume=...)"
+      - "interrupt_before and interrupt_after graph options"
+    prerequisites:
+      - "A checkpointer"
+      - "A stable thread_id"
+    configuration_requirements:
+      - "Client-side handling of surfaced interrupt values and resume commands"
+    limitations:
+      - "Resuming restarts the interrupted node, so side effects before interrupt must be designed for replay."
+      - "Interactive behavior was not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-human-interrupts"
+    evidence_refs:
+      - "evidence-interrupt-contract"
+
+  - capability_id: "capability-execution-streaming"
+    ontology_id: "x-langgraph:execution-streaming"
+    name: "Multi-mode execution streaming"
+    description: >-
+      Streams whole-state values, per-node updates, custom events, model messages,
+      checkpoints, task lifecycle events, debug data, and optionally nested
+      subgraph namespaces.
+    support_status: statically_confirmed
+    scope: "Pregel stream and astream execution"
+    interfaces:
+      - "Compiled graph stream and astream"
+      - "StreamWriter custom events"
+      - "v1 and v2 stream formats"
+    prerequisites:
+      - "A compiled graph"
+    configuration_requirements:
+      - "Selected stream_mode or list of modes"
+      - "Optional subgraphs and durability settings"
+    limitations:
+      - "Output shapes vary by stream mode and stream-format version."
+      - "Streaming performance and ordering under load were not evaluated."
+    confidence: high
+    claim_ids:
+      - "claim-streaming"
+    evidence_refs:
+      - "evidence-streaming-modes"
+
+  - capability_id: "capability-prebuilt-agent-tools"
+    ontology_id: "x-langgraph:prebuilt-agent-tools"
+    name: "Prebuilt model/tool agent components"
+    description: >-
+      Provides a prebuilt ReAct-style graph and a ToolNode that binds model tools,
+      executes tool calls, injects state and stores, handles errors, and loops
+      until the model emits no further tool calls.
+    support_status: statically_confirmed
+    scope: "langgraph-prebuilt"
+    interfaces:
+      - "create_react_agent"
+      - "ToolNode"
+      - "LangChain BaseChatModel, Runnable, and BaseTool contracts"
+    prerequisites:
+      - "langgraph-prebuilt and langchain-core"
+      - "A compatible chat model and optional tools"
+    configuration_requirements:
+      - "Model, tools, prompt, state schema, and optional hooks"
+    limitations:
+      - "Provider:model string initialization additionally requires the langchain package."
+      - "Model and tool quality, safety, and side effects remain application responsibilities."
+    confidence: high
+    claim_ids:
+      - "claim-prebuilt-agent"
+    evidence_refs:
+      - "evidence-prebuilt-react-agent"
+      - "evidence-tool-node"
+
+  - capability_id: "capability-cli-api-client"
+    ontology_id: "x-langgraph:cli-api-client"
+    name: "Local development, packaging, and API client tooling"
+    description: >-
+      Creates projects, runs a development API server, launches a Docker stack,
+      builds images or Dockerfiles, and exposes a Python client for assistants,
+      threads, runs, state, and streaming against a LangGraph API server.
+    support_status: documented
+    scope: "langgraph-cli and langgraph-sdk packages"
+    interfaces:
+      - "langgraph command-line program"
+      - "langgraph.json configuration"
+      - "Synchronous and asynchronous Python API clients"
+      - "HTTP, SSE, and asynchronous WebSocket transports"
+    prerequisites:
+      - "langgraph-cli; the inmem extra for local development mode"
+      - "Docker for Docker-based commands"
+      - "A running LangGraph API server for the client SDK"
+    configuration_requirements:
+      - "Registered graphs, dependencies, environment, and Python version in langgraph.json"
+      - "Remote server URL and authentication where applicable"
+    limitations:
+      - "The server implementation is an optional dependency and was not included in the repository boundary."
+      - "The SDK documents transport and reconnect limitations."
+      - "No server was started and no image was built."
+    confidence: high
+    claim_ids:
+      - "claim-runtime-tooling"
+    evidence_refs:
+      - "evidence-cli-runtime"
+      - "evidence-sdk-client"
+
+architecture:
+  overview: >-
+    Applications define shared state and nodes through StateGraph or wrap
+    functions through entrypoint and task. Compilation produces a Pregel-style
+    runnable that schedules nodes, merges channel updates, retries work, handles
+    commands and interrupts, writes checkpoints, and emits configurable streams.
+    Prebuilt components add a model/tool loop. Persistence is abstracted behind
+    checkpoint and store protocols with repository packages for memory, SQLite,
+    and PostgreSQL. The optional CLI assembles local or Docker API environments,
+    while the Python SDK talks to a separately running LangGraph API server.
+  languages:
+    - "Python"
+    - "YAML for CI and deployment configuration"
+    - "JSON for LangGraph application configuration"
+  frameworks_and_sdks:
+    - name: "langchain-core"
+      version_constraint: ">=1.4.7,<2 for langgraph 1.2.9"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-dependencies"
+    - name: "Pydantic"
+      version_constraint: ">=2.7.4"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-dependencies"
+  model_providers: []
+  runtime_and_orchestration:
+    - name: "LangGraph Pregel runtime"
+      version_constraint: "langgraph 1.2.9"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-graph-composition"
+        - "claim-streaming"
+    - name: "xxhash"
+      version_constraint: ">=3.5.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-dependencies"
+  tools_and_mcp:
+    tools:
+      - name: "LangChain BaseTool-compatible tools"
+        version_constraint: "through langchain-core>=1.3.1 for langgraph-prebuilt"
+        dependency_relation: direct
+        required: false
+        claim_ids:
+          - "claim-prebuilt-agent"
+    mcp_role: none
+    mcp_details: []
+  skills: []
+  memory_and_state:
+    - name: "langgraph-checkpoint"
+      version_constraint: ">=4.1.0,<5.0.0 for langgraph 1.2.9"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-durable-persistence"
+    - name: "ormsgpack"
+      version_constraint: ">=1.12.0 in langgraph-checkpoint 4.1.1"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-durable-persistence"
+        - "claim-checkpoint-security"
+  retrieval_and_knowledge: []
+  document_processing: []
+  execution_and_sandbox:
+    - name: "Docker"
+      version_constraint: "User-supplied installation"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-runtime-tooling"
+  gateways_and_routing: []
+  storage_and_databases:
+    - name: "SQLite"
+      version_constraint: "via langgraph-checkpoint-sqlite 3.1.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-durable-persistence"
+    - name: "PostgreSQL"
+      version_constraint: "via langgraph-checkpoint-postgres 3.1.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-durable-persistence"
+  interfaces:
+    - name: "Python graph and functional APIs"
+      version_constraint: "langgraph 1.2.9"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-graph-composition"
+        - "claim-functional-api"
+    - name: "LangGraph command-line interface"
+      version_constraint: "0.4.31"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-runtime-tooling"
+    - name: "LangGraph Python API client"
+      version_constraint: "0.4.2"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-runtime-tooling"
+  deployment:
+    - name: "LangGraph CLI local in-memory server extra"
+      version_constraint: "langgraph-api>=0.5.35,<1.0.0 and langgraph-runtime-inmem>=0.7"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-runtime-tooling"
+    - name: "Docker image and Dockerfile generation"
+      version_constraint: "CLI 0.4.31"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-runtime-tooling"
+  observability_and_evaluation:
+    - name: "LangSmith tracing integration"
+      version_constraint: "External optional service through LangChain interfaces"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-observability-boundary"
+  security_and_permissions:
+    - name: "Strict MessagePack deserialization allowlist"
+      version_constraint: "LANGGRAPH_STRICT_MSGPACK or allowed_msgpack_modules"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-checkpoint-security"
+  data_flows:
+    - "Input and run context enter a compiled graph; scheduled nodes read state and emit partial updates."
+    - "Channel reducers merge node updates into state and route work to sequential, conditional, parallel, or nested destinations."
+    - "A configured checkpointer serializes thread-scoped state, metadata, and pending writes; subsequent runs can resume or replay it."
+    - "Stream modes project execution events, values, updates, messages, checkpoints, task events, and debug information to callers."
+    - "In a prebuilt agent, the model emits tool calls, ToolNode executes them, and ToolMessages return to the model loop."
+    - "The Python SDK exchanges assistant, thread, run, state, and stream data with an external LangGraph API server."
+  control_flows:
+    - "Static and conditional graph edges determine the next node or nodes."
+    - "Send dynamically fans out a node across custom states for map-reduce-style work."
+    - "Command can update state, route to nodes or a parent graph, and resume interrupts."
+    - "A checkpointer and thread ID allow interrupted or failed execution to continue from persisted state."
+    - "Retry and timeout policies govern node, task, and workflow attempts."
+
+components:
+  - component_id: "component-core"
+    name: "LangGraph core"
+    path: "libs/langgraph/langgraph/"
+    project_type: "agent_framework_sdk"
+    purpose: "Defines state graphs, channels, execution, streaming, functional workflows, commands, interrupts, retries, and runtime interfaces."
+    claim_ids:
+      - "claim-graph-composition"
+      - "claim-functional-api"
+      - "claim-streaming"
+  - component_id: "component-prebuilt"
+    name: "LangGraph prebuilt"
+    path: "libs/prebuilt/langgraph/prebuilt/"
+    project_type: "agent_framework_sdk"
+    purpose: "Provides a prebuilt model/tool agent graph, ToolNode, validation, tool interception, and interrupt helpers."
+    claim_ids:
+      - "claim-prebuilt-agent"
+  - component_id: "component-checkpoint"
+    name: "Checkpoint interfaces and memory implementation"
+    path: "libs/checkpoint/"
+    project_type: "agent_framework_sdk"
+    purpose: "Defines checkpoint saver, serialization, memory, store, and pending-write contracts."
+    claim_ids:
+      - "claim-durable-persistence"
+      - "claim-checkpoint-security"
+  - component_id: "component-checkpoint-adapters"
+    name: "SQLite and PostgreSQL checkpoint adapters"
+    path: "libs/checkpoint-sqlite/ and libs/checkpoint-postgres/"
+    project_type: "agent_framework_sdk"
+    purpose: "Implements synchronous and asynchronous persistent checkpoint savers for SQLite and PostgreSQL."
+    claim_ids:
+      - "claim-durable-persistence"
+  - component_id: "component-cli"
+    name: "LangGraph CLI"
+    path: "libs/cli/"
+    project_type: "agent_harness_runtime"
+    purpose: "Creates projects and assembles development, Docker, image-build, and deployment artifacts around configured graphs."
+    claim_ids:
+      - "claim-runtime-tooling"
+  - component_id: "component-sdk"
+    name: "LangGraph Python SDK"
+    path: "libs/sdk-py/"
+    project_type: "agent_framework_sdk"
+    purpose: "Provides synchronous and asynchronous clients for an external LangGraph API server."
+    claim_ids:
+      - "claim-runtime-tooling"
+
+usage:
+  installation: >-
+    Install the core with `pip install -U langgraph` or `uv add langgraph`.
+    Add packages such as langgraph-checkpoint-sqlite,
+    langgraph-checkpoint-postgres, langgraph-cli, or langgraph-sdk when those
+    persistence or runtime interfaces are needed.
+  minimal_start: >-
+    Define a typed state, create a StateGraph, add node callables and edges,
+    compile it, and call invoke or stream. Alternatively, decorate functions
+    with task and entrypoint for the functional API.
+  configuration:
+    - "State, input, output, and optional runtime-context schemas"
+    - "Node callables, reducers, edges, conditional paths, retries, caching, and timeouts"
+    - "Optional checkpointer, store, thread_id, and serializer restrictions"
+    - "Optional model, prompt, tools, hooks, and state schema for prebuilt agents"
+    - "langgraph.json graphs, dependencies, environment, and Python version for CLI-managed applications"
+    - "LangGraph API server URL and authentication for the Python SDK"
+  required_services: []
+  extension_points:
+    - "Custom graph nodes, state schemas, reducers, routes, Send values, commands, and subgraphs"
+    - "Custom task and entrypoint functions"
+    - "Custom checkpoint savers, stores, caches, serializers, and stream transformers"
+    - "Custom models, prompts, tools, tool-call interceptors, and agent hooks"
+    - "Custom CLI project templates, dependencies, Dockerfile lines, and additional Compose services"
+
+assessment:
+  contexts:
+    - context_id: "context-python-agent-framework-evaluation"
+      use_case: >-
+        Evaluate a Python framework for custom, stateful agents and workflows
+        that need explicit control flow, durable state, streaming, and human
+        review, using only repository-hosted static evidence.
+      comparison_cohort:
+        - "Python agent orchestration frameworks"
+        - "durable workflow runtimes used for agent applications"
+        - "graph-based agent SDKs"
+      requirements:
+        - "Composable deterministic and agentic control flow"
+        - "Checkpointed pause, resume, replay, and state inspection"
+        - "Human-in-the-loop interruption"
+        - "Streaming execution visibility"
+        - "Model and tool extensibility"
+        - "Local development and self-managed persistence options"
+      organizational_constraints:
+        - "Python 3.10 or later"
+        - "Static analysis only; no project execution or dependency installation"
+        - "Hosted LangSmith services and external dependencies are outside the evidence boundary"
+        - "The adopting team owns node, model, tool, persistence, and deployment safety"
+      assessed_at: "2026-07-18T13:14:15Z"
+  maturity: established
+  maturity_signals:
+    - statement: "The repository presents production/stable Python packages with versioned manifests and broad package-level CI definitions."
+      reasoning: >-
+        The core manifest uses a Production/Stable classifier and the repository
+        defines lint, unit, schema, CLI integration, SDK integration, and core
+        test jobs. This analysis verified the static definitions, not their
+        latest run status or runtime outcomes.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-maturity"
+    - statement: "Core durability and interaction surfaces have dedicated repository tests and documented extension contracts."
+      reasoning: >-
+        Representative test suites cover interruptions, state, subgraphs, time
+        travel, retries, streaming, checkpoints, and remote graphs, while package
+        documentation defines saver and SDK contracts. Tests were inspected but
+        not executed.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: medium
+      claim_ids:
+        - "claim-maturity"
+  strengths:
+    - statement: "It combines explicit low-level graph control with first-class persistence, streaming, and resumable interruption."
+      reasoning: >-
+        These concerns are represented in the core compilation and execution
+        interfaces rather than requiring an application to assemble unrelated
+        orchestration primitives.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-graph-composition"
+        - "claim-durable-persistence"
+        - "claim-human-interrupts"
+        - "claim-streaming"
+    - statement: "It supports both graph and functional authoring styles and provides prebuilt model/tool components without forcing a model provider."
+      reasoning: >-
+        StateGraph and entrypoint/task expose distinct composition styles, while
+        the prebuilt agent accepts model and tool interfaces from LangChain Core.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-functional-api"
+        - "claim-prebuilt-agent"
+        - "claim-provider-boundary"
+  limitations:
+    - statement: "LangGraph is a low-level framework, so applications must supply domain behavior, prompts, models, tools, policies, and user experiences."
+      reasoning: >-
+        The repository explicitly positions the core for advanced customization
+        and points users seeking quick higher-level agents toward other packages.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-low-level-limitation"
+    - statement: "The optional API server and hosted platform behavior cannot be evaluated from this repository alone."
+      reasoning: >-
+        The CLI declares langgraph-api and an in-memory runtime as optional
+        dependencies, while the SDK requires a running server; those server and
+        hosted implementations are outside the analyzed source boundary.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-runtime-tooling"
+        - "claim-observability-boundary"
+  risks:
+    - statement: "Checkpoint deserialization can be unsafe if a checkpoint store is compromised and serializer restrictions are not configured."
+      reasoning: >-
+        First-party checkpoint documentation states the default serializer may
+        allow Python types from checkpoint data and recommends strict MessagePack
+        or an explicit module allowlist.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-checkpoint-security"
+    - statement: "Application code must make interrupted or replayed node side effects safe because resumption can re-execute node logic."
+      reasoning: >-
+        The interrupt contract states that execution resumes from the start of
+        the node. External writes before an interrupt therefore need idempotency
+        or another application-level control.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-human-interrupts"
+  best_fit:
+    - statement: "Custom Python agents and workflows that need explicit branching, persistence, streaming, and human approval points."
+      reasoning: >-
+        Those requirements map directly to the repository's StateGraph,
+        checkpoint, stream, command, and interrupt interfaces.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-graph-composition"
+        - "claim-durable-persistence"
+        - "claim-human-interrupts"
+  poor_fit:
+    - statement: "Teams seeking a turnkey agent product with a ready-made domain workflow and user interface."
+      reasoning: >-
+        LangGraph is an orchestration framework and SDK; the adopting application
+        remains responsible for product behavior and experience.
+      context_id: "context-python-agent-framework-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-low-level-limitation"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "LangChain Core"
+      scope: "Runnable, message, model, tool, configuration, and tracing contracts used directly by core and prebuilt packages."
+      confidence: high
+      claim_ids:
+        - "claim-dependencies"
+    - target_project: "langgraph-checkpoint"
+      scope: "Required persistence protocol package for langgraph 1.2.9."
+      confidence: high
+      claim_ids:
+        - "claim-durable-persistence"
+  integrates_with:
+    - target_project: "LangSmith"
+      scope: "Optional external tracing, evaluation, Studio, and deployment ecosystem referenced by the repository."
+      confidence: high
+      claim_ids:
+        - "claim-observability-boundary"
+    - target_project: "SQLite"
+      scope: "Repository-maintained synchronous and asynchronous checkpoint adapter."
+      confidence: high
+      claim_ids:
+        - "claim-durable-persistence"
+    - target_project: "PostgreSQL"
+      scope: "Repository-maintained synchronous and asynchronous checkpoint adapter."
+      confidence: high
+      claim_ids:
+        - "claim-durable-persistence"
+    - target_project: "User-selected LangChain-compatible model and tools"
+      scope: "Model and tool interfaces used by the prebuilt agent and application nodes."
+      confidence: high
+      claim_ids:
+        - "claim-prebuilt-agent"
+        - "claim-provider-boundary"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "LangGraph is a reusable Python agent framework and SDK ecosystem rather than a finished agent application."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The analyzed LangGraph repository boundary"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-positioning"
+      - "evidence-core-manifest"
+      - "evidence-stategraph-contract"
+    conflicting_evidence_ids: []
+    reasoning: "The repository describes and implements reusable orchestration, persistence, prebuilt, CLI, and SDK packages, with no single domain application boundary."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-graph-composition"
+    statement: "StateGraph composes shared-state nodes with reducers and static or conditional edges, then compiles them into sync and async runnable execution interfaces."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "langgraph 1.2.9 core"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-stategraph-contract"
+      - "evidence-routing-primitives"
+      - "evidence-compile-persistence"
+    conflicting_evidence_ids: []
+    reasoning: "The StateGraph implementation declares the state/reducer model, edge APIs, compilation contract, and executable interfaces."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-functional-api"
+    statement: "LangGraph also supports checkpointable functional workflows built from task and entrypoint decorators with futures, retries, caching, timeouts, context, and stores."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "langgraph.func in langgraph 1.2.9"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-functional-task"
+      - "evidence-functional-entrypoint"
+    conflicting_evidence_ids: []
+    reasoning: "The decorators and their configuration are present in the inspected source, including documented async and cancellation constraints."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-durable-persistence"
+    statement: "Checkpointers persist thread-scoped graph state and pending writes to enable memory, pause/resume, replay, and durable continuation, with repository adapters for memory, SQLite, and PostgreSQL."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "LangGraph core and checkpoint packages in the analyzed repository"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-compile-persistence"
+      - "evidence-checkpoint-contract"
+      - "evidence-checkpoint-adapters"
+    conflicting_evidence_ids: []
+    reasoning: "Core compilation accepts checkpointers and the checkpoint packages define the persistence contract and concrete database adapters."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-human-interrupts"
+    statement: "LangGraph can pause a checkpointed node, surface a value to a caller, and resume it with Command, restarting the node's logic."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "interrupt and Command in langgraph 1.2.9"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-interrupt-contract"
+    conflicting_evidence_ids: []
+    reasoning: "The interrupt and Command implementation contract explicitly describes suspension, checkpoint prerequisite, surfaced values, and restart behavior."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-streaming"
+    statement: "Compiled graphs expose multi-mode streaming for state values, node updates, custom events, model messages, checkpoints, task events, debug events, and subgraphs."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Pregel stream and astream in langgraph 1.2.9"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-streaming-modes"
+    conflicting_evidence_ids: []
+    reasoning: "The stream method signature and implementation documentation enumerate each output mode and nested-subgraph behavior."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-parallel-control"
+    statement: "Conditional edges and Send support dynamic routing and map-reduce-style parallel fan-out over custom per-node states."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "StateGraph routing and Send in langgraph 1.2.9"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-routing-primitives"
+      - "evidence-dynamic-send"
+    conflicting_evidence_ids: []
+    reasoning: "The inspected APIs define multi-destination conditional routing and a Send primitive explicitly intended for dynamic parallel map-reduce work."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-prebuilt-agent"
+    statement: "langgraph-prebuilt implements a ReAct-style model/tool loop and a ToolNode with parallel calls, error handling, state/store injection, and command-based updates."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "langgraph-prebuilt 1.1.0"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-prebuilt-react-agent"
+      - "evidence-tool-node"
+    conflicting_evidence_ids: []
+    reasoning: "The inspected source documents and constructs the model/tool loop and ToolNode extension surface."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-runtime-tooling"
+    statement: "The repository provides a CLI for project creation, local or Docker API operation, and image generation, plus a Python SDK for a separately running LangGraph API server."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "langgraph-cli 0.4.31 and langgraph-sdk 0.4.2"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-cli-runtime"
+      - "evidence-sdk-client"
+    conflicting_evidence_ids: []
+    reasoning: "First-party package READMEs define the commands, configuration, client scope, prerequisites, and known transport limitations; none were run."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-dependencies"
+    statement: "langgraph 1.2.9 directly requires Python 3.10+, langchain-core, langgraph-checkpoint, langgraph-sdk, langgraph-prebuilt, xxhash, and Pydantic within declared version ranges."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The langgraph package manifest at the analyzed commit"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-core-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The version and direct dependency constraints are declared in libs/langgraph/pyproject.toml."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-provider-boundary"
+    statement: "Core LangGraph does not bundle a model provider; prebuilt agent use is mediated through LangChain model interfaces and user-supplied models."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "langgraph and langgraph-prebuilt package boundary"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-core-manifest"
+      - "evidence-prebuilt-react-agent"
+    conflicting_evidence_ids: []
+    reasoning: "No provider SDK is a direct core dependency, while create_react_agent accepts model objects, runnables, callables, or optional LangChain string initialization."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-checkpoint-security"
+    statement: "Checkpoint deserialization requires an explicit trust decision because the documented default can allow Python types from checkpoint data; strict MessagePack or an allowlist reduces that risk."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "langgraph-checkpoint serialization and repository checkpoint adapters"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-checkpoint-security"
+      - "evidence-checkpoint-adapters"
+    conflicting_evidence_ids: []
+    reasoning: "The first-party checkpoint and adapter READMEs explicitly warn about deserializing compromised data and prescribe restriction mechanisms."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-observability-boundary"
+    statement: "LangSmith is an optional external observability, evaluation, development, and deployment ecosystem, not part of the analyzed repository implementation."
+    claim_kind: interpretive
+    verification_status: documented
+    confidence: high
+    applies_to: "The repository boundary and linked LangSmith ecosystem"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-positioning"
+    conflicting_evidence_ids: []
+    reasoning: "The root README recommends and links LangSmith services while the repository boundary contains LangGraph packages rather than those hosted implementations."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-maturity"
+    statement: "For the stated framework-evaluation context, LangGraph appears established based on versioned stable packages, broad CI definitions, documentation, examples, and focused tests."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The analyzed repository snapshot under the declared assessment context"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-core-manifest"
+      - "evidence-ci-topology"
+      - "evidence-root-positioning"
+    conflicting_evidence_ids: []
+    reasoning: "Maturity is inferred from repository artifacts only; CI outcomes, production performance, release provenance, and operational service behavior were not verified."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+  - claim_id: "claim-low-level-limitation"
+    statement: "LangGraph intentionally exposes low-level orchestration and is not a turnkey domain agent or end-user product."
+    claim_kind: assessment
+    verification_status: documented
+    confidence: high
+    applies_to: "Use as a framework in the declared assessment context"
+    assessment_context_id: "context-python-agent-framework-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-positioning"
+    conflicting_evidence_ids: []
+    reasoning: "The root documentation calls LangGraph low-level and directs users seeking quicker higher-level agent construction to Deep Agents or LangChain."
+    last_verified_at: "2026-07-18T13:14:15Z"
+
+sources:
+  - source_id: "source-langgraph-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-tree-sha1:ddcbb546b84d307bfc3be23c4c518a48d779cf09"
+    access_scope: public
+  - source_id: "source-langgraph-root-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/README.md"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:97c31e9cb4d8fe56be8d768ce3eb5e22400e897e"
+    access_scope: public
+  - source_id: "source-langgraph-core-manifest"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/pyproject.toml"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:cc6a99fea500fc46e57248d9673115cc3eead2c3"
+    access_scope: public
+  - source_id: "source-langgraph-stategraph"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:deb0e9e9406ad035a5140d959dd0c39aea444d46"
+    access_scope: public
+  - source_id: "source-langgraph-pregel"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/pregel/main.py"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:4e098ba5b0b06c9658a1d149fe35d2c2ca95bb94"
+    access_scope: public
+  - source_id: "source-langgraph-types"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/types.py"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:ac9aa9b00565ec20476b4d00a3847f6b7e8fda34"
+    access_scope: public
+  - source_id: "source-langgraph-functional"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/func/__init__.py"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:be310f0f8bac79efd9f19cd8983776f697d0f676"
+    access_scope: public
+  - source_id: "source-langgraph-prebuilt-agent"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/prebuilt/langgraph/prebuilt/chat_agent_executor.py"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:6c11c8847febbafd2b4fb3634868d40636c3b53b"
+    access_scope: public
+  - source_id: "source-langgraph-tool-node"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/prebuilt/langgraph/prebuilt/tool_node.py"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:25d2425f911b8ba7b741733aaa45ed3823b4b892"
+    access_scope: public
+  - source_id: "source-langgraph-checkpoint-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint/README.md"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:a9eb928f64756c79a1697883832a7337093319ef"
+    access_scope: public
+  - source_id: "source-langgraph-checkpoint-sqlite-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-sqlite/README.md"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:16ff9dc3cd0f0735939a82532a498a0a8f7f4b2f"
+    access_scope: public
+  - source_id: "source-langgraph-checkpoint-postgres-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-postgres/README.md"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:f3ccc0da2229125c9bd01ff9ff17bc11ede0fdf9"
+    access_scope: public
+  - source_id: "source-langgraph-cli-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/cli/README.md"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:cac7808bb09ddb7496fd1e8dcdb67d2eac0fe931"
+    access_scope: public
+  - source_id: "source-langgraph-sdk-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/sdk-py/README.md"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:53fae13a91f2104427adc981355a21617d1ac3a8"
+    access_scope: public
+  - source_id: "source-langgraph-ci"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/.github/workflows/ci.yml"
+    revision_or_version: "49ae27c2ae983cfb92091b0dea9f7bc37a716479"
+    retrieved_at: "2026-07-18T13:14:15Z"
+    content_digest: "git-blob-sha1:1899c42ccc84992404833e8c248917f7c4553a34"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-root-positioning"
+    source_id: "source-langgraph-root-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Project description, Why use LangGraph?, and ecosystem"
+      line_start: 11
+      line_end: 57
+    confidence: high
+    excerpt_or_symbol: "Low-level orchestration framework for building stateful agents; durable execution, human-in-the-loop, memory, and linked LangSmith services."
+    note: "First-party positioning and ecosystem boundary; linked external documentation and services were not analyzed."
+  - evidence_id: "evidence-core-manifest"
+    source_id: "source-langgraph-core-manifest"
+    locator:
+      path: "libs/langgraph/pyproject.toml"
+      symbol_or_section: "[project]"
+      line_start: 5
+      line_end: 40
+    confidence: high
+    excerpt_or_symbol: "langgraph 1.2.9, Python >=3.10, Production/Stable classifier, and direct dependency constraints."
+    note: "Static package metadata at the analyzed commit; registry publication was not checked."
+  - evidence_id: "evidence-stategraph-contract"
+    source_id: "source-langgraph-stategraph"
+    locator:
+      path: "libs/langgraph/langgraph/graph/state.py"
+      symbol_or_section: "StateGraph"
+      line_start: 130
+      line_end: 198
+    confidence: high
+    excerpt_or_symbol: "StateGraph nodes read and write shared state, reducers merge values, and compile creates invoke and stream interfaces."
+    note: "Direct source-level API and example; not executed."
+  - evidence_id: "evidence-routing-primitives"
+    source_id: "source-langgraph-stategraph"
+    locator:
+      path: "libs/langgraph/langgraph/graph/state.py"
+      symbol_or_section: "StateGraph.add_edge and StateGraph.add_conditional_edges"
+      line_start: 915
+      line_end: 1017
+    confidence: high
+    excerpt_or_symbol: "Static edges wait for one or all source nodes; conditional paths select one or more destinations."
+    note: "Direct implementation and contract for graph routing."
+  - evidence_id: "evidence-compile-persistence"
+    source_id: "source-langgraph-stategraph"
+    locator:
+      path: "libs/langgraph/langgraph/graph/state.py"
+      symbol_or_section: "StateGraph.compile"
+      line_start: 1164
+      line_end: 1218
+    confidence: high
+    excerpt_or_symbol: "compile accepts checkpointer, cache, store, interrupt controls, and produces a runnable that supports sync, async, batch, and stream operations."
+    note: "The contract identifies thread_id as the persisted run key and describes pause, resume, and replay support."
+  - evidence_id: "evidence-functional-task"
+    source_id: "source-langgraph-functional"
+    locator:
+      path: "libs/langgraph/langgraph/func/__init__.py"
+      symbol_or_section: "task"
+      line_start: 109
+      line_end: 193
+    confidence: high
+    excerpt_or_symbol: "task wraps sync or async functions with retry, cache, timeout, serialization, and future-based parallelism semantics."
+    note: "Static implementation contract; no decorated task was run."
+  - evidence_id: "evidence-functional-entrypoint"
+    source_id: "source-langgraph-functional"
+    locator:
+      path: "libs/langgraph/langgraph/func/__init__.py"
+      symbol_or_section: "entrypoint"
+      line_start: 262
+      line_end: 312
+    confidence: high
+    excerpt_or_symbol: "entrypoint injects config, previous state, and runtime and accepts checkpointer, store, cache, context, retry, and timeout configuration."
+    note: "Static implementation contract; workflow behavior was not executed."
+  - evidence_id: "evidence-dynamic-send"
+    source_id: "source-langgraph-types"
+    locator:
+      path: "libs/langgraph/langgraph/types.py"
+      symbol_or_section: "Send"
+      line_start: 664
+      line_end: 703
+    confidence: high
+    excerpt_or_symbol: "Send dynamically invokes a node with custom state and documents parallel map-reduce fan-out."
+    note: "Direct control-flow primitive and example."
+  - evidence_id: "evidence-interrupt-contract"
+    source_id: "source-langgraph-types"
+    locator:
+      path: "libs/langgraph/langgraph/types.py"
+      symbol_or_section: "Command and interrupt"
+      line_start: 759
+      line_end: 831
+    confidence: high
+    excerpt_or_symbol: "Command carries resume values; interrupt pauses, surfaces context, requires a checkpointer, and restarts the node when resumed."
+    note: "Direct source-level human-in-the-loop contract and replay caveat."
+  - evidence_id: "evidence-streaming-modes"
+    source_id: "source-langgraph-pregel"
+    locator:
+      path: "libs/langgraph/langgraph/pregel/main.py"
+      symbol_or_section: "Pregel.stream"
+      line_start: 2616
+      line_end: 2724
+    confidence: high
+    excerpt_or_symbol: "stream supports values, updates, custom, messages, checkpoints, tasks, debug, multiple modes, durability options, and subgraph namespaces."
+    note: "Direct execution interface; runtime ordering and performance were not tested."
+  - evidence_id: "evidence-prebuilt-react-agent"
+    source_id: "source-langgraph-prebuilt-agent"
+    locator:
+      path: "libs/prebuilt/langgraph/prebuilt/chat_agent_executor.py"
+      symbol_or_section: "create_react_agent model and tool loop"
+      line_start: 480
+      line_end: 590
+    confidence: high
+    excerpt_or_symbol: "The prebuilt graph alternates model and tool nodes until no tool calls remain and binds supplied tool classes to the model."
+    note: "The provider:model string path imports optional langchain; user-supplied compatible model objects can be used directly."
+  - evidence_id: "evidence-tool-node"
+    source_id: "source-langgraph-tool-node"
+    locator:
+      path: "libs/prebuilt/langgraph/prebuilt/tool_node.py"
+      symbol_or_section: "Module contract and ToolCallRequest"
+      line_start: 1
+      line_end: 149
+    confidence: high
+    excerpt_or_symbol: "ToolNode supports parallel calls, customizable error handling, state/store injection, command-based updates, and request interception."
+    note: "Static module and request contracts; tool side effects were not executed."
+  - evidence_id: "evidence-checkpoint-contract"
+    source_id: "source-langgraph-checkpoint-readme"
+    locator:
+      path: "libs/checkpoint/README.md"
+      symbol_or_section: "What is this?, Key concepts, and Interface"
+      line_start: 17
+      line_end: 67
+    confidence: high
+    excerpt_or_symbol: "Checkpointers persist graph state each superstep, separate runs by thread, preserve pending writes, and define sync and async saver methods."
+    note: "First-party package documentation; the saver behavior was not executed."
+  - evidence_id: "evidence-checkpoint-security"
+    source_id: "source-langgraph-checkpoint-readme"
+    locator:
+      path: "libs/checkpoint/README.md"
+      symbol_or_section: "Serde security notice"
+      line_start: 45
+      line_end: 54
+    confidence: high
+    excerpt_or_symbol: "Default checkpoint deserialization may allow Python types; strict MessagePack or an explicit allowed-module list is recommended."
+    note: "This is a documented configuration risk, not a vulnerability finding or security audit."
+  - evidence_id: "evidence-checkpoint-adapters"
+    source_id: "source-langgraph-checkpoint-sqlite-readme"
+    locator:
+      path: "libs/checkpoint-sqlite/README.md"
+      symbol_or_section: "What is this? and Security"
+      line_start: 17
+      line_end: 28
+    confidence: high
+    excerpt_or_symbol: "The repository provides sync and async SQLite checkpoint persistence and repeats the strict deserialization guidance."
+    note: "The PostgreSQL package separately documents an analogous durable adapter at libs/checkpoint-postgres/README.md:17-38."
+  - evidence_id: "evidence-cli-runtime"
+    source_id: "source-langgraph-cli-readme"
+    locator:
+      path: "libs/cli/README.md"
+      symbol_or_section: "Commands and Configuration"
+      line_start: 17
+      line_end: 104
+    confidence: high
+    excerpt_or_symbol: "The CLI creates projects, runs a hot-reloading server, launches Docker, builds images or Dockerfiles, and reads graph registration from langgraph.json."
+    note: "Commands were not run and the optional API server implementation is outside this repository."
+  - evidence_id: "evidence-sdk-client"
+    source_id: "source-langgraph-sdk-readme"
+    locator:
+      path: "libs/sdk-py/README.md"
+      symbol_or_section: "What is this?, Quick Start, and Known Limitations"
+      line_start: 17
+      line_end: 60
+    confidence: high
+    excerpt_or_symbol: "The Python SDK manages assistants, threads, and streamed runs against a running API server and documents SSE/WebSocket and reconnect limitations."
+    note: "No API server or transport was exercised."
+  - evidence_id: "evidence-ci-topology"
+    source_id: "source-langgraph-ci"
+    locator:
+      path: ".github/workflows/ci.yml"
+      symbol_or_section: "jobs"
+      line_start: 25
+      line_end: 184
+    confidence: high
+    excerpt_or_symbol: "CI statically defines package lint and test matrices, core tests, schema checks, CLI integration, SDK integration, and an aggregate success job."
+    note: "The workflow definition was inspected; current or historical workflow outcomes were not queried."
+
+open_questions:
+  - question: "What release tag, if any, should represent the multi-package repository snapshot rather than its untagged main-branch commit?"
+    reason: "The exact analyzed commit has no tag, and package versions are released independently."
+    related_claim_ids:
+      - "claim-maturity"
+  - question: "What operational guarantees and licensing terms apply to the optional langgraph-api server and hosted LangSmith deployment products at compatible versions?"
+    reason: "Those implementations are outside the analyzed repository boundary and were not run."
+    related_claim_ids:
+      - "claim-runtime-tooling"
+      - "claim-observability-boundary"
+  - question: "How do checkpoint durability, replay semantics, streaming order, and throughput behave under representative production failures and concurrency?"
+    reason: "Static analysis confirmed interfaces and repository tests but did not perform dynamic or benchmark evaluation."
+    related_claim_ids:
+      - "claim-durable-persistence"
+      - "claim-streaming"

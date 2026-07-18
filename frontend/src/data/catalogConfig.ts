@@ -1,7 +1,4 @@
-export type CatalogGatewayMode = "http" | "static";
-
 export interface CatalogGatewayConfig {
-  mode: CatalogGatewayMode;
   apiBaseUrl: string;
 }
 
@@ -14,14 +11,13 @@ export function readCatalogGatewayConfig(
   environment: CatalogEnvironment = import.meta.env,
 ): CatalogGatewayConfig {
   const configuredMode = environment.VITE_CATALOG_GATEWAY?.trim() || "http";
-  if (configuredMode !== "http" && configuredMode !== "static") {
+  if (configuredMode !== "http") {
     throw new Error(
-      `Unsupported VITE_CATALOG_GATEWAY value "${configuredMode}"; expected "http" or "static".`,
+      `Unsupported VITE_CATALOG_GATEWAY value "${configuredMode}"; only the live HTTP catalog is supported.`,
     );
   }
 
   return {
-    mode: configuredMode,
     apiBaseUrl: environment.VITE_CATALOG_API_BASE_URL?.trim() ?? "",
   };
 }

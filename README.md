@@ -37,3 +37,11 @@ Inspired by model cards and data cards, the **Agent Project Card** creates a sha
 * [Product specification](docs/specification/README.md)
 * [Requirements](docs/requirements.md)
 * [Our build stories](docs/project-stories.md)
+
+## Skill discovery
+
+The canonical Agent Project Card skill is exposed to repository-local Codex
+sessions at `.agents/skills/agent-project-card`, which points to
+`../../plugins/agent-project-card/skills/agent-project-card`. Marketplace
+installations display it as `agent-project-card:agent-project-card`, using the
+`<plugin-name>:<skill-name>` namespace format.

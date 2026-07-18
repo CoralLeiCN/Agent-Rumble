@@ -1,12 +1,10 @@
 import { readCatalogGatewayConfig, type CatalogGatewayConfig } from "./catalogConfig";
-import { preparedQuery, projectCards, searchProjectionContext } from "./fixtures";
 import { FetchJsonTransport, type JsonTransport } from "./httpTransport";
 import { encodeOpaquePathIdentifier } from "./opaquePathIdentifier";
 import {
   projectCardToSummary,
   projectCardsToClaimEvidence,
   projectCardsToComparison,
-  projectCardsToSearchResponse,
 } from "./projectCardAdapter";
 import type {
   AssessmentContextView,
@@ -20,7 +18,6 @@ import type {
 import type { AgentProjectCard } from "../types/projectCard";
 
 const API_PREFIX = "/api/v1";
-const pause = () => new Promise<void>((resolve) => globalThis.setTimeout(resolve, 180));
 
 export interface CatalogContext {
   catalogId: string;
@@ -183,7 +180,7 @@ export class HttpCatalogGateway implements CatalogGateway {
   }
 
   async searchProjects(query: string): Promise<SearchResponse> {
-    const normalizedQuery = query.trim() || preparedQuery;
+    const normalizedQuery = query.trim();
     const response = await this.transport.request<RawSearchResponse>(
       `${API_PREFIX}/catalog/search`,
       {
@@ -192,12 +189,14 @@ export class HttpCatalogGateway implements CatalogGateway {
           text: normalizedQuery,
           page: 1,
           page_size: 100,
-          assessment_context: {
-            use_case: normalizedQuery,
-            comparison_cohort: ["Published Agent Project Cards"],
-            requirements: [normalizedQuery],
-            organizational_constraints: ["Static evidence only"],
-          },
+          ...(normalizedQuery ? {
+            assessment_context: {
+              use_case: normalizedQuery,
+              comparison_cohort: ["Published Agent Project Cards"],
+              requirements: [normalizedQuery],
+              organizational_constraints: ["Static evidence only"],
+            },
+          } : {}),
         }),
       },
     );
@@ -255,42 +254,13 @@ export class HttpCatalogGateway implements CatalogGateway {
   }
 }
 
-export class StaticCatalogGateway implements CatalogGateway {
-  readonly dataSource = "bundled-snapshot" as const;
-
-  async searchProjects(query: string): Promise<SearchResponse> {
-    await pause();
-    return projectCardsToSearchResponse(
-      projectCards,
-      query.trim() || preparedQuery,
-      searchProjectionContext,
-    );
-  }
-
-  async compareProjects(projectIds: string[]): Promise<ComparisonResponse> {
-    await pause();
-    return projectCardsToComparison(
-      projectCards,
-      projectIds,
-      "fixture",
-    );
-  }
-
-  async getClaimEvidence(claimId: string): Promise<ClaimEvidenceRecord> {
-    await pause();
-    return projectCardsToClaimEvidence(projectCards, claimId);
-  }
-}
-
 export function createCatalogGateway(
   config: CatalogGatewayConfig = readCatalogGatewayConfig(),
   transport?: JsonTransport,
 ): CatalogGateway {
-  return config.mode === "http"
-    ? new HttpCatalogGateway(
-      transport ?? new FetchJsonTransport({ baseUrl: config.apiBaseUrl }),
-    )
-    : new StaticCatalogGateway();
+  return new HttpCatalogGateway(
+    transport ?? new FetchJsonTransport({ baseUrl: config.apiBaseUrl }),
+  );
 }
 
 export const catalogGateway: CatalogGateway = createCatalogGateway();

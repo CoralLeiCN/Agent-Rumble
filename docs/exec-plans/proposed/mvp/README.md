@@ -119,18 +119,16 @@ The following work already exists:
   cooldown.
 * A FastAPI application factory, typed settings, YAML catalog repository,
   retrieval/search/evidence/comparison routes, typed errors, and API tests.
-* A local Vite, React, and TypeScript implementation with HTTP and visibly
-  labeled bundled-snapshot catalog gateways. Its broader production
-  architecture remains a decision gate.
+* A local Vite, React, and TypeScript implementation with an API-only HTTP
+  catalog gateway. Its broader production architecture remains a decision gate.
 * Accepted React, FastAPI, Pydantic, OpenAI Agents SDK, Codex, direct-plugin,
   hosted-service, and catalog-API constraints.
 * Specified card semantics, exploration workflow, safety boundaries, and MVP
   acceptance criteria.
 * A repository-local Agent Project Card skill packaged as a plugin, an
   executable v0.3 JSON Schema, a validation script, and focused tests.
-* Three validated and published cards—BioAgents, Biomni, and Eigent—with pinned
-  Source Snapshots, Claims, Evidence, assessments, relationships, and explicit
-  unavailable-value states.
+* Eleven validated and published cards with pinned Source Snapshots, Claims,
+  Evidence, assessments, relationships, and explicit unavailable-value states.
 * The accepted YAML-first versioned catalog under `catalog/cards/`, with an
   all-or-nothing validated in-memory projection and embeddings/vector search
   still deferred.

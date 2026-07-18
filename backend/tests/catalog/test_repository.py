@@ -252,11 +252,19 @@ def test_repository_catalog_loads_all_published_validated_cards() -> None:
         max_file_size_bytes=2 * 1024 * 1024,
     ).load()
 
-    assert snapshot.card_count == 3
-    assert snapshot.project_count == 3
+    assert snapshot.card_count == 11
+    assert snapshot.project_count == 11
     assert {card.project_id for card in snapshot.list_current()} == {
+        "project-anthropics-claude-agent-sdk-python",
         "project-bio-xyz-bioagents",
+        "project-crewaiinc-crewai",
+        "project-different-ai-openwork",
         "project-eigent-ai-eigent",
+        "project-langchain-ai-langgraph",
+        "project-openags-auto-researcher",
+        "project-openai-openai-agents-python",
+        "project-opendfm-xcientist",
+        "project-openloaf-openloaf",
         "project-snap-stanford-biomni",
     }
 

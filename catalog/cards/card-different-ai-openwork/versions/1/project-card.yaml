@@ -1,0 +1,1531 @@
+schema_version: "0.3"
+card_id: "card-different-ai-openwork"
+card_version: 1
+
+field_states:
+  /source_snapshot/source_revisions/0/tag: no_evidence_found
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+  /claims/0/assessment_context_id: not_applicable
+  /claims/1/assessment_context_id: not_applicable
+  /claims/2/assessment_context_id: not_applicable
+  /claims/3/assessment_context_id: not_applicable
+  /claims/4/assessment_context_id: not_applicable
+  /claims/5/assessment_context_id: not_applicable
+  /claims/6/assessment_context_id: not_applicable
+  /claims/7/assessment_context_id: not_applicable
+  /claims/8/assessment_context_id: not_applicable
+  /claims/9/assessment_context_id: not_applicable
+
+project:
+  project_id: "project-different-ai-openwork"
+  name: "OpenWork"
+  primary_type: agent_application
+  type_rationale: >-
+    OpenWork is primarily a deployable agent product: a desktop and web
+    workspace for running OpenCode-backed agent sessions, managing models,
+    skills, plugins and MCP connections, sharing or remotely accessing
+    workspaces, and administering team capabilities through Den. The repository
+    includes reusable server, orchestrator and MCP components, but they support
+    the product rather than define a general-purpose agent SDK.
+  boundary: >-
+    The OpenWork product implemented by the single public different-ai/openwork
+    monorepo on branch dev at commit
+    404db4c1ae83fe9a3b31c49bda77732c55258283. Included are the React application,
+    Electron desktop shell, OpenWork server, OpenWork orchestrator, installer,
+    shared packages, Den web and API control plane under ee/, OpenWork Connect
+    MCP server, repository documentation, representative tests and evals,
+    packaging, and deployment configuration. Excluded are the external OpenCode
+    implementation and model providers, hosted openworklabs.com production
+    environment and data, connected MCP and SaaS implementations, third-party
+    dependencies, issues and pull requests, release binaries, and all runtime
+    behavior.
+  repositories:
+    - source_id: "source-openwork-repository"
+      url: "https://github.com/different-ai/openwork"
+      owner: "different-ai"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "ee/LICENSE"
+        - "SECURITY.md"
+        - "package.json"
+        - "pnpm-workspace.yaml"
+        - "constants.json"
+        - "apps/app/"
+        - "apps/desktop/"
+        - "apps/server/"
+        - "apps/orchestrator/"
+        - "apps/installer/"
+        - "packages/"
+        - "ee/apps/"
+        - "ee/packages/"
+        - "docs/"
+        - "evals/"
+        - "packaging/"
+        - ".github/workflows/"
+      excluded_paths:
+        - "Binary images, GIFs, fonts, and generated documentation assets not needed for distinct evidence"
+        - "External OpenCode, model-provider, MCP-server, SaaS, database-service, and sandbox-provider implementations"
+        - "Hosted OpenWork production infrastructure, configuration, secrets, accounts, and data"
+        - "Issues, pull requests, release binaries, analytics, and community history"
+        - "Runtime execution, dependency installation, live OAuth, and dynamic security testing"
+  packages:
+    - "@openwork/app 0.17.32 (private web application)"
+    - "@openwork/desktop 0.17.32 (private Electron shell)"
+    - "openwork-server 0.17.32"
+    - "openwork-orchestrator 0.17.32"
+    - "@openwork/installer 0.1.0"
+    - "openwork-bootstrap 0.1.0"
+    - "openwork-ui-mcp 0.1.0"
+    - "@openwork/handsfree 0.1.0"
+    - "@openwork-ee/den-api (private)"
+    - "@openwork-ee/den-web 0.0.0 (private)"
+    - "@openwork-ee/den-admin-mcp 0.4.0"
+    - "Additional shared UI, types, email, connect-link, install-config, enterprise-MCP, Den database, worker, inference, diagnostics, and landing packages"
+  services:
+    - "Electron desktop application"
+    - "React web application"
+    - "OpenCode agent-engine sidecar"
+    - "OpenWork server and OpenCode proxy"
+    - "OpenWork orchestrator CLI and router daemon"
+    - "Den web control plane"
+    - "Den API, inference, worker proxy, diagnostics, and hosted-worker services"
+    - "OpenWork Connect remote MCP server"
+  documentation_sites:
+    - "Repository-hosted documentation under packages/docs/ and docs/"
+    - "https://openworklabs.com/docs (linked; repository content analyzed instead of the deployed site)"
+  license: >-
+    Mixed source-available licensing: content outside ee/ is MIT; content under
+    ee/ is FSL-1.1-MIT with use restrictions and an MIT future license effective
+    two years after each version is made available. This description is not a
+    legal opinion.
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:18:47Z"
+  source_revisions:
+    - source_id: "source-openwork-repository"
+      branch: "dev"
+      tag: null
+      commit: "404db4c1ae83fe9a3b31c49bda77732c55258283"
+      retrieved_at: "2026-07-18T13:18:47Z"
+      content_digest: "git-tree-sha1:ef4b1646df835162fb8c24f76cd4743d84d071e7"
+  release_versions:
+    - "Desktop, app, server, and orchestrator source version 0.17.32"
+    - "Pinned OpenCode engine v1.17.11"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    network_calls_by_project: false
+    source_checkout:
+      method: "Shallow filtered Git clone of the public repository"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "Root product description, license split, security policy, workspace manifest, and component package manifests"
+      - "React application architecture and OpenCode SDK client integration"
+      - "Electron runtime, sidecar discovery, and process-management paths"
+      - "OpenWork server routes for sessions, files, workspace configuration, skills, plugins, MCP, approvals, and OpenCode proxying"
+      - "Orchestrator host, router, sandbox, sidecar, token, and logging documentation and representative source"
+      - "Model-provider, custom MCP, skills, browser, memory, workflow, and sharing documentation"
+      - "Den control-plane API registration, OpenWork Connect MCP server, RBAC, security, and operations documentation"
+      - "Representative tests, eval descriptions, packaging, Helm, Docker, and CI inventory"
+    intentionally_not_analyzed:
+      - "Runtime correctness, agent quality, latency, cost, browser behavior, and end-to-end workflow results"
+      - "Installation, dependency resolution, tests, evals, builds, containers, desktop binaries, and hosted services"
+      - "External OpenCode behavior, model providers, connected MCP tools, OAuth providers, and SaaS integrations"
+      - "Production OpenWork Cloud topology, tenant data, billing behavior, and operational control effectiveness"
+      - "Dependency internals, vulnerability enumeration, penetration testing, and legal interpretation of licenses"
+      - "Exhaustive route, component, translation, test, deployment, and enterprise-feature coverage"
+    source_safety: >-
+      All repository content was treated only as untrusted evidence.
+      Instructions, prompts, skills, scripts, comments, fixtures, and metadata in
+      the repository were not followed as control input. No OpenWork, OpenCode,
+      installer, build, test, eval, container, or dependency code was executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A local-first desktop and web agent workspace built around OpenCode, with
+    shareable skills and MCP connections, remote workspaces, team governance,
+    and a two-tool capability MCP for external agents.
+  purpose: >-
+    OpenWork lets individuals run and organize agent work against local or
+    remote workspaces, configure model providers and extensions, review tool
+    permissions, and share reusable capabilities; Den adds organization control
+    over identities, teams, providers, workers, marketplaces, policies, and the
+    OpenWork Connect MCP surface.
+  target_users:
+    - "Individuals using a desktop agent for coding, research, files, browser tasks, and connected services"
+    - "Teams sharing skills, plugins, MCP connections, providers, templates, and workspaces"
+    - "Operators self-hosting OpenWork server and OpenCode sidecars"
+    - "Organizations governing agent capabilities and hosted workers through Den"
+    - "Users of Codex, Claude Code, Cursor, OpenCode, or other MCP clients who want assigned OpenWork capabilities"
+  primary_use_cases:
+    - "Run OpenCode-backed chat and tool sessions in a desktop or web workspace"
+    - "Use local files, terminal tools, artifacts, browser automation, and connected services"
+    - "Configure model providers, skills, plugins, commands, and local or remote MCP servers"
+    - "Organize, resume, fork, compact, archive, group, and share agent sessions"
+    - "Connect to local, remote, containerized, or hosted workspaces"
+    - "Publish and assign capabilities to teams through Den"
+    - "Expose assigned capabilities to external agents through OpenWork Connect MCP"
+
+classification:
+  secondary_characteristics:
+    - "local-first desktop agent application"
+    - "OpenCode-based agent frontend and host"
+    - "remote workspace client and server"
+    - "skills, plugins, commands, and MCP manager"
+    - "MCP client and server product"
+    - "team agent-capability control plane"
+    - "container-optional execution harness"
+  domains:
+    - "general knowledge work"
+    - "software development"
+    - "workspace and file automation"
+    - "browser automation"
+    - "connected SaaS workflows"
+    - "team capability governance"
+  delivery_forms:
+    - "Electron desktop application for macOS, Windows, and Linux"
+    - "React web application"
+    - "compiled OpenWork server binary"
+    - "compiled orchestrator CLI and router daemon"
+    - "remote Streamable HTTP MCP server"
+    - "Den web and API services"
+    - "Docker and Helm deployment configuration"
+  agent_patterns:
+    - "OpenCode model-tool sessions"
+    - "workspace-scoped agent execution"
+    - "human permission approval"
+    - "skills and commands"
+    - "MCP tool consumption"
+    - "capability search then execution"
+    - "session fork, resume, compaction, and grouping"
+    - "optional containerized sidecar execution"
+    - "organization-scoped capability assignment"
+  architecture_layers:
+    - "Electron shell and React user interface"
+    - "OpenCode SDK client and OpenCode engine sidecar"
+    - "OpenWork server, tokens, approval gate, and workspace filesystem API"
+    - "OpenWork orchestrator, router, and sandbox backends"
+    - "skills, plugins, commands, providers, and MCP configuration"
+    - "Den web, Den API, database, identity, RBAC, workers, and inference"
+    - "OpenWork Connect MCP search-and-execute facade"
+  claim_ids:
+    - "claim-classification"
+    - "claim-opencode-architecture"
+    - "claim-workspace-sessions"
+    - "claim-mcp-both"
+    - "claim-den-control-plane"
+
+capabilities:
+  - capability_id: "capability-agent-workspace"
+    ontology_id: "x-openwork:agent-workspace"
+    name: "Desktop and web agent workspaces"
+    description: >-
+      Presents workspace-scoped OpenCode agent sessions through a shared React
+      UI loaded by Electron or the web, with model selection, prompts, streamed
+      session state, tool activity, questions, permissions, terminal, and
+      artifacts.
+    support_status: statically_confirmed
+    scope: "apps/app, apps/desktop, OpenCode SDK client, and managed OpenCode sidecar"
+    interfaces:
+      - "Electron desktop application"
+      - "React web application"
+      - "OpenCode HTTP and event APIs"
+      - "OpenWork server OpenCode proxy"
+    prerequisites:
+      - "An accessible OpenCode engine"
+      - "A configured model provider"
+      - "A local or remote workspace"
+    configuration_requirements:
+      - "Workspace path or OpenWork connection URL and token"
+      - "Model provider and selected model"
+      - "Tool, permission, extension, and environment settings"
+    limitations:
+      - "The underlying OpenCode agent runtime is an external project outside this card's source boundary."
+      - "Model and tool behavior were not runtime verified."
+      - "Local execution can access workspace files and host resources allowed by the deployment."
+    confidence: high
+    claim_ids:
+      - "claim-opencode-architecture"
+      - "claim-workspace-sessions"
+      - "claim-local-execution-risk"
+    evidence_refs:
+      - "evidence-app-architecture"
+      - "evidence-opencode-client"
+      - "evidence-orchestrator-sidecars"
+
+  - capability_id: "capability-session-workflows"
+    ontology_id: "x-openwork:session-workflows"
+    name: "Session history and workflow organization"
+    description: >-
+      Lists and reads OpenCode sessions and messages, supports abort, revert,
+      fork, archive and compact operations, and adds workspace-specific groups,
+      assignments and ordering for organizing repeatable work.
+    support_status: statically_confirmed
+    scope: "React session domain and OpenWork server session routes"
+    interfaces:
+      - "Workspace session UI"
+      - "OpenWork server session and session-group APIs"
+      - "OpenCode session API"
+    prerequisites:
+      - "An active workspace and reachable OpenCode engine"
+    configuration_requirements:
+      - "Workspace and session identity"
+      - "Selected provider/model for compaction"
+    limitations:
+      - "Cross-chat memory reads bounded saved transcripts; it is not semantic search over all messages or a separate long-term memory database."
+      - "Session state remains subject to OpenCode and workspace availability."
+    confidence: high
+    claim_ids:
+      - "claim-workspace-sessions"
+    evidence_refs:
+      - "evidence-session-routes"
+      - "evidence-session-helpers"
+
+  - capability_id: "capability-extension-management"
+    ontology_id: "x-openwork:extension-management"
+    name: "Skills, plugins, commands, and MCP management"
+    description: >-
+      Lists, installs, updates, enables, disables, exports, imports, and removes
+      workspace or cloud-sourced skills, plugins, commands, and MCP
+      configurations, with engine reload and audit integration.
+    support_status: statically_confirmed
+    scope: "OpenWork server extension routes, React settings UI, and workspace configuration"
+    interfaces:
+      - "Desktop Extensions and Skills settings"
+      - "OpenWork server workspace APIs"
+      - "Workspace .opencode configuration and skill directories"
+    prerequisites:
+      - "A writable workspace"
+      - "Required packages, MCP commands or URLs, and credentials"
+    configuration_requirements:
+      - "Plugin package specs, skill files, commands, or MCP server definitions"
+      - "Approval for state-changing remote server operations"
+    limitations:
+      - "Extensions are executable or instructional inputs and must be trusted and governed by the operator."
+      - "Some configuration changes require an OpenCode engine reload and can interrupt active work."
+      - "External extension implementations were not analyzed."
+    confidence: high
+    claim_ids:
+      - "claim-extension-management"
+      - "claim-approval-and-sandbox"
+      - "claim-local-execution-risk"
+    evidence_refs:
+      - "evidence-server-extension-routes"
+      - "evidence-skill-sharing"
+
+  - capability_id: "capability-model-providers"
+    ontology_id: "x-openwork:model-provider-configuration"
+    name: "Multiple managed, hosted, and local model providers"
+    description: >-
+      Uses OpenCode provider configuration and UI flows to select connected
+      models, including OpenAI/ChatGPT, custom OpenAI-compatible endpoints,
+      Ollama, and organization-managed Den providers.
+    support_status: statically_confirmed
+    scope: "Provider settings, model picker, OpenCode configuration, and Den provider management"
+    interfaces:
+      - "Desktop provider connection and model picker UI"
+      - "Workspace OpenCode configuration"
+      - "Den managed-provider administration and desktop sync"
+    prerequisites:
+      - "Provider account, API key, OAuth session, or local model service"
+    configuration_requirements:
+      - "Provider identifier, model catalog, credentials, and optional base URL"
+    limitations:
+      - "Provider support and compatibility are substantially implemented by external OpenCode and model packages."
+      - "The claim that users can use any LLM was not exhaustively verified."
+      - "Organization policy can restrict providers, models, local access, and desktop versions."
+    confidence: high
+    claim_ids:
+      - "claim-model-providers"
+      - "claim-opencode-architecture"
+      - "claim-den-control-plane"
+    evidence_refs:
+      - "evidence-provider-configuration"
+      - "evidence-component-manifests"
+
+  - capability_id: "capability-mcp-interoperability"
+    ontology_id: "x-openwork:mcp-client-and-server"
+    name: "MCP client and server interoperability"
+    description: >-
+      Configures local or remote MCP servers for OpenCode-backed agents and also
+      exposes organization-assigned capabilities to external agents through an
+      OAuth-protected Streamable HTTP MCP endpoint with search_capabilities and
+      execute_capability.
+    support_status: statically_confirmed
+    scope: "Workspace MCP management, OpenCode MCP client, Den API MCP server, and OpenWork Connect"
+    interfaces:
+      - "Custom local-command or remote-URL MCP settings"
+      - "OAuth browser flows"
+      - "OpenWork Connect /mcp/agent endpoint"
+      - "search_capabilities and execute_capability MCP tools"
+    prerequisites:
+      - "OpenCode for workspace-side MCP consumption"
+      - "An OpenWork organization and OAuth-capable MCP client for OpenWork Connect"
+      - "Connected services and capability assignments for downstream tools"
+    configuration_requirements:
+      - "MCP server name, URL or command, enablement, and credentials"
+      - "Organization authorization and member-scoped access for OpenWork Connect"
+    limitations:
+      - "External client compatibility is uneven; repository documentation marks several clients setup-only rather than verified."
+      - "OpenWork Connect exposes a facade over assigned capabilities, not each underlying operation as a separate tool."
+      - "Connected MCP server behavior and security are outside this boundary."
+    confidence: high
+    claim_ids:
+      - "claim-mcp-both"
+      - "claim-den-control-plane"
+    evidence_refs:
+      - "evidence-server-extension-routes"
+      - "evidence-connect-mcp"
+
+  - capability_id: "capability-remote-workspaces"
+    ontology_id: "x-openwork:remote-workspaces"
+    name: "Remote and headless workspace access"
+    description: >-
+      Runs OpenWork server independently from the desktop, proxies OpenCode,
+      exposes scoped workspace, session, extension, file, artifact and event
+      APIs, and lets desktop or CLI clients connect with role-scoped tokens.
+    support_status: statically_confirmed
+    scope: "openwork-server, orchestrator, remote desktop connection, and file-session APIs"
+    interfaces:
+      - "openwork-server CLI"
+      - "OpenWork server HTTP and SSE APIs"
+      - "openwork orchestrator CLI and router daemon"
+      - "Owner, collaborator, viewer, client, and host tokens"
+    prerequisites:
+      - "OpenWork server and OpenCode engine"
+      - "A workspace directory"
+      - "Network reachability and an appropriate token"
+    configuration_requirements:
+      - "Server host, port, token, workspace, OpenCode base URL, and approval mode"
+      - "Optional inbox, outbox, sandbox, CORS, and extra-mount settings"
+    limitations:
+      - "Exposing the server beyond loopback requires transport security and careful token handling."
+      - "File and artifact access is bounded by server configuration, token scope, workspace normalization, and approval policy, which were not dynamically tested."
+    confidence: high
+    claim_ids:
+      - "claim-remote-server"
+      - "claim-approval-and-sandbox"
+      - "claim-local-execution-risk"
+    evidence_refs:
+      - "evidence-server-api"
+      - "evidence-orchestrator-sidecars"
+
+  - capability_id: "capability-approvals-and-sandbox"
+    ontology_id: "x-openwork:approvals-and-sandbox"
+    name: "Human approvals and optional container isolation"
+    description: >-
+      Gates state-changing server operations through manual or automatic host
+      approval and can run OpenCode plus OpenWork server sidecars inside Docker
+      or Apple container with validated extra mounts.
+    support_status: statically_confirmed
+    scope: "OpenWork server approval service and OpenWork orchestrator sandbox mode"
+    interfaces:
+      - "OpenWork permission UI"
+      - "GET /approvals and POST /approvals/:id"
+      - "openwork approvals CLI"
+      - "openwork start --sandbox docker|container"
+    prerequisites:
+      - "A host operator or auto-approval policy"
+      - "Docker or Apple container for sandbox mode"
+    configuration_requirements:
+      - "Approval mode and timeout"
+      - "Sandbox backend, image, persistence, and explicit mount allowlist"
+    limitations:
+      - "Auto approval removes the manual decision gate."
+      - "Sandbox mode still mounts workspace and persistence paths and is not proof of a complete security boundary."
+      - "Default non-sandbox execution runs sidecars against host-accessible workspaces."
+    confidence: high
+    claim_ids:
+      - "claim-approval-and-sandbox"
+      - "claim-local-execution-risk"
+    evidence_refs:
+      - "evidence-server-api"
+      - "evidence-orchestrator-sidecars"
+
+  - capability_id: "capability-browser-automation"
+    ontology_id: "x-openwork:browser-automation"
+    name: "Built-in browser automation"
+    description: >-
+      Lets the agent open pages, click, fill forms, read content, and take
+      screenshots inside the OpenWork Browser extension locally or on a remote
+      worker.
+    support_status: documented
+    scope: "First-party OpenWork Browser extension"
+    interfaces:
+      - "OpenWork session tool calls"
+      - "Embedded browser panel"
+    prerequisites:
+      - "Desktop app or remote worker exposing OpenWork Browser"
+      - "OpenWork Browser extension enabled"
+    configuration_requirements:
+      - "Extension enablement and any target-site authentication"
+    limitations:
+      - "Documentation states this is browser automation, not full control of arbitrary desktop applications."
+      - "Browser behavior and site compatibility were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-browser-automation"
+    evidence_refs:
+      - "evidence-browser-documentation"
+
+  - capability_id: "capability-team-control-plane"
+    ontology_id: "x-openwork:team-control-plane"
+    name: "Den team and organization control plane"
+    description: >-
+      Manages organizations, members, roles, teams, invitations, SSO, SCIM,
+      providers, skills, marketplaces, policies, templates, workers, telemetry,
+      and the member-scoped OpenWork Connect capability surface.
+    support_status: statically_confirmed
+    scope: "ee/apps/den-web, ee/apps/den-api, Den packages, and OpenWork Cloud integration"
+    interfaces:
+      - "Den web administration UI"
+      - "Den REST/OpenAPI interface"
+      - "Den MCP interfaces"
+      - "Desktop cloud synchronization"
+    prerequisites:
+      - "A deployed Den control plane and database"
+      - "Organization membership and appropriate role"
+      - "Additional services for SSO, SCIM, workers, inference, email, billing, or telemetry as configured"
+    configuration_requirements:
+      - "Identity, database, encryption, OAuth, provider, worker, and deployment settings"
+      - "Roles, teams, assignments, policies, and organization resources"
+    limitations:
+      - "The ee/ implementation is FSL-1.1-MIT, not currently MIT on the same terms as the rest of the repository."
+      - "Cloud operations require a substantial multi-service deployment and operator-owned security controls."
+      - "Hosted production behavior and control effectiveness were not verified."
+    confidence: high
+    claim_ids:
+      - "claim-den-control-plane"
+      - "claim-license-split"
+      - "claim-control-plane-risk"
+    evidence_refs:
+      - "evidence-den-api"
+      - "evidence-connect-mcp"
+      - "evidence-license-split"
+
+architecture:
+  overview: >-
+    The Electron shell loads the shared React application and manages an
+    OpenWork orchestrator or direct OpenCode/OpenWork-server sidecars. The UI
+    uses the OpenCode SDK for agent sessions and OpenWork server APIs for
+    workspace, file, extension, approval and remote access functions. The
+    orchestrator can run sidecars on the host or inside Docker/Apple container.
+    Den is a separate web/API control plane with database-backed organization
+    resources, provider and worker management, desktop synchronization, and MCP
+    servers including a minimal two-tool interface for external agents.
+  languages:
+    - "TypeScript"
+    - "JavaScript"
+    - "TSX/React"
+    - "MDX"
+    - "Shell"
+    - "Swift (computer-use helper)"
+  frameworks_and_sdks:
+    - name: "React"
+      version_constraint: "19.2.4 workspace catalog"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+    - name: "Vite"
+      version_constraint: "^6.0.1"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+    - name: "Electron"
+      version_constraint: "^35.0.0"
+      dependency_relation: development
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+    - name: "OpenCode SDK"
+      version_constraint: "^1.17.11; engine pinned v1.17.11"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+        - "claim-workspace-sessions"
+    - name: "Hono"
+      version_constraint: "^4.7.2 in Den API"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+    - name: "Next.js"
+      version_constraint: "16.2.1 in Den web"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+    - name: "Zod"
+      version_constraint: "^4.3.6 in core server packages"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-remote-server"
+  model_providers:
+    - name: "OpenCode provider system"
+      version_constraint: "OpenCode v1.17.11 at the recorded snapshot"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-model-providers"
+    - name: "OpenAI and ChatGPT authentication"
+      version_constraint: "provider configuration delegated through OpenCode"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+    - name: "OpenAI-compatible endpoints and Ollama"
+      version_constraint: "operator-configured through OpenCode"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+    - name: "Den managed model providers and inference proxy"
+      version_constraint: "repository snapshot"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-model-providers"
+        - "claim-den-control-plane"
+  runtime_and_orchestration:
+    - name: "OpenCode engine"
+      version_constraint: "v1.17.11"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+    - name: "OpenWork orchestrator"
+      version_constraint: "0.17.32"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+        - "claim-remote-server"
+    - name: "Bun runtime or compiled Bun binaries"
+      version_constraint: "package-specific build/runtime"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-remote-server"
+  tools_and_mcp:
+    tools:
+      - name: "OpenCode tool runtime"
+        version_constraint: "v1.17.11"
+        dependency_relation: bundled
+        required: true
+        claim_ids:
+          - "claim-opencode-architecture"
+      - name: "MCP TypeScript SDK"
+        version_constraint: "^1.29.0 in Den API"
+        dependency_relation: direct
+        required: false
+        claim_ids:
+          - "claim-mcp-both"
+      - name: "OpenWork Browser"
+        version_constraint: "first-party extension at repository snapshot"
+        dependency_relation: bundled
+        required: false
+        claim_ids:
+          - "claim-browser-automation"
+    mcp_role: both
+    mcp_details:
+      - "Workspace agents consume custom local-command and remote-URL MCP servers through OpenCode."
+      - "Den exposes rich MCP endpoints and /mcp/agent, an OAuth-protected two-tool search-and-execute facade."
+      - "OpenWork also contains UI-control and admin MCP packages."
+  skills:
+    - name: "OpenCode-compatible SKILL.md workspace skills"
+      version_constraint: "repository snapshot"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-extension-management"
+    - name: "Den skill sharing and marketplace distribution"
+      version_constraint: "repository snapshot"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-extension-management"
+        - "claim-den-control-plane"
+  memory_and_state:
+    - name: "OpenCode session history"
+      version_constraint: "OpenCode v1.17.11"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-workspace-sessions"
+    - name: "OpenWork session groups and workspace state"
+      version_constraint: "0.17.32"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-workspace-sessions"
+    - name: "Better SQLite3 and Drizzle ORM"
+      version_constraint: "better-sqlite3 ^11.10.0; drizzle-orm ^0.45.1"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-remote-server"
+  retrieval_and_knowledge:
+    - name: "Den capability search"
+      version_constraint: "OpenWork Connect MCP 1.0.0 at repository snapshot"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-mcp-both"
+  document_processing:
+    - name: "SheetJS xlsx"
+      version_constraint: "^0.18.5"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-opencode-architecture"
+  execution_and_sandbox:
+    - name: "Host OpenCode sidecar execution"
+      version_constraint: "v1.17.11"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+        - "claim-local-execution-risk"
+    - name: "Docker sandbox backend"
+      version_constraint: "operator-installed Docker"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-approval-and-sandbox"
+    - name: "Apple container sandbox backend"
+      version_constraint: "operator-installed Apple container CLI on supported Apple silicon"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-approval-and-sandbox"
+  gateways_and_routing:
+    - name: "OpenWork server OpenCode proxy"
+      version_constraint: "0.17.32"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-remote-server"
+    - name: "Den inference and worker routing"
+      version_constraint: "repository snapshot"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+  storage_and_databases:
+    - name: "SQLite"
+      version_constraint: "better-sqlite3 ^11.10.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-remote-server"
+    - name: "MySQL-compatible Den database"
+      version_constraint: "operator- or service-provided"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+  interfaces:
+    - name: "Electron desktop UI"
+      version_constraint: "0.17.32"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-opencode-architecture"
+    - name: "React web UI"
+      version_constraint: "0.17.32"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-opencode-architecture"
+    - name: "OpenWork server HTTP, SSE, and CLI interfaces"
+      version_constraint: "0.17.32"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-remote-server"
+    - name: "Den REST/OpenAPI and web interfaces"
+      version_constraint: "repository snapshot"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+    - name: "Streamable HTTP MCP"
+      version_constraint: "OpenWork Connect MCP 1.0.0 at repository snapshot"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-mcp-both"
+  deployment:
+    - name: "Electron Builder"
+      version_constraint: "^26.15.3"
+      dependency_relation: development
+      required: false
+      claim_ids:
+        - "claim-classification"
+    - name: "Docker Compose and Kubernetes Helm"
+      version_constraint: "repository deployment manifests"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+        - "claim-remote-server"
+  observability_and_evaluation:
+    - name: "OpenTelemetry"
+      version_constraint: "OTel API 1.9.1 and SDK packages in Den"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+    - name: "Sentry"
+      version_constraint: "10.64.0 in Den"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+    - name: "Repository UI and workflow eval runner"
+      version_constraint: "repository snapshot"
+      dependency_relation: development
+      required: false
+      claim_ids:
+        - "claim-early-maturity"
+  security_and_permissions:
+    - name: "OpenWork server scoped tokens and approval service"
+      version_constraint: "0.17.32"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-approval-and-sandbox"
+        - "claim-local-execution-risk"
+    - name: "Den identity, RBAC, SSO, SCIM, API keys, and policy controls"
+      version_constraint: "repository snapshot"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-den-control-plane"
+        - "claim-control-plane-risk"
+  data_flows:
+    - "User prompts and selected model configuration flow from the React UI through the OpenCode SDK or OpenWork proxy to the OpenCode engine; model tool events and results return to the session UI."
+    - "Workspace extension and file mutations flow through OpenWork server scope checks, optional approvals, filesystem operations, audit entries, and engine reload events."
+    - "The orchestrator launches OpenCode and OpenWork server either on the host or in a container and supplies internal URLs, tokens, workspace paths, and logging correlation."
+    - "Desktop Cloud sync imports Den-managed providers, skills, plugins, MCPs, and policies into workspace-visible configuration."
+    - "An external MCP client authenticates to /mcp/agent, searches the member-visible catalog, then executes an exact returned capability against Den-native, external-MCP, marketplace, skill, or admin sources."
+  control_flows:
+    - "The desktop selects or starts a runtime, connects the UI to OpenWork server/OpenCode, creates or resumes a session, and delegates agent execution to OpenCode."
+    - "OpenWork server can pause write operations until a host approves or denies the pending request; auto mode bypasses manual review."
+    - "Configuration changes emit reload events or explicitly reload OpenCode so the runtime sees updated providers, skills, plugins, commands, and MCP servers."
+    - "Den authenticates and authorizes organization-scoped requests before exposing assigned resources or OpenWork Connect capabilities."
+
+components:
+  - component_id: "component-react-app"
+    name: "OpenWork React application"
+    path: "apps/app/"
+    project_type: "agent application UI"
+    purpose: "Provides workspace, session, model, tool, artifact, extension, provider, remote connection, and Cloud user experiences."
+    claim_ids:
+      - "claim-opencode-architecture"
+      - "claim-workspace-sessions"
+
+  - component_id: "component-desktop"
+    name: "Electron desktop shell"
+    path: "apps/desktop/"
+    project_type: "desktop host"
+    purpose: "Hosts the React application and manages local workspace, sidecar, browser, updater, deep-link, and desktop permission integration."
+    claim_ids:
+      - "claim-opencode-architecture"
+      - "claim-browser-automation"
+
+  - component_id: "component-server"
+    name: "OpenWork server"
+    path: "apps/server/"
+    project_type: "workspace and remote-access service"
+    purpose: "Exposes workspace, session, extension, file, artifact, token, approval, event, audit, and OpenCode proxy APIs."
+    claim_ids:
+      - "claim-remote-server"
+      - "claim-extension-management"
+      - "claim-workspace-sessions"
+
+  - component_id: "component-orchestrator"
+    name: "OpenWork orchestrator"
+    path: "apps/orchestrator/"
+    project_type: "agent host runtime"
+    purpose: "Resolves and launches OpenCode and OpenWork server sidecars, offers CLI/router access, and optionally containerizes them."
+    claim_ids:
+      - "claim-opencode-architecture"
+      - "claim-approval-and-sandbox"
+
+  - component_id: "component-installer"
+    name: "OpenWork installer"
+    path: "apps/installer/; packages/openwork-bootstrap/; packages/install-config/"
+    project_type: "distribution component"
+    purpose: "Resolves install configuration and downloads, installs, and starts supported desktop releases."
+    claim_ids:
+      - "claim-classification"
+
+  - component_id: "component-den-web"
+    name: "Den web"
+    path: "ee/apps/den-web/"
+    project_type: "team control-plane UI"
+    purpose: "Provides organization administration for members, teams, providers, policies, marketplaces, workers, identity, and operations."
+    claim_ids:
+      - "claim-den-control-plane"
+      - "claim-license-split"
+
+  - component_id: "component-den-api"
+    name: "Den API and service packages"
+    path: "ee/apps/den-api/; ee/apps/inference/; ee/apps/den-worker-proxy/; ee/packages/"
+    project_type: "team control-plane backend"
+    purpose: "Implements identity, RBAC, providers, workers, organization resources, persistence, telemetry, inference, and MCP interfaces."
+    claim_ids:
+      - "claim-den-control-plane"
+      - "claim-license-split"
+
+  - component_id: "component-connect-mcp"
+    name: "OpenWork Connect MCP"
+    path: "ee/apps/den-api/src/mcp/agent.ts"
+    project_type: "agent tool/MCP server"
+    purpose: "Exposes member-authorized capability search and execution to external MCP clients."
+    claim_ids:
+      - "claim-mcp-both"
+      - "claim-den-control-plane"
+
+usage:
+  installation: "Download the OpenWork desktop app, use the agent-first installer flow, install openwork-orchestrator globally for CLI/headless operation, or deploy the documented server and Den stacks."
+  minimal_start: "Open or create a workspace, connect a model provider, choose a model, and send a message; for CLI host mode run `openwork start --workspace /path/to/workspace` and connect a client with the reported URL and token."
+  configuration:
+    - "Workspace path, OpenWork server URL and token, OpenCode binary/source, and runtime mode"
+    - "Model providers, credentials, model behavior, environment variables, tools, and permissions"
+    - "Skills, plugins, commands, and MCP server definitions"
+    - "Approval mode, authorized folders, sandbox backend, image, persistence, and mount allowlist"
+    - "Den base URL, organization, roles, teams, providers, marketplaces, workers, policies, SSO, SCIM, and deployment secrets"
+  required_services:
+    - "OpenCode agent engine"
+    - "At least one model provider or local model service"
+    - "OpenWork server for remote/headless access"
+    - "Den web/API/database and supporting services for organization features and OpenWork Connect"
+    - "Optional connected MCP, SaaS, browser, sandbox, worker, telemetry, and billing services"
+  extension_points:
+    - "OpenCode model providers, agents, plugins, commands, and configuration"
+    - "SKILL.md skills and Den marketplace plugins"
+    - "Local-command and remote MCP servers"
+    - "OpenWork UI-control MCP and capability knowledge"
+    - "Remote workspaces, hosted workers, and sandbox images"
+    - "Den capability sources and external MCP connections"
+
+assessment:
+  contexts:
+    - context_id: "context-openwork-team-agent-platform"
+      use_case: "Evaluate OpenWork as a local-first agent workspace and optional team capability platform for technical organizations."
+      comparison_cohort:
+        - "Desktop coding and general-work agent applications"
+        - "OpenCode frontends and self-hosted agent workspaces"
+        - "Team agent-capability marketplaces and control planes"
+      requirements:
+        - "Local or remote workspace sessions with tools and human permission controls"
+        - "Model, skill, plugin, command, and MCP extensibility"
+        - "Reproducible self-hosting and explicit trust boundaries"
+        - "Optional organization governance and external-agent interoperability"
+        - "No assumption that static inspection verifies runtime quality or security"
+      organizational_constraints:
+        - "Willingness to operate OpenCode and grant appropriate filesystem/tool access"
+        - "Ability to manage model, MCP, OAuth, workspace, and server credentials"
+        - "Acceptance of the MIT/FSL-1.1-MIT license split where Den functionality is required"
+        - "Operational capacity for Den, database, identity, worker, inference, and observability services when self-hosting team features"
+      assessed_at: "2026-07-18T13:18:47Z"
+  maturity: early
+  maturity_signals:
+    - statement: "OpenWork has versioned 0.17.32 desktop, app, server, and orchestrator components, broad tests and eval descriptions, packaging, deployment manifests, documentation, and a security policy."
+      reasoning: "The repository shows substantial product breadth and engineering structure, but remains pre-1.0 and active-development behavior was not executed."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-early-maturity"
+    - statement: "The source separates UI, runtime, workspace API, and organization control-plane components with explicit routes and package boundaries."
+      reasoning: "The modular monorepo and mapped source paths support maintainability, though operational complexity is correspondingly high."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-opencode-architecture"
+        - "claim-den-control-plane"
+        - "claim-early-maturity"
+  strengths:
+    - statement: "OpenWork combines a polished workspace application with headless/remote operation and organization capability distribution."
+      reasoning: "The same product boundary includes desktop/web UI, server and orchestrator components, Den governance, and OpenWork Connect MCP."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-opencode-architecture"
+        - "claim-remote-server"
+        - "claim-den-control-plane"
+        - "claim-mcp-both"
+    - statement: "Skills, plugins, commands, MCP servers, providers, sessions, and workspaces are structured as shareable and governable objects."
+      reasoning: "The server and Den expose explicit persistence, assignment, import/export, audit, and sync paths for these resources."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-extension-management"
+        - "claim-workspace-sessions"
+        - "claim-den-control-plane"
+  limitations:
+    - statement: "Core agent execution and many provider/tool semantics are delegated to the external OpenCode project."
+      reasoning: "OpenWork pins and manages OpenCode, and its UI/server clients use the OpenCode SDK rather than implementing the model-tool loop in this repository."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-opencode-architecture"
+        - "claim-model-providers"
+    - statement: "Cross-chat memory currently reads bounded saved session history rather than providing semantic retrieval over all prior messages."
+      reasoning: "The first-party memory guide makes this limitation explicit."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-workspace-sessions"
+    - statement: "External-client support for OpenWork Connect is not uniformly verified."
+      reasoning: "Repository documentation distinguishes verified, setup-only, and unsupported OAuth flows across MCP clients."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-mcp-both"
+  risks:
+    - statement: "Host-side tools, local workspaces, extensions, MCP servers, and auto approval can create broad file, command, credential, and network exposure."
+      reasoning: "The product provides tokens, permissions, approvals, authorized folders, and optional containers, but the operator controls the effective boundary and may disable manual review."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-local-execution-risk"
+        - "claim-approval-and-sandbox"
+    - statement: "Den adds a high-value identity and capability control plane whose compromise or misconfiguration can affect shared providers, connections, workers, and organizations."
+      reasoning: "The source and operations guide show sensitive identity, RBAC, secrets, provisioning, and capability-distribution responsibilities."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-control-plane-risk"
+        - "claim-den-control-plane"
+    - statement: "The mixed MIT and FSL-1.1-MIT licensing can constrain commercial redistribution or competing-use scenarios involving ee/ components."
+      reasoning: "The root and ee licenses establish different terms; adopters need their own legal review."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-license-split"
+  best_fit:
+    - statement: "Technical individuals and teams that want an OpenCode-based desktop agent with configurable providers, skills, MCPs, permissions, and remote workspace options."
+      reasoning: "These are the central application and server capabilities present in the analyzed boundary."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-opencode-architecture"
+        - "claim-extension-management"
+        - "claim-remote-server"
+    - statement: "Organizations willing to operate or subscribe to Den for shared providers, workers, marketplaces, RBAC, policy, and agent-facing capability distribution."
+      reasoning: "Den and OpenWork Connect directly implement these team-level flows."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-den-control-plane"
+        - "claim-mcp-both"
+  poor_fit:
+    - statement: "Teams seeking a standalone agent runtime independent of OpenCode."
+      reasoning: "OpenCode is a required, pinned engine dependency for core agent sessions."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-opencode-architecture"
+    - statement: "Organizations requiring the entire source tree under a permissive license today."
+      reasoning: "The ee/ control-plane implementation uses FSL-1.1-MIT rather than the root MIT terms."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-license-split"
+    - statement: "Deployments unable to govern local tool execution or operate the identity, storage, secrets, and availability requirements of a team control plane."
+      reasoning: "Both the local runtime and Den cross sensitive trust boundaries that require operator controls."
+      context_id: "context-openwork-team-agent-platform"
+      confidence: high
+      claim_ids:
+        - "claim-local-execution-risk"
+        - "claim-control-plane-risk"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "OpenCode"
+      scope: "Pinned agent engine and SDK for model providers, sessions, tools, permissions, commands, and MCP client behavior."
+      confidence: high
+      claim_ids:
+        - "claim-opencode-architecture"
+        - "claim-model-providers"
+    - target_project: "React and Electron"
+      scope: "Shared UI and desktop host."
+      confidence: high
+      claim_ids:
+        - "claim-opencode-architecture"
+    - target_project: "MCP TypeScript SDK"
+      scope: "Den and auxiliary MCP server implementations."
+      confidence: high
+      claim_ids:
+        - "claim-mcp-both"
+  integrates_with:
+    - target_project: "Model providers supported through OpenCode"
+      scope: "Hosted, OAuth, API-key, OpenAI-compatible, and local model access."
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+    - target_project: "Local and remote MCP servers"
+      scope: "Workspace agent tool integrations and Den-managed external capability sources."
+      confidence: high
+      claim_ids:
+        - "claim-mcp-both"
+    - target_project: "Docker and Apple container"
+      scope: "Optional orchestrator sandbox backends."
+      confidence: high
+      claim_ids:
+        - "claim-approval-and-sandbox"
+    - target_project: "MySQL-compatible database, identity, worker, model, telemetry, email, and billing services"
+      scope: "Den control-plane deployment dependencies."
+      confidence: high
+      claim_ids:
+        - "claim-den-control-plane"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "OpenWork is an actively developed, cross-platform desktop and web agent application whose primary versioned product components are at source version 0.17.32."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The OpenWork repository at the recorded source snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-product"
+      - "evidence-component-manifests"
+    conflicting_evidence_ids: []
+    reasoning: "The root description and package manifests agree on the application role, delivery surfaces, and aligned component version."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-opencode-architecture"
+    statement: "The React UI talks to OpenWork server, OpenCode, and Den, while the Electron shell or orchestrator manages a pinned OpenCode v1.17.11 engine and OpenWork server sidecars."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Core application and local/headless runtime at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-app-architecture"
+      - "evidence-opencode-client"
+      - "evidence-orchestrator-sidecars"
+      - "evidence-component-manifests"
+    conflicting_evidence_ids: []
+    reasoning: "Application architecture, client imports, manifests, constants, and orchestrator source/documentation converge on this component model."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-workspace-sessions"
+    statement: "OpenWork exposes workspace-scoped OpenCode sessions and messages and adds session abort, revert, fork, archive, compaction, grouping, assignment, ordering, and bounded cross-chat transcript access."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Application and OpenWork server session paths at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-session-routes"
+      - "evidence-session-helpers"
+    conflicting_evidence_ids: []
+    reasoning: "The mapped source defines the session operations and group routes; first-party documentation clarifies the memory behavior."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-extension-management"
+    statement: "OpenWork manages workspace and cloud-sourced skills, plugins, commands, and MCP configurations with approval, audit, and engine-reload integration."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "OpenWork server and React settings paths at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-server-extension-routes"
+      - "evidence-skill-sharing"
+    conflicting_evidence_ids: []
+    reasoning: "Server routes implement CRUD and synchronization behavior, while repository documentation describes workspace and team flows."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-mcp-both"
+    statement: "OpenWork is both an MCP client product through OpenCode workspace integrations and an MCP server product through Den, including an OAuth-protected /mcp/agent endpoint exposing search_capabilities and execute_capability."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Workspace MCP configuration and Den MCP server at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-product"
+      - "evidence-server-extension-routes"
+      - "evidence-connect-mcp"
+    conflicting_evidence_ids: []
+    reasoning: "The workspace server configures MCP consumption, and Den source registers the exact two-tool external-agent surface."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-remote-server"
+    statement: "OpenWork server provides token-scoped remote access to workspaces, sessions, extensions, files, artifacts, events, approvals, and a proxied OpenCode engine, while the orchestrator can host and route these services."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "openwork-server and openwork-orchestrator 0.17.32 at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-server-api"
+      - "evidence-orchestrator-sidecars"
+    conflicting_evidence_ids: []
+    reasoning: "The server and orchestrator documentation and route registration source define these interfaces."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-approval-and-sandbox"
+    statement: "State-changing OpenWork server operations can require host approval, and the orchestrator can optionally run OpenCode and OpenWork server inside Docker or Apple container with validated mounts."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "OpenWork server and orchestrator at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-server-api"
+      - "evidence-server-extension-routes"
+      - "evidence-orchestrator-sidecars"
+    conflicting_evidence_ids: []
+    reasoning: "The approval endpoints and route calls are implemented, and the orchestrator guide and source define the optional sandbox modes."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-browser-automation"
+    statement: "The documented OpenWork Browser can open pages, click, fill forms, read content, and take screenshots, but does not currently provide general desktop-application control."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "OpenWork Browser capability documented at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-browser-documentation"
+    conflicting_evidence_ids: []
+    reasoning: "The first-party guide states both the supported operations and the current boundary; the capability was not executed."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-model-providers"
+    statement: "OpenWork delegates model-provider behavior to OpenCode while exposing UI and configuration for OpenAI/ChatGPT, custom OpenAI-compatible and local endpoints, and Den-managed providers."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Provider configuration and model selection at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-provider-configuration"
+      - "evidence-component-manifests"
+    conflicting_evidence_ids: []
+    reasoning: "The docs explicitly identify OpenCode primitives and provider examples, and the app directly depends on the pinned OpenCode SDK."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-den-control-plane"
+    statement: "Den implements a team control plane for organizations, identity, roles, teams, providers, skills, marketplaces, workers, policies, telemetry, and REST and MCP access."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "ee/ Den components at the recorded snapshot"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-product"
+      - "evidence-den-api"
+      - "evidence-connect-mcp"
+    conflicting_evidence_ids: []
+    reasoning: "Root product documentation and Den API route registration/OpenAPI tags identify the implemented control-plane surface."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-license-split"
+    statement: "The repository licenses content outside ee/ under MIT and content under ee/ under FSL-1.1-MIT with an MIT future license after two years."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Repository source licensing at the recorded snapshot"
+    assessment_context_id: "context-openwork-team-agent-platform"
+    supporting_evidence_ids:
+      - "evidence-license-split"
+    conflicting_evidence_ids: []
+    reasoning: "The root license delegates ee/ terms to ee/LICENSE, which identifies FSL-1.1-MIT and its future-license period; this is a factual summary, not legal advice."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-early-maturity"
+    statement: "For the declared evaluation context, OpenWork shows substantial engineering breadth but remains an early pre-1.0 product with runtime and operational maturity unverified."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: medium
+    applies_to: "The analyzed product under context-openwork-team-agent-platform"
+    assessment_context_id: "context-openwork-team-agent-platform"
+    supporting_evidence_ids:
+      - "evidence-component-manifests"
+      - "evidence-app-architecture"
+      - "evidence-den-api"
+      - "evidence-security-policy"
+    conflicting_evidence_ids: []
+    reasoning: "Version 0.17.32, broad modular source, documentation, tests, eval descriptions, deployment assets, and a security policy support meaningful maturity, while pre-1.0 status and the absence of dynamic evidence limit the assessment."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-local-execution-risk"
+    statement: "For the declared evaluation context, host-side OpenCode execution, writable workspaces, extensions, MCP servers, and auto approval can expose files, commands, credentials, and network access beyond the intended task."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Local and remote workspace execution under context-openwork-team-agent-platform"
+    assessment_context_id: "context-openwork-team-agent-platform"
+    supporting_evidence_ids:
+      - "evidence-orchestrator-sidecars"
+      - "evidence-server-api"
+      - "evidence-server-extension-routes"
+    conflicting_evidence_ids: []
+    reasoning: "The architecture deliberately launches an agent engine with workspace and tool access; approvals and optional container modes reduce but do not eliminate operator responsibility."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+  - claim_id: "claim-control-plane-risk"
+    statement: "For the declared evaluation context, Den is a sensitive identity and capability control plane requiring strong secret, access, transport, storage, audit, and availability controls."
+    claim_kind: assessment
+    verification_status: documented
+    confidence: high
+    applies_to: "Den deployments under context-openwork-team-agent-platform"
+    assessment_context_id: "context-openwork-team-agent-platform"
+    supporting_evidence_ids:
+      - "evidence-den-api"
+      - "evidence-cloud-security"
+    conflicting_evidence_ids: []
+    reasoning: "Den manages identities, roles, provider credentials, workers, external capabilities, and organizational policy; the first-party operations guide identifies the corresponding controls and operator duties."
+    last_verified_at: "2026-07-18T13:18:47Z"
+
+sources:
+  - source_id: "source-openwork-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/different-ai/openwork"
+    revision_or_version: "commit 404db4c1ae83fe9a3b31c49bda77732c55258283; git tree ef4b1646df835162fb8c24f76cd4743d84d071e7"
+    retrieved_at: "2026-07-18T13:18:47Z"
+    content_digest: "git-tree-sha1:ef4b1646df835162fb8c24f76cd4743d84d071e7"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-readme-product"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "OpenWork; Use OpenWork from any agent; OpenWork Den"
+      line_start: 1
+      line_end: 82
+    confidence: high
+    excerpt_or_symbol: "Desktop application, OpenWork MCP, and Den control plane"
+    note: "Defines the product boundary and documents the two-tool external MCP and team capability-sharing purpose."
+
+  - evidence_id: "evidence-component-manifests"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/app/package.json"
+      symbol_or_section: "Package identity, version, scripts, and dependencies"
+      line_start: 1
+      line_end: 104
+    confidence: high
+    excerpt_or_symbol: "@openwork/app 0.17.32 with React, OpenCode SDK, AI SDK, xterm, xlsx, and UI dependencies"
+    note: "Aligned 0.17.32 manifests also exist for desktop, server, and orchestrator; constants.json pins OpenCode v1.17.11."
+
+  - evidence_id: "evidence-app-architecture"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/app/src/react-app/ARCHITECTURE.md"
+      symbol_or_section: "App Architecture; Layers; Data flow; Active workspace and session"
+      line_start: 1
+      line_end: 131
+    confidence: high
+    excerpt_or_symbol: "Shared React UI talks to openwork-server, opencode, and Den over HTTP"
+    note: "Describes UI layers, domains, provider composition, route-scoped workspace/session identity, and tests."
+
+  - evidence_id: "evidence-opencode-client"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/app/src/app/lib/opencode.ts"
+      symbol_or_section: "OpenCode client imports and prompt/session transport"
+      line_start: 1
+      line_end: 155
+    confidence: high
+    excerpt_or_symbol: "createOpencodeClient and OpenWork server proxy-aware session requests"
+    note: "Statically confirms that agent/session behavior is mediated through the OpenCode SDK and optional OpenWork workspace mount."
+
+  - evidence_id: "evidence-session-helpers"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/app/src/app/lib/opencode-session.ts"
+      symbol_or_section: "Session helpers"
+      line_start: 1
+      line_end: 199
+    confidence: high
+    excerpt_or_symbol: "abortSession, revertSession, forkSession, setSessionArchived, compactSession, shellInSession, listCommands"
+    note: "Defines typed OpenCode session and command operations used by the application."
+
+  - evidence_id: "evidence-session-routes"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/server/src/routes/sessions.ts"
+      symbol_or_section: "registerSessionRoutes"
+      line_start: 47
+      line_end: 280
+    confidence: high
+    excerpt_or_symbol: "Workspace session reads and session-group routes"
+    note: "Defines OpenCode session list/get/message/snapshot reads plus workspace group create, reorder, assign, and update APIs."
+
+  - evidence_id: "evidence-server-api"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/server/README.md"
+      symbol_or_section: "Config, endpoints, tokens, and approvals"
+      line_start: 1
+      line_end: 150
+    confidence: high
+    excerpt_or_symbol: "Filesystem-backed OpenWork remote-client API"
+    note: "Enumerates workspace, extension, file, artifact, token, proxy, and approval interfaces and configuration."
+
+  - evidence_id: "evidence-server-extension-routes"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/server/src/server.ts"
+      symbol_or_section: "createRoutes extension and file route registration"
+      line_start: 2212
+      line_end: 2645
+    confidence: high
+    excerpt_or_symbol: "Plugin, skill, MCP, file, approval, audit, and reload routes"
+    note: "Statically confirms approval-gated mutation and engine synchronization for extension resources."
+
+  - evidence_id: "evidence-orchestrator-sidecars"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "apps/orchestrator/README.md"
+      symbol_or_section: "Host orchestrator; Sandbox mode; Router daemon; Approvals"
+      line_start: 1
+      line_end: 169
+    confidence: high
+    excerpt_or_symbol: "Host OpenCode plus OpenWork server on the host or in Docker/Apple container"
+    note: "Documents sidecar resolution, checksums, tokens, sandbox and mount controls, logging, multi-workspace routing, and approval CLI."
+
+  - evidence_id: "evidence-skill-sharing"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "packages/docs/start-here/do-work-with-it/import-a-skill.mdx"
+      symbol_or_section: "Import a skill"
+      line_start: 1
+      line_end: 48
+    confidence: high
+    excerpt_or_symbol: "Workspace-local, chat-created, and Cloud-distributed skills"
+    note: "Documents SKILL.md placement and Cloud install, sync, uninstall, marketplace, and creator flows."
+
+  - evidence_id: "evidence-provider-configuration"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "packages/docs/start-here/connect-your-stack/add-a-custom-llm.mdx"
+      symbol_or_section: "Add a custom LLM"
+      line_start: 1
+      line_end: 57
+    confidence: high
+    excerpt_or_symbol: "OpenCode provider configuration for OpenAI-compatible endpoints, Ollama, and Cloud-managed providers"
+    note: "Clarifies that provider behavior is based on OpenCode primitives."
+
+  - evidence_id: "evidence-browser-documentation"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "packages/docs/start-here/do-work-with-it/control-the-browser.mdx"
+      symbol_or_section: "Control the browser"
+      line_start: 1
+      line_end: 17
+    confidence: high
+    excerpt_or_symbol: "Open pages, click, fill forms, read content, and take screenshots inside OpenWork Browser"
+    note: "Also states the current feature is not full arbitrary desktop-app control."
+
+  - evidence_id: "evidence-connect-mcp"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "ee/apps/den-api/src/mcp/agent.ts"
+      symbol_or_section: "createAgentMcpServer and registerAgentMcpRoutes"
+      line_start: 231
+      line_end: 426
+    confidence: high
+    excerpt_or_symbol: "OAuth-protected /mcp/agent with search_capabilities and execute_capability"
+    note: "Implements member-scoped capability search across native, admin, external-MCP, marketplace and skill sources and execution of exact returned names."
+
+  - evidence_id: "evidence-den-api"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "ee/apps/den-api/src/app.ts"
+      symbol_or_section: "Den application route registration and OpenAPI tags"
+      line_start: 170
+      line_end: 255
+    confidence: high
+    excerpt_or_symbol: "Organizations, identity, roles, teams, providers, skills, workers, MCP, telemetry, and admin routes"
+    note: "Statically confirms the breadth and authenticated REST/OpenAPI shape of the Den control plane."
+
+  - evidence_id: "evidence-license-split"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "LICENSE"
+      symbol_or_section: "Repository license split"
+      line_start: 1
+      line_end: 28
+    confidence: high
+    excerpt_or_symbol: "ee/ uses its own Fair Source license; other project content uses MIT"
+    note: "ee/LICENSE identifies the specific FSL-1.1-MIT terms and two-year MIT future license. This card does not interpret legal applicability."
+
+  - evidence_id: "evidence-security-policy"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "SECURITY.md"
+      symbol_or_section: "Supported versions and vulnerability reporting"
+      line_start: 1
+      line_end: 33
+    confidence: high
+    excerpt_or_symbol: "Active development, latest-release/dev support, and private vulnerability process"
+    note: "Provides a first-party maintenance and security-process signal, not evidence of runtime security."
+
+  - evidence_id: "evidence-cloud-security"
+    source_id: "source-openwork-repository"
+    locator:
+      path: "packages/docs/cloud/security-and-operations.mdx"
+      symbol_or_section: "Security and operations"
+      line_start: 6
+      line_end: 135
+    confidence: high
+    excerpt_or_symbol: "Den identity, secrets, RBAC, audit, storage, transport, and availability controls"
+    note: "Documents hosted claims and private-deployment operator responsibilities; those controls were not dynamically verified."
+
+open_questions:
+  - question: "Which 0.17.32 surfaces have compatibility or stability guarantees, and how quickly do they move with the pinned OpenCode engine?"
+    reason: "The repository is on a dev branch and pre-1.0; release history and formal API-stability policy were not analyzed."
+    related_claim_ids:
+      - "claim-early-maturity"
+      - "claim-opencode-architecture"
+  - question: "What exact filesystem, process, network, credential, and mount isolation does each host, Docker, Apple container, remote worker, and hosted worker configuration provide?"
+    reason: "Static configuration shows selectable boundaries but runtime isolation and provider behavior were outside scope."
+    related_claim_ids:
+      - "claim-approval-and-sandbox"
+      - "claim-local-execution-risk"
+  - question: "Which OpenWork Connect clients and downstream capability sources are currently end-to-end verified at this exact revision?"
+    reason: "Repository documentation distinguishes verified and setup-only clients, and external services were not run."
+    related_claim_ids:
+      - "claim-mcp-both"
+  - question: "Which Den components and deployment features are required for self-hosted team use, and what operational service levels are supported?"
+    reason: "The repository contains multiple Den, inference, worker, database, observability, and deployment components, but no deployment was exercised."
+    related_claim_ids:
+      - "claim-den-control-plane"
+      - "claim-control-plane-risk"
+  - question: "How do the FSL-1.1-MIT terms apply to a prospective adopter's planned deployment or redistribution?"
+    reason: "License text is recorded as evidence, but legal interpretation is explicitly outside the card's scope."
+    related_claim_ids:
+      - "claim-license-split"

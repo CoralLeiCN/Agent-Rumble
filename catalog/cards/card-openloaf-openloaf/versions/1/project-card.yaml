@@ -1,0 +1,1608 @@
+schema_version: "0.3"
+card_id: "card-openloaf-openloaf"
+card_version: 1
+
+field_states:
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+
+project:
+  project_id: "project-openloaf-openloaf"
+  name: "OpenLoaf"
+  primary_type: agent_application
+  type_rationale: >-
+    OpenLoaf is primarily an end-user AI productivity application delivered as
+    an Electron desktop shell and a web interface backed by a local TypeScript
+    server. Its repository implements project workspaces, agent conversations,
+    delegated subagents, memory, skills, MCP clients, model routing, file and
+    shell tools, canvas, email, calendar, document, and task experiences rather
+    than only supplying a reusable agent SDK.
+  boundary: >-
+    The public OpenLoaf/OpenLoaf TypeScript monorepo at exact tag
+    server-v0.2.9-beta.9 and commit f7eccf6064317cb2923137079b68d79b8e5c5f3e,
+    including the Electron desktop app, Next.js web app, local server, shared
+    packages, repository documentation, schemas, tests, and GitHub Actions
+    definitions as static evidence. Excluded are the implementations and
+    operation of OpenLoaf SaaS and update infrastructure, user-selected model
+    providers, MCP servers, email and calendar services, external CLI agents,
+    package-registry and release assets, current CI outcomes, user data, and all
+    runtime behavior. The beta tag names the server release while the desktop,
+    web, and server manifests each declare 0.2.9; this card does not assume those
+    release identifiers are interchangeable.
+  repositories:
+    - source_id: "source-openloaf-repository"
+      url: "https://github.com/OpenLoaf/OpenLoaf"
+      owner: "OpenLoaf"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "apps/desktop/"
+        - "apps/server/"
+        - "apps/web/"
+        - "packages/"
+        - ".github/workflows/"
+      excluded_paths:
+        - "Hosted OpenLoaf SaaS, R2 update infrastructure, and their operational behavior"
+        - "External model providers, MCP servers, email and calendar services, and CLI-agent implementations"
+        - "Issues, pull requests, discussions, package registries, release binaries, and current CI run results"
+        - "User data, local configuration, dependency source, and runtime execution"
+  packages:
+    - "server 0.2.9"
+    - "web 0.2.9"
+    - "desktop 0.2.9"
+    - "Private pnpm/Turborepo workspace packages under packages/"
+  services:
+    - "Local Hono and tRPC server, bundled and supervised by Electron in production"
+    - "Next.js static-export web interface"
+    - "Optional external model-provider endpoints"
+    - "Optional OpenLoaf SaaS model, skill, tool, and update endpoints"
+    - "Optional user-configured MCP, email, and calendar services"
+  documentation_sites:
+    - "Repository-hosted English, Chinese, and Japanese READMEs and docs"
+    - "https://openloaf.com (linked but not analyzed)"
+  license: "AGPL-3.0-only for the public source; a separate commercial license is offered by the maintainer"
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:20:20Z"
+  source_revisions:
+    - source_id: "source-openloaf-repository"
+      branch: "main"
+      tag: "server-v0.2.9-beta.9"
+      commit: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+      retrieved_at: "2026-07-18T13:20:20Z"
+      content_digest: "git-tree-sha1:a6b7aff7c71c132c5ff5abde288c567fad8e9443"
+  release_versions:
+    - "server-v0.2.9-beta.9 Git tag"
+    - "server package 0.2.9"
+    - "web package 0.2.9"
+    - "desktop package 0.2.9"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    source_checkout:
+      method: "Filtered Git clone of the public repository followed by checkout of the exact tagged commit"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "Root positioning, installation, architecture, privacy, roadmap, and licensing documentation"
+      - "Desktop, web, server, and root package manifests"
+      - "Master, channel, project-manager, and subagent creation plus delegated execution lifecycle"
+      - "Tool registry, shell execution approval, memory loading, skills loading, and MCP client/configuration paths"
+      - "Model provider adapters and local/cloud model resolution"
+      - "Project-window creation, local server supervision, filesystem paths, SQLite setup, and project-link schema"
+      - "Representative test scripts, CodeQL configuration, and release workflow definitions"
+    intentionally_not_analyzed:
+      - "Runtime correctness, model or agent quality, tool safety under adversarial execution, performance, and reliability"
+      - "Hosted OpenLoaf SaaS, update service, cloud tools, model gateways, and release artifact behavior"
+      - "Current CI and release status, package provenance, signing, notarization, and distribution channels"
+      - "Complete UI, API, test, dependency-internals, security, privacy, and platform-helper coverage"
+      - "External model, MCP, mail, calendar, browser, CLI-agent, and operating-system service behavior"
+      - "Issues, pull requests, community history, vulnerability enumeration, and penetration testing"
+    source_safety: >-
+      Repository content was treated only as untrusted evidence. Instructions in
+      documentation, comments, prompts, skills, and tests were not followed;
+      dependencies were not installed and project code was not executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A local-first desktop AI workspace that organizes agent teams, memory,
+    skills, tools, and productivity surfaces around projects.
+  purpose: >-
+    OpenLoaf combines a project-oriented desktop and web workspace with a local
+    agent runtime so users can chat with model-backed agents, delegate work to
+    specialist subagents, manage files and tasks, use productivity tools, and
+    persist project context on their machine while optionally connecting to
+    external models, MCP servers, and cloud capabilities.
+  target_users:
+    - "Individuals seeking a desktop AI productivity workspace"
+    - "Developers using agents across code and documentation projects"
+    - "Researchers, writers, and creators managing project-specific context"
+    - "Teams evaluating a self-hosted or local-first multi-tool agent application"
+  primary_use_cases:
+    - "Work with a dedicated AI assistant, files, terminal, board, and canvas per project"
+    - "Delegate tasks to specialist subagents synchronously or in the background"
+    - "Persist user, project, ancestor-project, and specialist-agent memory"
+    - "Discover and load built-in, global, parent-project, and project skills"
+    - "Connect model providers and MCP tools from local configuration"
+    - "Use email, calendar, browser, Office, media, file, shell, and project tools"
+
+classification:
+  secondary_characteristics:
+    - "local-first desktop agent workspace"
+    - "multi-agent productivity application"
+    - "project-centric knowledge and tool environment"
+    - "MCP client and extensible tool host"
+    - "cross-platform Electron application"
+    - "web application with a local TypeScript backend"
+  domains:
+    - "personal productivity"
+    - "software development"
+    - "research and writing"
+    - "project management"
+    - "knowledge work"
+    - "content creation"
+  delivery_forms:
+    - "Electron desktop application for macOS, Windows, and Linux"
+    - "Next.js web interface"
+    - "local Hono and tRPC server"
+    - "source monorepo"
+  agent_patterns:
+    - "master or secretary agent"
+    - "project-manager agent"
+    - "specialist subagent delegation"
+    - "synchronous and background agent execution"
+    - "tool-search activation"
+    - "project-scoped context injection"
+    - "channel agent for messaging integrations"
+  architecture_layers:
+    - "Electron desktop process and project windows"
+    - "Next.js and React user interface"
+    - "Hono and tRPC local server"
+    - "Vercel AI SDK agent runtime"
+    - "tool and MCP registries"
+    - "memory, skills, and project-context loaders"
+    - "Prisma and libSQL-backed SQLite state"
+    - "optional external provider and SaaS adapters"
+  claim_ids:
+    - "claim-classification"
+    - "claim-multi-agent"
+    - "claim-project-workspaces"
+    - "claim-local-external-boundary"
+
+capabilities:
+  - capability_id: "capability-multi-agent-delegation"
+    ontology_id: "x-openloaf:multi-agent-delegation"
+    name: "Layered agent and subagent delegation"
+    description: >-
+      Creates master, project-manager, channel, and specialist ToolLoopAgent
+      instances, and lets an agent launch synchronous or background subagents
+      under configured depth and concurrency limits.
+    support_status: statically_confirmed
+    scope: "Server-side Vercel AI SDK agent factory, delegation tool, and AgentManager"
+    interfaces:
+      - "Agent tool for synchronous or background delegation"
+      - "SendMessage tool for continued subagent input"
+      - "Master, project-manager, channel, and specialist ToolLoopAgent constructors"
+    prerequisites:
+      - "A configured chat model"
+      - "An active request and chat session for background execution"
+    configuration_requirements:
+      - "Selected subagent type and task prompt"
+      - "Model and project request context"
+    limitations:
+      - "The manager caps spawn depth at 2 and concurrently running subagents at 4."
+      - "Documentation names Secretary, Project, and Worker roles while code names Master, PM, Channel, and SubAgent; their exact product-to-runtime mapping was not runtime verified."
+      - "Agent execution behavior and delegation quality were not exercised."
+    confidence: high
+    claim_ids:
+      - "claim-multi-agent"
+    evidence_refs:
+      - "evidence-agent-manager"
+      - "evidence-agent-tool"
+      - "evidence-agent-factory"
+
+  - capability_id: "capability-project-workspaces"
+    ontology_id: "x-openloaf:project-workspaces"
+    name: "Project-centric desktop workspaces"
+    description: >-
+      Opens or focuses one dedicated Electron window per project and loads a
+      project-scoped web route with file, agent, board, canvas, and related
+      workspace experiences backed by a bundled local server.
+    support_status: statically_confirmed
+    scope: "Electron project-window management and bundled production server"
+    interfaces:
+      - "Electron main and project windows"
+      - "Next.js web interface"
+      - "Local Hono and tRPC API"
+    prerequisites:
+      - "Desktop runtime or separately started web and server processes"
+      - "A project ID, root URI, and title"
+    configuration_requirements:
+      - "Local storage paths and server/web URLs"
+    limitations:
+      - "BrowserWindow sandbox and context isolation apply to the renderer, not to agent shell commands executed by the server."
+      - "Window behavior and cross-platform packaging were not run."
+    confidence: high
+    claim_ids:
+      - "claim-project-workspaces"
+    evidence_refs:
+      - "evidence-project-window"
+      - "evidence-bundled-server"
+      - "evidence-desktop-manifest"
+
+  - capability_id: "capability-memory"
+    ontology_id: "x-openloaf:scoped-memory"
+    name: "User, project, ancestor-project, and agent memory"
+    description: >-
+      Reads and writes Markdown memory files from user, project, parent-project,
+      and specialist-agent scopes and assembles bounded memory blocks for agent
+      context.
+    support_status: statically_confirmed
+    scope: "Server memory loader and local filesystem paths"
+    interfaces:
+      - "MEMORY.md files"
+      - "Memory loader and save tool"
+    prerequisites:
+      - "Writable local OpenLoafData and project directories"
+    configuration_requirements:
+      - "Project root and optional ancestor project roots"
+      - "Optional specialist agent name"
+    limitations:
+      - "Each loaded memory file is truncated to 200 lines by default."
+      - "The inspected context loader uses project ancestry, not the ProjectLink relation."
+    confidence: high
+    claim_ids:
+      - "claim-memory"
+      - "claim-project-linking"
+    evidence_refs:
+      - "evidence-memory-loader"
+      - "evidence-local-paths"
+      - "evidence-ancestor-resolution"
+
+  - capability_id: "capability-skills"
+    ontology_id: "x-openloaf:markdown-skills"
+    name: "Built-in and filesystem skill discovery"
+    description: >-
+      Discovers reusable SKILL.md workflows from built-in, global,
+      ancestor-project, and current-project scopes, with deterministic override
+      precedence and optional tool dependency metadata.
+    support_status: statically_confirmed
+    scope: "Server-side skills loader and agent prompt/tool assembly"
+    interfaces:
+      - "SKILL.md"
+      - "openloaf.json skill metadata"
+      - "LoadSkill and ToolSearch agent tools"
+    prerequisites:
+      - "Accessible global or project skills directories"
+    configuration_requirements:
+      - "Optional global, ancestor-project, and current-project roots"
+    limitations:
+      - "Built-in skills cannot be overridden; project scope overrides parent and global filesystem skills of the same name."
+      - "Skill instruction quality and safety were not evaluated."
+    confidence: high
+    claim_ids:
+      - "claim-skills"
+    evidence_refs:
+      - "evidence-skills-loader"
+      - "evidence-agent-factory"
+
+  - capability_id: "capability-mcp-client"
+    ontology_id: "x-openloaf:mcp-client"
+    name: "Global and project-scoped MCP clients"
+    description: >-
+      Reads global and project MCP configurations, connects over stdio, HTTP, or
+      SSE, discovers tools, and registers them in the agent tool catalog with
+      connection pooling and idle cleanup.
+    support_status: statically_confirmed
+    scope: "MCP configuration service and MCPClientManager"
+    interfaces:
+      - "Model Context Protocol client"
+      - "stdio, HTTP, and SSE transports"
+      - "Global and project mcp-servers.json files"
+    prerequisites:
+      - "A configured and enabled MCP server"
+      - "User trust for project-scoped configuration when required"
+    configuration_requirements:
+      - "Transport-specific command or URL and optional environment, headers, or OAuth configuration"
+    limitations:
+      - "Maximum 10 concurrent MCP connections and a five-minute idle timeout are defined."
+      - "The inspected OAuth provider switch supports Notion only."
+      - "Connected servers and their tool safety remain external to this repository boundary."
+    confidence: high
+    claim_ids:
+      - "claim-mcp"
+    evidence_refs:
+      - "evidence-mcp-manager"
+      - "evidence-mcp-config"
+
+  - capability_id: "capability-model-routing"
+    ontology_id: "x-openloaf:model-routing"
+    name: "Multiple local, CLI, provider, and SaaS model routes"
+    description: >-
+      Resolves a selected model through user provider settings, optional CLI
+      adapters, multiple AI SDK provider adapters, custom OpenAI-compatible
+      endpoints, or an authenticated OpenLoaf SaaS route.
+    support_status: statically_confirmed
+    scope: "Server-side provider adapters and chat-model resolver"
+    interfaces:
+      - "Vercel AI SDK LanguageModel interface"
+      - "Provider profiles, model IDs, API URLs, and credentials"
+      - "Claude Code and Codex CLI adapters when installed"
+    prerequisites:
+      - "A configured provider profile and selected model"
+      - "Credentials and network access for non-local providers"
+    configuration_requirements:
+      - "chatModelId and chatModelSource"
+      - "Provider-specific API URL, key, or cloud account token"
+    limitations:
+      - "Model calls may transmit prompts, context, attachments, and tool results to the selected external service."
+      - "Provider compatibility and behavior were not exercised."
+    confidence: high
+    claim_ids:
+      - "claim-model-routing"
+      - "claim-local-external-boundary"
+    evidence_refs:
+      - "evidence-provider-adapters"
+      - "evidence-model-resolution"
+
+  - capability_id: "capability-productivity-tools"
+    ontology_id: "x-openloaf:productivity-tools"
+    name: "Agent-accessible productivity and computer tools"
+    description: >-
+      Registers a broad catalog of file, shell, browser, desktop-control,
+      project, board, calendar, email, Office, media, web, chart, widget,
+      scheduling, cloud, and agent collaboration tools, using deferred
+      ToolSearch activation for many entries.
+    support_status: statically_confirmed
+    scope: "Server tool registry and agent tool assembly"
+    interfaces:
+      - "Vercel AI SDK tools"
+      - "ToolSearch and capability groups"
+      - "Desktop and web user interfaces"
+    prerequisites:
+      - "Platform-specific helpers, services, or credentials for applicable tools"
+      - "Agent activation of deferred tools"
+    configuration_requirements:
+      - "Per-tool platform, path, credential, or service configuration"
+    limitations:
+      - "Many tools have external side effects and platform-specific prerequisites."
+      - "Availability, permission prompts, and correctness were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-tools"
+      - "claim-shell-risk"
+    evidence_refs:
+      - "evidence-root-tools"
+      - "evidence-server-manifest"
+      - "evidence-agent-factory"
+      - "evidence-shell-execution"
+
+  - capability_id: "capability-local-storage"
+    ontology_id: "x-openloaf:local-storage"
+    name: "Local application, project, and SQLite state"
+    description: >-
+      Stores configuration and the default database under ~/.openloaf, keeps
+      user-facing data under OpenLoafData, stores project metadata under each
+      project, and runs SQLite through Prisma and libSQL in the local server.
+    support_status: statically_confirmed
+    scope: "Default filesystem and database paths in the local server"
+    interfaces:
+      - "Local filesystem"
+      - "SQLite database"
+      - "Prisma and libSQL adapter"
+    prerequisites:
+      - "Writable user and project directories"
+    configuration_requirements:
+      - "Optional OPENLOAF_DATABASE_URL or DATABASE_URL override"
+    limitations:
+      - "Local state storage does not mean all processing remains local when remote models, MCP servers, cloud tools, email, calendar, or SaaS routes are selected."
+      - "Encryption at rest, backup, and failure recovery were not analyzed."
+    confidence: high
+    claim_ids:
+      - "claim-local-external-boundary"
+    evidence_refs:
+      - "evidence-local-paths"
+      - "evidence-sqlite-adapter"
+      - "evidence-server-bootstrap"
+
+  - capability_id: "capability-project-linking"
+    ontology_id: "x-openloaf:project-link-context"
+    name: "Project linking for shared memory and skills"
+    description: >-
+      Documentation claims arbitrary project links inject linked memory and
+      skills, and the database defines a many-to-many ProjectLink relation; the
+      targeted runtime inspection found context assembly for project ancestors
+      but did not find a ProjectLink-consuming path.
+    support_status: partially_implemented
+    scope: "Documented project-link experience, Prisma schema, and inspected memory/skills context resolution"
+    interfaces:
+      - "ProjectLink database relation"
+      - "Project workspace linking UI described by documentation"
+    prerequisites:
+      - "Two or more registered projects"
+    configuration_requirements:
+      - "An explicit source-to-target project link"
+    limitations:
+      - "No runtime path consuming ProjectLink for memory or skill injection was found at targeted analysis depth."
+      - "Absence in the targeted search is not proof that the capability is absent elsewhere."
+    confidence: medium
+    claim_ids:
+      - "claim-project-linking"
+    evidence_refs:
+      - "evidence-root-project-linking"
+      - "evidence-project-link-schema"
+      - "evidence-ancestor-resolution"
+      - "evidence-memory-loader"
+      - "evidence-skills-loader"
+
+architecture:
+  overview: >-
+    Electron packages and supervises a local Node server plus a Next.js static
+    web application. The renderer presents main and project windows while Hono
+    and tRPC expose local APIs. The server constructs Vercel AI SDK ToolLoopAgent
+    instances, activates static, MCP, and cloud tools through a registry, routes
+    models through user or SaaS provider adapters, and assembles filesystem
+    memory and skills into project-scoped context. Prisma with a libSQL adapter
+    persists application metadata in SQLite; other state resides in user and
+    project directories. Optional model, MCP, messaging, cloud, email, and
+    calendar integrations cross the local process boundary.
+  languages:
+    - "TypeScript"
+    - "JavaScript"
+    - "CSS"
+    - "Prisma schema"
+    - "YAML for CI and release workflows"
+  frameworks_and_sdks:
+    - name: "Next.js"
+      version_constraint: "^16.1.4"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-project-workspaces"
+    - name: "React"
+      version_constraint: "19.x workspace constraint"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-project-workspaces"
+    - name: "Hono and tRPC"
+      version_constraint: "Workspace catalog and @hono/node-server ^1.19.9"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-project-workspaces"
+    - name: "Vercel AI SDK"
+      version_constraint: "ai ^6.0.168"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-multi-agent"
+        - "claim-model-routing"
+  model_providers:
+    - name: "OpenAI, Anthropic, Google, DeepSeek, xAI, Moonshot, Alibaba/Qwen, Amazon Bedrock, Vercel, custom OpenAI-compatible, CLI, and OpenLoaf SaaS adapters"
+      version_constraint: "Provider SDK versions declared in apps/server/package.json"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-model-routing"
+  runtime_and_orchestration:
+    - name: "Vercel AI SDK ToolLoopAgent"
+      version_constraint: "ai ^6.0.168"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-multi-agent"
+    - name: "AgentManager"
+      version_constraint: "Bundled at the analyzed commit"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-multi-agent"
+  tools_and_mcp:
+    tools:
+      - name: "OpenLoaf static and deferred tool registry"
+        version_constraint: "Bundled at the analyzed commit"
+        dependency_relation: bundled
+        required: true
+        claim_ids:
+          - "claim-tools"
+      - name: "@ai-sdk/mcp"
+        version_constraint: "^1.0.36"
+        dependency_relation: optional
+        required: false
+        claim_ids:
+          - "claim-mcp"
+    mcp_role: client
+    mcp_details:
+      - "Connects to user-configured MCP servers over stdio, HTTP, or SSE."
+      - "Merges global and project configurations with project name precedence."
+      - "Registers discovered tools dynamically for ToolSearch and agent execution."
+      - "Project-scoped configuration changes revoke stored trust until reapproved."
+  skills:
+    - name: "OpenLoaf SKILL.md loader"
+      version_constraint: "Bundled at the analyzed commit"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-skills"
+  memory_and_state:
+    - name: "Markdown scoped memory"
+      version_constraint: "MEMORY.md files at user, project, ancestor-project, and agent scopes"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-memory"
+    - name: "Chat and agent filesystem stores"
+      version_constraint: "Bundled at the analyzed commit"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-multi-agent"
+  retrieval_and_knowledge:
+    - name: "File search and web-search tools"
+      version_constraint: "Bundled or optionally cloud-backed"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-tools"
+  document_processing:
+    - name: "PDF, DOCX, spreadsheet, presentation, image, archive, and rich-text libraries and tools"
+      version_constraint: "Versions declared in server and web manifests"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-tools"
+  execution_and_sandbox:
+    - name: "Operating-system shell command tool"
+      version_constraint: "Bundled at the analyzed commit"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-shell-risk"
+    - name: "Electron renderer sandbox"
+      version_constraint: "Electron 40.1.0 configuration"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-project-workspaces"
+  gateways_and_routing:
+    - name: "Provider adapter registry"
+      version_constraint: "Bundled at the analyzed commit"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-model-routing"
+    - name: "OpenLoaf SaaS"
+      version_constraint: "External service through @openloaf-saas/sdk ^0.3.9"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-local-external-boundary"
+  storage_and_databases:
+    - name: "SQLite via PrismaLibSql"
+      version_constraint: "Prisma 7 schema as described by repository documentation"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-local-external-boundary"
+        - "claim-project-linking"
+  interfaces:
+    - name: "Electron desktop interface"
+      version_constraint: "desktop 0.2.9; Electron 40.1.0"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-project-workspaces"
+    - name: "Next.js web interface"
+      version_constraint: "web 0.2.9"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-project-workspaces"
+    - name: "Hono and tRPC local API"
+      version_constraint: "server 0.2.9"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-project-workspaces"
+  deployment:
+    - name: "Electron packages for macOS, Windows, and Linux"
+      version_constraint: "desktop 0.2.9"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-project-workspaces"
+        - "claim-maturity"
+    - name: "Local web and server development processes"
+      version_constraint: "Node.js >=20 and pnpm >=10 documented"
+      dependency_relation: development
+      required: false
+      claim_ids:
+        - "claim-project-workspaces"
+  observability_and_evaluation:
+    - name: "Repository test and browser-test scripts"
+      version_constraint: "Static script definitions at the analyzed commit"
+      dependency_relation: development
+      required: false
+      claim_ids:
+        - "claim-maturity"
+    - name: "CodeQL workflow"
+      version_constraint: "JavaScript/TypeScript analysis on main, pull requests, and weekly schedule"
+      dependency_relation: development
+      required: false
+      claim_ids:
+        - "claim-maturity"
+  security_and_permissions:
+    - name: "Shell command approval filter"
+      version_constraint: "Static allowlist and path checks at the analyzed commit"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-shell-risk"
+    - name: "MCP project-config trust hash"
+      version_constraint: "Bundled at the analyzed commit"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-mcp"
+  data_flows:
+    - "Electron starts a bundled local server and loads the local web interface into main and project windows."
+    - "A chat request selects a provider profile and model, loads project and user context, constructs an agent, and streams model and tool events to the interface."
+    - "Agents use ToolSearch to activate deferred static, MCP, or cloud tools and can delegate tasks to managed subagents."
+    - "Memory and skills are read from user and project files; application metadata is read from and written to local SQLite."
+    - "Remote model, MCP, cloud, email, calendar, messaging, browser, and update integrations can send data outside the local OpenLoaf process."
+  control_flows:
+    - "Master or project-manager agents run model-directed tool loops with step limits and tool activation guards."
+    - "The Agent tool spawns specialist subagents and either waits for completion or registers a background task."
+    - "AgentManager enforces a maximum spawn depth of 2 and four concurrent running subagents."
+    - "MCP configuration is merged by scope, connected at startup or on demand, and disconnected after idle time or shutdown."
+    - "Shell commands pass through a static approval decision before execution in the resolved working directory."
+
+components:
+  - component_id: "component-desktop"
+    name: "OpenLoaf desktop"
+    path: "apps/desktop/"
+    project_type: "agent_application"
+    purpose: "Packages the application, manages main and project Electron windows, and supervises the bundled local web and server processes."
+    claim_ids:
+      - "claim-project-workspaces"
+  - component_id: "component-web"
+    name: "OpenLoaf web"
+    path: "apps/web/"
+    project_type: "agent_application"
+    purpose: "Provides project, chat, canvas, file, editor, board, settings, and productivity user interfaces."
+    claim_ids:
+      - "claim-project-workspaces"
+      - "claim-tools"
+  - component_id: "component-server"
+    name: "OpenLoaf server"
+    path: "apps/server/"
+    project_type: "agent_harness_runtime"
+    purpose: "Runs local APIs, agent loops, tools, provider routing, MCP clients, memory, skills, messaging, and background tasks."
+    claim_ids:
+      - "claim-multi-agent"
+      - "claim-memory"
+      - "claim-skills"
+      - "claim-mcp"
+      - "claim-model-routing"
+      - "claim-tools"
+      - "claim-shell-risk"
+  - component_id: "component-shared-packages"
+    name: "OpenLoaf shared packages"
+    path: "packages/"
+    project_type: "x-supporting-component"
+    purpose: "Defines APIs, database schema and client, configuration and paths, UI components, and widget interfaces shared by the applications."
+    claim_ids:
+      - "claim-local-external-boundary"
+      - "claim-project-linking"
+
+usage:
+  installation: >-
+    Download a platform release or, for source development, install Node.js 20
+    or later and pnpm 10 or later, run `pnpm install`, initialize the database
+    with `pnpm run db:migrate`, and start web plus server with `pnpm run dev`.
+    The repository also exposes `pnpm run desktop` for the desktop development
+    flow. These commands were documented but not executed.
+  minimal_start: >-
+    Start the local server and web interface, open localhost:3001 or the Electron
+    desktop application, create or open a project, configure a model provider,
+    and begin a project chat. Additional model, MCP, email, calendar, and cloud
+    features require their own credentials or service configuration.
+  configuration:
+    - "Application and data directories, with optional database URL override"
+    - "Project IDs, root URIs, hierarchy, and optional links"
+    - "Model source, provider profiles, model IDs, API URLs, keys, or OpenLoaf cloud account"
+    - "Global and project MCP server files plus explicit project trust"
+    - "Global, ancestor-project, project, and built-in skills"
+    - "User, project, ancestor-project, and specialist-agent memory files"
+    - "Optional email, calendar, messaging, cloud-tool, browser, and platform helper settings"
+  required_services: []
+  extension_points:
+    - "SKILL.md workflows and optional skill metadata"
+    - "Filesystem-defined AGENT.md specialist agents"
+    - "MCP servers and their dynamically registered tools"
+    - "Provider profiles, custom OpenAI-compatible endpoints, and CLI adapters"
+    - "Static and deferred tool registry entries"
+    - "Widgets, project metadata, and shared workspace packages"
+
+assessment:
+  contexts:
+    - context_id: "context-local-desktop-agent-evaluation"
+      use_case: >-
+        Evaluate a local-first desktop agent application for project-oriented
+        knowledge work, multi-agent delegation, and extensible tools using only
+        repository-hosted static evidence.
+      comparison_cohort:
+        - "desktop AI productivity applications"
+        - "local-first agent workspaces"
+        - "multi-tool personal agent applications"
+      requirements:
+        - "Project-specific workspaces and context"
+        - "Agent delegation and reusable skills"
+        - "Local state with explicit external integration boundaries"
+        - "Multiple model providers and MCP extensibility"
+        - "Cross-platform desktop delivery"
+        - "Understandable permission and side-effect controls"
+      organizational_constraints:
+        - "Static analysis only; no project execution or dependency installation"
+        - "Hosted OpenLoaf services and external providers are outside the source boundary"
+        - "The adopting user remains responsible for provider, MCP, tool, and shell permissions"
+        - "The analyzed tag is a beta server tag and the README cautions against production reliance"
+      assessed_at: "2026-07-18T13:20:20Z"
+  maturity: early
+  maturity_signals:
+    - statement: "The repository has versioned desktop, web, and server packages, broad test scripts, CodeQL, and multi-platform release workflows."
+      reasoning: >-
+        These artifacts indicate an actively engineered distributable product,
+        but this analysis inspected definitions only and did not verify any test,
+        workflow, signing, or release outcome.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-maturity"
+    - statement: "The exact snapshot is a beta-tagged 0.2.9 line and the README explicitly warns that features and APIs may change."
+      reasoning: >-
+        The release identifier and maintainer caution support an early maturity
+        assessment despite the repository's substantial implementation breadth.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-maturity"
+  strengths:
+    - statement: "It integrates project workspaces, agents, memory, skills, MCP, and productivity surfaces in one application boundary."
+      reasoning: >-
+        The repository contains dedicated desktop, web, server, agent, tool,
+        context, and persistence components rather than delegating the entire
+        experience to an external agent CLI.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-project-workspaces"
+        - "claim-multi-agent"
+        - "claim-memory"
+        - "claim-skills"
+        - "claim-mcp"
+    - statement: "Its extension model spans model providers, MCP servers, filesystem skills, specialist agents, and a broad tool catalog."
+      reasoning: >-
+        Provider adapters, dynamic MCP tool registration, SKILL.md discovery,
+        AGENT.md lookup, and ToolSearch activation are present in inspected code.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-model-routing"
+        - "claim-mcp"
+        - "claim-skills"
+        - "claim-tools"
+  limitations:
+    - statement: "The local-first positioning does not make the complete agent workflow local when external services are selected."
+      reasoning: >-
+        Core paths and SQLite are local, but provider adapters, remote MCP,
+        OpenLoaf SaaS, cloud tools, email, calendar, messaging, and update paths
+        intentionally communicate with external systems.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-local-external-boundary"
+    - statement: "Linked-project memory and skill injection is uncertain at the analyzed depth."
+      reasoning: >-
+        The README and Prisma schema represent links, but the inspected context
+        loaders consume project ancestor roots and no ProjectLink-consuming
+        runtime path was found in the targeted search.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: medium
+      claim_ids:
+        - "claim-project-linking"
+  risks:
+    - statement: "Agent shell execution has host-level side-effect risk beyond a narrow sandbox model."
+      reasoning: >-
+        The tool launches the user's shell in a resolved working directory. Its
+        no-approval allowlist includes interpreters, package managers, network
+        clients, version control, and file-copy commands, so approval filtering
+        is not equivalent to OS isolation.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-shell-risk"
+    - statement: "External models, MCP servers, and cloud tools can receive sensitive project context or cause external side effects."
+      reasoning: >-
+        Those integrations are deliberate extension points whose runtime trust,
+        retention, authorization, and safety are outside the repository-only
+        evidence boundary.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-local-external-boundary"
+        - "claim-mcp"
+        - "claim-tools"
+  best_fit:
+    - statement: "Technical users who want a project-oriented desktop agent workspace and can manage model, MCP, and tool permissions."
+      reasoning: >-
+        The application exposes a broad local workspace and extensibility model,
+        while its beta status and powerful host tools reward users able to
+        evaluate configuration and side effects carefully.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-project-workspaces"
+        - "claim-multi-agent"
+        - "claim-mcp"
+        - "claim-shell-risk"
+  poor_fit:
+    - statement: "Organizations requiring a runtime-verified air-gapped deployment or mature enterprise control plane from repository evidence alone."
+      reasoning: >-
+        No runtime verification was performed, several optional capabilities use
+        hosted or third-party services, and the analyzed release is explicitly
+        beta and under active development.
+      context_id: "context-local-desktop-agent-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-local-external-boundary"
+        - "claim-maturity"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "Vercel AI SDK"
+      scope: "Model, streaming, tool, ToolLoopAgent, and MCP client interfaces used by the server agent runtime."
+      confidence: high
+      claim_ids:
+        - "claim-multi-agent"
+        - "claim-mcp"
+        - "claim-model-routing"
+    - target_project: "Electron"
+      scope: "Cross-platform desktop shell, window lifecycle, preload boundary, packaging, and bundled-server supervision."
+      confidence: high
+      claim_ids:
+        - "claim-project-workspaces"
+    - target_project: "Next.js and React"
+      scope: "Web and desktop-rendered application user interface."
+      confidence: high
+      claim_ids:
+        - "claim-project-workspaces"
+    - target_project: "Prisma and libSQL"
+      scope: "Local SQLite access and application schema."
+      confidence: high
+      claim_ids:
+        - "claim-local-external-boundary"
+        - "claim-project-linking"
+  integrates_with:
+    - target_project: "User-selected model providers"
+      scope: "Remote or local language-model inference through provider profiles and AI SDK adapters."
+      confidence: high
+      claim_ids:
+        - "claim-model-routing"
+        - "claim-local-external-boundary"
+    - target_project: "Model Context Protocol servers"
+      scope: "External tools connected over stdio, HTTP, or SSE and registered into ToolSearch."
+      confidence: high
+      claim_ids:
+        - "claim-mcp"
+    - target_project: "OpenLoaf SaaS"
+      scope: "Optional external model, capability, cloud-tool, and update routes referenced by the repository."
+      confidence: high
+      claim_ids:
+        - "claim-local-external-boundary"
+    - target_project: "Claude Code and Codex CLIs"
+      scope: "Optional locally installed CLI model adapters."
+      confidence: high
+      claim_ids:
+        - "claim-model-routing"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "OpenLoaf is an end-user multi-agent productivity application rather than only an agent framework or tool library."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The analyzed OpenLoaf monorepo boundary"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-positioning"
+      - "evidence-root-architecture"
+      - "evidence-desktop-manifest"
+      - "evidence-server-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The repository implements and packages a desktop/web product with a local backend, agent runtime, and end-user productivity surfaces."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-multi-agent"
+    statement: "OpenLoaf implements master, project-manager, channel, and specialist subagents with synchronous or background delegation, depth 2, and four-agent concurrency."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Server-side agent runtime at the analyzed commit"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-agent-manager"
+      - "evidence-agent-tool"
+      - "evidence-agent-factory"
+    conflicting_evidence_ids: []
+    reasoning: "The factory creates multiple ToolLoopAgent roles and the manager and delegation tool define execution, lifecycle, depth, and concurrency behavior."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-project-workspaces"
+    statement: "The desktop application creates a dedicated Electron window per project and supervises a bundled local server and web interface."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "OpenLoaf desktop 0.2.9 source"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-project-window"
+      - "evidence-bundled-server"
+      - "evidence-desktop-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The Electron main-process code constructs project-specific URLs and windows and spawns the packaged local server child process."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-memory"
+    statement: "The server loads Markdown memory from user, project, ancestor-project, and specialist-agent scopes and truncates each file to 200 lines by default."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Server memory loader at the analyzed commit"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-memory-loader"
+      - "evidence-local-paths"
+    conflicting_evidence_ids: []
+    reasoning: "The loader declares scope-specific paths, read/write functions, bounded loading, and ordered block assembly."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-skills"
+    statement: "The server discovers built-in, global, ancestor-project, and project SKILL.md workflows, with project over parent over global precedence and non-overridable built-ins."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Server skills loader at the analyzed commit"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-skills-loader"
+      - "evidence-agent-factory"
+    conflicting_evidence_ids: []
+    reasoning: "The skills loader resolves the four sources and implements explicit duplicate handling and discovery."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-mcp"
+    statement: "OpenLoaf acts as an MCP client for global and project configurations over stdio, HTTP, and SSE, registering discovered server tools into its agent catalog."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "MCP client and configuration code at the analyzed commit"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-mcp-manager"
+      - "evidence-mcp-config"
+    conflicting_evidence_ids: []
+    reasoning: "The configuration service merges scoped servers and tracks trust, while the manager creates transports, connects, discovers tools, and registers them."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-model-routing"
+    statement: "The server routes explicitly selected models through multiple provider SDKs, custom compatible endpoints, local CLI adapters, or an authenticated OpenLoaf SaaS path."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Server provider adapters and chat-model resolver"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-provider-adapters"
+      - "evidence-model-resolution"
+      - "evidence-server-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The provider registry and model resolver map configured profiles and sources to concrete adapters, credentials, and endpoints."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-tools"
+    statement: "The server provides agent tools spanning files, shell, browser, desktop control, project management, email, calendar, Office documents, media, web, scheduling, and collaboration."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "OpenLoaf server tool registry and declared dependencies"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-tools"
+      - "evidence-agent-factory"
+      - "evidence-server-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "First-party documentation and direct registry/dependency inspection identify the tool categories, though individual runtime availability was not tested."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-local-external-boundary"
+    statement: "OpenLoaf stores core configuration, project data, memory, and SQLite state locally, but selected model, MCP, cloud, email, calendar, messaging, and update integrations may transmit data externally."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Default storage and optional integration boundary at the analyzed commit"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-local-paths"
+      - "evidence-sqlite-adapter"
+      - "evidence-model-resolution"
+      - "evidence-mcp-manager"
+      - "evidence-server-bootstrap"
+    conflicting_evidence_ids:
+      - "evidence-root-privacy"
+    reasoning: >-
+      Static code confirms local default state paths and database, while also
+      defining intentional outbound provider, SaaS, remote MCP, and cloud paths.
+      Therefore the README's unqualified statements that data never leaves the
+      device and nothing is uploaded do not hold for every selectable feature.
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-project-linking"
+    statement: "Project linking is documented and represented in the database, but linked-project memory and skill injection could not be statically confirmed in the targeted runtime paths."
+    claim_kind: interpretive
+    verification_status: conflicted
+    confidence: medium
+    applies_to: "ProjectLink schema and inspected context assembly at the analyzed commit"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-project-linking"
+      - "evidence-project-link-schema"
+    conflicting_evidence_ids:
+      - "evidence-ancestor-resolution"
+      - "evidence-memory-loader"
+      - "evidence-skills-loader"
+    reasoning: >-
+      The documentation claims arbitrary links inject context and the Prisma
+      model persists links, but the inspected loader inputs originate from
+      project ancestry. A targeted repository search found no runtime consumer
+      of ProjectLink; this is uncertainty, not proof of absence.
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-shell-risk"
+    statement: "The shell tool executes the user's real shell and its no-approval allowlist includes network clients, interpreters, package managers, version control, and file-copy utilities."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Server shell approval and execution code at the analyzed commit"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-command-approval"
+      - "evidence-shell-execution"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      Commands deemed safe and lacking flagged operators or redirection bypass
+      approval, then spawn the platform shell in a resolved working directory.
+      This is an approval policy, not OS-level sandbox isolation, and is not a
+      security audit of exploitability.
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+  - claim_id: "claim-maturity"
+    statement: "OpenLoaf appears early-stage in this assessment context despite substantial implementation and release automation."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The analyzed beta snapshot under the declared assessment context"
+    assessment_context_id: "context-local-desktop-agent-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-active-development"
+      - "evidence-server-manifest"
+      - "evidence-desktop-manifest"
+      - "evidence-codeql"
+      - "evidence-release-workflow"
+    conflicting_evidence_ids: []
+    reasoning: "Versioned packages, many test scripts, CodeQL, and release workflows show meaningful engineering investment, while the exact tag is beta and the maintainer cautions that features and APIs may change."
+    last_verified_at: "2026-07-18T13:20:20Z"
+
+sources:
+  - source_id: "source-openloaf-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-tree-sha1:a6b7aff7c71c132c5ff5abde288c567fad8e9443"
+    access_scope: public
+  - source_id: "source-openloaf-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/README.md"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:38512ed845b558f270370f037ba88ba43c57b03e"
+    access_scope: public
+  - source_id: "source-openloaf-server-manifest"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/package.json"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:3586b18b368ae26571fd23618841fdd54998f121"
+    access_scope: public
+  - source_id: "source-openloaf-desktop-manifest"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/desktop/package.json"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:3c33e82c3a867be7910018bee06342b08061dd24"
+    access_scope: public
+  - source_id: "source-openloaf-agent-manager"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/services/agentManager.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:69e465d03927296cea6caa68159f344585189239"
+    access_scope: public
+  - source_id: "source-openloaf-agent-factory"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/services/agentFactory.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:253adb7bc24141efd4b29fc0a35b2c073aaff6e6"
+    access_scope: public
+  - source_id: "source-openloaf-agent-tools"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/tools/agentTools.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:8e4337fa2d3adc92d8f13f9ab26bb0a15c219d6a"
+    access_scope: public
+  - source_id: "source-openloaf-memory-loader"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/shared/memoryLoader.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:48447942c9f94ba0428feeb76b543264d8333223"
+    access_scope: public
+  - source_id: "source-openloaf-skills-loader"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/services/skillsLoader.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:170e3e87be963a55a8b9b39d7bda21444a1a1289"
+    access_scope: public
+  - source_id: "source-openloaf-mcp-manager"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/services/mcpClientManager.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:1d486b4771f748ea6e3f2331897ddd06773b55d4"
+    access_scope: public
+  - source_id: "source-openloaf-mcp-config"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/services/mcpConfigService.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:1c4cbec04f2836e4af4f7e03c4b2f3cf6c427ba3"
+    access_scope: public
+  - source_id: "source-openloaf-provider-adapters"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/models/providerAdapters.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:fcaf7ea72cb81944038131aabc2f489ddc1c681b"
+    access_scope: public
+  - source_id: "source-openloaf-model-resolution"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/models/resolveChatModel.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:76401e0ee15bba140bb2648860d405827da5c59d"
+    access_scope: public
+  - source_id: "source-openloaf-local-paths"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/packages/config/src/openloaf-paths.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:468974b2f463d9a84b0d0ca7c30e74b77e9e55a3"
+    access_scope: public
+  - source_id: "source-openloaf-db"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/packages/db/src/index.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:af8af569f0fbd9c9b220d25f58ac862c258cb99b"
+    access_scope: public
+  - source_id: "source-openloaf-project-schema"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/packages/db/prisma/schema/project.prisma"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:8f3ddd70547160ce546203749346fbacba166b11"
+    access_scope: public
+  - source_id: "source-openloaf-util"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/shared/util.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:4c9b5094664a6fd1c9ed09a0ea5619aa354f2dfa"
+    access_scope: public
+  - source_id: "source-openloaf-project-window"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/desktop/src/main/windows/projectWindow.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:73c1b5a9aa0f4dade3918bae38d224f60fbf372c"
+    access_scope: public
+  - source_id: "source-openloaf-prod-services"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/desktop/src/main/services/prodServices.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:a1ca0d982d61dbeee445b28be306726e1d5909b6"
+    access_scope: public
+  - source_id: "source-openloaf-server-index"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/index.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:b247717c00c1f194bcaa54bf49556c43937efc7b"
+    access_scope: public
+  - source_id: "source-openloaf-command-approval"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/tools/commandApproval.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:3c84a15e432af25236390ea527e53bf6c4aea3c1"
+    access_scope: public
+  - source_id: "source-openloaf-shell-tool"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/apps/server/src/ai/tools/shellCommandTool.ts"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:82c952520c4207cb11bcb2a04731dac074cd53e4"
+    access_scope: public
+  - source_id: "source-openloaf-codeql"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/.github/workflows/codeql.yml"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:65d10a86d7a4a455cac79585a42bf87315c642c9"
+    access_scope: public
+  - source_id: "source-openloaf-release-workflow"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenLoaf/OpenLoaf/blob/f7eccf6064317cb2923137079b68d79b8e5c5f3e/.github/workflows/publish-server.yml"
+    revision_or_version: "f7eccf6064317cb2923137079b68d79b8e5c5f3e"
+    retrieved_at: "2026-07-18T13:20:20Z"
+    content_digest: "git-blob-sha1:e1acf03c8f3c973bc465b09d684c3819d96f8527"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-root-positioning"
+    source_id: "source-openloaf-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Title and About"
+      line_start: 1
+      line_end: 33
+    confidence: high
+    excerpt_or_symbol: "Open-source AI productivity desktop positioned as project-centric, multi-agent, and local-first."
+    note: "First-party product positioning; runtime behavior was not verified."
+  - evidence_id: "evidence-root-active-development"
+    source_id: "source-openloaf-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Active development warning"
+      line_start: 23
+      line_end: 23
+    confidence: high
+    excerpt_or_symbol: "Features and APIs may change; use in production with caution."
+    note: "Maintainer-provided maturity caution."
+  - evidence_id: "evidence-root-project-linking"
+    source_id: "source-openloaf-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Project Linking and Memory & Skills System"
+      line_start: 88
+      line_end: 109
+    confidence: high
+    excerpt_or_symbol: "Linked projects are said to inject memory and skills; global and project skills and MCP configuration are described."
+    note: "The linked-project injection claim conflicts with the targeted runtime evidence recorded elsewhere in this card."
+  - evidence_id: "evidence-root-tools"
+    source_id: "source-openloaf-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Built-in Productivity Tools"
+      line_start: 119
+      line_end: 136
+    confidence: high
+    excerpt_or_symbol: "Canvas, terminal, email, calendar, file manager, task board, and rich-text editor features."
+    note: "First-party feature documentation supplemented by static dependencies and tool assembly."
+  - evidence_id: "evidence-root-privacy"
+    source_id: "source-openloaf-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Privacy & Security"
+      line_start: 174
+      line_end: 180
+    confidence: high
+    excerpt_or_symbol: "Claims 100% local storage, nothing uploaded, direct BYOK provider calls, offline operation, and no telemetry."
+    note: "The unqualified no-upload wording conflicts with optional SaaS, remote provider, MCP, and cloud paths found in source."
+  - evidence_id: "evidence-root-architecture"
+    source_id: "source-openloaf-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Architecture and Tech Stack"
+      line_start: 212
+      line_end: 266
+    confidence: high
+    excerpt_or_symbol: "Main/project windows, local data paths, Next.js frontend, Hono/tRPC server, Electron desktop, Prisma/SQLite, and Vercel AI SDK."
+    note: "Repository-hosted architecture description."
+  - evidence_id: "evidence-server-manifest"
+    source_id: "source-openloaf-server-manifest"
+    locator:
+      path: "apps/server/package.json"
+      symbol_or_section: "version, scripts, dependencies"
+      line_start: 1
+      line_end: 180
+    confidence: high
+    excerpt_or_symbol: "server 0.2.9 with agent, async, tool, browser, and red-team scripts plus AI SDK, MCP, provider, mail, document, media, browser, and persistence dependencies."
+    note: "Static manifest only; no scripts were run and package installation or publication was not checked."
+  - evidence_id: "evidence-desktop-manifest"
+    source_id: "source-openloaf-desktop-manifest"
+    locator:
+      path: "apps/desktop/package.json"
+      symbol_or_section: "version, platform targets, resources, scripts, and Electron dependency"
+      line_start: 1
+      line_end: 152
+    confidence: high
+    excerpt_or_symbol: "desktop 0.2.9 packages macOS, Windows, and Linux resources with Electron 40.1.0."
+    note: "Static packaging definition; artifacts and signatures were not inspected."
+  - evidence_id: "evidence-agent-manager"
+    source_id: "source-openloaf-agent-manager"
+    locator:
+      path: "apps/server/src/ai/services/agentManager.ts"
+      symbol_or_section: "AgentManager.spawn"
+      line_start: 95
+      line_end: 190
+    confidence: high
+    excerpt_or_symbol: "MAX_DEPTH=2, MAX_CONCURRENT=4, managed lifecycle state, and fire-and-forget scheduled execution."
+    note: "Direct source implementation; not executed."
+  - evidence_id: "evidence-agent-tool"
+    source_id: "source-openloaf-agent-tools"
+    locator:
+      path: "apps/server/src/ai/tools/agentTools.ts"
+      symbol_or_section: "agentTool"
+      line_start: 56
+      line_end: 202
+    confidence: high
+    excerpt_or_symbol: "Delegates to a selected subagent synchronously by default or registers a background task; prevents master and same-type recursion."
+    note: "Direct source implementation; runtime propagation and quality were not evaluated."
+  - evidence_id: "evidence-agent-factory"
+    source_id: "source-openloaf-agent-factory"
+    locator:
+      path: "apps/server/src/ai/services/agentFactory.ts"
+      symbol_or_section: "BuiltinSubAgentType, createMasterAgent, and createSubAgent"
+      line_start: 91
+      line_end: 115
+    confidence: high
+    excerpt_or_symbol: "Builtin general, explore, plan, document, browser, data, extraction, canvas, and coding specialist types."
+    note: "Master construction and subagent dispatch are additionally implemented at lines 478-580 and 819-915."
+  - evidence_id: "evidence-memory-loader"
+    source_id: "source-openloaf-memory-loader"
+    locator:
+      path: "apps/server/src/ai/shared/memoryLoader.ts"
+      symbol_or_section: "resolveMemoryBlocks"
+      line_start: 22
+      line_end: 186
+    confidence: high
+    excerpt_or_symbol: "User, parent-project, project, and agent MEMORY.md paths, read/write functions, 200-line truncation, and ordered context blocks."
+    note: "The parent-project input is ancestry-oriented and does not itself query ProjectLink."
+  - evidence_id: "evidence-skills-loader"
+    source_id: "source-openloaf-skills-loader"
+    locator:
+      path: "apps/server/src/ai/services/skillsLoader.ts"
+      symbol_or_section: "loadSkillSummaries and resolveSkillSources"
+      line_start: 64
+      line_end: 146
+    confidence: high
+    excerpt_or_symbol: "Loads built-in, global, parent-project, and project skills with built-in protection and project-over-parent-over-global precedence."
+    note: "The loader takes parentProjectRootPaths rather than querying arbitrary ProjectLink records."
+  - evidence_id: "evidence-mcp-manager"
+    source_id: "source-openloaf-mcp-manager"
+    locator:
+      path: "apps/server/src/ai/services/mcpClientManager.ts"
+      symbol_or_section: "MCPClientManagerImpl connection and transport logic"
+      line_start: 11
+      line_end: 66
+    confidence: high
+    excerpt_or_symbol: "AI SDK MCP client manager with lazy/shared connections, idle timeout, PID tracking, dynamic tool registration, and ten-connection maximum."
+    note: "Connection/discovery is implemented at lines 287-364 and stdio/http/sse transports at lines 426-493."
+  - evidence_id: "evidence-mcp-config"
+    source_id: "source-openloaf-mcp-config"
+    locator:
+      path: "apps/server/src/services/mcpConfigService.ts"
+      symbol_or_section: "Scoped MCP configuration and trust"
+      line_start: 11
+      line_end: 75
+    confidence: high
+    excerpt_or_symbol: "Global and project mcp-servers.json paths, atomic writes, and content hashing."
+    note: "Scope merging is at lines 100-132; trust revocation and verification are at lines 166-194 and 231-265."
+  - evidence_id: "evidence-provider-adapters"
+    source_id: "source-openloaf-provider-adapters"
+    locator:
+      path: "apps/server/src/ai/models/providerAdapters.ts"
+      symbol_or_section: "PROVIDER_ADAPTERS"
+      line_start: 345
+      line_end: 400
+    confidence: high
+    excerpt_or_symbol: "OpenAI/custom, Anthropic, Moonshot, Vercel, Bedrock, Google, DeepSeek, xAI, OpenLoaf SaaS, CLI, Claude Code, Codex, Qwen, Dashscope, and compatible adapters."
+    note: "Direct provider registry; provider services were not called."
+  - evidence_id: "evidence-model-resolution"
+    source_id: "source-openloaf-model-resolution"
+    locator:
+      path: "apps/server/src/ai/models/resolveChatModel.ts"
+      symbol_or_section: "resolveLocalChatModel, resolveCloudChatModel, and resolveChatModel"
+      line_start: 186
+      line_end: 245
+    confidence: high
+    excerpt_or_symbol: "Local profiles merge optional CLI providers; cloud source requires a server access token, fetches models, and routes to an OpenLoaf SaaS API URL."
+    note: "Confirms that some model routes intentionally cross the local boundary."
+  - evidence_id: "evidence-local-paths"
+    source_id: "source-openloaf-local-paths"
+    locator:
+      path: "packages/config/src/openloaf-paths.ts"
+      symbol_or_section: "OpenLoaf root, data, project, scoped, and database paths"
+      line_start: 27
+      line_end: 84
+    confidence: high
+    excerpt_or_symbol: "Defaults to ~/.openloaf, ~/OpenLoafData, project .openloaf paths, and file:~/.openloaf/openloaf.db with environment override."
+    note: "Static default path resolution."
+  - evidence_id: "evidence-sqlite-adapter"
+    source_id: "source-openloaf-db"
+    locator:
+      path: "packages/db/src/index.ts"
+      symbol_or_section: "PrismaLibSql adapter and initDatabase"
+      line_start: 12
+      line_end: 32
+    confidence: high
+    excerpt_or_symbol: "PrismaClient uses PrismaLibSql and initializes SQLite WAL mode and a five-second busy timeout."
+    note: "Database behavior was not executed."
+  - evidence_id: "evidence-project-link-schema"
+    source_id: "source-openloaf-project-schema"
+    locator:
+      path: "packages/db/prisma/schema/project.prisma"
+      symbol_or_section: "Project and ProjectLink"
+      line_start: 1
+      line_end: 43
+    confidence: high
+    excerpt_or_symbol: "Projects have parent/children relations and a many-to-many ProjectLink model with source and target."
+    note: "Persistence schema confirms representability, not runtime context injection."
+  - evidence_id: "evidence-ancestor-resolution"
+    source_id: "source-openloaf-util"
+    locator:
+      path: "apps/server/src/ai/shared/util.ts"
+      symbol_or_section: "resolveParentProjectRootPaths"
+      line_start: 351
+      line_end: 369
+    confidence: high
+    excerpt_or_symbol: "Resolves project ancestor root URIs and converts them to local paths."
+    note: "Targeted context-resolution evidence uses ancestry; no ProjectLink query appears in this function."
+  - evidence_id: "evidence-project-window"
+    source_id: "source-openloaf-project-window"
+    locator:
+      path: "apps/desktop/src/main/windows/projectWindow.ts"
+      symbol_or_section: "buildProjectWindowUrl and createProjectWindow"
+      line_start: 79
+      line_end: 160
+    confidence: high
+    excerpt_or_symbol: "Builds a project-scoped URL, reuses one window per project, and creates a sandboxed, context-isolated renderer."
+    note: "The renderer sandbox does not cover the local server shell tool."
+  - evidence_id: "evidence-bundled-server"
+    source_id: "source-openloaf-prod-services"
+    locator:
+      path: "apps/desktop/src/main/services/prodServices.ts"
+      symbol_or_section: "Production server environment and spawnOne"
+      line_start: 265
+      line_end: 328
+    confidence: high
+    excerpt_or_symbol: "Builds the production local-server environment and marks the child as the desktop runtime."
+    note: "The server child is spawned and supervised at lines 372-418."
+  - evidence_id: "evidence-server-bootstrap"
+    source_id: "source-openloaf-server-index"
+    locator:
+      path: "apps/server/src/index.ts"
+      symbol_or_section: "Server startup and optional integration bootstrap"
+      line_start: 53
+      line_end: 159
+    confidence: high
+    excerpt_or_symbol: "Initializes local paths and SQLite, starts the server, auto-connects MCP, and starts OpenLoaf cloud skill, tool, and pending-task loops."
+    note: "Confirms local core startup plus optional hosted-capability paths; nothing was started."
+  - evidence_id: "evidence-command-approval"
+    source_id: "source-openloaf-command-approval"
+    locator:
+      path: "apps/server/src/ai/tools/commandApproval.ts"
+      symbol_or_section: "SAFE_COMMANDS_UNIX and needsApprovalForCommand"
+      line_start: 20
+      line_end: 66
+    confidence: high
+    excerpt_or_symbol: "No-approval allowlist includes curl, wget, git, interpreters, package managers, build tools, and file-copy utilities."
+    note: "Decision logic at lines 315-386 approves allowlisted commands without flagged operators or redirection."
+  - evidence_id: "evidence-shell-execution"
+    source_id: "source-openloaf-shell-tool"
+    locator:
+      path: "apps/server/src/ai/tools/shellCommandTool.ts"
+      symbol_or_section: "bashTool"
+      line_start: 32
+      line_end: 119
+    confidence: high
+    excerpt_or_symbol: "Builds PowerShell or the user's shell, applies the approval hook, then spawns it in a resolved working directory with timeout and background support."
+    note: "Static risk characterization only; no commands were executed and this is not a security audit."
+  - evidence_id: "evidence-codeql"
+    source_id: "source-openloaf-codeql"
+    locator:
+      path: ".github/workflows/codeql.yml"
+      symbol_or_section: "CodeQL workflow"
+      line_start: 1
+      line_end: 40
+    confidence: high
+    excerpt_or_symbol: "JavaScript/TypeScript CodeQL is configured for main pushes, pull requests, manual dispatch, and a weekly schedule."
+    note: "Workflow definition inspected; run status and findings were not checked."
+  - evidence_id: "evidence-release-workflow"
+    source_id: "source-openloaf-release-workflow"
+    locator:
+      path: ".github/workflows/publish-server.yml"
+      symbol_or_section: "Publish Server workflow"
+      line_start: 1
+      line_end: 81
+    confidence: high
+    excerpt_or_symbol: "server-v tags trigger a Node 20 build and R2 publication flow with stable/beta channel detection."
+    note: "Workflow definition inspected; current releases and execution outcomes were not checked."
+
+open_questions:
+  - question: "Where, if anywhere, does the runtime query ProjectLink records and inject linked-project memory and skills?"
+    reason: "The README and schema support the product concept, but targeted context paths resolve only project ancestors."
+    related_claim_ids:
+      - "claim-project-linking"
+  - question: "Which external integrations are covered by the README's no-upload and offline claims, and what data is sent by each optional route?"
+    reason: "Static source includes remote model, SaaS, MCP, cloud-tool, email, calendar, messaging, and update paths that need feature-specific privacy documentation."
+    related_claim_ids:
+      - "claim-local-external-boundary"
+  - question: "How do the documented Secretary, Project, and Worker roles map exactly to Master, PM, Channel, and SubAgent runtime roles?"
+    reason: "Both role vocabularies are present, but their complete product-to-code mapping was not established at targeted depth."
+    related_claim_ids:
+      - "claim-multi-agent"

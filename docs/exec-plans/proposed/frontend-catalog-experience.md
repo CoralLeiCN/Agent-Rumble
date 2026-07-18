@@ -27,14 +27,13 @@ comparison, and evidence viewing do not invoke an AI model.
   choices rather than accepted production architecture.
 * FastAPI exposes catalog context, deterministic search, current and versioned
   cards, evidence, and contextual comparison under `/api/v1`.
-* Three real schema-v0.3 cards validate and are published through the accepted
+* Eleven real schema-v0.3 cards validate and are published through the accepted
   YAML-first catalog. Typed backend projections preserve the canonical status
   and field-state dimensions.
-* `HttpCatalogGateway` maps the FastAPI contract into frontend types. A static
-  adapter remains available as a visibly labeled bundled fallback.
-* The frontend uses illustrative OpenAI Agents SDK, LangGraph, and CrewAI data
-  only in bundled-snapshot mode; those fixtures are not presented as validated
-  project intelligence or copied into the service catalog.
+* `HttpCatalogGateway` maps the FastAPI contract into frontend types and is the
+  only runtime catalog adapter.
+* Illustrative fixtures are restricted to isolated frontend tests and are not
+  available as a browser runtime catalog.
 
 ## Scope
 
@@ -46,7 +45,7 @@ comparison, and evidence viewing do not invoke an AI model.
 * Three-project shortlist
 * Contextual, difference-first comparison
 * One excellent claim-to-evidence inspection path
-* Clearly labeled bundled fallback for demo reliability
+* Complete backend catalog access for local end-to-end testing
 * Responsive and keyboard-operable primary flow
 
 ### Ship if Time Permits
@@ -148,11 +147,7 @@ interface CatalogGateway {
 }
 ```
 
-Two adapters use identical response types:
-
-* `HttpCatalogGateway` calls FastAPI.
-* `StaticCatalogGateway` reads committed demo responses during an outage and
-  causes the UI to display a bundled-snapshot label.
+`HttpCatalogGateway` calls FastAPI and is the only runtime adapter.
 
 The gateway prevents transport and fallback behavior from leaking throughout
 components. It must not introduce a frontend-owned card or comparison model.
@@ -309,7 +304,7 @@ Deliver:
 * `Must`, `Prefer`, and `Avoid` interpreted requirements.
 * Result rows with match reasons, role, status, constraint, revision, and date.
 * Three-project fixed shortlist tray.
-* Loading, no-result, error, stale-card, partial-card, and bundled-fallback
+* Loading, no-result, error, stale-card, and partial-card
   states.
 
 Exit criteria:
@@ -364,7 +359,7 @@ Cut this milestone before weakening search, comparison, or evidence.
 Deliver and verify:
 
 * One-click example query and prepared comparison deep link.
-* Clearly labeled bundled fallback.
+* One-click complete-catalog browse through the API.
 * Responsive comparison presentation.
 * Correct focus management for drawers and route changes.
 * Deployed frontend and API.
@@ -384,7 +379,7 @@ Exit criteria:
 | --- | --- | --- |
 | Shared | Contract, scenario, visual review, rehearsal | Contract, scenario, evidence review, rehearsal |
 | Primary | Shell, Explore, result rows, shortlist, comparison presentation, responsive behavior | Canonical fixtures, Pydantic projections, API routes, deterministic search, comparison projection, evidence resolution |
-| Secondary | Project-card and JSON presentation | HTTP/static gateway integration and source-link construction |
+| Secondary | Project-card and JSON presentation | HTTP gateway integration and source-link construction |
 | Test focus | Components, accessibility, visual behavior, end-to-end flow | Schema, referential integrity, API contracts, deterministic ranking |
 
 Use feature-level ownership so teammates do not repeatedly conflict in routes,

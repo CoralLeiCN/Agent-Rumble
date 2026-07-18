@@ -187,7 +187,7 @@ export interface ComparisonResponse {
   contractOnlyAttributeCount: number;
 }
 
-export type CatalogDataSource = "http" | "bundled-snapshot";
+export type CatalogDataSource = "http";
 
 export interface CatalogGateway {
   readonly dataSource: CatalogDataSource;

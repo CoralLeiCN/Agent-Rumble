@@ -22,7 +22,10 @@ vi.mock("../arcade", () => ({
   ),
 }));
 
-const projectIds = ["openai-agents-sdk", "langgraph"] as const;
+const projectIds = [
+  "project-openai-openai-agents-python",
+  "project-langchain-ai-langgraph",
+] as const;
 
 async function enterArena() {
   await screen.findByRole("heading", { name: "Internal support agent proof of concept" });
@@ -30,6 +33,26 @@ async function enterArena() {
 }
 
 describe("ArenaScreen", () => {
+  it("opens a neutral gameplay-only arena for any other catalog pair", async () => {
+    render(
+      <ArenaScreen
+        projectIds={["project-crewaiinc-crewai", "project-eigent-ai-eigent"]}
+        projectNames={["CrewAI", "Eigent"]}
+        gateway={new BundledRumbleGateway()}
+        onExit={() => undefined}
+        onOpenEvidence={() => undefined}
+      />,
+    );
+
+    expect(await screen.findByRole("heading", { name: "CrewAI vs Eigent" }))
+      .toBeInTheDocument();
+    expect(screen.getByText("Gameplay-only exhibition", { selector: "strong" }))
+      .toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enter solo fight →" })).toBeEnabled();
+    expect(screen.queryByRole("button", { name: "Guided evidence tour →" }))
+      .not.toBeInTheDocument();
+  });
+
   it("plays all prepared rounds, opens evidence, and reaches a no-winner recap", async () => {
     const user = userEvent.setup();
     const onOpenEvidence = vi.fn();

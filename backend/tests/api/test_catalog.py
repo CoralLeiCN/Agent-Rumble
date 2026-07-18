@@ -6,6 +6,7 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+import yaml
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
@@ -29,6 +30,7 @@ from agent_project_intelligence.main import create_app
 EIGENT = "project-eigent-ai-eigent"
 BIOMNI = "project-snap-stanford-biomni"
 BIOAGENTS = "project-bio-xyz-bioagents"
+PREPROCESSED_CARD_ROOT = Path(__file__).resolve().parents[3] / "project-cards"
 
 
 @pytest.mark.parametrize(
@@ -144,10 +146,30 @@ def test_catalog_context_exposes_declared_scope_and_freshness(client: TestClient
     assert response.status_code == 200
     body = response.json()
     assert body["catalog_id"] == "agent-rumble-public-catalog"
-    assert body["card_count"] == 3
+    assert body["card_count"] == 11
     assert body["schema_versions"] == ["0.3"]
     assert body["oldest_analyzed_at"] <= body["newest_analyzed_at"]
     assert any("Universal project quality scoring" in value for value in body["exclusions"])
+
+
+def test_catalog_publishes_every_preprocessed_card(
+    catalog_snapshot: CatalogSnapshot,
+) -> None:
+    validator = SkillCardValidator()
+    preprocessed: dict[tuple[str, int], dict[str, object]] = {}
+
+    for path in sorted(PREPROCESSED_CARD_ROOT.glob("*/project-card.yaml")):
+        document = yaml.safe_load(path.read_text(encoding="utf-8"))
+        validated = validator.validate(document)
+        preprocessed[(validated.project_id, validated.card_version)] = validated.document
+
+    published = {
+        (card.project_id, card.card_version): card.to_document()
+        for card in catalog_snapshot.cards
+    }
+
+    assert len(preprocessed) == 11
+    assert published == preprocessed
 
 
 def test_current_and_versioned_routes_return_exact_canonical_document(
@@ -237,8 +259,14 @@ def test_search_is_deterministic_traceable_and_reports_uninterpreted_terms(
     assert first.json() == second.json()
     body = first.json()
     assert body["uninterpreted_terms"] == ["quux never indexed"]
-    assert body["total"] == 2
-    assert [project["id"] for project in body["projects"]] == [BIOAGENTS, EIGENT]
+    assert body["total"] == 5
+    assert [project["id"] for project in body["projects"]] == [
+        BIOAGENTS,
+        EIGENT,
+        "project-openloaf-openloaf",
+        "project-openags-auto-researcher",
+        "project-different-ai-openwork",
+    ]
     assert body["requirements"] == [
         {"id": "requirement-1", "kind": "must", "label": "TypeScript implementation"}
     ]
