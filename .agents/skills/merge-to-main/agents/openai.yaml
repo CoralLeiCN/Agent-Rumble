@@ -1,0 +1,4 @@
+interface:
+  display_name: "Merge to Main"
+  short_description: "Squash Codex worktree changes into main"
+  default_prompt: "Use $merge-to-main to squash changes from my current Codex worktree into one commit on main."
