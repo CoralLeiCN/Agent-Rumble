@@ -195,7 +195,7 @@ export class HttpCatalogGateway implements CatalogGateway {
           assessment_context: {
             use_case: normalizedQuery,
             comparison_cohort: ["Published Agent Project Cards"],
-            requirements: searchProjectionContext.requirements.map(({ label }) => label),
+            requirements: [normalizedQuery],
             organizational_constraints: ["Static evidence only"],
           },
         }),

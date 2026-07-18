@@ -48,6 +48,10 @@ discovery, analysis, and trade-off decisions. It should cut through verbose,
 low-signal, or AI-generated README content by prioritizing accurate,
 source-evidenced project intelligence.
 
+The search experience should return meaningful results for the user's query,
+retrieve its data from the backend, and cover basic use cases in a form that is
+usable within the limited hackathon timeframe.
+
 Users should also be able to provide a public GitHub repository link through
 Agent Project Card as a Service and generate an Agent Project Card on demand.
 
@@ -366,6 +370,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Catalog-first discovery and comparison | Required basic search to return meaningful query-related results from backend data and remain usable within the limited hackathon timeframe. |
 | 2026-07-18 | Core tool and access | Required the Codex-powered Agent Project Card tool to be available both as a published skill packaged as a Codex plugin for users' coding-agent workflows and as a hosted service that generates a card from a public GitHub repository link; on-demand generation is no longer deferred. |
 | 2026-07-18 | Rumble Arena | Requested human-looking fighters with visible body movement, reuse of an existing or open-source character design where available, and a fullscreen option. |
 | 2026-07-18 | Rumble Arena | Requested a classic 2D versus-fighter style with health bars, project-named fighters, and distinct attacks themed around each project's contextual winning comparison trait. |

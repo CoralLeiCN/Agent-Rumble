@@ -516,6 +516,27 @@
   text-transform: uppercase;
 }
 
+.search-empty {
+  padding: clamp(2rem, 6vw, 4.5rem);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-panel);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-surface);
+  text-align: center;
+}
+
+.search-empty h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.search-empty p {
+  max-width: 39rem;
+  margin: 0.85rem auto 1.5rem;
+  color: var(--color-text-soft);
+  line-height: 1.65;
+}
+
 .project-row {
   display: grid;
   grid-template-columns: 3.25rem minmax(0, 1fr);

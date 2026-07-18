@@ -13,7 +13,7 @@ interface CatalogEnvironment {
 export function readCatalogGatewayConfig(
   environment: CatalogEnvironment = import.meta.env,
 ): CatalogGatewayConfig {
-  const configuredMode = environment.VITE_CATALOG_GATEWAY?.trim() || "static";
+  const configuredMode = environment.VITE_CATALOG_GATEWAY?.trim() || "http";
   if (configuredMode !== "http" && configuredMode !== "static") {
     throw new Error(
       `Unsupported VITE_CATALOG_GATEWAY value "${configuredMode}"; expected "http" or "static".`,

@@ -120,6 +120,7 @@ describe("HttpCatalogGateway", () => {
       page_size: 100,
       assessment_context: {
         use_case: "human approval",
+        requirements: ["human approval"],
         organizational_constraints: ["Static evidence only"],
       },
     });
@@ -127,12 +128,15 @@ describe("HttpCatalogGateway", () => {
 });
 
 describe("catalog transport configuration", () => {
-  it("uses explicit browser configuration with a static default", () => {
-    expect(readCatalogGatewayConfig({})).toEqual({ mode: "static", apiBaseUrl: "" });
+  it("uses the backend by default while keeping an explicit static mode", () => {
+    expect(readCatalogGatewayConfig({})).toEqual({ mode: "http", apiBaseUrl: "" });
     expect(readCatalogGatewayConfig({
       VITE_CATALOG_GATEWAY: "http",
       VITE_CATALOG_API_BASE_URL: "http://localhost:8000",
     })).toEqual({ mode: "http", apiBaseUrl: "http://localhost:8000" });
+    expect(readCatalogGatewayConfig({
+      VITE_CATALOG_GATEWAY: "static",
+    })).toEqual({ mode: "static", apiBaseUrl: "" });
     expect(() => readCatalogGatewayConfig({ VITE_CATALOG_GATEWAY: "automatic" })).toThrow(
       /expected "http" or "static"/,
     );

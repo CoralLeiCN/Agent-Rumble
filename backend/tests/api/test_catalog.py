@@ -251,6 +251,61 @@ def test_search_is_deterministic_traceable_and_reports_uninterpreted_terms(
         assert "score" not in project
 
 
+@pytest.mark.parametrize(
+    ("query", "expected_first"),
+    [
+        ("desktop MCP agent", EIGENT),
+        ("biomedical research tools", BIOMNI),
+        ("archived TypeScript biology", BIOAGENTS),
+        ("Biomni", BIOMNI),
+    ],
+)
+def test_search_prioritizes_the_project_most_relevant_to_basic_queries(
+    client: TestClient,
+    query: str,
+    expected_first: str,
+) -> None:
+    response = client.post("/api/v1/catalog/search", json={"text": query})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["projects"]
+    assert body["projects"][0]["id"] == expected_first
+    assert body["projects"][0]["match_reason"].startswith("Matches “")
+    assert " at /" not in body["projects"][0]["match_reason"]
+    assert "score" not in body["projects"][0]
+
+
+def test_search_filters_weak_partial_matches_for_a_specific_query(
+    client: TestClient,
+) -> None:
+    response = client.post(
+        "/api/v1/catalog/search",
+        json={"text": "archived TypeScript biology"},
+    )
+
+    assert response.status_code == 200
+    assert [project["id"] for project in response.json()["projects"]] == [BIOAGENTS]
+
+
+def test_search_returns_an_explainable_empty_result_for_unknown_terms(
+    client: TestClient,
+) -> None:
+    response = client.post(
+        "/api/v1/catalog/search",
+        json={"text": "quantum satellite robotics"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["total"] == 0
+    assert response.json()["projects"] == []
+    assert response.json()["uninterpreted_terms"] == [
+        "quantum",
+        "satellite",
+        "robotics",
+    ]
+
+
 def test_search_supports_all_filter_dimensions_and_pagination(client: TestClient) -> None:
     filtered = client.post(
         "/api/v1/catalog/search",

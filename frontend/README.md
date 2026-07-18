@@ -1,8 +1,8 @@
 # Agent Rumble Frontend Prototype
 
 This directory is the project boundary for the React frontend and contains a
-locally runnable prototype of the Agent Rumble product experience. It can
-consume the FastAPI catalog API in `../backend/` or use bundled schema-valid
+locally runnable prototype of the Agent Rumble product experience. It uses the
+FastAPI catalog API in `../backend/` by default and can use bundled schema-valid
 draft v0.2 sample cards for independent UI testing.
 
 The prototype demonstrates one complete interaction:
@@ -31,22 +31,15 @@ npm install
 npm run dev
 ```
 
-Vite prints the local URL, normally `http://localhost:5173`. When the FastAPI
-backend is running on `http://127.0.0.1:8000`, Vite proxies `/api` requests to
-it. Rumble Arena uses its clearly labelled bundled snapshot if the API is
-unavailable.
+Vite prints the local URL, normally `http://localhost:5173`, and proxies `/api`
+to FastAPI on `http://127.0.0.1:8000`. Start the backend before searching. An
+explicit `VITE_CATALOG_API_BASE_URL` is only needed when the API runs at a
+different origin. Rumble Arena uses its clearly labelled bundled snapshot if
+its API is unavailable.
 
-To test against the backend, copy `.env.example` to `.env`, start FastAPI on
-`http://localhost:8000`, and restart Vite:
-
-```dotenv
-VITE_CATALOG_GATEWAY=http
-VITE_CATALOG_API_BASE_URL=http://localhost:8000
-```
-
-Set `VITE_CATALOG_GATEWAY=static`, or omit it, to use the visibly labeled
-bundled snapshot. API failures are surfaced to the user and never silently
-fall back to sample data.
+Set `VITE_CATALOG_GATEWAY=static` to use the visibly labeled bundled snapshot.
+API failures are surfaced to the user and never silently fall back to sample
+data.
 
 To verify a clean build and run the behavior tests:
 

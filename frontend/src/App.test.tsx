@@ -2,11 +2,17 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { App } from "./App";
+import { StaticCatalogGateway } from "./data/catalogGateway";
+import type { CatalogGateway } from "./types/catalog";
+
+function renderStaticApp() {
+  return render(<App gateway={new StaticCatalogGateway()} />);
+}
 
 describe("Agent Rumble customer experience", () => {
   it("completes search, shortlist, comparison, source review, and back navigation", async () => {
     const user = userEvent.setup();
-    const { container } = render(<App />);
+    const { container } = renderStaticApp();
 
     expect(screen.getByText(/project details and source references are illustrative/i)).toBeInTheDocument();
     expect(screen.queryByText(/project intelligence/i)).not.toBeInTheDocument();
@@ -74,7 +80,7 @@ describe("Agent Rumble customer experience", () => {
 
   it("requires at least two projects before comparison", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderStaticApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "3 projects to compare" });
@@ -85,7 +91,7 @@ describe("Agent Rumble customer experience", () => {
 
   it("keeps lower-priority metadata reachable inside customer-facing sections", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderStaticApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "3 projects to compare" });
@@ -106,7 +112,7 @@ describe("Agent Rumble customer experience", () => {
 
   it("keeps every interpreted requirement label in its padded pill segment", async () => {
     const user = userEvent.setup();
-    const { container } = render(<App />);
+    const { container } = renderStaticApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "What matters for your search" });
@@ -117,10 +123,9 @@ describe("Agent Rumble customer experience", () => {
       expect(requirement.querySelector(".requirement__label")).not.toBeNull();
     });
   });
-
   it("enters the prepared two-project Rumble Arena from the shortlist", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderStaticApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "3 projects to compare" });
@@ -133,5 +138,38 @@ describe("Agent Rumble customer experience", () => {
       await screen.findByRole("heading", { name: "Internal support agent proof of concept" }),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Solo fullscreen ⛶" })).toBeEnabled();
+  });
+
+  it("shows a useful empty state for a backend query with no catalog matches", async () => {
+    const user = userEvent.setup();
+    const emptyGateway: CatalogGateway = {
+      dataSource: "http",
+      async searchProjects(query) {
+        return {
+          query,
+          assessmentContexts: [],
+          requirements: [{ id: "requirement-1", kind: "must", label: query }],
+          uninterpretedTerms: ["nonexistent"],
+          projects: [],
+        };
+      },
+      async compareProjects() {
+        throw new Error("No projects to compare");
+      },
+      async getClaimEvidence() {
+        throw new Error("No evidence to load");
+      },
+    };
+    render(<App gateway={emptyGateway} />);
+
+    const searchbox = screen.getByLabelText("Describe what you need");
+    await user.clear(searchbox);
+    await user.type(searchbox, "nonexistent capability");
+    await user.click(screen.getByRole("button", { name: "Find projects" }));
+
+    expect(await screen.findByRole("heading", { name: "No matching projects yet" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Try a broader search" })).toBeInTheDocument();
+    expect(screen.getByText(/project name, purpose, capability, language/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Compare projects/ })).not.toBeInTheDocument();
   });
 });

@@ -8,7 +8,6 @@ import {
 import { ArenaScreen } from "./arena/ArenaScreen";
 import { ContractComparison } from "./comparison/ContractComparison";
 import { catalogGateway } from "./data/catalogGateway";
-import { preparedQuery } from "./data/fixtures";
 import { isPreparedRumblePair } from "./data/rumbleGateway";
 import {
   confidencePresentation,
@@ -18,6 +17,7 @@ import {
 } from "./status/statusPresentation";
 import type {
   CatalogDataSource,
+  CatalogGateway,
   ClaimEvidenceRecord,
   ComparisonResponse,
   EvidenceRecord,
@@ -29,6 +29,8 @@ import type { EvidenceStatus } from "./types/projectCard";
 
 type View = "explore" | "results" | "comparison" | "arena";
 type PendingAction = "search" | "comparison" | "evidence" | null;
+
+const DEFAULT_SEARCH_QUERY = "A biomedical research agent with domain tools";
 
 function StatusBadge({ status }: { status: VerificationStatus }) {
   const presentation = verificationPresentation[status];
@@ -114,7 +116,7 @@ function Explore({ query, pending, onQueryChange, onSubmit }: ExploreProps) {
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             rows={3}
-            placeholder="For example: a framework with human approval and durable state"
+            placeholder="For example: a self-hosted multi-agent app with MCP tools"
           />
           <button className="button button--primary" type="submit" disabled={pending || !query.trim()}>
             {pending ? "Finding projects…" : "Find projects"}
@@ -122,8 +124,8 @@ function Explore({ query, pending, onQueryChange, onSubmit }: ExploreProps) {
         </div>
         <div className="example-line">
           <span>Try an example</span>
-          <button type="button" onClick={() => onQueryChange(preparedQuery)}>
-            Customer support agent ↗
+          <button type="button" onClick={() => onQueryChange(DEFAULT_SEARCH_QUERY)}>
+            Biomedical research agent ↗
           </button>
         </div>
       </form>
@@ -139,12 +141,17 @@ interface ResultsProps {
 }
 
 function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
+  const resultCount = response.projects.length;
   return (
     <section className="results" aria-labelledby="results-title">
       <div className="results__heading">
         <div>
           <div className="eyebrow"><span>Matches</span> Based on your request</div>
-          <h1 id="results-title">{response.projects.length} projects to compare</h1>
+          <h1 id="results-title">
+            {resultCount === 0
+              ? "No matching projects yet"
+              : `${resultCount} ${resultCount === 1 ? "project" : "projects"} to compare`}
+          </h1>
         </div>
         <button className="button button--quiet" type="button" onClick={onEdit}>
           ← Edit request
@@ -173,10 +180,24 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
 
       <div className="results__layout">
         <div className="project-list">
-          <div className="list-caption">
-            <span>{response.projects.length} matches</span>
-            <span>Choose up to 3</span>
-          </div>
+          {resultCount > 0 && (
+            <div className="list-caption">
+              <span>{resultCount} {resultCount === 1 ? "match" : "matches"}</span>
+              <span>Choose up to 3</span>
+            </div>
+          )}
+          {resultCount === 0 && (
+            <div className="search-empty" role="status">
+              <h2>Try a broader search</h2>
+              <p>
+                Search by a project name, purpose, capability, language, technology, or
+                architecture term available in the catalog.
+              </p>
+              <button className="button button--primary" type="button" onClick={onEdit}>
+                Update search
+              </button>
+            </div>
+          )}
           {response.projects.map((project, index) => (
             <ProjectRow
               key={project.id}
@@ -491,9 +512,13 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
   );
 }
 
-export function App() {
+interface AppProps {
+  gateway?: CatalogGateway;
+}
+
+export function App({ gateway = catalogGateway }: AppProps) {
   const [view, setView] = useState<View>("explore");
-  const [query, setQuery] = useState(preparedQuery);
+  const [query, setQuery] = useState(DEFAULT_SEARCH_QUERY);
   const [response, setResponse] = useState<SearchResponse | null>(null);
   const [shortlist, setShortlist] = useState<string[]>([]);
   const [comparison, setComparison] = useState<ComparisonResponse | null>(null);
@@ -531,8 +556,10 @@ export function App() {
     setPending("search");
     setError(null);
     try {
-      const result = await catalogGateway.searchProjects(query);
+      const result = await gateway.searchProjects(query);
       setResponse(result);
+      setShortlist([]);
+      setComparison(null);
       announceView("results");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Projects could not be loaded right now.");
@@ -556,7 +583,7 @@ export function App() {
     setPending("comparison");
     setError(null);
     try {
-      const result = await catalogGateway.compareProjects(shortlist);
+      const result = await gateway.compareProjects(shortlist);
       setComparison(result);
       announceView("comparison");
     } catch (caught) {
@@ -573,7 +600,7 @@ export function App() {
     setDrawerOpen(true);
     setPending("evidence");
     try {
-      setEvidence(await catalogGateway.getClaimEvidence(claimId));
+      setEvidence(await gateway.getClaimEvidence(claimId));
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Source details could not be loaded.");
     } finally {
@@ -609,7 +636,7 @@ export function App() {
     <>
       <div className="app-shell" inert={drawerOpen ? true : undefined}>
         <a className="skip-link" href="#main-content">Skip to content</a>
-        <CatalogNotice dataSource={catalogGateway.dataSource} />
+        <CatalogNotice dataSource={gateway.dataSource} />
         <AppHeader onExplore={reset} />
         <main id="main-content" ref={mainRef} tabIndex={-1}>
           {view === "explore" && (
@@ -669,7 +696,7 @@ export function App() {
           evidence={evidence}
           pending={pending === "evidence"}
           error={error}
-          isIllustrative={catalogGateway.dataSource === "bundled-snapshot"}
+          isIllustrative={gateway.dataSource === "bundled-snapshot"}
           onClose={closeDrawer}
         />
       )}

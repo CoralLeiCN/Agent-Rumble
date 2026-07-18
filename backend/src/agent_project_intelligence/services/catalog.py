@@ -50,14 +50,29 @@ _STOP_WORDS = {
     "and",
     "as",
     "at",
+    "build",
+    "building",
+    "can",
+    "find",
     "for",
     "from",
+    "help",
     "in",
+    "looking",
+    "need",
+    "needs",
     "of",
     "on",
     "or",
+    "project",
+    "projects",
+    "should",
+    "solution",
+    "that",
     "the",
+    "this",
     "to",
+    "want",
     "with",
 }
 
@@ -111,6 +126,94 @@ def _at(document: Mapping[str, Any], *keys: str, default: Any = None) -> Any:
 
 def _dedupe(values: Iterable[str]) -> list[str]:
     return list(dict.fromkeys(value for value in values if value))
+
+
+def _term_candidates(raw_term: str) -> list[str]:
+    """Return controlled normalizations for one keyword, including plurals."""
+    canonical = _SYNONYMS.get(raw_term, raw_term)
+    singular: str | None = None
+    if canonical.endswith("ies") and len(canonical) > 4:
+        singular = f"{canonical[:-3]}y"
+    elif canonical.endswith(("ches", "shes", "xes", "zes")):
+        singular = canonical[:-2]
+    elif canonical.endswith("s") and not canonical.endswith(("ss", "us", "is")):
+        singular = canonical[:-1]
+    return _dedupe((singular or "", canonical))
+
+
+def _term_match_quality(term: str, value: str) -> float:
+    """Prefer exact words and phrases while retaining useful identifier matches."""
+    normalized = _normalize(value)
+    if term == normalized:
+        return 1.5
+    if f" {term} " in f" {normalized} ":
+        return 1.0
+    if len(term) >= 3 and term in normalized:
+        return 0.4
+    return 0.0
+
+
+def _search_field_weight(path: str) -> float:
+    """Prioritize user-facing identity, purpose, capability, and stack fields."""
+    if path == "/project/name":
+        return 12.0
+    if path in {"/summary/one_line", "/summary/purpose"}:
+        return 11.0
+    if path.startswith("/capabilities/"):
+        capability_field = path.rsplit("/", 1)[-1]
+        return {
+            "name": 11.0,
+            "description": 10.0,
+            "scope": 9.0,
+            "interfaces": 8.0,
+            "prerequisites": 7.0,
+            "configuration_requirements": 7.0,
+            "capability_id": 5.0,
+            "ontology_id": 5.0,
+            "limitations": 4.0,
+        }.get(capability_field, 6.0)
+    if path in {"/summary/primary_use_cases", "/classification/domains"}:
+        return 9.0
+    if path in {
+        "/summary/target_users",
+        "/classification/secondary_characteristics",
+        "/classification/agent_patterns",
+        "/classification/architecture_layers",
+        "/architecture/languages",
+    }:
+        return 8.0
+    if path in {"/project/primary_type", "/project/status", "/project/license"}:
+        return 7.0
+    if path.startswith("/architecture/") or path.startswith("/components/"):
+        return 6.0
+    if path.startswith("/usage/"):
+        return 5.0
+    return 3.0
+
+
+def _search_field_label(path: str) -> str:
+    """Map canonical paths to concise customer-facing match explanations."""
+    if path == "/project/name":
+        return "project name"
+    if path.startswith("/summary/"):
+        return "purpose and use cases"
+    if path.startswith("/capabilities/"):
+        return "capabilities"
+    if path == "/classification/domains":
+        return "domain focus"
+    if path.startswith("/classification/"):
+        return "project role"
+    if path == "/architecture/languages":
+        return "technology stack"
+    if path.startswith("/architecture/"):
+        return "architecture"
+    if path.startswith("/components/"):
+        return "components"
+    if path.startswith("/usage/"):
+        return "setup and usage"
+    if path.startswith("/project/"):
+        return "project details"
+    return "card details"
 
 
 @dataclass(frozen=True, slots=True)
@@ -332,8 +435,15 @@ class CatalogService:
         interpreted: list[tuple[str, str, bool, bool]] = []
         uninterpreted: list[str] = []
         for raw_term, is_explicit in raw_terms_with_origin:
-            canonical = _SYNONYMS.get(raw_term, raw_term)
-            if self._term_exists(canonical):
+            canonical = next(
+                (
+                    candidate
+                    for candidate in _term_candidates(raw_term)
+                    if self._term_exists(candidate)
+                ),
+                None,
+            )
+            if canonical is not None:
                 interpreted.append(
                     (raw_term, canonical, raw_term != canonical, is_explicit)
                 )
@@ -343,28 +453,41 @@ class CatalogService:
             raw for raw, _, _, is_explicit in interpreted if is_explicit
         }
 
-        matched: list[tuple[_IndexedCard, list[MatchReason], int]] = []
+        required_explicit_matches = (
+            (len(interpreted_explicit_terms) + 1) // 2
+            if interpreted_explicit_terms
+            else 0
+        )
+        matched: list[tuple[_IndexedCard, list[MatchReason], int, float]] = []
         for indexed in self._index:
             filter_reasons = self._filter_reasons(indexed, request)
             if filter_reasons is None:
                 continue
-            text_reasons = self._text_reasons(indexed, interpreted)
+            text_reasons, relevance = self._text_reasons(indexed, interpreted)
             if interpreted and not text_reasons:
                 continue
-            if interpreted_explicit_terms and not any(
-                term in interpreted_explicit_terms
+            matched_explicit_terms = {
+                term
                 for reason in text_reasons
                 for term in reason.terms
-            ):
+                if term in interpreted_explicit_terms
+            }
+            if len(matched_explicit_terms) < required_explicit_matches:
                 continue
             if raw_terms and not interpreted:
                 continue
             reasons = text_reasons + filter_reasons
             matched_term_count = len({term for reason in text_reasons for term in reason.terms})
-            matched.append((indexed, reasons, matched_term_count))
+            matched.append((indexed, reasons, matched_term_count, relevance))
+
+        if interpreted and matched:
+            best_relevance = max(item[3] for item in matched)
+            relevance_floor = best_relevance * 0.55
+            matched = [item for item in matched if item[3] >= relevance_floor]
 
         matched.sort(
             key=lambda item: (
+                -item[3],
                 -item[2],
                 _normalize(_at(item[0].document, "project", "name", default="")),
                 item[0].card.project_id,
@@ -376,12 +499,12 @@ class CatalogService:
         page_items = matched[start : start + request.page_size]
         projects = [
             self._search_result(indexed, reasons, request.assessment_context)
-            for indexed, reasons, _ in page_items
+            for indexed, reasons, _, _ in page_items
         ]
 
         contexts = [
             context
-            for indexed, _, _ in page_items
+            for indexed, _, _, _ in page_items
             for context in self._assessment_contexts(indexed.document)
         ]
         requirements = [
@@ -593,46 +716,68 @@ class CatalogService:
 
     def _term_exists(self, canonical: str) -> bool:
         return any(
-            canonical in _normalize(value)
+            _term_match_quality(canonical, value) > 0
             for indexed in self._index
             for field in indexed.fields
             for value in field.values
+        )
+
+    def _term_document_frequency(self, canonical: str) -> int:
+        return sum(
+            any(
+                _term_match_quality(canonical, value) > 0
+                for field in indexed.fields
+                for value in field.values
+            )
+            for indexed in self._index
         )
 
     def _text_reasons(
         self,
         indexed: _IndexedCard,
         terms: Sequence[tuple[str, str, bool, bool]],
-    ) -> list[MatchReason]:
-        reasons: list[MatchReason] = []
-        for raw, canonical, is_synonym, _is_explicit in terms:
-            match = next(
+    ) -> tuple[list[MatchReason], float]:
+        ranked_reasons: list[tuple[float, MatchReason]] = []
+        for raw, canonical, is_synonym, is_explicit in terms:
+            candidates = [
                 (
-                    (field, value)
-                    for field in indexed.fields
-                    for value in field.values
-                    if canonical in _normalize(value)
-                ),
-                None,
-            )
-            if match is None:
+                    _search_field_weight(field.path)
+                    * _term_match_quality(canonical, value)
+                    + (4.0 if field.claim_ids or field.evidence_ids else 0.0),
+                    field,
+                    value,
+                )
+                for field in indexed.fields
+                for value in field.values
+                if _term_match_quality(canonical, value) > 0
+            ]
+            if not candidates:
                 continue
-            field, value = match
-            reasons.append(
-                MatchReason(
-                    kind="synonym" if is_synonym else "text",
-                    path=field.path,
-                    matched_value=value,
-                    terms=[raw],
-                    claim_ids=list(field.claim_ids),
-                    evidence_ids=list(field.evidence_ids),
-                    capability_support_status=field.capability_support_status,
-                    evidence_status=field.evidence_status,
-                    confidence=field.confidence,
-                    field_state=field.field_state,
+            field_relevance, field, value = max(candidates, key=lambda item: item[0])
+            rarity_bonus = max(len(self._index) - self._term_document_frequency(canonical), 0)
+            origin_weight = 1.0 if is_explicit else 0.35
+            relevance = (field_relevance + rarity_bonus) * origin_weight
+            ranked_reasons.append(
+                (
+                    relevance,
+                    MatchReason(
+                        kind="synonym" if is_synonym else "text",
+                        path=field.path,
+                        matched_value=value,
+                        terms=[raw],
+                        claim_ids=list(field.claim_ids),
+                        evidence_ids=list(field.evidence_ids),
+                        capability_support_status=field.capability_support_status,
+                        evidence_status=field.evidence_status,
+                        confidence=field.confidence,
+                        field_state=field.field_state,
+                    ),
                 )
             )
-        return reasons
+        ranked_reasons.sort(key=lambda item: -item[0])
+        return [reason for _, reason in ranked_reasons], sum(
+            relevance for relevance, _ in ranked_reasons
+        )
 
     def _filter_reasons(
         self,
@@ -823,11 +968,7 @@ class CatalogService:
             project_type=primary_type.replace("_", " "),
             role=primary_type.replace("_", " "),
             summary=str(summary.get("one_line") or summary.get("purpose") or "Summary not analyzed."),
-            match_reason=(
-                f"Matched {first_reason.matched_value} at {first_reason.path}."
-                if first_reason
-                else "Included by the catalog query."
-            ),
+            match_reason=self._match_reason_summary(first_reason),
             constraint=str(
                 first_limitation.get("statement")
                 or "Contextual limitation not analyzed for this Assessment Context."
@@ -855,6 +996,21 @@ class CatalogService:
                 else None
             ),
         )
+
+    @staticmethod
+    def _match_reason_summary(reason: MatchReason | None) -> str:
+        """Create a concise explanation without exposing internal card paths."""
+        if reason is None:
+            return "Included by the catalog filters."
+        term = reason.terms[0] if reason.terms else reason.matched_value
+        value = " ".join(reason.matched_value.split())
+        if len(value) > 180:
+            value = f"{value[:177].rstrip()}…"
+        label = _search_field_label(reason.path)
+        sentence_end = "" if value.endswith((".", "!", "?")) else "."
+        if reason.kind == "filter":
+            return f'Matches the “{term}” {label} filter: {value}{sentence_end}'
+        return f'Matches “{term}” in its {label}: {value}{sentence_end}'
 
     def _assessment_contexts(
         self,

@@ -179,6 +179,12 @@ For the preprocessed catalog, the system must:
 * Load validated canonical `project-card.yaml` files directly
 * Let users and agents search cards without first submitting a repository
 * Support basic keyword search over card text and structured project attributes
+* Send frontend search requests to the backend catalog API and render results
+  derived from the validated cards returned by that API
+* Rank and filter basic keyword results according to how meaningfully the query
+  matches project identity, purpose, use cases, capabilities, technologies, and
+  architecture, while keeping the ranking deterministic and explainable
+* Explain each result in customer-facing language using the matched card data
 * Filter by category, capability, language, license, maturity, and architecture layer
 * Retrieve projects relevant to a use case or requirements
 * Return the card source snapshot and analysis age with results
