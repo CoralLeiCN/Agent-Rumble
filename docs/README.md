@@ -30,9 +30,9 @@ The central distinction is:
 
 ## Supporting Documents
 
-* [System design](design-docs/system-design.md) describes the proposed Agent
-  Rumble and Agent Project Intelligence architecture without making the
-  proposal an accepted architecture decision.
+* [Architecture overview](architecture.md) maps the implemented Agent Rumble
+  system and links to the proposed system design and accepted architecture
+  decisions.
 * [Developer guide](development.md) contains local setup, repository layout,
   and development workflow notes without becoming a source of product
   requirements or architecture decisions.
