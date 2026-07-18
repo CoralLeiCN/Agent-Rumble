@@ -251,9 +251,10 @@ rendering mode, component libraries, and hosting have not yet been selected, so
 the directory currently records the project boundary without choosing a
 scaffold.
 
-For the detailed sources of truth, see:
+For detailed documentation, including the responsible sources of truth, see:
 
 * [Documentation map](docs/README.md)
+* [Our building stories](docs/project-stories.md)
 * [Requirements index](docs/requirements.md)
 * [Product specification](docs/specification/README.md)
 * [Design documents](docs/design-docs/README.md)

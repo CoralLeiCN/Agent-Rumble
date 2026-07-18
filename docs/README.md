@@ -25,6 +25,8 @@ The central distinction is:
   requirement remains the source of that constraint; the decision may reference
   it as context and focus on its architectural consequences and related choices.
 * An **execution plan** states how and when the accepted work may be delivered.
+* **Project stories and build notes** explain the project's building stories
+  and how we build without becoming a source of truth.
 
 ## Supporting Documents
 
@@ -38,7 +40,9 @@ The central distinction is:
   silently deciding them.
 * [Writing guidelines](writing_guidelines.md) define how requirements and chat
   writing are structured.
+* [Our building stories](project-stories.md) provide notes about the project's
+  building stories and how we build.
 
-No backlog entry, design document, architecture decision, execution plan,
-roadmap item, or open decision may override an active requirement or silently
-expand the product specification.
+No project story, backlog entry, design document, architecture decision,
+execution plan, roadmap item, or open decision may override an active
+requirement or silently expand the product specification.

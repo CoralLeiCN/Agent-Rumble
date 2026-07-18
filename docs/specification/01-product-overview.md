@@ -124,6 +124,7 @@ describes the product response to them.
 Before user input is recorded, it must be rephrased into a clearer, more structured form. The rephrased version must preserve what the user specified without adding new requirements, constraints, assumptions, or details.
 
 Chat must use the same structured writing approach. The shared [`Writing Guidelines`](../writing_guidelines.md) must not introduce writing rules that the user did not specifically request.
+Written content must not go beyond what the user asked to write.
 
 Each documentation area has one responsibility:
 
@@ -135,6 +136,8 @@ Each documentation area has one responsibility:
 * The topic-organized architecture decisions record documents accepted
   architectural choices, their context, and their consequences.
 * Execution plans organize delivery work.
+* The repository-local project stories and build notes document explains the
+  project's building stories and how the project is built. It is notes only.
 * The deferred backlog records requested capabilities and implementation work
   that stakeholders have deliberately postponed, without replacing their source
   requirements or decisions.
@@ -211,9 +214,12 @@ Agent Project Intelligence separates the tool that produces an Agent Project Car
 
 The core tool combines:
 
-* Codex as the project-analysis harness
+* Codex as the heavily used core project-analysis harness
 * An Agent Project Card skill attached to Codex, containing the instructions for generating the card
 * The canonical Agent Project Card and its generated human-readable views as the outputs
+
+Tools are provided as skills and as services. Skill delivery supports a Codex
+plugin first. Both forms use Codex as the core harness.
 
 The core tool supports catalog preprocessing first and user-initiated generation
 later:

@@ -67,6 +67,9 @@ To provide Agent Project Cards as a service, the system must:
 
 ### Access and Invocation
 
+Provide tools as skills and as services. Support a Codex plugin first for skill
+delivery. Both forms use Codex as the core harness.
+
 The first product experience must:
 
 * Use Codex and the Agent Project Card skill to preprocess cards for the selected

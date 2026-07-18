@@ -139,10 +139,15 @@ core Agent Project Card tool.
 
 ### Core Agent Project Card Tool
 
-Use Codex as the harness for project analysis. The instructions for generating
-an Agent Project Card should be provided by an Agent Project Card skill attached
-to Codex. The first product experience should use this core tool to preprocess
-the repositories included in the catalog.
+Use Codex heavily as the core harness for project analysis. The instructions
+for generating an Agent Project Card should be provided by an Agent Project
+Card skill attached to Codex. The first product experience should use this core
+tool to preprocess the repositories included in the catalog.
+
+### Tool Delivery
+
+Provide tools as skills and as services. Support a Codex plugin first for skill
+delivery. Both forms should leverage Codex as the core harness.
 
 ### Repository-Local Skill
 
@@ -268,6 +273,13 @@ Add repository rules that enforce these responsibilities, keep the source of
 normative content explicit, and prevent duplication from creating competing
 sources of truth.
 
+### Project Stories and Build Notes
+
+Maintain one repository-local notes document focused on the project's building
+stories and how the project is built.
+
+Treat the document purely as notes.
+
 ### Deferred Backlog
 
 Maintain a dedicated backlog for requested capabilities and implementation work
@@ -295,10 +307,15 @@ Use the same clear, structured writing approach in chat. The writing guideline
 should contain only the points the user specifically requested and should not
 add extra writing rules.
 
+Do not add content beyond what the user asked to write.
+
 ## Change Log
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Core tool and access | Required tools to be provided as skills and services, with a Codex plugin supported first and Codex used heavily as the core harness. |
+| 2026-07-18 | Documentation governance | Required writing to contain only the content the user requested. |
+| 2026-07-18 | Documentation governance | Required one notes document focused on the project's building stories and how the project is built. |
 | 2026-07-18 | Documentation governance | Added a dedicated backlog for explicitly deferred work, separate from active MVP delivery and broader possible roadmap directions. |
 | 2026-07-18 | Agent Project Card service and storage | Selected direct use of validated `project-card.yaml` files for the first implementation and deferred vector-based semantic search to the backlog. |
 | 2026-07-18 | Agent Project Card service and storage | Required generated Agent Project Cards to be stored so Agent Project Intelligence can provide them through a service. |
