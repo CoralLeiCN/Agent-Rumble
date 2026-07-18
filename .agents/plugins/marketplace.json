@@ -1,0 +1,20 @@
+{
+  "name": "agent-project-intelligence",
+  "interface": {
+    "displayName": "Agent Project Intelligence"
+  },
+  "plugins": [
+    {
+      "name": "agent-project-card",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agent-project-card"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

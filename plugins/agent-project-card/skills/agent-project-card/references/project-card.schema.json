@@ -1,0 +1,999 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-project-intelligence.local/schemas/project-card/0.2",
+  "title": "Agent Project Card",
+  "description": "Draft schema v0.2 evolved from the stakeholder-provided v0.1 baseline.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "card_id",
+    "card_version",
+    "field_states",
+    "project",
+    "source_snapshot",
+    "summary",
+    "classification",
+    "capabilities",
+    "architecture",
+    "components",
+    "usage",
+    "assessment",
+    "relationships",
+    "claims",
+    "sources",
+    "evidence",
+    "open_questions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.2",
+      "description": "Version of the card schema's structure and semantics; independent of card_version and analyzed project releases."
+    },
+    "card_id": {
+      "$ref": "#/$defs/nonEmptyString",
+      "description": "Stable identifier shared by all tracked revisions of one Agent Project Card."
+    },
+    "card_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Positive revision number within a card_id lineage; starts at 1 and advances for each persisted card change."
+    },
+    "field_states": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^/"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/fieldState"
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "name",
+        "primary_type",
+        "type_rationale",
+        "boundary",
+        "repositories",
+        "packages",
+        "services",
+        "documentation_sites",
+        "license",
+        "status"
+      ],
+      "properties": {
+        "project_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "primary_type": {
+          "oneOf": [
+            {
+              "enum": [
+                "agent_application",
+                "agent_framework_sdk",
+                "agent_harness_runtime",
+                "agent_tool_mcp",
+                "agent_skill"
+              ]
+            },
+            {
+              "type": "string",
+              "pattern": "^x-[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
+          ]
+        },
+        "type_rationale": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "boundary": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "repositories": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/repository"
+          }
+        },
+        "packages": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "services": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "documentation_sites": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "license": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "status": {
+          "enum": ["active", "maintenance", "archived", "unclear"]
+        }
+      }
+    },
+    "source_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analyzed_at",
+        "source_revisions",
+        "release_versions",
+        "analysis_depth",
+        "analysis_configuration",
+        "analyzer_version",
+        "ontology_versions"
+      ],
+      "properties": {
+        "analyzed_at": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_revisions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceRevision"
+          }
+        },
+        "release_versions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "analysis_depth": {
+          "enum": ["triage", "targeted", "deep", "dynamic"]
+        },
+        "analysis_configuration": {
+          "type": "object"
+        },
+        "analyzer_version": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "ontology_versions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["classification", "capabilities"],
+          "properties": {
+            "classification": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "capabilities": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["one_line", "purpose", "target_users", "primary_use_cases"],
+      "properties": {
+        "one_line": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "target_users": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "primary_use_cases": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "secondary_characteristics",
+        "domains",
+        "delivery_forms",
+        "agent_patterns",
+        "architecture_layers",
+        "claim_ids"
+      ],
+      "properties": {
+        "secondary_characteristics": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "domains": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "delivery_forms": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "agent_patterns": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "architecture_layers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "claim_ids": {
+          "$ref": "#/$defs/idArray"
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capability"
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "overview",
+        "languages",
+        "frameworks_and_sdks",
+        "model_providers",
+        "runtime_and_orchestration",
+        "tools_and_mcp",
+        "skills",
+        "memory_and_state",
+        "retrieval_and_knowledge",
+        "document_processing",
+        "execution_and_sandbox",
+        "gateways_and_routing",
+        "storage_and_databases",
+        "interfaces",
+        "deployment",
+        "observability_and_evaluation",
+        "security_and_permissions",
+        "data_flows",
+        "control_flows"
+      ],
+      "properties": {
+        "overview": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "languages": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "frameworks_and_sdks": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "model_providers": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "runtime_and_orchestration": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "tools_and_mcp": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tools", "mcp_role", "mcp_details"],
+          "properties": {
+            "tools": {
+              "$ref": "#/$defs/technologyArray"
+            },
+            "mcp_role": {
+              "enum": ["none", "client", "server", "both", "unclear"]
+            },
+            "mcp_details": {
+              "$ref": "#/$defs/stringArray"
+            }
+          }
+        },
+        "skills": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "memory_and_state": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "retrieval_and_knowledge": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "document_processing": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "execution_and_sandbox": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "gateways_and_routing": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "storage_and_databases": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "interfaces": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "deployment": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "observability_and_evaluation": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "security_and_permissions": {
+          "$ref": "#/$defs/technologyArray"
+        },
+        "data_flows": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "control_flows": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "installation",
+        "minimal_start",
+        "configuration",
+        "required_services",
+        "extension_points"
+      ],
+      "properties": {
+        "installation": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "minimal_start": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "configuration": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "required_services": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extension_points": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contexts",
+        "maturity",
+        "maturity_signals",
+        "strengths",
+        "limitations",
+        "risks",
+        "best_fit",
+        "poor_fit",
+        "gaps"
+      ],
+      "properties": {
+        "contexts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/assessmentContext"
+          }
+        },
+        "maturity": {
+          "enum": ["experimental", "early", "established", "mature", "unclear"]
+        },
+        "maturity_signals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessmentItem"
+          }
+        },
+        "strengths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessmentItem"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessmentItem"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessmentItem"
+          }
+        },
+        "best_fit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessmentItem"
+          }
+        },
+        "poor_fit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessmentItem"
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessmentItem"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["depends_on", "integrates_with", "comparable_projects"],
+      "properties": {
+        "depends_on": {
+          "$ref": "#/$defs/relationshipArray"
+        },
+        "integrates_with": {
+          "$ref": "#/$defs/relationshipArray"
+        },
+        "comparable_projects": {
+          "$ref": "#/$defs/relationshipArray"
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["question", "reason", "related_claim_ids"],
+            "properties": {
+              "question": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "reason": {
+                "$ref": "#/$defs/nullableString"
+              },
+              "related_claim_ids": {
+                "$ref": "#/$defs/idArray"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullableString": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "idArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "uniqueItems": true
+    },
+    "confidence": {
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "evidenceStatus": {
+      "enum": ["confirmed", "documented_only", "inferred", "not_found"]
+    },
+    "supportStatus": {
+      "enum": [
+        "claimed",
+        "documented",
+        "statically_confirmed",
+        "runtime_verified",
+        "partially_implemented",
+        "planned",
+        "deprecated"
+      ]
+    },
+    "verificationStatus": {
+      "enum": [
+        "documented",
+        "statically_confirmed",
+        "runtime_verified",
+        "unverified",
+        "conflicted"
+      ]
+    },
+    "fieldState": {
+      "enum": [
+        "unknown",
+        "not_applicable",
+        "not_analyzed",
+        "no_evidence_found"
+      ]
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "url",
+        "owner",
+        "role",
+        "included_paths",
+        "excluded_paths"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "url": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "owner": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "role": {
+          "enum": ["primary", "supporting", "documentation", "example"]
+        },
+        "included_paths": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "excluded_paths": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "sourceRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "branch",
+        "tag",
+        "commit",
+        "retrieved_at",
+        "content_digest"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "branch": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "tag": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "commit": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "retrieved_at": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "content_digest": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability_id",
+        "ontology_id",
+        "name",
+        "description",
+        "support_status",
+        "evidence_status",
+        "scope",
+        "interfaces",
+        "prerequisites",
+        "configuration_requirements",
+        "limitations",
+        "confidence",
+        "claim_ids",
+        "evidence_refs"
+      ],
+      "properties": {
+        "capability_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "ontology_id": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "support_status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/supportStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_status": {
+          "$ref": "#/$defs/evidenceStatus"
+        },
+        "scope": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "interfaces": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "prerequisites": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "configuration_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "limitations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "claim_ids": {
+          "$ref": "#/$defs/idArray"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/idArray"
+        }
+      }
+    },
+    "technologyEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version_constraint",
+        "dependency_relation",
+        "required",
+        "claim_ids"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "version_constraint": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "dependency_relation": {
+          "enum": ["direct", "transitive", "development", "optional", "bundled", "hosted"]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "claim_ids": {
+          "$ref": "#/$defs/idArray"
+        }
+      }
+    },
+    "technologyValue": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        {
+          "$ref": "#/$defs/technologyEntry"
+        }
+      ]
+    },
+    "technologyArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/technologyValue"
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "name", "path", "project_type", "purpose", "claim_ids"],
+      "properties": {
+        "component_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "path": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "project_type": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "claim_ids": {
+          "$ref": "#/$defs/idArray"
+        }
+      }
+    },
+    "assessmentContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context_id",
+        "use_case",
+        "comparison_cohort",
+        "requirements",
+        "organizational_constraints",
+        "assessed_at"
+      ],
+      "properties": {
+        "context_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "use_case": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "comparison_cohort": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "organizational_constraints": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "assessed_at": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "assessmentItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement", "reasoning", "context_id", "confidence", "claim_ids"],
+      "properties": {
+        "statement": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "reasoning": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "context_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "claim_ids": {
+          "$ref": "#/$defs/idArray"
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_project", "scope", "confidence", "claim_ids"],
+      "properties": {
+        "target_project": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "scope": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "claim_ids": {
+          "$ref": "#/$defs/idArray"
+        }
+      }
+    },
+    "relationshipValue": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        {
+          "$ref": "#/$defs/relationship"
+        }
+      ]
+    },
+    "relationshipArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationshipValue"
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "statement",
+        "claim_kind",
+        "verification_status",
+        "confidence",
+        "applies_to",
+        "assessment_context_id",
+        "supporting_evidence_ids",
+        "conflicting_evidence_ids",
+        "reasoning",
+        "last_verified_at"
+      ],
+      "properties": {
+        "claim_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "statement": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "claim_kind": {
+          "enum": ["factual", "interpretive", "assessment"]
+        },
+        "verification_status": {
+          "$ref": "#/$defs/verificationStatus"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "applies_to": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "assessment_context_id": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "supporting_evidence_ids": {
+          "$ref": "#/$defs/idArray"
+        },
+        "conflicting_evidence_ids": {
+          "$ref": "#/$defs/idArray"
+        },
+        "reasoning": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "last_verified_at": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_type",
+        "provenance",
+        "uri",
+        "revision_or_version",
+        "retrieved_at",
+        "content_digest",
+        "access_scope"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_type": {
+          "enum": [
+            "repository",
+            "repository_file",
+            "documentation",
+            "package_registry",
+            "release",
+            "issue",
+            "external_page"
+          ]
+        },
+        "provenance": {
+          "enum": ["first_party", "third_party", "unknown"]
+        },
+        "uri": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "revision_or_version": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "retrieved_at": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "content_digest": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "access_scope": {
+          "enum": ["public", "private", "restricted"]
+        }
+      }
+    },
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "symbol_or_section", "line_start", "line_end"],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "symbol_or_section": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "line_start": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "line_end": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "source_id",
+        "locator",
+        "evidence_status",
+        "confidence",
+        "excerpt_or_symbol",
+        "note"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        },
+        "evidence_status": {
+          "$ref": "#/$defs/evidenceStatus"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "excerpt_or_symbol": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "note": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    }
+  }
+}

@@ -20,6 +20,16 @@ Agent projects evolve rapidly and may span several categories.
 
 **Proposed mitigation:** Support multi-label classification, version the ontology, and allow uncategorized extensions.
 
+## Skill and Schema Drift
+
+The Codex skill, API wrapper, validators, and human-readable views may implement
+different versions or interpretations of the Agent Project Card schema.
+
+**Proposed mitigation:** Package the same versioned schema with the skill and API,
+verify its digest during packaging, validate every generated card
+deterministically, test v0.1 migrations, and generate all human-readable views
+from the canonical card.
+
 ## False Precision
 
 Scores may appear more objective than the evidence supports.

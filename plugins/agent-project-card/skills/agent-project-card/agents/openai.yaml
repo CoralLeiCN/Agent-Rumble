@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Project Card"
+  short_description: "Create evidence-backed Agent Project Cards"
+  default_prompt: "Use $agent-project-card to analyze this project and create a validated project-card.yaml."

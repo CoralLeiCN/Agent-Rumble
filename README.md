@@ -183,6 +183,31 @@ This adopts the project split only. Database, authentication, container,
 frontend build-tool, UI-library, and deployment choices from the reference
 template are not selected by this repository structure.
 
+### Skill and Plugin Layout
+
+The canonical Agent Project Card skill is stored inside its marketplace plugin:
+
+```text
+plugins/agent-project-card/skills/agent-project-card/
+```
+
+Repository-local Codex discovery uses this symbolic link:
+
+```text
+.agents/skills/agent-project-card
+  -> ../../plugins/agent-project-card/skills/agent-project-card
+```
+
+These paths refer to one physical skill, not two maintained copies. Edit the
+canonical plugin path; the symbolic link exposes the same files to Codex when
+working directly in this repository.
+
+Codex may display the installed marketplace skill as
+`agent-project-card:agent-project-card`. This uses the format
+`<plugin-name>:<skill-name>` and identifies one skill named
+`agent-project-card` contributed by the `agent-project-card` plugin. The colon
+does not indicate two skills.
+
 ## Backend Development
 
 The FastAPI backend uses this project layout:

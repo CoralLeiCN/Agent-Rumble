@@ -71,6 +71,48 @@ The card should describe:
 * The technology stack
 * Other important project details
 
+### Project Card Schema Baseline
+
+Use the stakeholder-provided **Agent Project Card Schema v0.1** as the normative
+starting point for `project-card.yaml` and for the Agent Project Card skill.
+
+The schema organizes the card into project identity and revision, summary,
+classification, capabilities, architecture, components, usage, assessment,
+relationships, open questions, and evidence. It defines these initial
+controlled values:
+
+* Primary type: `agent_application`, `agent_framework_sdk`,
+  `agent_harness_runtime`, `agent_tool_mcp`, or `agent_skill`
+* Confidence: `high`, `medium`, `low`, or `unknown`
+* Evidence status: `confirmed`, `documented_only`, `inferred`, or `not_found`
+* Maturity: `experimental`, `early`, `established`, `mature`, or `unclear`
+* Project status: `active`, `maintenance`, `archived`, or `unclear`
+* MCP role: `none`, `client`, `server`, `both`, or `unclear`
+
+Record the exact analyzed revision when Git metadata is available. Do not guess
+unavailable identity values; the v0.1 baseline directs the author to represent
+them as empty strings. In v0.1, `project.primary_type` describes the repository
+itself, while supporting services used by it belong under `architecture` or
+`relationships`. Capture user-meaningful capabilities rather than implementation
+trivia, connect capabilities to evidence unless their evidence status is
+`not_found`, and record only direct, architecturally meaningful technologies.
+Base maturity on repository evidence rather than popularity.
+
+### Card Versioning
+
+Every canonical Agent Project Card must include an explicit version number so
+its evolution can be tracked. Versions of the same card must remain
+distinguishable, and the card version must remain separate from both the card
+schema version and the analyzed project's release or package version.
+
+### Card Summary Template
+
+Include a repository-local template for a human-readable Card Summary generated
+only from a validated canonical Agent Project Card. The summary should identify
+its source card and source snapshot, keep capability support and verification
+distinct, preserve explicit unavailable-value states, state the Assessment
+Context, and retain traceability to claims, evidence, and sources.
+
 ### Downstream Uses
 
 The Project Card should support:
@@ -101,6 +143,18 @@ Use Codex as the harness for project analysis. The instructions for generating
 an Agent Project Card should be provided by an Agent Project Card skill attached
 to Codex. The first product experience should use this core tool to preprocess
 the repositories included in the catalog.
+
+### Repository-Local Skill
+
+Version the Agent Project Card skill as part of the Agent Project Intelligence
+repository so the direct Codex session and API use the same reviewed skill
+artifact.
+
+### Marketplace Distribution
+
+Publish the Agent Project Card skill to the public Codex marketplace so users
+can discover, install, and reuse it outside the Agent Project Intelligence
+repository.
 
 ### Direct Codex Session
 
@@ -219,6 +273,11 @@ add extra writing rules.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Core tool and access | Required publication of the Agent Project Card skill to the public Codex marketplace for discovery, installation, and reuse outside this repository. |
+| 2026-07-18 | Agent Project Card | Required every canonical card to carry a distinct card version for tracked evolution, separate from schema and project release versions. |
+| 2026-07-18 | Agent Project Card | Required a repository-local Card Summary template derived from the validated canonical card with snapshot, status, field-state, assessment-context, and evidence traceability preserved. |
+| 2026-07-18 | Core tool and access | Required the Agent Project Card skill to be versioned as part of the Agent Project Intelligence repository. |
+| 2026-07-18 | Agent Project Card | Added the stakeholder-provided schema v0.1 as the normative starting point for `project-card.yaml` and the Codex skill, including its sections, controlled values, evidence expectations, and maturity guidance. |
 | 2026-07-18 | Public product naming | Selected Agent Rumble as the public product and UI name while retaining Agent Project Intelligence for the underlying system and Agent Project Card for the canonical artifact. |
 | 2026-07-18 | Public page discoverability | Deferred search-engine indexing and rich social previews for public Agent Project Card pages to P2. |
 | 2026-07-18 | Catalog-first discovery and comparison | Clarified that the product accelerates discovery, analysis, and trade-off decisions for humans and agents by prioritizing accurate source evidence over low-signal or AI-generated README content. |

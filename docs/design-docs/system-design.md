@@ -36,6 +36,125 @@ The adapters must not create separate card definitions or analysis rules. Every
 generation path invokes the same core capability and produces the same canonical
 Agent Project Card.
 
+### Agent Project Card Skill Package
+
+The Agent Project Card capability should be distributed as one Codex skill with
+progressively disclosed resources. Keeping one skill avoids separate direct and
+API workflows drifting apart while allowing detailed schema and evidence rules
+to remain outside the skill's short core instructions.
+
+The canonical first draft lives in a skills-only Codex plugin. Repository-local
+skill discovery uses a symlink to that same package so marketplace and direct
+Codex use cannot drift:
+
+```text
+.agents/
+├── plugins/
+│   └── marketplace.json
+└── skills/
+    └── agent-project-card -> ../../plugins/agent-project-card/skills/agent-project-card
+plugins/agent-project-card/
+├── .codex-plugin/
+│   └── plugin.json
+└── skills/
+    └── agent-project-card/
+        ├── SKILL.md
+        ├── agents/
+        │   └── openai.yaml
+        ├── assets/
+        │   └── card-summary-template.md
+        ├── references/
+        │   ├── analysis-contract.md
+        │   └── project-card.schema.json
+        └── scripts/
+            ├── migrate_v01_card.py
+            └── validate_project_card.py
+```
+
+The repository path `.agents/skills/agent-project-card` points to
+`../../plugins/agent-project-card/skills/agent-project-card`. The repository
+path and plugin path resolve to the same physical skill; they are not two skill
+implementations. In Codex skill lists, the installed plugin contribution may
+appear as `agent-project-card:agent-project-card`, using the namespace format
+`<plugin-name>:<skill-name>`. This names one skill within one plugin and is
+independent of the repository symlink.
+
+Responsibilities:
+
+* `SKILL.md` defines the end-to-end workflow, safety boundaries, required
+  outputs, and when to load each bundled reference. It should link to detailed
+  rules instead of repeating the schema.
+* `agents/openai.yaml` provides the Codex-facing display name, concise
+  description, and default prompt generated from the completed skill.
+* `assets/card-summary-template.md` provides the human-readable Card Summary
+  layout populated only from a validated canonical card. It preserves snapshot,
+  field-state, assessment-context, claim, evidence, and source semantics without
+  becoming a second card definition.
+* `references/analysis-contract.md` provides the project-boundary, exploration,
+  card-versioning, claim, evidence, confidence, verification,
+  assessment-context, and stopping rules from the specification.
+* `references/project-card.schema.json` is the versioned machine-readable schema
+  used by both access modes. It should be generated or copied during packaging
+  from the product's canonical schema artifact and checked by digest so it is
+  not a separately maintained source of truth.
+* `scripts/migrate_v01_card.py` upgrades a stakeholder-schema v0.1 card without
+  guessing information lost through empty values or compact evidence statuses.
+* `scripts/validate_project_card.py` performs deterministic structural and
+  semantic validation before Codex returns a card.
+
+The package should be validated with the Codex skill validator, and each bundled
+script should have representative tests. Skill packaging validation does not
+replace validation of generated Agent Project Cards.
+
+The plugin manifest supplies the marketplace package version, publisher and
+listing metadata, starter prompts, and the bundled `./skills/` path. The
+repository marketplace entry enables installation testing before public
+submission. Public release uses the Codex plugin submission and review process;
+repository packaging alone does not publish the plugin.
+
+### Skill Execution Workflow
+
+The skill should guide Codex through the following stages:
+
+1. Establish the project boundary, included sources, exact revisions, analysis
+   depth, explicit exclusions, and card lineage. New cards start at version 1;
+   refreshes retain the card ID and advance the card version.
+2. Treat repository and documentation content as untrusted evidence and map the
+   project before drawing conclusions.
+3. Classify the project using the v0.1 primary-type vocabulary plus the
+   versioned extension rules in the specification.
+4. Collect user-meaningful capabilities, direct architectural technologies,
+   components, usage information, relationships, and assessment signals.
+5. Create stable claims, sources, and precise evidence records; keep confidence,
+   verification, capability support, and v0.1 compatibility status distinct.
+6. Synthesize `project-card.yaml` using the current schema, record card and
+   schema versions independently, and populate explicit field states rather
+   than leaving unavailable values ambiguous.
+7. Run deterministic schema and semantic validation. If validation cannot pass,
+   return the validation findings and an incomplete artifact rather than
+   silently dropping required data or inventing values.
+8. Generate the human-readable Card Summary and evidence view only from the
+   validated canonical card.
+
+### Schema Validation and Migration
+
+Validation should have two layers:
+
+* **Structural validation** checks the schema version, required groups, field
+  types, identifiers, controlled values, and references.
+* **Semantic validation** checks that revisions are exact when available,
+  capability evidence references resolve, claim and evidence links are not
+  dangling, assessments identify a context, static analysis is not labeled
+  runtime verification, direct technologies are distinguished from transitive
+  dependencies, and unavailable fields have an explicit state.
+
+The v0.1 migration path should preserve every supplied field that has a direct
+v0.2 representation. It should map the v0.1 top-level groups to their v0.2
+counterparts, split inline evidence claims into claim and evidence records, and
+emit warnings for lossy conversions. In particular, it should map empty values
+to `unknown`, retain `evidence_status` as a compatibility projection, and never
+infer runtime verification from `confirmed`.
+
 ### Intake
 
 Responsibilities:

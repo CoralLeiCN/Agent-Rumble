@@ -66,6 +66,17 @@ of a user-provided Git repository link for on-demand card generation.
 All preprocessing and later on-demand generation modes must produce the same
 canonical Agent Project Card and follow the same analysis and validation rules.
 
+The Agent Project Card skill is versioned in this repository. Direct and API
+adapters must select the same released skill version, including its packaged
+analysis contract, schema, migration behavior, and deterministic validation.
+
+For public marketplace distribution, the same released skill must be packaged
+as a skills-only Codex plugin. The plugin version identifies the distributable
+package and must not replace the card, schema, ontology, or analyzer versions.
+Repository-local, API, and plugin-installed invocation must use identical skill
+content and validation behavior for the same release. Marketplace publication
+must not create a separately maintained copy of the skill.
+
 ### Implementation Technology
 
 The [Implementation Technology requirements](../requirements.md#implementation-technology)
@@ -127,6 +138,9 @@ The system should:
 
 * Reanalyze projects when requested
 * Detect material repository changes
+* Preserve `card_id` and assign the next `card_version` when a canonical card is
+  refreshed or changed
+* Keep prior card versions identifiable instead of silently overwriting them
 * Show card and claim differences between source snapshots
 * Mark stale card sections and source evidence
 

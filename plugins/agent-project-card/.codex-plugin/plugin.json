@@ -1,0 +1,35 @@
+{
+  "name": "agent-project-card",
+  "version": "0.1.0",
+  "description": "Generate versioned, evidence-backed Agent Project Cards for agent-related software projects.",
+  "author": {
+    "name": "CoralLeiCN",
+    "url": "https://github.com/CoralLeiCN"
+  },
+  "homepage": "https://github.com/CoralLeiCN/Agent-Rumble",
+  "repository": "https://github.com/CoralLeiCN/Agent-Rumble",
+  "keywords": [
+    "agents",
+    "project-card",
+    "repository-analysis",
+    "software-intelligence"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Project Card",
+    "shortDescription": "Generate evidence-backed project cards.",
+    "longDescription": "Analyze agent-related software projects with static evidence collection and produce validated, versioned Agent Project Cards and summaries.",
+    "developerName": "CoralLeiCN",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/CoralLeiCN/Agent-Rumble",
+    "defaultPrompt": [
+      "Analyze this repository and create an Agent Project Card.",
+      "Refresh this project's Agent Project Card for the current revision.",
+      "Validate or migrate an existing Agent Project Card."
+    ]
+  }
+}
