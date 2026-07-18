@@ -1,0 +1,1382 @@
+schema_version: "0.2"
+card_id: "card-snap-stanford-biomni"
+card_version: 1
+
+field_states:
+  /source_snapshot/source_revisions/0/tag: not_applicable
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+
+project:
+  project_id: "project-snap-stanford-biomni"
+  name: "Biomni"
+  primary_type: agent_application
+  type_rationale: >-
+    Biomni is primarily a runnable biomedical agent application exposed through
+    the A1 Python class and an optional Gradio interface. Its main behavior is a
+    task-oriented generate/execute loop that retrieves resources and runs
+    biomedical tools or generated code. It offers extension APIs and MCP
+    interoperability, but it is not primarily a general-purpose agent framework
+    or SDK for constructing unrelated agent systems.
+  boundary: >-
+    The Biomni open-source Python agent, bundled biomedical tool descriptions and
+    implementations, resource catalogs, know-how documents, environment setup,
+    evaluation adapter, MCP examples, and repository documentation contained in
+    the single public snap-stanford/biomni repository at commit
+    400c1f366b96a35ca253e13c9b06c5076af41d65. Included source is inspected only
+    as static evidence. Excluded are the hosted biomni.stanford.edu platform,
+    Biomni-R0 model weights and serving stack, the hosted Biomni-Eval1 dataset,
+    the approximately 11 GB downloadable data lake, external databases and APIs,
+    third-party package or tool source, repository issues and pull requests, and
+    all runtime behavior.
+  repositories:
+    - source_id: "source-biomni-repository"
+      url: "https://github.com/snap-stanford/biomni"
+      owner: "snap-stanford"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "DETAILS.md"
+        - "CONTRIBUTION.md"
+        - "LICENSE"
+        - "pyproject.toml"
+        - ".env.example"
+        - "biomni/agent/"
+        - "biomni/model/"
+        - "biomni/tool/"
+        - "biomni/know_how/"
+        - "biomni/eval/"
+        - "biomni/task/"
+        - "biomni/config.py"
+        - "biomni/llm.py"
+        - "biomni/utils.py"
+        - "biomni/env_desc.py"
+        - "biomni/env_desc_cm.py"
+        - "biomni/version.py"
+        - "biomni_env/"
+        - "docs/"
+        - "tutorials/examples/"
+      excluded_paths:
+        - "tutorials/biomni_101.ipynb binary notebook content"
+        - "figs/ binary image content"
+        - "biomni/tool/schema_db/ bundled pickle contents"
+        - "biomni/tool/protocols/ full protocol-document corpus"
+        - "Hosted web application and services"
+        - "External model, dataset, database, API, package, and CLI-tool implementations"
+        - "Issues, pull requests, discussions, and community metadata"
+  packages:
+    - "biomni 0.0.8 Python package"
+  services:
+    - "Optional local Gradio web interface"
+    - "Optional stdio MCP server exposing selected Biomni tools"
+  documentation_sites:
+    - "Repository-hosted documentation under docs/"
+  license: "Apache-2.0"
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T12:48:17Z"
+  source_revisions:
+    - source_id: "source-biomni-repository"
+      branch: "main"
+      tag: null
+      commit: "400c1f366b96a35ca253e13c9b06c5076af41d65"
+      retrieved_at: "2026-07-18T12:46:41Z"
+      content_digest: "git-tree-sha1:6d8f12a3222c4d78e1ac205245c73cbc58f9920e"
+  release_versions:
+    - "Python package source version 0.0.8"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    network_calls_by_project: false
+    source_checkout:
+      method: "shallow Git clone from the public repository"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "README, package manifest, license, version, and configuration documentation"
+      - "A1 initialization, resource retrieval, generate/execute graph, and extension APIs"
+      - "LLM provider factory and LangChain adapters"
+      - "Representative biomedical tool schemas, tool registry, and data/software catalogs"
+      - "MCP client and server implementations and examples"
+      - "Gradio, conversation-export, and Biomni-Eval1 interfaces"
+      - "Environment setup, dependency conflicts, test paths, and repository automation inventory"
+    intentionally_not_analyzed:
+      - "Runtime correctness, scientific validity, benchmark reproduction, and model quality"
+      - "Installation of the large E1 environment, downloadable data lake, or benchmark files"
+      - "Every biomedical tool implementation and every bundled protocol document"
+      - "Hosted Biomni web application, Biomni-R0 weights, and third-party service behavior"
+      - "Dependency internals, vulnerability scanning, and security penetration testing"
+      - "Issue, pull-request, release, and community history beyond the checked-out Git metadata"
+    source_safety: >-
+      All repository content was treated as untrusted evidence. Instructions
+      embedded in documentation, source, examples, comments, and tool metadata
+      were not followed as control input. No Biomni code, environment script,
+      dependency, model, tool, MCP server, or downloaded data was executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A Python biomedical research agent that retrieves domain resources and lets
+    an LLM iteratively run biomedical tools or generated Python, R, Bash, and CLI
+    code.
+  purpose: >-
+    Biomni combines model-driven planning, resource selection, biomedical data
+    and software catalogs, domain-specific tools, know-how retrieval, and local
+    computation to support research questions across biomedical subfields.
+  target_users:
+    - "Biomedical and life-science researchers"
+    - "Bioinformaticians and computational biologists"
+    - "AI researchers evaluating tool-using scientific agents"
+    - "Developers integrating biomedical tools, data, software, or MCP servers"
+  primary_use_cases:
+    - "Plan and execute multi-step biomedical research and analysis tasks"
+    - "Query biomedical databases and scientific literature"
+    - "Analyze biological datasets with Python, R, CLI, and domain-specific tools"
+    - "Prototype custom biomedical tools, data sources, software, and MCP integrations"
+    - "Evaluate answers against the separate Biomni-Eval1 benchmark dataset"
+
+classification:
+  secondary_characteristics:
+    - "domain-specific scientific agent"
+    - "retrieval-augmented tool and resource selection"
+    - "code-executing ReAct-style workflow"
+    - "extensible biomedical tool ecosystem"
+    - "local Python package with optional web UI"
+  domains:
+    - "biomedicine"
+    - "bioinformatics"
+    - "computational biology"
+    - "scientific literature and databases"
+    - "experimental design"
+  delivery_forms:
+    - "Python package"
+    - "Python API"
+    - "optional Gradio web interface"
+    - "MCP client and server integration"
+  agent_patterns:
+    - "generate-execute-observe loop"
+    - "resource retrieval before reasoning"
+    - "tool use"
+    - "generated code execution"
+    - "optional self-critique and test-time scaling"
+    - "in-process conversational state"
+  architecture_layers:
+    - "Python and optional Gradio interfaces"
+    - "LLM provider adapter"
+    - "LangGraph agent orchestration"
+    - "resource retriever and registries"
+    - "biomedical tools, data lake, software, and know-how"
+    - "local code and subprocess execution"
+    - "MCP interoperability"
+  claim_ids:
+    - "claim-classification"
+    - "claim-agent-loop"
+    - "claim-resource-selection"
+    - "claim-biomedical-tooling"
+
+capabilities:
+  - capability_id: "capability-biomedical-agent-tasks"
+    ontology_id: "x-biomni:biomedical-agent-tasks"
+    name: "Autonomous biomedical task execution"
+    description: >-
+      Accepts a natural-language biomedical task, selects relevant resources,
+      iterates between model generation and execution, and returns a solution and
+      execution trace.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "The A1 agent's go, go_stream, and configured LangGraph workflow"
+    interfaces:
+      - "A1.go(prompt)"
+      - "A1.go_stream(prompt)"
+      - "A1.launch_gradio_demo()"
+    prerequisites:
+      - "A supported LLM provider or compatible local endpoint"
+      - "Python 3.11 environment"
+      - "Task-specific biomedical packages, tools, data, and service credentials"
+    configuration_requirements:
+      - "LLM model and provider configuration"
+      - "BIOMNI_DATA_PATH or constructor path when not using ./data"
+      - "BIOMNI_TIMEOUT_SECONDS when the 600-second default is unsuitable"
+    limitations:
+      - "Scientific correctness and benchmark performance were not runtime verified."
+      - "A1 initialization downloads a large data lake and benchmark corpus unless explicitly skipped."
+      - "Execution is not sandboxed."
+    confidence: high
+    claim_ids:
+      - "claim-agent-loop"
+      - "claim-resource-selection"
+      - "claim-host-execution"
+    evidence_refs:
+      - "evidence-readme-purpose-and-usage"
+      - "evidence-agent-workflow"
+      - "evidence-resource-retrieval"
+
+  - capability_id: "capability-biomedical-resources"
+    ontology_id: "x-biomni:biomedical-resource-selection"
+    name: "Biomedical tool, data, software, and know-how retrieval"
+    description: >-
+      Presents registered biomedical tools, data-lake items, software libraries,
+      and know-how summaries to an LLM and injects selected resources into the
+      agent context.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "A1 resource preparation, ToolRetriever, ToolRegistry, and bundled catalogs"
+    interfaces:
+      - "Automatic retrieval during A1.go and A1.go_stream"
+      - "Bundled tool-description modules"
+      - "Bundled data, library, and know-how catalogs"
+    prerequisites:
+      - "Tool retrieval enabled"
+      - "An LLM able to return resource indices in the expected format"
+      - "Downloaded or operator-supplied data for data-dependent tools"
+    configuration_requirements:
+      - "BIOMNI_USE_TOOL_RETRIEVER"
+      - "BIOMNI_COMMERCIAL_MODE for license-based catalog filtering"
+    limitations:
+      - "Selection is prompt-based and was not evaluated for recall, precision, or prompt-injection resistance."
+      - "Many catalog entries depend on packages, datasets, CLIs, or services outside the repository boundary."
+    confidence: high
+    claim_ids:
+      - "claim-resource-selection"
+      - "claim-biomedical-tooling"
+      - "claim-extensibility"
+    evidence_refs:
+      - "evidence-resource-retrieval"
+      - "evidence-tool-catalog"
+      - "evidence-custom-resources"
+
+  - capability_id: "capability-local-computation"
+    ontology_id: "x-biomni:local-generated-code-execution"
+    name: "Generated Python, R, Bash, and CLI execution"
+    description: >-
+      Parses model output enclosed in execution tags and dispatches it to a
+      persistent Python exec namespace or to R and shell subprocess helpers with
+      a configurable timeout.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "The A1 execute node and local execution helpers"
+    interfaces:
+      - "Model-generated <execute> blocks"
+      - "Python persistent REPL"
+      - "Rscript, Bash, and CLI subprocess execution"
+    prerequisites:
+      - "Local host permissions for the requested operation"
+      - "Python and task-specific libraries"
+      - "R or command-line software for corresponding execution modes"
+    configuration_requirements:
+      - "BIOMNI_TIMEOUT_SECONDS or timeout_seconds"
+    limitations:
+      - "No execution sandbox or least-privilege boundary is implemented."
+      - "Generated code can access local files, credentials, network, and system commands."
+      - "Timeouts limit duration but do not provide isolation."
+    confidence: high
+    claim_ids:
+      - "claim-agent-loop"
+      - "claim-host-execution"
+      - "claim-production-risk"
+    evidence_refs:
+      - "evidence-agent-workflow"
+      - "evidence-python-repl"
+      - "evidence-readme-security"
+
+  - capability_id: "capability-multi-provider-models"
+    ontology_id: "x-biomni:multi-provider-model-adapters"
+    name: "Multiple hosted and local model providers"
+    description: >-
+      Instantiates LangChain chat-model adapters for OpenAI, Azure OpenAI,
+      Anthropic, Gemini's OpenAI-compatible endpoint, Groq, Ollama, AWS Bedrock,
+      and custom OpenAI-compatible endpoints.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "The biomni.llm.get_llm model factory"
+    interfaces:
+      - "A1 constructor parameters"
+      - "BiomniConfig and environment variables"
+    prerequisites:
+      - "The provider-specific LangChain package"
+      - "Provider credentials or an accessible local endpoint"
+    configuration_requirements:
+      - "Model name and optional LLM_SOURCE"
+      - "Provider-specific API keys, endpoint, or AWS region"
+    limitations:
+      - "Some provider packages are optional and absent from the minimal package manifest."
+      - "Known-conflicts documentation describes AWS Bedrock support as requiring manual dependency handling."
+    confidence: high
+    claim_ids:
+      - "claim-model-providers"
+      - "claim-installation-surface"
+    evidence_refs:
+      - "evidence-llm-factory"
+      - "evidence-environment-and-conflicts"
+
+  - capability_id: "capability-mcp-interoperability"
+    ontology_id: "x-biomni:mcp-client-server"
+    name: "MCP client and server interoperability"
+    description: >-
+      Discovers and wraps tools from configured stdio MCP servers and can expose
+      selected internal Biomni tool modules through a FastMCP stdio server.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "A1.add_mcp, A1.create_mcp_server, and repository examples"
+    interfaces:
+      - "YAML-configured stdio MCP client"
+      - "FastMCP stdio server"
+    prerequisites:
+      - "MCP Python SDK"
+      - "Commands and credentials required by configured external MCP servers"
+    configuration_requirements:
+      - "MCP YAML configuration for client mode"
+      - "Selected Biomni tool modules for server mode"
+    limitations:
+      - "MCP servers are subprocesses and inherit the configured environment and host trust boundary."
+      - "No MCP connection or tool invocation was runtime tested."
+    confidence: high
+    claim_ids:
+      - "claim-mcp-interoperability"
+      - "claim-production-risk"
+    evidence_refs:
+      - "evidence-mcp-client"
+      - "evidence-mcp-server"
+
+  - capability_id: "capability-resource-extension"
+    ontology_id: "x-biomni:runtime-resource-extension"
+    name: "Custom tools, data, software, and know-how"
+    description: >-
+      Provides runtime APIs for registering callable tools and adding described
+      data or software resources, while the know-how loader supports additional
+      documents.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "A1 extension APIs, tool registry, and KnowHowLoader"
+    interfaces:
+      - "A1.add_tool"
+      - "A1.add_data"
+      - "A1.add_software"
+      - "KnowHowLoader.add_custom_document"
+    prerequisites:
+      - "Python callables or accessible resource paths"
+      - "Operator-supplied descriptions and licensing review"
+    configuration_requirements:
+      - "Tool schemas are generated through an LLM when using add_tool"
+    limitations:
+      - "Runtime registrations are in-process and are not shown to persist across agent restarts."
+      - "Adding a description does not install software or validate data availability."
+    confidence: high
+    claim_ids:
+      - "claim-extensibility"
+    evidence_refs:
+      - "evidence-custom-resources"
+      - "evidence-know-how-loader"
+
+  - capability_id: "capability-user-and-evaluation-interfaces"
+    ontology_id: "x-biomni:user-evaluation-interfaces"
+    name: "Streaming UI, trace export, and benchmark scoring interfaces"
+    description: >-
+      Offers streamed execution through Python and Gradio, PDF-oriented
+      conversation trace export, and a separate BiomniEval1 adapter that loads a
+      hosted dataset and applies task-specific scoring rules.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "A1 interface methods and biomni.eval.BiomniEval1"
+    interfaces:
+      - "A1.go_stream"
+      - "A1.launch_gradio_demo"
+      - "A1.save_conversation_history"
+      - "BiomniEval1.evaluate and batch_evaluate"
+    prerequisites:
+      - "Gradio 5.x for the web interface"
+      - "A compatible PDF converter for PDF output"
+      - "Network access to the hosted Biomni-Eval1 dataset"
+    configuration_requirements:
+      - "Optional Gradio binding, sharing, and verification settings"
+    limitations:
+      - "The benchmark dataset and reported benchmark results are outside the analyzed boundary."
+      - "The optional Gradio verification uses a hard-coded default access code in source."
+    confidence: high
+    claim_ids:
+      - "claim-user-interfaces"
+      - "claim-evaluation-interface"
+      - "claim-production-risk"
+    evidence_refs:
+      - "evidence-readme-interfaces"
+      - "evidence-gradio-interface"
+      - "evidence-evaluation-adapter"
+
+architecture:
+  overview: >-
+    A1 initializes catalogs and an LLM adapter, optionally downloads external
+    resource data, and compiles a LangGraph state machine. For each task, an
+    LLM-based retriever selects tools, data, software, and know-how. The agent
+    then alternates between generation and local execution until it emits a
+    solution, with in-process state and optional self-critique. MCP and Gradio
+    provide additional integration and interaction surfaces.
+  languages:
+    - "Python 3.11 or later"
+    - "R for generated scripts and environment packages"
+    - "Bash and command-line tools"
+  frameworks_and_sdks:
+    - name: "LangGraph"
+      version_constraint: "==0.3.18 in biomni_env/environment.yml"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-agent-loop"
+    - "LangChain"
+    - "Pydantic"
+    - name: "Gradio"
+      version_constraint: ">=5.0,<6.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-user-interfaces"
+    - "MCP Python SDK"
+  model_providers:
+    - "Anthropic through langchain-anthropic"
+    - "OpenAI and Azure OpenAI through langchain-openai"
+    - "Gemini and Groq through OpenAI-compatible endpoints"
+    - "Ollama through langchain-ollama"
+    - "AWS Bedrock through optional langchain-aws"
+    - "Custom OpenAI-compatible endpoints"
+  runtime_and_orchestration:
+    - "LangGraph StateGraph generate/execute workflow"
+    - "Optional self-critic loop and test-time scaling rounds"
+    - "LangGraph MemorySaver in-process checkpointer"
+    - "Persistent in-process Python execution namespace"
+  tools_and_mcp:
+    tools:
+      - "Biomedical Python tool modules grouped by scientific domain"
+      - "Declarative tool-description registry"
+      - "Generated Python, R, Bash, and CLI execution"
+      - "External stdio MCP tools"
+    mcp_role: both
+    mcp_details:
+      - "Client mode starts configured stdio MCP servers, discovers tools, and wraps calls synchronously."
+      - "Server mode exposes selected Biomni modules using FastMCP over stdio."
+  skills:
+    - "Bundled biomedical Know-How Library with metadata and commercial-use filtering"
+  memory_and_state:
+    - "LangGraph MemorySaver"
+    - "In-process conversation state and execution log"
+    - "In-process custom tool, data, and software registries"
+  retrieval_and_knowledge:
+    - "LLM prompt-based resource selection"
+    - "Bundled biomedical tool descriptions"
+    - "Downloadable biomedical data-lake catalog"
+    - "Biomedical software-library catalog"
+    - "Bundled know-how documents"
+  document_processing:
+    - "Markdown conversation-history generation"
+    - "Optional PDF conversion through available local converters"
+  execution_and_sandbox:
+    - "Persistent Python exec namespace"
+    - "Rscript and Bash subprocess helpers"
+    - "Configurable execution timeout"
+    - "No sandbox; execution has host user permissions"
+  gateways_and_routing:
+    - "LangChain chat-model provider adapters"
+    - "OpenAI-compatible routing for Gemini, Groq, and custom endpoints"
+    - "LLM-based resource-index selection"
+  storage_and_databases:
+    - "Operator-selected local filesystem data path"
+    - "Hosted S3 data-lake and benchmark downloads"
+    - "External biomedical databases and APIs used by individual tools"
+    - "Hosted Hugging Face Biomni-Eval1 dataset"
+  interfaces:
+    - "A1 Python API"
+    - "Streaming Python generator"
+    - "Optional Gradio web interface"
+    - "MCP stdio client and server"
+    - "PDF conversation-history export"
+  deployment:
+    - "pip-installable Python package"
+    - "Conda environment"
+    - "Large optional E1 environment setup scripts for Ubuntu 22.04"
+    - "Local Gradio process"
+  observability_and_evaluation:
+    - "Stepwise execution log and streamed messages"
+    - "Conversation trace and plot export"
+    - "BiomniEval1 task-specific scoring adapter"
+    - "No repository CI workflow or dedicated automated test suite found at the analyzed snapshot"
+  security_and_permissions:
+    - "Generated code has local file, network, credential, and system-command access"
+    - "External MCP servers run as configured subprocesses"
+    - "Commercial mode filters cataloged resources by recorded licensing metadata"
+    - "Optional Gradio access-code check with a hard-coded default code"
+  data_flows:
+    - "User task -> LLM resource selector -> selected tool, data, library, and know-how descriptions -> agent system prompt"
+    - "Agent prompt and conversation -> model output -> execute-tag parser -> Python, R, Bash, or CLI runner -> observation -> next model turn"
+    - "A1 initialization -> hosted S3 manifest/download helpers -> local biomni_data directories"
+    - "MCP configuration -> stdio server discovery -> wrapped tool registry -> agent execution"
+  control_flows:
+    - "START -> generate -> execute -> generate until a solution ends the graph"
+    - "Optional self-critic routes a completed answer back to generation for configured additional rounds"
+    - "go and go_stream perform resource retrieval before streaming the compiled graph"
+
+components:
+  - component_id: "component-a1-agent"
+    name: "A1 agent"
+    path: "biomni/agent/a1.py"
+    project_type: agent_application
+    purpose: "Initializes resources and implements the primary biomedical agent workflow and public interfaces."
+    claim_ids:
+      - "claim-agent-loop"
+      - "claim-resource-selection"
+      - "claim-user-interfaces"
+  - component_id: "component-llm-factory"
+    name: "LLM provider factory"
+    path: "biomni/llm.py"
+    project_type: "model gateway adapter"
+    purpose: "Selects hosted, local, and OpenAI-compatible LangChain chat-model adapters."
+    claim_ids:
+      - "claim-model-providers"
+  - component_id: "component-resource-selection"
+    name: "Resource retriever and registries"
+    path: "biomni/model/retriever.py; biomni/tool/tool_registry.py"
+    project_type: "retrieval and registry component"
+    purpose: "Selects and indexes tools, data, software, and know-how for task context."
+    claim_ids:
+      - "claim-resource-selection"
+      - "claim-extensibility"
+  - component_id: "component-biomedical-resources"
+    name: "Biomedical tools and resource catalogs"
+    path: "biomni/tool/; biomni/env_desc.py; biomni/env_desc_cm.py; biomni/know_how/"
+    project_type: agent_tool_mcp
+    purpose: "Supplies biomedical computations, database clients, data and software metadata, and practical know-how."
+    claim_ids:
+      - "claim-biomedical-tooling"
+  - component_id: "component-execution-runtime"
+    name: "Local code execution helpers"
+    path: "biomni/agent/a1.py; biomni/tool/support_tools.py; biomni/utils.py"
+    project_type: agent_harness_runtime
+    purpose: "Runs model-generated Python, R, Bash, and command-line operations and returns observations."
+    claim_ids:
+      - "claim-host-execution"
+      - "claim-production-risk"
+  - component_id: "component-mcp"
+    name: "MCP interoperability"
+    path: "biomni/agent/a1.py; docs/mcp_integration.md; tutorials/examples/"
+    project_type: agent_tool_mcp
+    purpose: "Imports external MCP tools and exposes selected Biomni tools as a stdio MCP server."
+    claim_ids:
+      - "claim-mcp-interoperability"
+  - component_id: "component-evaluation"
+    name: "BiomniEval1 adapter"
+    path: "biomni/eval/biomni_eval1.py"
+    project_type: "evaluation component"
+    purpose: "Loads the separately hosted benchmark dataset and applies task-specific answer scoring."
+    claim_ids:
+      - "claim-evaluation-interface"
+  - component_id: "component-environment"
+    name: "Biomni E1 environment"
+    path: "biomni_env/"
+    project_type: "supporting environment"
+    purpose: "Defines Conda, Python, R, and CLI-tool installation paths for broad biomedical computation."
+    claim_ids:
+      - "claim-installation-surface"
+
+usage:
+  installation: >-
+    The README directs users to prepare a Biomni Conda environment, activate
+    biomni_e1, and install or upgrade the biomni pip package. A minimal Conda
+    environment is available, while the full E1 setup is documented as taking
+    more than ten hours and at least 30 GB; some functions require separate or
+    manually adjusted environments because of dependency conflicts.
+  minimal_start: >-
+    Import A1 from biomni.agent, instantiate it with a data path and supported
+    model, then call agent.go with a biomedical task. Pass
+    expected_data_lake_files=[] to avoid the default large data-lake download
+    during initialization.
+  configuration:
+    - "Model name and optional LLM_SOURCE"
+    - "Provider API keys and endpoints"
+    - "BIOMNI_DATA_PATH or BIOMNI_PATH"
+    - "BIOMNI_TIMEOUT_SECONDS"
+    - "BIOMNI_USE_TOOL_RETRIEVER"
+    - "BIOMNI_COMMERCIAL_MODE"
+    - "Provider-, database-, and tool-specific credentials"
+  required_services:
+    - "At least one supported hosted model service or a reachable local/custom endpoint"
+    - "Hosted S3 data source for default data-lake and benchmark acquisition"
+    - "Task-specific biomedical databases, APIs, datasets, packages, R libraries, and CLI tools"
+  extension_points:
+    - "A1.add_tool for Python callables"
+    - "A1.add_data and A1.add_software for additional resource descriptions"
+    - "KnowHowLoader custom documents and repository know-how files"
+    - "Tool implementation and tool-description modules"
+    - "MCP servers imported through YAML configuration"
+    - "Biomni tools exposed through a generated MCP server"
+    - "Additional benchmark classes and scoring adapters"
+
+assessment:
+  contexts:
+    - context_id: "context-static-self-hosted-evaluation"
+      use_case: >-
+        Static technical due diligence for adopting or extending Biomni as a
+        self-hosted biomedical research agent.
+      comparison_cohort:
+        - "Open-source domain-specific scientific agent applications"
+        - "Tool-using biomedical research assistants"
+      requirements:
+        - "Evidence-backed biomedical agent and tool implementation"
+        - "Configurable model and resource integrations"
+        - "Reproducible installation and automated quality checks"
+        - "Isolation suitable for processing sensitive research data"
+        - "Clear licensing and external-service prerequisites"
+      organizational_constraints:
+        - "Static source inspection only"
+        - "No project code, environment script, benchmark, model, or tool execution"
+        - "Hosted platform and third-party implementations outside scope"
+      assessed_at: "2026-07-18T12:48:17Z"
+  maturity: early
+  maturity_signals:
+    - statement: >-
+        Biomni is packaged, documented, and exposes multiple end-user and
+        integration interfaces, but repository-local operational assurance is
+        limited for the breadth and privilege of its execution surface.
+      reasoning: >-
+        The snapshot includes a versioned Python package, usage documentation,
+        examples, an evaluation adapter, and an active development direction.
+        It also has a very large environment, known dependency conflicts, no
+        repository CI workflow, only an MCP example test path, and an explicit
+        warning that generated code runs with full system privileges.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: medium
+      claim_ids:
+        - "claim-maturity"
+  strengths:
+    - statement: >-
+        The project integrates agent orchestration, resource selection, broad
+        biomedical tooling, know-how, model adapters, and MCP extension points in
+        one inspectable Python package.
+      reasoning: >-
+        The architecture and registries directly connect these surfaces to the
+        A1 workflow, reducing the amount of integration code needed for
+        exploratory biomedical-agent work.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-agent-loop"
+        - "claim-resource-selection"
+        - "claim-biomedical-tooling"
+        - "claim-mcp-interoperability"
+  limitations:
+    - statement: >-
+        Reproducing the full documented environment is resource-intensive and
+        some features require separate or manually adjusted dependencies.
+      reasoning: >-
+        First-party setup documentation states that the full E1 installation
+        takes more than ten hours and at least 30 GB, while the known-conflicts
+        document identifies packages needing manual or separate environments.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-installation-surface"
+    - statement: >-
+        Scientific correctness, resource-selection quality, and benchmark
+        performance remain unverified in this card.
+      reasoning: >-
+        The analysis was deliberately static, the benchmark dataset is hosted
+        externally, and representative tools and model calls were not executed.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-maturity"
+  risks:
+    - statement: >-
+        Running Biomni on a normal workstation or production host can expose
+        files, network access, credentials, and system commands to model-generated
+        code and tool behavior.
+      reasoning: >-
+        The primary loop directly dispatches generated content to Python exec,
+        Rscript, and Bash helpers. The README independently warns that execution
+        has full system privileges and recommends isolation.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-host-execution"
+        - "claim-production-risk"
+    - statement: >-
+        External data, database, model, MCP, and software dependencies create a
+        broad supply-chain, licensing, privacy, and availability surface.
+      reasoning: >-
+        Many capabilities rely on separately downloaded resources, provider
+        credentials, hosted APIs, executable packages, and license metadata that
+        were not independently verified.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-biomedical-tooling"
+        - "claim-installation-surface"
+        - "claim-production-risk"
+  best_fit:
+    - statement: >-
+        Best suited to exploratory biomedical-agent research in an isolated,
+        well-provisioned environment where operators can curate dependencies,
+        data access, and scientific review.
+      reasoning: >-
+        This context can benefit from Biomni's broad and extensible resource
+        surface while containing the execution and dependency risks identified
+        by the static analysis.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-best-fit"
+  poor_fit:
+    - statement: >-
+        Poor fit for unsandboxed production use with sensitive data or credentials
+        when generated actions cannot be independently contained and reviewed.
+      reasoning: >-
+        The current execution path is designed for broad local action rather than
+        least-privilege isolation, and repository evidence does not establish
+        production security controls for that risk.
+      context_id: "context-static-self-hosted-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-production-risk"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "LangChain and provider-specific LangChain integrations"
+      scope: "Model abstraction and provider connectivity"
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+        - "claim-installation-surface"
+    - target_project: "LangGraph"
+      scope: "Agent state-machine orchestration and memory checkpointing"
+      confidence: high
+      claim_ids:
+        - "claim-agent-loop"
+    - target_project: "Biomni E1 biomedical software environment"
+      scope: "Scientific Python, R, and CLI execution dependencies"
+      confidence: high
+      claim_ids:
+        - "claim-biomedical-tooling"
+        - "claim-installation-surface"
+  integrates_with:
+    - target_project: "OpenAI, Azure OpenAI, Anthropic, Gemini, Groq, Ollama, AWS Bedrock, and custom model endpoints"
+      scope: "Agent reasoning and some database-query generation"
+      confidence: high
+      claim_ids:
+        - "claim-model-providers"
+    - target_project: "External biomedical databases, literature services, and hosted data resources"
+      scope: "Tool queries, data acquisition, and biomedical analysis"
+      confidence: high
+      claim_ids:
+        - "claim-biomedical-tooling"
+    - target_project: "Model Context Protocol servers and clients"
+      scope: "Importing external tools and exposing Biomni tool modules"
+      confidence: high
+      claim_ids:
+        - "claim-mcp-interoperability"
+    - target_project: "Biomni-Eval1 hosted dataset"
+      scope: "Benchmark instance loading and task-specific answer scoring"
+      confidence: high
+      claim_ids:
+        - "claim-evaluation-interface"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: >-
+      The analyzed Biomni project is primarily a domain-specific agent
+      application rather than a general-purpose agent framework.
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The declared Biomni project boundary at the recorded source snapshot"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-purpose-and-usage"
+      - "evidence-agent-workflow"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      A1 implements and exposes a concrete biomedical task loop, while extension
+      APIs supplement that application rather than define a domain-neutral agent
+      construction framework.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-agent-loop"
+    statement: >-
+      A1 compiles a LangGraph workflow that alternates model generation and local
+      execution until a solution, with optional self-critique rounds and
+      in-process checkpoint memory.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "biomni/agent/a1.py at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-agent-workflow"
+    conflicting_evidence_ids: []
+    reasoning: "The graph nodes, routes, loop edge, optional critic, compilation, and MemorySaver are directly implemented."
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-resource-selection"
+    statement: >-
+      Biomni uses an LLM to select task-relevant tools, data-lake items, software
+      libraries, and know-how before updating the agent prompt.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "A1 resource preparation and ToolRetriever at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-resource-retrieval"
+    conflicting_evidence_ids: []
+    reasoning: "The resource categories, model invocation, index parsing, and selected-resource injection are visible in source."
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-biomedical-tooling"
+    statement: >-
+      The repository includes a broad, domain-organized catalog of biomedical
+      computation tools and database clients plus separately downloadable data
+      and software resource descriptions.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Bundled tool modules, schemas, and resource catalogs at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-tool-catalog"
+      - "evidence-data-software-catalog"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      Representative implementation and schema files cover databases, genomics,
+      molecular biology, imaging, pharmacology, and other domains; exhaustive
+      runtime validity was not assessed.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-host-execution"
+    statement: >-
+      Biomni dispatches model-generated content to Python exec, Rscript, Bash, or
+      CLI execution on the host without a sandbox boundary.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "A1 execute node and support helpers at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-agent-workflow"
+      - "evidence-python-repl"
+      - "evidence-readme-security"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      The code routes tagged model output directly to local execution helpers;
+      the first-party README explicitly characterizes the resulting privileges.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-model-providers"
+    statement: >-
+      Biomni supports OpenAI, Azure OpenAI, Anthropic, Gemini, Groq, Ollama, AWS
+      Bedrock, and custom OpenAI-compatible model endpoints through provider
+      branches in its LLM factory.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "biomni/llm.py at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-llm-factory"
+    conflicting_evidence_ids:
+      - "evidence-environment-and-conflicts"
+    reasoning: >-
+      Provider branches are implemented, but the documented environment does not
+      install every optional adapter and describes manual handling for Bedrock.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-mcp-interoperability"
+    statement: >-
+      Biomni acts as both an MCP client for configured stdio servers and an MCP
+      server exposing selected internal tools.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "A1 MCP methods and examples at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-mcp-client"
+      - "evidence-mcp-server"
+    conflicting_evidence_ids: []
+    reasoning: "Both discovery/wrapping and FastMCP registration paths are implemented in first-party source."
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-extensibility"
+    statement: >-
+      Operators can add in-process custom Python tools, data descriptions,
+      software descriptions, and know-how documents that participate in resource
+      selection.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "A1 and KnowHowLoader extension APIs at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-custom-resources"
+      - "evidence-know-how-loader"
+    conflicting_evidence_ids: []
+    reasoning: "The add, register, and prompt-reconfiguration paths are directly present in source."
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-user-interfaces"
+    statement: >-
+      Biomni exposes synchronous and streaming Python APIs, an optional Gradio UI,
+      and conversation-history export.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "A1 public interface methods at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-interfaces"
+      - "evidence-gradio-interface"
+    conflicting_evidence_ids: []
+    reasoning: "The README usage is backed by corresponding A1 methods and UI implementation."
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-evaluation-interface"
+    statement: >-
+      Biomni includes a BiomniEval1 adapter that loads a hosted parquet dataset and
+      applies task-specific answer-scoring rules.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "biomni/eval/biomni_eval1.py at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-evaluation-adapter"
+    conflicting_evidence_ids: []
+    reasoning: "The dataset load, instance mapping, evaluate entry point, and scoring branches are implemented."
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-installation-surface"
+    statement: >-
+      The minimal package requires Python 3.11 and a small declared dependency
+      set, while the documented full E1 biomedical environment is large and has
+      known feature-specific dependency conflicts.
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Package and environment files at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+      - "evidence-environment-and-conflicts"
+      - "evidence-initialization-downloads"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      The package manifest, Conda environment, setup guide, conflict guide, and A1
+      initialization expose distinct minimal and full operating surfaces.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-license"
+    statement: "The Biomni Python package declares the Apache-2.0 license."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Package metadata and LICENSE at the recorded commit"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      The package metadata and root license agree; bundled or external tools and
+      data may have separate terms and were not relicensed by this conclusion.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-active-status"
+    statement: >-
+      The analyzed repository presents Biomni as active work, including an open
+      contribution process and development of a next-generation Biomni-E2
+      environment.
+    claim_kind: factual
+    verification_status: documented
+    confidence: medium
+    applies_to: "Repository documentation and latest checked-out commit metadata"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-active-direction"
+      - "evidence-repository-metadata"
+    conflicting_evidence_ids:
+      - "evidence-readme-security"
+    reasoning: >-
+      The repository was updated in January 2026 and solicits E2 contributions,
+      although the README also says the represented release differs from the
+      current web platform and was frozen in April 2025.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-maturity"
+    statement: >-
+      For self-hosted adoption under the declared assessment context, Biomni is
+      at an early maturity level rather than an established production platform.
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: medium
+    applies_to: "The declared Biomni project boundary at the recorded source snapshot"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+      - "evidence-environment-and-conflicts"
+      - "evidence-readme-security"
+      - "evidence-repository-inventory"
+    conflicting_evidence_ids:
+      - "evidence-readme-purpose-and-usage"
+    reasoning: >-
+      Packaging, extensive functionality, documentation, and examples are
+      positive signals. The large and conflicting environment, limited visible
+      automated-test and CI surface, full-privilege execution, and lack of static
+      evidence for production controls prevent a stronger assessment.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-production-risk"
+    statement: >-
+      In the declared adoption context, unsandboxed Biomni deployment with
+      sensitive data or credentials creates a high-impact host-compromise and
+      data-exposure risk.
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Self-hosted Biomni execution under the declared assessment context"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-agent-workflow"
+      - "evidence-python-repl"
+      - "evidence-readme-security"
+      - "evidence-mcp-client"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      Model-selected and model-generated operations execute with host access, and
+      external subprocess tools broaden that boundary; the documented timeout and
+      optional UI access code do not provide process isolation.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+  - claim_id: "claim-best-fit"
+    statement: >-
+      Biomni is best fit for exploratory biomedical-agent research in an isolated,
+      curated, and well-provisioned environment with scientific review.
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Adoption under the declared assessment context"
+    assessment_context_id: "context-static-self-hosted-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-purpose-and-usage"
+      - "evidence-resource-retrieval"
+      - "evidence-readme-security"
+      - "evidence-environment-and-conflicts"
+    conflicting_evidence_ids: []
+    reasoning: >-
+      The proposed setting aligns the project's broad research affordances with
+      the isolation, dependency curation, and human validation its evidence
+      indicates are necessary.
+    last_verified_at: "2026-07-18T12:48:17Z"
+
+sources:
+  - source_id: "source-biomni-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/snap-stanford/biomni"
+    revision_or_version: "commit 400c1f366b96a35ca253e13c9b06c5076af41d65"
+    retrieved_at: "2026-07-18T12:46:41Z"
+    content_digest: "git-tree-sha1:6d8f12a3222c4d78e1ac205245c73cbc58f9920e"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-readme-purpose-and-usage"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Overview and Basic Usage"
+      line_start: 25
+      line_end: 149
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Biomni overview; A1 initialization and agent.go examples"
+    note: "First-party documentation defines the biomedical-agent purpose and primary Python task interface."
+
+  - evidence_id: "evidence-readme-interfaces"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Gradio Interface, PDF Generation, MCP Support, and Biomni-Eval1"
+      line_start: 166
+      line_end: 332
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "launch_gradio_demo, save_conversation_history, add_mcp, and BiomniEval1 examples"
+    note: "Documents the optional UI, trace export, MCP, and benchmark adapter interfaces."
+
+  - evidence_id: "evidence-readme-security"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Important Note"
+      line_start: 404
+      line_end: 407
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Security warning and frozen-release note"
+    note: >-
+      First-party documentation states that LLM-generated code runs with full
+      system privileges, recommends isolation, and distinguishes this release
+      from the current hosted platform.
+
+  - evidence_id: "evidence-active-direction"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Contributing and Biomni-E2"
+      line_start: 358
+      line_end: 388
+    evidence_status: documented_only
+    confidence: medium
+    excerpt_or_symbol: "Open contribution invitation and call to build Biomni-E2"
+    note: "Supports the active-status projection but does not establish release cadence or maintenance guarantees."
+
+  - evidence_id: "evidence-initialization-downloads"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/agent/a1.py"
+      symbol_or_section: "A1.__init__"
+      line_start: 149
+      line_end: 223
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Data and benchmark directory creation, hosted S3 downloads, registries, and configure()"
+    note: "Statically confirms default download behavior and initialization of core agent resources."
+
+  - evidence_id: "evidence-agent-workflow"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/agent/a1.py"
+      symbol_or_section: "A1.configure generate/execute workflow"
+      line_start: 1380
+      line_end: 1643
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "generate, execute, execute_self_critic, StateGraph, and MemorySaver"
+    note: >-
+      Implements model generation, execute-tag parsing, Python/R/Bash/CLI
+      dispatch, optional critique, graph routing, and in-process checkpointing.
+
+  - evidence_id: "evidence-resource-retrieval"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/agent/a1.py"
+      symbol_or_section: "A1._prepare_resources_for_retrieval"
+      line_start: 1646
+      line_end: 1757
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Tool, data-lake, library, and know-how resource preparation and selection"
+    note: "Shows all resource categories sent to ToolRetriever and normalized for later prompt injection."
+
+  - evidence_id: "evidence-python-repl"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/tool/support_tools.py"
+      symbol_or_section: "run_python_repl"
+      line_start: 13
+      line_end: 44
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "exec(command, _persistent_namespace)"
+    note: "Directly establishes persistent in-process execution of supplied Python code."
+
+  - evidence_id: "evidence-llm-factory"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/llm.py"
+      symbol_or_section: "SourceType and get_llm"
+      line_start: 9
+      line_end: 275
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Provider source enumeration, auto-detection, and adapter branches"
+    note: "Statically confirms provider support paths; it does not verify credentials, endpoints, or provider behavior."
+
+  - evidence_id: "evidence-tool-catalog"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/tool/tool_description/database.py"
+      symbol_or_section: "description registry"
+      line_start: 1
+      line_end: 220
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Representative UniProt, AlphaFold, InterPro, PDB, KEGG, STRING, and other database tool schemas"
+    note: "Representative evidence for the broader domain-organized tool and schema catalog."
+
+  - evidence_id: "evidence-data-software-catalog"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/env_desc.py"
+      symbol_or_section: "data_lake_dict and library_content_dict"
+      line_start: 1
+      line_end: 150
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Biomedical data-lake and scientific software descriptions"
+    note: "Confirms catalog metadata, not availability, licensing, installation, or scientific correctness of each resource."
+
+  - evidence_id: "evidence-mcp-client"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/agent/a1.py"
+      symbol_or_section: "A1.add_mcp"
+      line_start: 350
+      line_end: 587
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "MCP stdio discovery, wrappers, tool schemas, and registry integration"
+    note: "Statically confirms MCP client behavior and its subprocess-oriented trust boundary."
+
+  - evidence_id: "evidence-mcp-server"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/agent/a1.py"
+      symbol_or_section: "A1.create_mcp_server"
+      line_start: 1995
+      line_end: 2059
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "FastMCP server construction and internal tool registration"
+    note: "Statically confirms generation of a server object; no server was started."
+
+  - evidence_id: "evidence-custom-resources"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/agent/a1.py"
+      symbol_or_section: "A1.add_tool, A1.add_data, and A1.add_software"
+      line_start: 225
+      line_end: 820
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Custom tool registration and data/software catalog mutation"
+    note: "Confirms runtime extension paths; the broad locator spans the three related methods."
+
+  - evidence_id: "evidence-know-how-loader"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/know_how/loader.py"
+      symbol_or_section: "KnowHowLoader document loading and custom document API"
+      line_start: 8
+      line_end: 279
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Markdown loading, metadata extraction, summaries, and add_custom_document"
+    note: "Establishes the repository-hosted and in-process know-how extension surface."
+
+  - evidence_id: "evidence-gradio-interface"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/agent/a1.py"
+      symbol_or_section: "A1.launch_gradio_demo"
+      line_start: 2627
+      line_end: 2736
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Gradio imports, access-code gate, uploads, retrieval, and streaming"
+    note: "Confirms implementation of the optional web interface and its initial control flow."
+
+  - evidence_id: "evidence-evaluation-adapter"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni/eval/biomni_eval1.py"
+      symbol_or_section: "BiomniEval1.__init__, evaluate, and _compute_reward"
+      line_start: 14
+      line_end: 158
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Hosted parquet load and task-specific scoring rules"
+    note: "Confirms the adapter only; the external dataset and claimed benchmark composition were not independently inspected."
+
+  - evidence_id: "evidence-package-manifest"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "pyproject.toml"
+      symbol_or_section: "project and optional dependencies"
+      line_start: 5
+      line_end: 29
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "biomni package, Apache-2.0, Python >=3.11, direct dependencies, and optional Gradio"
+    note: "Package version resolves through biomni/version.py to 0.0.8 at this snapshot."
+
+  - evidence_id: "evidence-environment-and-conflicts"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "biomni_env/README.md; docs/known_conflicts.md"
+      symbol_or_section: "Full E1 setup requirements and known package conflicts"
+      line_start: 11
+      line_end: 74
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Full setup duration/disk requirements, minimal adapters, and separate/manual environments"
+    note: "The locator combines first-party setup and conflict documents covering the same installation claim."
+
+  - evidence_id: "evidence-repository-inventory"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "(Git tree inventory)"
+      symbol_or_section: "All tracked paths at commit 400c1f366b96a35ca253e13c9b06c5076af41d65"
+      line_start: 1
+      line_end: 1
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "No .github workflow paths; one tutorial MCP test script; no dedicated test directory"
+    note: >-
+      Static inventory supports only the absence of these artifacts from the
+      recorded repository tree; it does not establish the absence of external or
+      private testing and automation.
+
+  - evidence_id: "evidence-repository-metadata"
+    source_id: "source-biomni-repository"
+    locator:
+      path: "(Git commit metadata)"
+      symbol_or_section: "HEAD commit"
+      line_start: 1
+      line_end: 1
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "400c1f366b96a35ca253e13c9b06c5076af41d65 authored 2026-01-14T20:23:42-08:00"
+    note: "Supports recency at the exact snapshot but does not alone prove current maintenance status."
+
+open_questions:
+  - question: >-
+      Which tagged release or package build corresponds operationally to source
+      version 0.0.8 at the analyzed commit?
+    reason: "The shallow snapshot contains the source version but no release tag at HEAD."
+    related_claim_ids:
+      - "claim-installation-surface"
+      - "claim-active-status"
+  - question: >-
+      Which automated test, benchmark, and scientific-review gates are used
+      outside the public repository before publishing Biomni releases?
+    reason: "The repository tree exposes limited automated quality-control artifacts relative to the feature surface."
+    related_claim_ids:
+      - "claim-maturity"
+      - "claim-evaluation-interface"
+  - question: >-
+      What isolation architecture is recommended and supported for production or
+      sensitive-data deployments?
+    reason: "The public source and README establish host-level execution risk but not a concrete supported sandbox boundary."
+    related_claim_ids:
+      - "claim-host-execution"
+      - "claim-production-risk"
+  - question: >-
+      Which cataloged tools, datasets, software packages, and know-how documents
+      are currently verified for commercial use and reproducible installation?
+    reason: "Commercial-mode metadata and broad catalogs were inspected, but individual licenses and runtime availability were not."
+    related_claim_ids:
+      - "claim-biomedical-tooling"
+      - "claim-installation-surface"

@@ -1,0 +1,1907 @@
+schema_version: "0.2"
+card_id: "card-eigent-ai-eigent"
+card_version: 1
+
+field_states:
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+
+project:
+  project_id: "project-eigent-ai-eigent"
+  name: "Eigent"
+  primary_type: agent_application
+  type_rationale: >-
+    Eigent is primarily a deployable general-purpose agent product rather than a
+    reusable framework or SDK. The analyzed boundary contains an Electron and
+    React desktop/web experience, a Python agent-execution Brain, a self-hostable
+    application server, persistent project state, task progress interfaces, and
+    release packaging. CAMEL is the embedded orchestration framework, while
+    workforce and single-agent execution are product capabilities.
+  boundary: >-
+    The Eigent product implemented by the single public eigent-ai/eigent
+    repository at tag v1.0.1 and commit
+    25f6f1ae1ca2c74da61a0f3009c1de2a256ac942. Included are the Electron host,
+    React renderer and web client, Python Brain under backend/, local application
+    server under server/, agent factories and toolkits, MCP and skill management,
+    local memory and workspace code, deployment configuration, repository-hosted
+    documentation, representative tests, and GitHub Actions workflows. Excluded
+    are eigent.ai hosted services and websites, model-provider implementations,
+    MCP server implementations, remote sub-agent provider infrastructure,
+    third-party dependency source, issues and pull requests, release binaries,
+    translated README duplication except where needed to resolve scope, and all
+    runtime behavior.
+  repositories:
+    - source_id: "source-eigent-repository"
+      url: "https://github.com/eigent-ai/eigent"
+      owner: "eigent-ai"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "SECURITY.md"
+        - "package.json"
+        - "electron/"
+        - "src/"
+        - "backend/"
+        - "server/"
+        - "docs/"
+        - "resources/example-skills/"
+        - "test/"
+        - ".github/workflows/"
+      excluded_paths:
+        - "README translations not needed for distinct evidence"
+        - "Binary media and generated source maps"
+        - "Packaged release artifacts and hosted Eigent services"
+        - "Third-party dependency source, issues, pull requests, and external MCP servers"
+        - "Runtime execution, dependency installation, and dynamic security testing"
+  packages:
+    - "eigent 1.0.1 (private root npm package)"
+    - "backend 0.1.0 (Python Brain package)"
+    - "Eigent 0.1.0 (Python application-server package)"
+    - "Vendored @stackframe/react workspace package"
+  services:
+    - "Eigent Electron desktop host and React renderer"
+    - "Eigent web client"
+    - "Eigent Brain FastAPI agent runtime"
+    - "Eigent application-server FastAPI API"
+    - "Optional Celery worker and scheduler"
+    - "PostgreSQL and Redis services for self-hosted server deployment"
+  documentation_sites:
+    - "Repository-hosted documentation under docs/"
+    - "https://docs.eigent.ai (linked but not analyzed)"
+  license: >-
+    Conflicted first-party metadata: the root LICENSE and README identify Apache
+    License 2.0, while the root package.json declares MIT.
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T12:47:59Z"
+  source_revisions:
+    - source_id: "source-eigent-repository"
+      branch: "main"
+      tag: "v1.0.1"
+      commit: "25f6f1ae1ca2c74da61a0f3009c1de2a256ac942"
+      retrieved_at: "2026-07-18T12:47:59Z"
+      content_digest: "git-tree-sha1:cd037360561494bd11fa6ab18425b7669aaad3e8"
+  release_versions:
+    - "v1.0.1"
+    - "root npm package 1.0.1"
+    - "Brain package 0.1.0"
+    - "application-server package 0.1.0"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    source_checkout:
+      method: "Filtered Git clone of the public repository followed by checkout of all blobs for the exact revision"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "Root README, license, security policy, manifests, and release tag"
+      - "Electron host startup and renderer-to-Brain/server routing"
+      - "Brain API registration, chat execution modes, task decomposition, and CAMEL Workforce construction"
+      - "Representative browser, terminal, document, multimodal, human, MCP, skill, and remote-sub-agent tool paths"
+      - "Local durable memory, workspace, and deployment-capability controls"
+      - "Self-hosted application-server documentation, manifest, Docker Compose services, and API entry point"
+      - "Representative frontend, Brain, server, and security CI workflows"
+    intentionally_not_analyzed:
+      - "Runtime behavior, installation, benchmark reproduction, and end-to-end task quality"
+      - "Historical CI results, release signatures, and packaged binary contents"
+      - "Hosted Eigent cloud services and external model, MCP, search, connector, and remote-agent implementations"
+      - "Dependency internals, vulnerability enumeration, and security penetration testing"
+      - "Issue, pull-request, contributor, and community history"
+      - "Complete route-by-route and toolkit-by-toolkit coverage"
+    source_safety: >-
+      Repository content was treated only as untrusted evidence. Instructions in
+      source files and documentation were not followed, dependencies were not
+      installed, and project code was not executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    An open-source desktop and web agent application that combines CAMEL-based
+    multi-agent workforces, local computer tools, MCP connectors, skills, and
+    optional self-hosted application services.
+  purpose: >-
+    Eigent lets users give general knowledge-work and computer-use tasks to
+    either a coordinated workforce of specialized agents or a single agent,
+    observe execution, provide human input, and extend the system with models,
+    tools, MCP servers, skills, and optional remote sub-agents.
+  target_users:
+    - "Individuals automating research, coding, document, browser, and media workflows"
+    - "Technical teams evaluating a local-first general-purpose agent desktop"
+    - "Developers extending an open-source CAMEL-based agent application"
+    - "Organizations willing to self-host identity, configuration, and project data services"
+  primary_use_cases:
+    - "Decompose complex requests across specialized agents"
+    - "Run browser, terminal, file, document, spreadsheet, presentation, and media tasks"
+    - "Connect user-supplied MCP servers and repository or user skills"
+    - "Use hosted, OpenAI-compatible, subscription-backed, or local model endpoints"
+    - "Persist project context and artifacts across runs"
+    - "Operate through an Electron desktop, a web client, or a self-hosted server configuration"
+
+classification:
+  secondary_characteristics:
+    - "general-purpose multi-agent application"
+    - "local-first computer-use agent"
+    - "single-agent and workforce execution modes"
+    - "MCP client and skill host"
+    - "desktop and web application"
+    - "self-hostable application stack"
+  domains:
+    - "general knowledge work"
+    - "software development"
+    - "web research"
+    - "document and spreadsheet production"
+    - "multimodal content processing"
+    - "workflow automation"
+  delivery_forms:
+    - "Electron desktop application"
+    - "React web client"
+    - "FastAPI agent runtime"
+    - "Docker Compose self-hosted application server"
+  agent_patterns:
+    - "task complexity classification"
+    - "task decomposition"
+    - "coordinator and task-planner agents"
+    - "specialized worker agents"
+    - "parallel agent construction and delegated execution"
+    - "model-directed tool use"
+    - "human in the loop"
+    - "single-agent bounded sub-agent delegation"
+    - "persistent project context"
+    - "optional remote sub-agent delegation"
+  architecture_layers:
+    - "Electron host and browser client"
+    - "React user interface and state management"
+    - "Brain HTTP/SSE API"
+    - "CAMEL agent and workforce orchestration"
+    - "toolkit, MCP, and skill execution"
+    - "local workspace and memory"
+    - "application-server API and authentication"
+    - "PostgreSQL, Redis, and Celery background services"
+  claim_ids:
+    - "claim-classification"
+    - "claim-desktop-stack"
+    - "claim-workforce"
+    - "claim-single-agent"
+
+capabilities:
+  - capability_id: "capability-multi-agent-workforce"
+    ontology_id: "x-eigent:multi-agent-workforce"
+    name: "Coordinated multi-agent workforce"
+    description: >-
+      Classifies complex work, decomposes it into subtasks, and runs a CAMEL
+      Workforce with coordinator, task-planner, dynamic-worker, developer,
+      browser, document, and multimodal agents; users can also add configured
+      workers.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Brain workforce session mode"
+    interfaces:
+      - "Brain /chat SSE execution path"
+      - "React workforce and task-progress interface"
+    prerequisites:
+      - "A configured model endpoint supported by CAMEL"
+      - "A writable project workspace"
+      - "Tools permitted by the deployment's Hands capability profile"
+    configuration_requirements:
+      - "Model platform, model type, API URL, and credentials or supported subscription authentication"
+      - "Optional new_agents definitions for custom workers"
+      - "Optional toolkit, MCP, skill, and remote-sub-agent configuration"
+    limitations:
+      - "The decomposition, assignment, retries, and result quality were not runtime verified."
+      - "A simple request may be answered by the question agent without constructing a workforce."
+      - "Available worker tools vary by deployment capability and external-service configuration."
+    confidence: high
+    claim_ids:
+      - "claim-workforce"
+      - "claim-human-loop"
+      - "claim-tool-surface"
+    evidence_refs:
+      - "evidence-complex-task-flow"
+      - "evidence-workforce-construction"
+      - "evidence-workforce-runtime"
+
+  - capability_id: "capability-single-agent-mode"
+    ontology_id: "x-eigent:single-agent-mode"
+    name: "Single-agent task execution"
+    description: >-
+      Runs a configurable agent with human, file, browser, terminal, search,
+      web-fetch, screenshot, planning, MCP, skill, and depth-limited agent tools
+      selected by configuration and deployment capabilities.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Brain session_mode=single-agent"
+    interfaces:
+      - "Brain /chat SSE execution path"
+      - "React chat and task interface"
+    prerequisites:
+      - "A configured model endpoint"
+      - "A project workspace"
+    configuration_requirements:
+      - "session_mode=single-agent"
+      - "Optional toolkit_config and installed_mcp configuration"
+      - "Deployment Hands profile for browser, terminal, filesystem, and MCP access"
+    limitations:
+      - "Default tool enablement is broad and must be governed for the deployment context."
+      - "Depth-limited local sub-agent delegation defaults to a shallow maximum depth."
+      - "No task was executed in this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-single-agent"
+      - "claim-tool-surface"
+      - "claim-capability-controls"
+    evidence_refs:
+      - "evidence-chat-session-mode"
+      - "evidence-single-agent-toolkit-assembly"
+      - "evidence-capability-policy"
+
+  - capability_id: "capability-computer-and-content-tools"
+    ontology_id: "x-eigent:computer-and-content-tools"
+    name: "Computer, browser, document, and media tool use"
+    description: >-
+      Gives specialized agents repository-defined toolkits for shell execution,
+      filesystem work, browser control and search, screenshots, spreadsheets,
+      presentations, document conversion, video download, audio analysis, and
+      image generation where the selected model and deployment allow them.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Built-in workforce workers and the configurable single-agent tool surface"
+    interfaces:
+      - "Model-callable CAMEL FunctionTools"
+      - "Local shell and filesystem"
+      - "Chrome DevTools Protocol browser connections"
+      - "Generated files and artifacts in the project workspace"
+    prerequisites:
+      - "Required local binaries, Python packages, and writable workspace"
+      - "A browser/CDP endpoint for browser control"
+      - "Provider API keys for provider-specific media tools"
+    configuration_requirements:
+      - "Hands capability profile"
+      - "Per-toolkit options and model-provider configuration"
+    limitations:
+      - "Not every toolkit is attached to every agent."
+      - "Several tools call external services or local executables whose availability and behavior were not verified."
+      - "This card is not a security audit of shell, browser, filesystem, or generated-document behavior."
+    confidence: high
+    claim_ids:
+      - "claim-tool-surface"
+      - "claim-capability-controls"
+    evidence_refs:
+      - "evidence-workforce-construction"
+      - "evidence-single-agent-toolkit-assembly"
+      - "evidence-document-agent-tools"
+      - "evidence-multimodal-agent-tools"
+      - "evidence-terminal-toolkit"
+
+  - capability_id: "capability-mcp-client"
+    ontology_id: "x-eigent:mcp-client"
+    name: "MCP server management and tool consumption"
+    description: >-
+      Stores local MCP server configurations, exposes list/install/update/remove
+      APIs, connects configured servers through CAMEL MCPToolkit, and makes their
+      tools available to agents after capability filtering.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Brain-managed MCP client integrations and application-server MCP catalog/configuration paths"
+    interfaces:
+      - "Brain /mcp/list and /mcp/install APIs"
+      - "MCP local process and remote server configurations"
+      - "React connectors interface"
+    prerequisites:
+      - "A valid user-supplied MCP server configuration"
+      - "Required server binaries, packages, endpoints, and credentials"
+    configuration_requirements:
+      - "mcpServers configuration"
+      - "Hands MCP all/allowlist policy"
+      - "Optional MCP_REMOTE_CONFIG_DIR for persisted remote authentication"
+    limitations:
+      - "No external MCP server was started or contacted."
+      - "The project is an MCP client/host; no general-purpose MCP server implementation was established."
+      - "External MCP security, permissions, and data handling remain outside this boundary."
+    confidence: high
+    claim_ids:
+      - "claim-mcp-client"
+      - "claim-capability-controls"
+    evidence_refs:
+      - "evidence-mcp-controller"
+      - "evidence-mcp-tool-connection"
+      - "evidence-single-agent-toolkit-assembly"
+
+  - capability_id: "capability-agent-skills"
+    ontology_id: "x-eigent:agent-skills"
+    name: "Installable and scoped agent skills"
+    description: >-
+      Imports, scans, reads, writes, enables, and assigns SKILL.md-based skills,
+      then exposes eligible repo-, user-, and system-scoped skills to agents
+      through a CAMEL SkillToolkit extension.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Brain skill APIs and skill-enabled agents"
+    interfaces:
+      - "Brain /skills APIs"
+      - "SKILL.md directories in project and user scopes"
+      - "React skill management interface"
+    prerequisites:
+      - "A valid SKILL.md skill directory or import archive"
+      - "Filesystem access to the applicable skill roots"
+    configuration_requirements:
+      - "Per-user enabled state and optional agent restrictions"
+      - "Optional EIGENT_EXAMPLE_SKILLS_DIR for bundled examples"
+    limitations:
+      - "Skill instructions and referenced code are untrusted execution inputs and require operator governance."
+      - "Skill discovery and execution behavior were not run."
+      - "Some skill roots are outside the project workspace in local mode."
+    confidence: high
+    claim_ids:
+      - "claim-skills"
+      - "claim-capability-controls"
+    evidence_refs:
+      - "evidence-skill-api"
+      - "evidence-skill-toolkit"
+      - "evidence-skill-service-safety"
+
+  - capability_id: "capability-model-routing"
+    ontology_id: "x-eigent:model-routing"
+    name: "Configurable hosted, compatible, subscription, and local models"
+    description: >-
+      Builds CAMEL model backends from per-task platform, model, key, URL, and
+      model parameters, with UI configurations for OpenAI, Anthropic, Gemini,
+      Bedrock, Azure, OpenRouter, other providers, OpenAI-compatible endpoints,
+      and documented local endpoints.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Brain agent construction and frontend model configuration"
+    interfaces:
+      - "Provider configuration UI"
+      - "CAMEL ModelFactory"
+      - "Hosted or locally operated model HTTP APIs"
+      - "Codex subscription OAuth runtime on supported desktop configurations"
+    prerequisites:
+      - "A reachable model endpoint"
+      - "Credentials unless the selected local or subscription path supplies authentication differently"
+    configuration_requirements:
+      - "model_platform, model_type, api_url, and provider-specific parameters"
+      - "api_key or configured subscription authentication where required"
+    limitations:
+      - "Provider parity, model compatibility, token accounting, and fallback behavior were not runtime verified."
+      - "Some media tools require provider API keys even when chat uses subscription authentication."
+      - "Local-model quality and tool-calling compatibility depend on the selected endpoint."
+    confidence: high
+    claim_ids:
+      - "claim-model-routing"
+    evidence_refs:
+      - "evidence-agent-model-factory"
+      - "evidence-frontend-model-catalog"
+      - "evidence-readme-local-models"
+
+  - capability_id: "capability-human-in-the-loop"
+    ontology_id: "x-eigent:human-in-the-loop"
+    name: "Human input and execution updates"
+    description: >-
+      Lets agents ask the user blocking questions through the GUI and send
+      progress notices and attachments while task and tool events stream to the
+      client.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Workforce and single-agent execution paths"
+    interfaces:
+      - "HumanToolkit model tools"
+      - "Brain SSE events"
+      - "React chat and task-progress interface"
+    prerequisites:
+      - "An active client connection and task lock"
+    configuration_requirements:
+      - "HumanToolkit enabled for the executing agent"
+    limitations:
+      - "User-interaction latency, cancellation, and recovery behavior were not exercised."
+      - "Documentation says requests occur automatically on uncertainty, but triggering depends on model/tool behavior."
+    confidence: high
+    claim_ids:
+      - "claim-human-loop"
+    evidence_refs:
+      - "evidence-human-toolkit"
+      - "evidence-readme-workforce-features"
+
+  - capability_id: "capability-durable-project-memory"
+    ontology_id: "x-eigent:durable-project-memory"
+    name: "Durable project memory and workspace continuity"
+    description: >-
+      Persists space, project, run, conversation, artifact, and status records in
+      a local filesystem store, rebuilds bounded context for single-agent and
+      workforce runs, and complements server-side project and chat persistence.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Brain local memory and application-server project/chat state"
+    interfaces:
+      - "Local ~/.eigent/memory tree"
+      - "Project workspaces and run artifact directories"
+      - "Application-server project and chat APIs"
+    prerequisites:
+      - "A canonical user identity for local durable memory"
+      - "Writable local Eigent directories"
+      - "PostgreSQL when using the self-hosted application server"
+    configuration_requirements:
+      - "EIGENT_MEMORY_TOKEN_BUDGET for context sizing when overriding the default"
+      - "Workspace and user/space/project identifiers"
+    limitations:
+      - "Writes are explicitly best-effort so chat can continue after memory failures."
+      - "Workforce-specific context rendering is still shared with the single-agent renderer at this snapshot."
+      - "Recovery, concurrency, retention, and cross-version migration were not runtime tested."
+    confidence: high
+    claim_ids:
+      - "claim-durable-memory"
+    evidence_refs:
+      - "evidence-memory-context-service"
+      - "evidence-local-memory-store"
+
+  - capability_id: "capability-local-and-self-hosted-operation"
+    ontology_id: "x-eigent:local-and-self-hosted-operation"
+    name: "Local desktop and self-hosted application operation"
+    description: >-
+      Starts a local Python Brain from Electron, routes the renderer to that
+      Brain, and provides a Docker Compose application-server stack with API,
+      PostgreSQL, Redis, Celery worker, and scheduler for local account,
+      provider, configuration, MCP, and chat data.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Electron deployment and server/ Docker Compose deployment"
+    interfaces:
+      - "Electron IPC and localhost Brain HTTP/SSE"
+      - "Application-server HTTP API"
+      - "Docker Compose"
+    prerequisites:
+      - "Node.js 18-22 and npm for source-based frontend operation"
+      - "Python 3.11 for the Brain source package"
+      - "Docker Desktop for the documented self-hosted application-server stack"
+      - "A supported model endpoint; local-only operation requires local models and local MCP servers"
+    configuration_requirements:
+      - "VITE_BRAIN_ENDPOINT or Electron-provided Brain port"
+      - "VITE_BASE_URL/VITE_PROXY_URL and SERVER_URL for application-server routing"
+      - "Docker Compose environment for PostgreSQL, Redis, and API services"
+    limitations:
+      - "The documented Python version for server/ conflicts with its pyproject requirement."
+      - "The root README's 'zero external dependencies' language still assumes local model and local MCP software when those capabilities are used."
+      - "Installation and offline isolation claims were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-desktop-stack"
+      - "claim-local-deployment"
+      - "claim-server-python-conflict"
+    evidence_refs:
+      - "evidence-electron-brain-startup"
+      - "evidence-client-brain-routing"
+      - "evidence-server-local-deployment"
+      - "evidence-server-compose"
+      - "evidence-server-manifest"
+
+  - capability_id: "capability-remote-sub-agent-delegation"
+    ontology_id: "x-eigent:remote-sub-agent-delegation"
+    name: "Optional remote sub-agent delegation"
+    description: >-
+      Attaches a policy-gated remote-sub-agent tool to eligible workers, manages
+      provider sessions and timeouts, and limits local file selection to the
+      working directory with denylisted secret-like paths.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Configured worker-agent paths using RemoteSubAgentToolkit"
+    interfaces:
+      - "run_remote_sub_agent model tool"
+      - "Configured remote-agent provider adapter"
+    prerequisites:
+      - "Remote sub-agent explicitly enabled"
+      - "A configured and allowed provider"
+      - "Network access and provider credentials"
+    configuration_requirements:
+      - "remote_sub_agent_config or EIGENT_REMOTE_SUB_AGENT_* variables"
+      - "Working directory and maximum wall time"
+    limitations:
+      - "Only the local adapter, policy, session, and toolkit paths were analyzed; remote provider infrastructure was excluded."
+      - "Snapshot download is disabled in configured policy construction at this revision."
+      - "No remote job was submitted."
+    confidence: high
+    claim_ids:
+      - "claim-remote-sub-agent"
+    evidence_refs:
+      - "evidence-remote-tool-attachment"
+      - "evidence-remote-policy"
+      - "evidence-remote-runtime"
+
+architecture:
+  overview: >-
+    A React application runs in Electron or a browser. Electron starts a local
+    FastAPI Brain and exposes its selected localhost port through IPC; the web
+    client can point directly at a Brain endpoint. The Brain uses CAMEL agents
+    and Workforce orchestration for single-agent or decomposed multi-agent work,
+    assembling local and hosted tools according to a deployment capability
+    profile. Local files hold workspaces, skills, MCP configuration, and durable
+    memory. A separate FastAPI application server provides identity, provider,
+    configuration, project/chat, MCP, trigger, and related product APIs; the
+    documented self-hosted stack adds PostgreSQL, Redis, and Celery services.
+  languages:
+    - "TypeScript"
+    - "Python"
+    - "JavaScript"
+    - "CSS"
+    - "SQL and Alembic migration scripts"
+  frameworks_and_sdks:
+    - name: "CAMEL-AI for the Brain"
+      version_constraint: "camel-ai[eigent]==0.2.91a5"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-workforce"
+        - "claim-model-routing"
+    - name: "CAMEL-AI for the application server"
+      version_constraint: "camel-ai==0.2.90a6 with a uv source override to camel-ai/camel rev feat-trigger"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-local-deployment"
+    - name: "FastAPI"
+      version_constraint: ">=0.115.12 in both Python packages"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-desktop-stack"
+        - "claim-local-deployment"
+    - name: "React"
+      version_constraint: "^18.3.1"
+      dependency_relation: development
+      required: true
+      claim_ids:
+        - "claim-desktop-stack"
+    - name: "Electron"
+      version_constraint: "^33.2.0"
+      dependency_relation: development
+      required: true
+      claim_ids:
+        - "claim-desktop-stack"
+    - name: "Vite"
+      version_constraint: "^5.4.11"
+      dependency_relation: development
+      required: true
+      claim_ids:
+        - "claim-desktop-stack"
+  model_providers:
+    - name: "OpenAI API and OpenAI-compatible endpoints"
+      version_constraint: "openai>=1.99.3,<2 in both Python packages"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-model-routing"
+    - name: "Anthropic, Google Gemini, AWS Bedrock, Azure OpenAI, OpenRouter, and other CAMEL-supported providers"
+      version_constraint: "Provider adapters supplied through pinned CAMEL packages"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-model-routing"
+    - name: "vLLM, Ollama, LM Studio, and other configurable local or OpenAI-compatible endpoints"
+      version_constraint: "User-operated endpoint; no project package constraint"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-model-routing"
+    - name: "Codex subscription runtime"
+      version_constraint: "Repository OAuth/subscription adapter at analyzed commit"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-model-routing"
+  runtime_and_orchestration:
+    - name: "Uvicorn"
+      version_constraint: "uvicorn[standard]>=0.34.2 in the Brain"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-desktop-stack"
+    - name: "CAMEL Workforce"
+      version_constraint: "Provided by camel-ai[eigent]==0.2.91a5"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-workforce"
+    - name: "Celery"
+      version_constraint: ">=5.6.2"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-local-deployment"
+    - "Application-level task locks, SSE event queues, and worker lifecycle management"
+  tools_and_mcp:
+    tools:
+      - name: "CAMEL and Eigent local toolkits"
+        version_constraint: "Repository implementations plus camel-ai[eigent]==0.2.91a5"
+        dependency_relation: bundled
+        required: false
+        claim_ids:
+          - "claim-tool-surface"
+      - name: "CAMEL MCPToolkit"
+        version_constraint: "Provided by camel-ai[eigent]==0.2.91a5"
+        dependency_relation: direct
+        required: false
+        claim_ids:
+          - "claim-mcp-client"
+    mcp_role: client
+    mcp_details:
+      - "The Brain stores and manages mcpServers configurations and connects them through CAMEL MCPToolkit."
+      - "MCP servers can be filtered by a deployment Hands allowlist."
+      - "The application server also exposes catalog/import/configuration APIs for local and remote MCP entries."
+      - "No general-purpose Eigent MCP server was established at targeted depth."
+  skills:
+    - name: "Eigent SkillToolkit"
+      version_constraint: "Repository extension of CAMEL SkillToolkit at analyzed commit"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-skills"
+    - "Repo-, user-, and system-scoped SKILL.md discovery with per-user and per-agent filtering"
+  memory_and_state:
+    - name: "Eigent LocalMemoryStore"
+      version_constraint: "Repository implementation at analyzed commit"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-durable-memory"
+    - name: "Zustand"
+      version_constraint: "^5.0.4"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-desktop-stack"
+    - "CAMEL per-agent conversation memory and workforce memory snapshots"
+    - "PostgreSQL-backed server-side project and chat state"
+  retrieval_and_knowledge:
+    - name: "Qdrant client"
+      version_constraint: ">=1.16.2"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-tool-surface"
+    - "An optional CAMEL RetrievalToolkit/RAGToolkit implementation exists, but default worker attachment was not established at targeted depth."
+  document_processing:
+    - name: "mammoth"
+      version_constraint: "^1.9.1"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-tool-surface"
+    - name: "Papa Parse"
+      version_constraint: "papaparse ^5.5.3"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-tool-surface"
+    - "Bundled document, spreadsheet, PowerPoint, Markdown conversion, screenshot, and file-writing toolkits"
+  execution_and_sandbox:
+    - name: "Eigent TerminalToolkit"
+      version_constraint: "Repository extension of CAMEL TerminalToolkit at analyzed commit"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-tool-surface"
+        - "claim-capability-controls"
+    - name: "Eigent RemoteSubAgentRuntime"
+      version_constraint: "Repository implementation at analyzed commit"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-remote-sub-agent"
+    - "Full local mode can expose terminal, browser, MCP, and user-home filesystem access."
+    - "Docker/sandbox mode selects workspace-only filesystem access and disables browser access, but can retain terminal and MCP access."
+  gateways_and_routing:
+    - "Electron IPC selects and reports the local Brain port."
+    - "The React client routes task execution to the Brain and product-data APIs to the configured application server."
+    - "The Brain routes model calls through CAMEL ModelFactory and task calls through session-mode-specific execution paths."
+  storage_and_databases:
+    - name: "PostgreSQL"
+      version_constraint: "postgres:15 in server/docker-compose.yml"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-local-deployment"
+    - name: "Redis"
+      version_constraint: "redis:7-alpine in server/docker-compose.yml"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-local-deployment"
+    - name: "SQLModel"
+      version_constraint: ">=0.0.24"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-local-deployment"
+    - "Local ~/.eigent configuration, skills, MCP, memory, workspace, logs, and virtual-environment directories"
+  interfaces:
+    - "Electron desktop application"
+    - "React browser application"
+    - "Brain FastAPI JSON and SSE APIs"
+    - "Application-server FastAPI JSON and webhook APIs"
+    - "Electron IPC and Chrome DevTools Protocol"
+    - "Model-callable CAMEL tools"
+    - "MCP client connections"
+  deployment:
+    - "Electron packages for macOS, Windows, and Linux"
+    - "Source development with npm/Vite and a local Python Brain"
+    - "Web client pointed at a Brain endpoint"
+    - "Docker Compose API, PostgreSQL, Redis, Celery worker, and Celery beat stack"
+  observability_and_evaluation:
+    - name: "OpenTelemetry"
+      version_constraint: "API/SDK/exporter >=1.34.1 in the Brain"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-ci-release"
+    - name: "Loguru"
+      version_constraint: ">=0.7.3 in the application server"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-local-deployment"
+    - "Workforce metrics callbacks and request-usage events"
+    - "FastAPI health endpoints and Electron backend-ready lifecycle events"
+    - "GitHub Actions frontend checks, Python tests, smoke tests, CodeQL, and multi-platform release builds"
+  security_and_permissions:
+    - "Brain routes except health are registered with an authentication dependency."
+    - "Deployment-derived Hands capability profiles filter browser, terminal, filesystem, and MCP access."
+    - "Skill paths are normalized under managed roots for CRUD operations."
+    - "Remote-sub-agent file selection is working-directory scoped and denylisted for common secret paths."
+    - "The application server provides local authentication, CORS middleware, trace IDs, and sensitive-log filtering."
+    - "SECURITY.md documents a vulnerability-reporting process; no security audit was performed."
+  data_flows:
+    - >-
+      A user task flows from the React client over the Brain HTTP/SSE API. In
+      single-agent mode it is handled by one assembled agent; in workforce mode
+      a complexity check may answer directly or construct a workforce, decompose
+      the task, assign specialized workers, and stream task/tool events back.
+    - >-
+      Agent model configuration flows into CAMEL ModelFactory, which calls the
+      selected hosted, subscription-backed, OpenAI-compatible, or local model
+      endpoint; tool results return to the invoking agent conversation.
+    - >-
+      MCP configurations and skills are loaded from project or user state,
+      filtered by deployment and agent policy, connected or discovered, and
+      exposed as model-callable tools.
+    - >-
+      Run events, conversation text, artifacts, and status are written
+      best-effort to local memory and used to build bounded context for later
+      turns; application-level project and chat data can also persist through
+      the configured server and PostgreSQL.
+  control_flows:
+    - "session_mode selects single-agent execution or the workforce loop."
+    - "The question-confirmation agent and attachment presence determine whether a workforce is constructed for a new workforce-mode request."
+    - "The workforce planner decomposes work, CAMEL assigns pending tasks, and retry/replan failure strategies are enabled."
+    - "Hands capabilities and per-toolkit settings determine which execution surfaces are attached to each agent."
+    - "Remote sub-agent delegation is disabled unless configured and is bounded by provider allowlisting and a wall-time policy."
+
+components:
+  - component_id: "component-electron-host"
+    name: "Electron desktop host"
+    path: "electron/"
+    project_type: "application_interface"
+    purpose: "Package the desktop UI, start and monitor the local Brain, manage browser/CDP resources, files, updates, and desktop IPC."
+    claim_ids:
+      - "claim-desktop-stack"
+      - "claim-local-deployment"
+  - component_id: "component-react-client"
+    name: "React renderer and web client"
+    path: "src/"
+    project_type: "application_interface"
+    purpose: "Provide chat, workforce progress, workspace, model, connector, skill, project, and settings experiences for desktop and web hosts."
+    claim_ids:
+      - "claim-desktop-stack"
+      - "claim-human-loop"
+  - component_id: "component-brain-api"
+    name: "Brain FastAPI runtime"
+    path: "backend/main.py and backend/app/controller/"
+    project_type: "agent_harness_runtime"
+    purpose: "Expose authenticated task, chat, model, MCP, skill, tool, file, remote-agent, and workspace APIs and manage agent-execution lifecycle."
+    claim_ids:
+      - "claim-desktop-stack"
+      - "claim-single-agent"
+      - "claim-capability-controls"
+  - component_id: "component-workforce"
+    name: "CAMEL workforce orchestration"
+    path: "backend/app/service/chat_service.py and backend/app/utils/workforce.py"
+    project_type: "agent_application_component"
+    purpose: "Classify and decompose complex requests, construct coordinator/planner/workers, run pending subtasks, and stream lifecycle events."
+    claim_ids:
+      - "claim-workforce"
+      - "claim-human-loop"
+  - component_id: "component-agent-factories"
+    name: "Agent factories and toolkits"
+    path: "backend/app/agent/"
+    project_type: "agent_application_component"
+    purpose: "Construct specialized and single agents with models, local tools, MCP tools, skills, human interaction, and optional remote delegation."
+    claim_ids:
+      - "claim-tool-surface"
+      - "claim-mcp-client"
+      - "claim-skills"
+      - "claim-model-routing"
+      - "claim-remote-sub-agent"
+  - component_id: "component-memory-workspace"
+    name: "Local memory and workspace layer"
+    path: "backend/app/memory/ and backend/app/utils/workspace_resolver.py"
+    project_type: "x-supporting-component"
+    purpose: "Persist and reconstruct project/run context and bind tasks to local workspace and artifact paths."
+    claim_ids:
+      - "claim-durable-memory"
+      - "claim-capability-controls"
+  - component_id: "component-application-server"
+    name: "Eigent application server"
+    path: "server/"
+    project_type: "x-supporting-component"
+    purpose: "Provide local or hosted identity, provider, config, project/chat, MCP, trigger, remote-control, and related product-data APIs."
+    claim_ids:
+      - "claim-local-deployment"
+      - "claim-server-python-conflict"
+  - component_id: "component-self-host-stack"
+    name: "Self-hosted data and background services"
+    path: "server/docker-compose.yml"
+    project_type: "x-supporting-component"
+    purpose: "Run PostgreSQL, Redis, the application-server API, a Celery worker, and a Celery beat scheduler."
+    claim_ids:
+      - "claim-local-deployment"
+  - component_id: "component-tests-ci"
+    name: "Tests, quality checks, and release automation"
+    path: "backend/tests/, server/tests/, test/, and .github/workflows/"
+    project_type: "x-supporting-component"
+    purpose: "Exercise representative frontend and Python behavior, smoke-test web plus local Brain, scan code, and build desktop releases."
+    claim_ids:
+      - "claim-ci-release"
+      - "claim-maturity"
+
+usage:
+  installation: >-
+    For the cloud-connected source workflow, the README instructs users to clone
+    the repository, run npm install, and run npm run dev with Node.js 18-22. The
+    Electron host installs or uses packaged Python/uv dependencies and starts the
+    Brain. For fully local application services, server/README_EN.md instructs
+    users to configure server/.env, start server/docker-compose.yml, point the
+    frontend proxy at localhost:3001, and run the frontend. These instructions
+    were inspected but not run.
+  minimal_start: >-
+    A minimal source preview uses npm install and npm run dev with the configured
+    cloud application server, then supplies a model through the UI. A local web
+    client can instead point VITE_BRAIN_ENDPOINT at a separately started Brain.
+    Full self-hosting additionally requires the application-server Docker Compose
+    services and local routing configuration.
+  configuration:
+    - "Model platform, model type, API URL, credentials, and provider-specific model parameters"
+    - "VITE_BRAIN_ENDPOINT for a web-hosted Brain connection"
+    - "VITE_BASE_URL, VITE_PROXY_URL, VITE_USE_LOCAL_PROXY, and SERVER_URL for application-server routing"
+    - "EIGENT_DEPLOYMENT_TYPE and EIGENT_HANDS_* for terminal, browser, filesystem, and MCP capabilities"
+    - "User/project workspace bindings and local Eigent state directories"
+    - "MCP server, skill, toolkit, and optional remote-sub-agent configurations"
+    - "Docker and database environment variables for the self-hosted server stack"
+  required_services:
+    - "A model endpoint compatible with the selected CAMEL platform configuration"
+    - "The local Brain for agent execution"
+    - "The configured Eigent application server for identity, product configuration, project, and history APIs"
+    - "PostgreSQL and Redis for the documented self-hosted application-server stack"
+    - "External services only for the model, MCP, search, connector, media, or remote-agent capabilities selected by the user"
+  extension_points:
+    - "Add or configure custom workforce workers through new_agents"
+    - "Add toolkits and agent factories under backend/app/agent/"
+    - "Install MCP servers through mcpServers configuration and connector APIs"
+    - "Add SKILL.md skills at project, user, or system scope"
+    - "Configure new CAMEL-supported or OpenAI-compatible model endpoints"
+    - "Implement a RemoteSubAgentProvider and register it with the provider registry"
+    - "Extend application-server domains under server/app/domains/"
+    - "Add desktop/web host behavior through the frontend host abstraction and Electron IPC"
+
+assessment:
+  contexts:
+    - context_id: "context-local-agent-platform-evaluation"
+      use_case: >-
+        Evaluate Eigent as an extensible, local-first desktop or self-hosted
+        general-purpose agent application for technical teams that need
+        multi-agent decomposition, computer tools, model choice, MCP and skill
+        extensibility, human oversight, and persistent project context.
+      comparison_cohort:
+        - "Open-source desktop and web computer-use agent applications (not separately analyzed in this card)"
+        - "Open-source multi-agent workforce applications built on reusable orchestration frameworks"
+      requirements:
+        - "A reproducible public source snapshot and open license terms"
+        - "Both multi-agent and focused single-agent task execution"
+        - "Extensible model, tool, MCP, and skill surfaces"
+        - "Local workspaces and a credible self-host path"
+        - "Human input and observable execution progress"
+        - "Explicit control over terminal, browser, filesystem, connector, and remote-agent authority"
+      organizational_constraints:
+        - "Static analysis only; no project code, tests, dependency installation, or deployment"
+        - "Operators must govern high-privilege local automation and third-party data flows"
+        - "The team can operate Electron/Node and Python components and, for full self-hosting, Docker, PostgreSQL, Redis, and Celery"
+        - "Provider, MCP server, remote-agent, and hosted-service behavior is outside this card's evidence boundary"
+      assessed_at: "2026-07-18T12:47:59Z"
+  maturity: established
+  maturity_signals:
+    - statement: "The analyzed revision is tagged v1.0.1 and the repository contains multi-platform desktop release automation."
+      reasoning: "A 1.x tag and macOS, Windows, and Linux build matrix are positive delivery signals, but release artifacts and actual installation outcomes were not inspected."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-ci-release"
+        - "claim-maturity"
+    - statement: "The repository configures frontend type checks, a web-plus-local-Brain smoke test, Python unit tests, pre-commit checks, and CodeQL."
+      reasoning: "The breadth of configured checks supports an established projection, while historical pass rates and uncovered behavior remain unknown."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-ci-release"
+        - "claim-maturity"
+    - statement: "The project includes operational scaffolding for health checks, logging, metrics, desktop lifecycle, and a containerized data stack."
+      reasoning: "These are production-oriented implementation signals, but the stack was not deployed or load tested."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: medium
+      claim_ids:
+        - "claim-desktop-stack"
+        - "claim-local-deployment"
+        - "claim-maturity"
+  strengths:
+    - statement: "Eigent integrates a broad agent product surface in one inspectable repository."
+      reasoning: "The snapshot connects desktop/web UI, a local Brain, workforce and single-agent modes, toolkits, MCP, skills, memory, and a self-hostable application server."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-workforce"
+        - "claim-single-agent"
+        - "claim-local-deployment"
+    - statement: "Its extension surface covers models, local tools, MCP servers, skills, custom workers, and optional remote sub-agents."
+      reasoning: "These are separate, statically visible configuration and attachment paths rather than a single hard-coded tool loop."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-model-routing"
+        - "claim-tool-surface"
+        - "claim-mcp-client"
+        - "claim-skills"
+        - "claim-remote-sub-agent"
+    - statement: "The code distinguishes full local capability from workspace-limited deployments."
+      reasoning: "Hands profiles explicitly control filesystem scope and browser, terminal, and MCP availability, providing a policy insertion point for different deployment contexts."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-capability-controls"
+  limitations:
+    - statement: "The product has a relatively complex split deployment and dependency model."
+      reasoning: "Source operation spans a React/Electron client, Python Brain, configurable application server, and optional Docker data and worker services, with different Python requirements across packages."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-desktop-stack"
+        - "claim-local-deployment"
+        - "claim-server-python-conflict"
+    - statement: "Important user-visible capabilities depend on external systems not verified by this card."
+      reasoning: "Models, MCP servers, search, social and productivity connectors, media providers, and remote sub-agents can all cross the project boundary."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-model-routing"
+        - "claim-mcp-client"
+        - "claim-tool-surface"
+        - "claim-remote-sub-agent"
+    - statement: "Licensing and server Python-version metadata contain first-party conflicts."
+      reasoning: "The root license files disagree with package.json, and the server README disagrees with server/pyproject.toml; adopters should resolve both against authoritative upstream guidance."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-license-conflict"
+        - "claim-server-python-conflict"
+    - statement: "End-to-end reliability, task quality, installation, offline isolation, and provider parity remain unverified."
+      reasoning: "The requested and permitted mode was targeted static inspection only."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-adoption-fit"
+  risks:
+    - statement: "A full local deployment can give model-directed agents material authority over the user's computer and accounts."
+      reasoning: "Local capability profiles can expose shell execution, browser sessions, MCP tools, and files under the user's home directory. Configuration controls exist, but safe operation still depends on model behavior, tool implementations, and operator policy."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-capability-controls"
+        - "claim-tool-surface"
+    - statement: "Configured hosted models, MCP servers, connectors, and remote sub-agents can move task data outside the local machine."
+      reasoning: "The local-server documentation explicitly conditions isolation on using local models and local MCP servers, while multiple hosted integrations are available."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-local-deployment"
+        - "claim-model-routing"
+        - "claim-mcp-client"
+        - "claim-remote-sub-agent"
+    - statement: "Different CAMEL pins and Python requirements across Brain and application-server packages increase integration and upgrade risk."
+      reasoning: "The two Python packages pin different CAMEL alpha versions and different Python series, and the server manifest also uses a Git source override."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-server-python-conflict"
+        - "claim-adoption-fit"
+  best_fit:
+    - statement: "Best suited to technical users or teams wanting an extensible local agent desktop and willing to own deployment and privilege governance."
+      reasoning: "Eigent exposes broad agent, tool, model, MCP, skill, memory, and self-host surfaces, but realizing them safely requires operating several components and managing powerful local and external integrations."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-adoption-fit"
+  poor_fit:
+    - statement: "Poor fit for environments that require a minimal operational footprint or cannot permit model-directed terminal, browser, filesystem, or external connector access."
+      reasoning: "Those interfaces are central to the product's value, while the fully local stack and safe governance add operational and security work."
+      context_id: "context-local-agent-platform-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-adoption-fit"
+        - "claim-capability-controls"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "CAMEL-AI"
+      scope: "Agent classes, model factories, toolkits, task objects, and Workforce orchestration"
+      confidence: high
+      claim_ids:
+        - "claim-workforce"
+        - "claim-single-agent"
+        - "claim-model-routing"
+    - target_project: "Electron"
+      scope: "Desktop hosting, IPC, packaging, updates, and local Brain lifecycle"
+      confidence: high
+      claim_ids:
+        - "claim-desktop-stack"
+    - target_project: "FastAPI and Uvicorn"
+      scope: "Brain and application-server HTTP APIs"
+      confidence: high
+      claim_ids:
+        - "claim-desktop-stack"
+        - "claim-local-deployment"
+    - target_project: "PostgreSQL and Redis"
+      scope: "Documented self-hosted application-server persistence, sessions, and Celery transport"
+      confidence: high
+      claim_ids:
+        - "claim-local-deployment"
+  integrates_with:
+    - target_project: "OpenAI, Anthropic, Google Gemini, AWS Bedrock, Azure OpenAI, OpenRouter, and OpenAI-compatible model services"
+      scope: "Configurable model inference"
+      confidence: high
+      claim_ids:
+        - "claim-model-routing"
+    - target_project: "vLLM, Ollama, and LM Studio"
+      scope: "Documented local model endpoints"
+      confidence: medium
+      claim_ids:
+        - "claim-model-routing"
+    - target_project: "User-configured MCP servers"
+      scope: "Agent tools and productivity connectors"
+      confidence: high
+      claim_ids:
+        - "claim-mcp-client"
+    - target_project: "Gemini Agents remote provider"
+      scope: "Optional remote sub-agent execution path at the analyzed snapshot"
+      confidence: high
+      claim_ids:
+        - "claim-remote-sub-agent"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "Eigent is primarily a deployable general-purpose agent application, not a reusable agent SDK."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The declared Eigent project boundary at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-product"
+      - "evidence-package-manifest"
+      - "evidence-electron-brain-startup"
+      - "evidence-brain-router"
+    conflicting_evidence_ids: []
+    reasoning: "The repository delivers desktop/web clients, an agent runtime, application services, persistence, and release packaging around embedded CAMEL components."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-desktop-stack"
+    statement: "The primary desktop stack is an Electron-hosted React application that starts and connects to a local FastAPI Brain."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Electron, React, and backend/ paths at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+      - "evidence-electron-brain-startup"
+      - "evidence-client-brain-routing"
+      - "evidence-brain-router"
+    conflicting_evidence_ids: []
+    reasoning: "The package manifest declares Electron/React/Vite, the Electron host starts a dynamically ported backend, and the client resolves that port for Brain requests."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-workforce"
+    statement: "Complex workforce-mode tasks can be decomposed and executed by a CAMEL Workforce containing coordinator, planner, dynamic-worker, developer, browser, document, and multimodal agents."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Brain workforce execution path at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-complex-task-flow"
+      - "evidence-workforce-construction"
+      - "evidence-workforce-runtime"
+    conflicting_evidence_ids: []
+    reasoning: "The chat service creates these agents, adds four specialized workers to the Workforce, and invokes explicit decomposition and execution methods."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-single-agent"
+    statement: "Eigent exposes a single-agent session mode distinct from workforce execution and assembles a broad configurable toolkit for that agent."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Brain chat and single-agent toolkit paths at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-chat-session-mode"
+      - "evidence-single-agent-toolkit-assembly"
+    conflicting_evidence_ids: []
+    reasoning: "The chat service branches before the workforce loop, and the assembler defines default, overridable tool categories including local delegation."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-tool-surface"
+    statement: "Built-in agents have statically implemented paths for browser/search, terminal, file, document, spreadsheet, presentation, screenshot, video, audio, and image tools."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "backend/app/agent factories and toolkits at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-single-agent-toolkit-assembly"
+      - "evidence-document-agent-tools"
+      - "evidence-multimodal-agent-tools"
+      - "evidence-terminal-toolkit"
+    conflicting_evidence_ids: []
+    reasoning: "Factories instantiate and attach repository and CAMEL toolkits conditionally. Static presence does not establish runtime availability or correctness."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-human-loop"
+    statement: "Agents can ask the user questions through the GUI and send structured progress messages while waiting for task-scoped responses."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "HumanToolkit and task event queues at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-human-toolkit"
+      - "evidence-readme-workforce-features"
+    conflicting_evidence_ids: []
+    reasoning: "The HumanToolkit emits ask events, waits on the task lock, and exposes user-message tools; the README documents the intended human-in-the-loop feature."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-mcp-client"
+    statement: "Eigent acts as an MCP client and configuration host that can manage MCP entries, connect allowed servers, and expose their tools to agents."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Brain MCP configuration, controller, and toolkit paths at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-mcp-controller"
+      - "evidence-mcp-tool-connection"
+      - "evidence-single-agent-toolkit-assembly"
+    conflicting_evidence_ids: []
+    reasoning: "The API performs MCP configuration CRUD and the agent paths create CAMEL MCPToolkit connections after Hands filtering."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-skills"
+    statement: "Eigent supports SKILL.md-based skill CRUD, import, per-user and per-agent configuration, and repo/user/system discovery for agent use."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Brain skill service, API, and SkillToolkit paths at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-skill-api"
+      - "evidence-skill-service-safety"
+      - "evidence-skill-toolkit"
+    conflicting_evidence_ids: []
+    reasoning: "The controller exposes management endpoints, the service constrains CRUD paths, and the toolkit enumerates prioritized roots and filtering."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-model-routing"
+    statement: "Agent construction supports configurable CAMEL model platforms, model types, URLs, credentials, and model parameters, with UI presets for multiple hosted, compatible, subscription, and local endpoints."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Brain agent_model and frontend model configuration at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-agent-model-factory"
+      - "evidence-frontend-model-catalog"
+      - "evidence-readme-local-models"
+    conflicting_evidence_ids: []
+    reasoning: "ModelFactory receives the selected platform/type/key/URL and the frontend enumerates common hosted and compatible options; the README documents local endpoints."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-durable-memory"
+    statement: "The Brain statically implements best-effort local persistence for space, project, run, conversation, artifact, and status memory and can rebuild bounded context for later tasks."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "backend/app/memory at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-memory-context-service"
+      - "evidence-local-memory-store"
+    conflicting_evidence_ids: []
+    reasoning: "MemoryService owns lifecycle hooks and context construction over the filesystem-backed LocalMemoryStore."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-local-deployment"
+    statement: "The repository includes a documented self-hosted application-server stack for local account, provider, configuration, MCP, and chat data using FastAPI, PostgreSQL, Redis, and Celery."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "server/ documentation, manifest, entry point, and Docker Compose at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-server-local-deployment"
+      - "evidence-server-entrypoint"
+      - "evidence-server-compose"
+      - "evidence-server-manifest"
+    conflicting_evidence_ids: []
+    reasoning: "The first-party documentation and compose file align on local API, database, Redis, worker, and scheduler roles. Runtime isolation was not verified."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-capability-controls"
+    statement: "The Brain derives terminal, browser, filesystem, and MCP capabilities from deployment configuration, with full local and workspace-limited sandbox profiles."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "backend/app/hands and toolkit filtering at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-capability-policy"
+      - "evidence-sandbox-hands"
+      - "evidence-single-agent-toolkit-assembly"
+    conflicting_evidence_ids: []
+    reasoning: "The capability detector selects profiles and the tool assembly paths consult Hands before attaching browser, terminal, and MCP surfaces."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-remote-sub-agent"
+    statement: "An optional remote-sub-agent runtime can be attached to worker agents with explicit enablement, provider allowlisting, session reuse, timeouts, and local file-scope controls."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Brain remote-sub-agent adapter and policy paths at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-remote-tool-attachment"
+      - "evidence-remote-policy"
+      - "evidence-remote-runtime"
+    conflicting_evidence_ids: []
+    reasoning: "The local runtime and policy are implemented, but the remote provider service and behavior were not analyzed or invoked."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-ci-release"
+    statement: "The repository configures frontend quality checks, web-plus-local-Brain smoke testing, Python tests, CodeQL, and macOS/Windows/Linux release builds."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: ".github/workflows at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-test-workflow"
+      - "evidence-build-workflow"
+      - "evidence-codeql-workflow"
+    conflicting_evidence_ids: []
+    reasoning: "Workflow definitions establish configured checks and build targets, not their historical success."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-license-conflict"
+    statement: "First-party license metadata conflicts: the root LICENSE and README identify Apache License 2.0, while package.json declares MIT."
+    claim_kind: factual
+    verification_status: conflicted
+    confidence: high
+    applies_to: "Repository licensing metadata at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-root-license"
+    conflicting_evidence_ids:
+      - "evidence-package-manifest"
+    reasoning: "Both sources are first-party at the same commit. This card does not decide legal precedence or provide a legal opinion."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-server-python-conflict"
+    statement: "The supported Python version for server/ is conflicted: its README lists Python 3.10.*, while its pyproject requires Python >=3.12,<3.13."
+    claim_kind: factual
+    verification_status: conflicted
+    confidence: high
+    applies_to: "server/ installation metadata at the recorded source snapshot"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-server-local-deployment"
+    conflicting_evidence_ids:
+      - "evidence-server-manifest"
+    reasoning: "The documentation and machine-readable package manifest disagree at the same source snapshot."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-maturity"
+    statement: "Under the declared evaluation context, Eigent has established project maturity, while operational reliability and task quality remain unverified."
+    claim_kind: assessment
+    verification_status: unverified
+    confidence: medium
+    applies_to: "context-local-agent-platform-evaluation"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+      - "evidence-test-workflow"
+      - "evidence-build-workflow"
+      - "evidence-security-policy"
+    conflicting_evidence_ids:
+      - "evidence-server-local-deployment"
+      - "evidence-server-manifest"
+    reasoning: "The v1.0.1 release, broad source surface, tests, CI, packaging, and security policy are established signals; version conflicts and lack of runtime evidence limit confidence."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+  - claim_id: "claim-adoption-fit"
+    statement: "Under the declared context, Eigent best fits technically capable teams that value extensibility and local control and can govern a multi-component, high-authority agent deployment."
+    claim_kind: assessment
+    verification_status: unverified
+    confidence: high
+    applies_to: "context-local-agent-platform-evaluation"
+    assessment_context_id: "context-local-agent-platform-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-product"
+      - "evidence-workforce-construction"
+      - "evidence-capability-policy"
+      - "evidence-server-compose"
+    conflicting_evidence_ids: []
+    reasoning: "The architecture offers substantial local and extension control, but operating it safely requires managing desktop, Python, data-service, provider, connector, and local-computer authority boundaries."
+    last_verified_at: "2026-07-18T12:47:59Z"
+
+sources:
+  - source_id: "source-eigent-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/eigent-ai/eigent"
+    revision_or_version: "v1.0.1 / 25f6f1ae1ca2c74da61a0f3009c1de2a256ac942"
+    retrieved_at: "2026-07-18T12:47:59Z"
+    content_digest: "git-tree-sha1:cd037360561494bd11fa6ab18425b7669aaad3e8"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-readme-product"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Product description and feature summary"
+      line_start: 31
+      line_end: 43
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "open source Cowork desktop application; Multi-Agent Workforce"
+    note: "First-party description of the product, local deployment, custom models, and MCP integration."
+
+  - evidence_id: "evidence-readme-local-models"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Local Deployment and Comprehensive Model Support"
+      line_start: 88
+      line_end: 118
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Local model integration (vLLM, Ollama, LM Studio, etc.)"
+    note: "Documents standalone and cloud-connected modes; the zero-external-dependency claim was not runtime verified."
+
+  - evidence_id: "evidence-readme-workforce-features"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Workforce, MCP Tools Integration, and Human-in-the-Loop"
+      line_start: 159
+      line_end: 198
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "specialized AI agents; work in parallel; automatically request human input"
+    note: "Documents intended workforce, MCP, and human-interaction features."
+
+  - evidence_id: "evidence-root-license"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Open Source License"
+      line_start: 350
+      line_end: 352
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "licensed under the Apache License 2.0"
+    note: "Consistent with the root LICENSE text but conflicts with package.json license metadata."
+
+  - evidence_id: "evidence-package-manifest"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "package.json"
+      symbol_or_section: "Package identity, scripts, dependencies, and engines"
+      line_start: 1
+      line_end: 188
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "eigent 1.0.1; Electron, React, Vite, Zustand; Node >=18 <23"
+    note: "Also declares license MIT, which conflicts with the root Apache-2.0 LICENSE and README."
+
+  - evidence_id: "evidence-brain-manifest"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/pyproject.toml"
+      symbol_or_section: "Brain project and direct dependencies"
+      line_start: 1
+      line_end: 37
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Python >=3.11,<3.12; camel-ai[eigent]==0.2.91a5; FastAPI; OpenTelemetry; Qdrant"
+    note: "Confirms direct Brain technology constraints."
+
+  - evidence_id: "evidence-brain-router"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/router.py"
+      symbol_or_section: "register_routers"
+      line_start: 42
+      line_end: 129
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Health, Files, MCP, Skills, chat, model, remote-sub-agent, task, tool, workspace"
+    note: "Shows the Brain API surface and authentication dependency on non-health routers."
+
+  - evidence_id: "evidence-chat-session-mode"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/service/chat_service.py"
+      symbol_or_section: "step_solve session-mode branch"
+      line_start: 443
+      line_end: 521
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "if options.session_mode == single-agent: single_agent_solve"
+    note: "Confirms the single-agent path is separate from the workforce loop."
+
+  - evidence_id: "evidence-complex-task-flow"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/service/chat_service.py"
+      symbol_or_section: "Complexity decision and workforce creation"
+      line_start: 688
+      line_end: 859
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "question_confirm; construct_workforce; eigent_make_sub_tasks"
+    note: "Shows attachment-forced complexity, direct simple answers, workforce construction, custom workers, and decomposition setup."
+
+  - evidence_id: "evidence-workforce-construction"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/service/chat_service.py"
+      symbol_or_section: "construct_workforce"
+      line_start: 2535
+      line_end: 2768
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "coordinator_agent, task_agent, new_worker_agent, Developer, Browser, Document, Multi-Modal"
+    note: "Confirms parallel agent construction and the specialized workers added to CAMEL Workforce."
+
+  - evidence_id: "evidence-workforce-runtime"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/utils/workforce.py"
+      symbol_or_section: "Workforce.__init__, eigent_make_sub_tasks, and eigent_start"
+      line_start: 64
+      line_end: 300
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "FailureHandlingConfig retry/replan; task decomposition; pending tasks; await self.start()"
+    note: "Static orchestration evidence only; no workforce was run."
+
+  - evidence_id: "evidence-single-agent-toolkit-assembly"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/factory/toolkit_assembler.py"
+      symbol_or_section: "DEFAULT_SINGLE_AGENT_TOOLKIT_CONFIG and assemble_single_agent_toolkits"
+      line_start: 52
+      line_end: 440
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "human, file, web_deploy, screenshot, skill, todo, search, browser, terminal, web_fetch, planning_worktree, mcp, agent"
+    note: "Confirms configurable assembly, Hands filtering, MCP connection, and depth-limited delegation."
+
+  - evidence_id: "evidence-document-agent-tools"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/factory/document.py"
+      symbol_or_section: "document_agent toolkit construction"
+      line_start: 45
+      line_end: 180
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "FileToolkit, PPTXToolkit, MarkItDownToolkit, ExcelToolkit, TerminalToolkit, GoogleDriveMCPToolkit, SkillToolkit"
+    note: "Confirms the document worker's broad static tool surface."
+
+  - evidence_id: "evidence-multimodal-agent-tools"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/factory/multi_modal.py"
+      symbol_or_section: "multi_modal_agent toolkit construction"
+      line_start: 46
+      line_end: 218
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "VideoDownloaderToolkit, AudioAnalysisToolkit, OpenAIImageToolkit, ScreenshotToolkit, TerminalToolkit"
+    note: "Several media tools are conditional on provider and authentication configuration."
+
+  - evidence_id: "evidence-terminal-toolkit"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/toolkit/terminal_toolkit.py"
+      symbol_or_section: "TerminalToolkit.__init__"
+      line_start: 57
+      line_end: 113
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "safe_mode=True; allowed_commands; working_directory; cloned environment"
+    note: "Confirms a model-callable shell toolkit exists; this is not evidence of complete isolation or command safety."
+
+  - evidence_id: "evidence-human-toolkit"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/toolkit/human_toolkit.py"
+      symbol_or_section: "ask_human_via_gui"
+      line_start: 35
+      line_end: 105
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "ActionAskData; await task_lock.get_human_input"
+    note: "Confirms task-scoped question and progress-message tool paths."
+
+  - evidence_id: "evidence-mcp-controller"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/controller/mcp_controller.py"
+      symbol_or_section: "MCP configuration routes"
+      line_start: 30
+      line_end: 63
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "GET /mcp/list; POST /mcp/install; DELETE/PUT /mcp/{name}"
+    note: "Confirms Brain MCP configuration management."
+
+  - evidence_id: "evidence-mcp-tool-connection"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/tools.py"
+      symbol_or_section: "get_mcp_tools"
+      line_start: 130
+      line_end: 187
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "hands.can_use_mcp; MCPToolkit.connect; get_tools"
+    note: "Confirms client-side server filtering, connection, and tool extraction."
+
+  - evidence_id: "evidence-skill-api"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/controller/skill_controller.py"
+      symbol_or_section: "Skill configuration, import, and CRUD routes"
+      line_start: 44
+      line_end: 225
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "/skills/config; /skills/import; /skills; /skills/{skill_dir_name}"
+    note: "Confirms user configuration and management APIs."
+
+  - evidence_id: "evidence-skill-service-safety"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/service/skill_service.py"
+      symbol_or_section: "Skill roots, path checks, scanning, and CRUD"
+      line_start: 23
+      line_end: 354
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "SKILLS_ROOT; _assert_under_skills_root; skills_scan; skill_write; skill_read"
+    note: "Shows managed skill-root containment for CRUD and bundled-example synchronization."
+
+  - evidence_id: "evidence-skill-toolkit"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/toolkit/skill_toolkit.py"
+      symbol_or_section: "SkillToolkit initialization and roots"
+      line_start: 244
+      line_end: 329
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "repo, user, and system skill roots; allowed_skills"
+    note: "Confirms per-agent filtering and discovery priority."
+
+  - evidence_id: "evidence-agent-model-factory"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/agent_model.py"
+      symbol_or_section: "agent_model and build_model"
+      line_start: 56
+      line_end: 314
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "ModelFactory.create(model_platform, model_type, api_key, url, model_config_dict)"
+    note: "Confirms per-agent model configuration, subscription adaptation, and provider-specific parameter handling."
+
+  - evidence_id: "evidence-frontend-model-catalog"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "src/lib/llm.ts"
+      symbol_or_section: "INIT_PROVODERS"
+      line_start: 18
+      line_end: 256
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Codex Subscription, Gemini, OpenAI, Anthropic, Grok, Qwen, Bedrock, Azure, OpenRouter, OpenAI Compatible"
+    note: "Confirms the frontend configuration surface, not successful inference against every provider."
+
+  - evidence_id: "evidence-memory-context-service"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/memory/service.py"
+      symbol_or_section: "build_durable_context_for_task_lock and MemoryService.on_run_start"
+      line_start: 100
+      line_end: 300
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "shared by Single Agent and Workforce; ProjectContextBuilder; space/project/run records"
+    note: "Confirms best-effort lifecycle writes and bounded context reconstruction."
+
+  - evidence_id: "evidence-local-memory-store"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/memory/local_store.py"
+      symbol_or_section: "LocalMemoryStore"
+      line_start: 211
+      line_end: 300
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "filesystem-backed Project memory store; ~/.eigent/memory; conversation.jsonl"
+    note: "Confirms local space, project, run, and conversation persistence paths."
+
+  - evidence_id: "evidence-server-local-deployment"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "server/README_EN.md"
+      symbol_or_section: "Purpose, services, prerequisites, and Docker quick start"
+      line_start: 1
+      line_end: 86
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "local backend (FastAPI + PostgreSQL); local DB; MCP Management; Python 3.10.*"
+    note: "The Python 3.10 prerequisite conflicts with server/pyproject.toml's Python 3.12 requirement."
+
+  - evidence_id: "evidence-server-manifest"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "server/pyproject.toml"
+      symbol_or_section: "Application-server project and dependencies"
+      line_start: 1
+      line_end: 42
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Python >=3.12,<3.13; FastAPI; SQLModel; PostgreSQL; Celery; Redis"
+    note: "Conflicts with the server README's Python 3.10 prerequisite and pins a different CAMEL alpha version than the Brain."
+
+  - evidence_id: "evidence-server-entrypoint"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "server/main.py"
+      symbol_or_section: "Router composition, health, middleware, and logging"
+      line_start: 35
+      line_end: 152
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "auto_include_routers; /v1; /health; CORS; TraceID; Loguru"
+    note: "Confirms application-server API composition and operational middleware."
+
+  - evidence_id: "evidence-server-compose"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "server/docker-compose.yml"
+      symbol_or_section: "Self-hosted services"
+      line_start: 1
+      line_end: 152
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "postgres:15, redis:7-alpine, API, Celery worker, Celery beat"
+    note: "Confirms the declared container topology and health checks; it was not deployed."
+
+  - evidence_id: "evidence-electron-brain-startup"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "electron/main/init.ts"
+      symbol_or_section: "startBackend"
+      line_start: 191
+      line_end: 346
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "findAvailablePort(5001); SERVER_URL; EIGENT_RUNTIME=electron"
+    note: "Confirms local Brain startup preparation and application-server routing configuration."
+
+  - evidence_id: "evidence-client-brain-routing"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "src/api/http.ts"
+      symbol_or_section: "getBaseURL and sseTransport"
+      line_start: 33
+      line_end: 111
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "get-backend-port; VITE_BRAIN_ENDPOINT; localhost Brain"
+    note: "Confirms desktop and web Brain endpoint selection; SSE is implemented later in the same file."
+
+  - evidence_id: "evidence-capability-policy"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/hands/capabilities.py"
+      symbol_or_section: "BrainCapabilities and detect_capabilities"
+      line_start: 15
+      line_end: 262
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "filesystem, terminal, browser, mcp; local/cloud_vm full; sandbox/Docker limited"
+    note: "Confirms a deployment-derived capability layer and environment/config overrides."
+
+  - evidence_id: "evidence-sandbox-hands"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/hands/sandbox_hands.py"
+      symbol_or_section: "SandboxHands"
+      line_start: 20
+      line_end: 79
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "workspace_only; terminal enabled; browser false; MCP all or allowlist"
+    note: "The class name does not by itself establish process isolation; it expresses capability filtering."
+
+  - evidence_id: "evidence-remote-tool-attachment"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/agent/factory/remote_sub_agent.py"
+      symbol_or_section: "attach_remote_sub_agent_if_enabled"
+      line_start: 24
+      line_end: 63
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "RemoteSubAgentToolkit; is_enabled; tools.extend"
+    note: "Confirms opt-in attachment to agent tool surfaces."
+
+  - evidence_id: "evidence-remote-policy"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/remote_sub_agent/policy.py"
+      symbol_or_section: "RemoteSubAgentPolicy"
+      line_start: 59
+      line_end: 180
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "enabled; allowed_providers; max_wall_time_seconds; ensure_file_in_scope; deny_path_globs"
+    note: "Confirms local policy defaults and configured policy construction."
+
+  - evidence_id: "evidence-remote-runtime"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "backend/app/remote_sub_agent/runtime.py"
+      symbol_or_section: "RemoteSubAgentRuntime.run"
+      line_start: 38
+      line_end: 124
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "ensure_enabled; ensure_provider_allowed; session reuse; asyncio.timeout; provider.run"
+    note: "Confirms local orchestration around a provider interface, not the remote environment's behavior."
+
+  - evidence_id: "evidence-test-workflow"
+    source_id: "source-eigent-repository"
+    locator:
+      path: ".github/workflows/test.yml"
+      symbol_or_section: "Smoke, frontend quality, and Python test jobs"
+      line_start: 14
+      line_end: 97
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "web-local-smoke; type-check; design tokens; pytest tests/app"
+    note: "Confirms configured checks, not their historical results."
+
+  - evidence_id: "evidence-build-workflow"
+    source_id: "source-eigent-repository"
+    locator:
+      path: ".github/workflows/build.yml"
+      symbol_or_section: "Tagged multi-platform release build"
+      line_start: 1
+      line_end: 195
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "macOS ARM64/x64, Windows x64, Linux x64; npm run build"
+    note: "Confirms release automation targets; release artifacts were not inspected."
+
+  - evidence_id: "evidence-codeql-workflow"
+    source_id: "source-eigent-repository"
+    locator:
+      path: ".github/workflows/codeql.yml"
+      symbol_or_section: "CodeQL language matrix"
+      line_start: 12
+      line_end: 103
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "actions, javascript-typescript, python"
+    note: "A configured static-analysis workflow is a process signal, not a security certification."
+
+  - evidence_id: "evidence-security-policy"
+    source_id: "source-eigent-repository"
+    locator:
+      path: "SECURITY.md"
+      symbol_or_section: "Supported Versions and Reporting a Vulnerability"
+      line_start: 1
+      line_end: 33
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "security updates; responsible disclosure; private security advisory"
+    note: "Documents a vulnerability-reporting process; the version table appears older than the v1.0.1 package tag."
+
+open_questions:
+  - question: "Which license declaration governs the v1.0.1 repository as a whole and the root npm package?"
+    reason: "The root LICENSE and README say Apache-2.0, while package.json says MIT; this card does not provide a legal interpretation."
+    related_claim_ids:
+      - "claim-license-conflict"
+      - "claim-adoption-fit"
+  - question: "Which Python version is actually supported for the server/ package at v1.0.1?"
+    reason: "server/README_EN.md specifies Python 3.10.*, but server/pyproject.toml requires >=3.12,<3.13."
+    related_claim_ids:
+      - "claim-server-python-conflict"
+      - "claim-local-deployment"
+  - question: "Which combinations of the Brain's camel-ai[eigent] 0.2.91a5 and the server's camel-ai 0.2.90a6 plus feat-trigger source override are release-tested together?"
+    reason: "The two packages use different direct constraints and the permitted analysis did not install or run them."
+    related_claim_ids:
+      - "claim-server-python-conflict"
+      - "claim-adoption-fit"
+  - question: "What runtime guarantees apply to the local, sandbox, Docker, and remote execution profiles?"
+    reason: "Static inspection confirms capability filtering and some path policies, but not process isolation, escape resistance, command policy coverage, or end-to-end credential handling."
+    related_claim_ids:
+      - "claim-capability-controls"
+      - "claim-remote-sub-agent"
+      - "claim-adoption-fit"
+  - question: "Which advertised integrations and model providers pass the v1.0.1 release's end-to-end compatibility suite?"
+    reason: "The repository exposes a broad configuration surface, but historical test results and external service behavior were outside the analysis boundary."
+    related_claim_ids:
+      - "claim-model-routing"
+      - "claim-mcp-client"
+      - "claim-tool-surface"
