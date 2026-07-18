@@ -1,8 +1,9 @@
-# Agent Project Intelligence
+# Agent Rumble
 
-Agent Project Intelligence is a developer-oriented tool for researching
-software projects in the AI agent ecosystem. It examines a project's source
-code, documentation, configuration, examples, dependencies, and other relevant
+Agent Rumble is the public product experience powered by Agent Project
+Intelligence, a developer-oriented system for researching software projects in
+the AI agent ecosystem. The system examines a project's source code,
+documentation, configuration, examples, dependencies, and other relevant
 evidence, then organizes its findings into a consistent, structured artifact
 called an **Agent Project Card**. The card helps developers understand an
 unfamiliar project quickly and provides a reliable starting point for deeper
@@ -27,8 +28,10 @@ evidence-backed intelligence for those decisions.
 
 Information about an agent-related project is usually scattered across README
 files, source code, documentation sites, examples, configuration, issues, and
-release notes. Understanding a project often requires time-consuming manual
-investigation, and the result depends heavily on who performs the review.
+release notes. Builders often ask an AI assistant to investigate this material,
+but each request can repeat the same exploration with different scope, evidence
+standards, and conclusions. The result still depends heavily on how the review
+is performed and whether polished documentation is checked against the project.
 Researching what already exists can save substantial engineering time and
 cost: teams can reuse or extend suitable projects, learn from established
 approaches, and focus new development on genuine gaps instead of rebuilding
@@ -46,10 +49,10 @@ as:
 * When is it a good or poor fit for a particular use case?
 * How does it compare or combine with related projects?
 
-Agent Project Intelligence makes this investigation more consistent,
-traceable, repeatable, and suitable for use at scale. It does not treat project
-claims as facts without qualification: material conclusions are connected to
-precise evidence, a verification status, and a confidence level.
+Agent Project Intelligence makes this investigation faster, more consistent,
+traceable, repeatable, and reusable by both humans and agents. It cuts through
+verbose, low-signal, or AI-generated README content by connecting material
+conclusions to precise evidence, a verification status, and a confidence level.
 
 ## What the Project Produces
 
@@ -77,15 +80,19 @@ card rather than maintained as separate sources of truth.
 
 At a high level, the system:
 
-1. Defines the project boundary and records the repositories, revisions,
+1. Selects a catalog cohort of leading public repositories made for or used in
+   AI systems.
+2. Defines each project boundary and records the repositories, revisions,
    releases, and documents included in the analysis.
-2. Maps the repository structure and identifies high-value source,
+3. Maps the repository structure and identifies high-value source,
    configuration, dependency, documentation, example, and test files.
-3. Classifies the project and investigates its capabilities, architecture,
+4. Classifies the project and investigates its capabilities, architecture,
    interfaces, and operational model.
-4. Records material conclusions as claims linked to supporting or conflicting
+5. Records material conclusions as claims linked to supporting or conflicting
    evidence.
-5. Generates and validates the Agent Project Card and its human-readable views.
+6. Generates and validates the Agent Project Card and its human-readable views.
+7. Lets users and agents search, shortlist, and compare the preprocessed cards
+   under an explicit use case or assessment context.
 
 Repository content is treated as untrusted data. The initial product uses
 static analysis and does not execute repository code by default.
@@ -112,11 +119,13 @@ requirements, comparison group, and point in time.
 
 ## Initial MVP
 
-The first MVP is focused on public GitHub repositories written in Python or
+The first MVP is focused on a searchable and comparable catalog preprocessed
+from a selected cohort of public GitHub repositories written in Python or
 TypeScript. It uses static analysis of repository-hosted source code and
 documentation to produce canonical JSON or YAML cards with generated
 human-readable views, claim-level evidence, confidence, and verification
-status.
+status. User-provided repository intake and on-demand analysis are deferred to
+P2.
 
 The initial implementation uses `uv` to manage its Python components, FastAPI
 for the backend, React for the frontend, the OpenAI Agents SDK to orchestrate

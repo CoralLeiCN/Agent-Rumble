@@ -1,6 +1,6 @@
 # MVP Scope and Evaluation
 
-Part of the [Agent Project Intelligence product specification](README.md).
+Part of the [Agent Rumble product specification](README.md).
 
 ## 18. Success Measures
 
@@ -43,11 +43,16 @@ Part of the [Agent Project Intelligence product specification](README.md).
 
 ## 19. MVP Scope
 
-The MVP should focus on producing trustworthy Agent Project Cards for public GitHub repositories. The schema models multi-source projects, while the initial implementation may limit intake to one primary repository and repository-hosted documentation per analysis.
+The MVP should focus on a searchable, comparable catalog of trustworthy Agent
+Project Cards preprocessed for a selected cohort of leading public GitHub
+repositories made for or used in AI systems. The preprocessing workflow may
+limit each analysis to one primary repository and repository-hosted
+documentation even though the schema models multi-source projects.
 
 ### Included
 
 * Public GitHub repository intake
+* Operator-managed preprocessing of the selected repository cohort
 * Python and TypeScript repositories
 * Static analysis only
 * README and documentation analysis
@@ -63,13 +68,16 @@ The MVP should focus on producing trustworthy Agent Project Cards for public Git
 * Canonical JSON or YAML card and generated human-readable views
 * Claim and evidence records with source snapshots
 * Capability support-status distinctions
-* Basic card search
-* Manual card refresh
+* Search by stated need and structured card attributes
+* Shortlisting and contextual comparison of catalog projects
+* Manual operator-managed card refresh
 * Prompt-injection resistance for repository content
 
 ### Excluded
 
 * Private repositories
+* User-provided repository intake and on-demand analysis
+* Search-engine indexing and rich social previews for public card pages
 * Automatic code execution
 * Full security scanning
 * Continuous repository monitoring
@@ -116,6 +124,11 @@ The MVP is successful when it can analyze a representative set of agent-related 
 12. Record the project boundary, analyzed revisions, analysis configuration, schema version, and ontology versions.
 13. Distinguish documented, statically confirmed, runtime-verified, planned, deprecated, unverified, and conflicted states where applicable.
 14. Prevent instructions embedded in repository content from changing analysis policy, tool authority, project scope, or output requirements.
+15. Allow users and agents to search the preprocessed catalog without first
+    submitting a repository.
+16. Compare selected catalog projects under an explicit assessment context while
+    preserving evidence, confidence, verification, source-snapshot, and null-state
+    distinctions.
 
 Numeric acceptance thresholds remain an [open decision](../open-decisions.md#mvp-evaluation-protocol) until the evaluation set, rubric, reviewer process, and denominator are recorded.
 

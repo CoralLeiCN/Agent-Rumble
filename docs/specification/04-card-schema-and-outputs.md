@@ -1,6 +1,6 @@
 # Agent Project Card Schema and Outputs
 
-Part of the [Agent Project Intelligence product specification](README.md).
+Part of the [Agent Rumble product specification](README.md).
 
 ## 12. Agent Project Card Schema
 

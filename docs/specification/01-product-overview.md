@@ -1,10 +1,12 @@
 # Product Overview
 
-Part of the [Agent Project Intelligence product specification](README.md).
+Part of the [Agent Rumble product specification](README.md).
 
 ## 1. Executive Summary
 
-Agent Project Intelligence is an AI-powered system that explores, understands, and describes software projects related to AI agents.
+**Agent Rumble** is the public product experience for **Agent Project
+Intelligence**, an AI-powered system that explores, understands, and describes
+software projects related to AI agents.
 
 The system can analyze repositories for:
 
@@ -32,6 +34,12 @@ These cards become a reusable knowledge layer for downstream products such as:
 * An agent solution-design assistant
 * A repository due-diligence system
 
+The first product experience is a preprocessed catalog of cards for a selected
+set of leading public GitHub repositories made for or used in AI systems. Users
+and agents search and compare this catalog without waiting for a new repository
+analysis. User-provided repository intake and on-demand analysis are deferred to
+P2.
+
 ---
 
 ## 2. Problem Statement
@@ -51,9 +59,18 @@ A README alone is usually insufficient to determine:
 * What use cases it is best suited for
 * What limitations or gaps may affect adoption
 
-Users currently need to inspect each project manually. This process is slow, inconsistent, technically demanding, and difficult to repeat at scale.
+Builders increasingly ask AI assistants to read and explain repositories, but
+each request still starts a fresh exploration whose scope, evidence standards,
+and comparison basis may vary. AI-generated or otherwise verbose, low-signal
+documentation can be repeated as fact when it is not checked against source,
+configuration, examples, and tests. Repeating that work across candidate
+projects is slow, inconsistent, and difficult to reuse at scale for either a
+human or another agent.
 
-Agent Project Intelligence addresses this problem by creating a structured and evidence-backed representation of each project.
+Agent Project Intelligence addresses this problem by preprocessing structured,
+evidence-backed representations that humans and agents can search and compare
+immediately. It accelerates discovery, analysis, and contextual trade-off
+decisions without replacing uncertainty with unsupported certainty.
 
 ---
 
@@ -193,23 +210,50 @@ The core tool combines:
 * An Agent Project Card skill attached to Codex, containing the instructions for generating the card
 * The canonical Agent Project Card and its generated human-readable views as the outputs
 
-The same core tool supports two usage modes:
+The core tool supports catalog preprocessing first and user-initiated generation
+later:
 
 | Usage mode | How the user starts card generation | Role of Agent Project Intelligence |
 | --- | --- | --- |
-| Direct Codex session | The user invokes the Agent Project Card skill in their own Codex session. | The skill guides Codex to analyze the declared project and create the card. |
-| API | A client calls an API that wraps Codex and the Agent Project Card skill. | The API starts the same card-generation capability and exposes it to other products. |
+| Catalog preprocessing | An operator-managed process selects a repository in the catalog cohort. | Codex and the skill analyze the declared project boundary and produce the canonical card before a user searches for it. |
+| Direct Codex session (P2) | The user invokes the Agent Project Card skill in their own Codex session. | The skill guides Codex to analyze the declared project and create the card. |
+| On-demand API (P2) | A client calls an API that wraps Codex and the Agent Project Card skill. | The API starts the same card-generation capability for a user-provided repository. |
 
-A later frontend can use the API as its backend: the user provides a Git repository link, and the frontend requests creation of an Agent Project Card. The frontend is an access layer, not a separate card-generation implementation.
+The first frontend and public API experience search, retrieve, and compare the
+preprocessed cards. The frontend is an access layer and does not define a
+separate card or comparison model. A P2 frontend may accept a Git repository
+link and request on-demand card creation through the API.
 
-Both usage modes must produce the same canonical artifact and apply the same project-boundary, source-snapshot, claim, evidence, confidence, verification, schema, and validation rules.
+Every card-generation mode must produce the same canonical artifact and apply
+the same project-boundary, source-snapshot, claim, evidence, confidence,
+verification, schema, and validation rules.
+
+### Catalog-First Access
+
+The initial catalog contains preprocessed cards for a declared cohort of leading
+public GitHub repositories made for or used in AI systems. “Leading” describes
+cohort selection, not a universal quality score. The cohort definition and
+selection criteria must be recorded, and popularity must not be treated as a
+proxy for project quality.
+
+Users and agents can:
+
+* Search for projects by a stated need or structured project attributes
+* Inspect an individual card and its evidence
+* Shortlist relevant projects
+* Compare selected projects under an explicit assessment context
+
+Search and comparison operate on source snapshots rather than live repository
+state. The interface must expose the analyzed revision and card age so users can
+judge whether refresh is needed.
 
 ### Use-Case Breakdown
 
 | Use case | Scope | Relationship to the core tool |
 | --- | --- | --- |
-| Understand a single project | Core card creation | Produces and presents one Agent Project Card for a declared project boundary. |
-| Compare similar projects | Downstream use | Consumes multiple cards under an explicit comparison context. |
+| Search the project catalog | Initial product access | Retrieves preprocessed cards that match the user's stated need or structured filters. |
+| Understand a single project | Core card consumption | Presents one preprocessed Agent Project Card and its evidence. |
+| Compare similar projects | Initial product access | Consumes selected preprocessed cards under an explicit comparison context. |
 | Recommend projects for a use case | Downstream use | Retrieves and assesses cards against stated requirements. |
 | Perform ecosystem gap analysis | Downstream use | Uses cards to identify missing capabilities relative to an explicit context. |
 | Support technical due diligence | Card creation and downstream assessment | Uses evidence-backed card data to support a first-pass assessment. |
@@ -218,11 +262,17 @@ Both usage modes must produce the same canonical artifact and apply the same pro
 
 ### 7.1 Understand a Single Project
 
-A user provides a project reference, usually one or more repository URLs and an optional package, directory, release, or documentation scope. The system explores the selected sources and generates an Agent Project Card for the declared project boundary.
+A user selects a project returned by catalog search and inspects its preprocessed
+Agent Project Card. The card identifies the declared project boundary, source
+snapshot, evidence, confidence, and unresolved questions. P2 on-demand analysis
+may additionally allow the user to provide a repository reference.
 
 ### 7.2 Compare Similar Projects
 
-A user selects multiple projects. The system compares their purpose, capabilities, architecture, maturity, integration requirements, strengths, weaknesses, and gaps.
+A user selects multiple catalog projects and states the use case or requirements
+that make the comparison meaningful. The system compares their purpose,
+capabilities, architecture, maturity, integration requirements, strengths,
+weaknesses, and gaps using their recorded source snapshots.
 
 ### 7.3 Recommend Projects for a Use Case
 
@@ -313,10 +363,17 @@ The use case, comparison cohort, organizational constraints, requirements, and p
 
 ## Product Naming
 
-Use **Agent Project Intelligence** as the product name and **Agent Project Card** as the formal, canonical artifact.
+Use **Agent Rumble** as the public product and user-interface name.
+
+Use **Agent Project Intelligence** for the underlying system and analysis
+capability. Use **Agent Project Card** as the formal, canonical artifact.
 
 Use **Card Summary** for the compact visual representation. “Profile” may describe an internal indexed projection, but it is not a separate user-facing artifact or source of truth.
 
-Alternative names considered included Agent Repository Intelligence, Agent System Card, Agent Landscape Intelligence, and Capability Profile. Those alternatives either overemphasize repositories, are too narrow for supporting projects, or imply a landscape view rather than a canonical project artifact.
+Alternative system or artifact names considered included Agent Repository
+Intelligence, Agent System Card, Agent Landscape Intelligence, and Capability
+Profile. Those alternatives either overemphasize repositories, are too narrow
+for supporting projects, or imply a landscape view rather than a canonical
+project artifact.
 
 ---

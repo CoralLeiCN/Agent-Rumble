@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Rumble — Frontend concept</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #f3f1e8;
+      --paper: #fcfbf6;
+      --ink: #111a2e;
+      --ink-2: #25304a;
+      --muted: #646b7b;
+      --line: #c9c7bc;
+      --line-dark: #92938e;
+      --signal: #c8ff45;
+      --signal-dark: #263900;
+      --coral: #ff725e;
+      --blue: #5b7cff;
+      --violet: #9e78ff;
+      --white: #fffef9;
+      --shadow: 0 18px 50px rgb(17 26 46 / 16%);
+      --radius: 12px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.5;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, a:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 3px;
+    }
+    [hidden] { display: none !important; }
+
+    .prototype-banner {
+      background: var(--coral);
+      color: var(--ink);
+      padding: 7px 20px;
+      text-align: center;
+      font: 700 11px/1.4 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid rgb(255 255 255 / 18%);
+      background: rgb(17 26 46 / 96%);
+      color: var(--white);
+      backdrop-filter: blur(14px);
+    }
+    .header-inner {
+      width: min(1240px, calc(100% - 40px));
+      height: 66px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-right: auto;
+      color: inherit;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 780;
+      letter-spacing: -.02em;
+    }
+    .wordmark-mark {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--signal);
+      border-radius: 7px;
+      color: var(--signal);
+      font: 800 12px var(--mono);
+    }
+    .nav-link {
+      border: 0;
+      background: transparent;
+      color: #c9cfdd;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .nav-link.active { color: var(--signal); }
+    .freshness {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #c9cfdd;
+      font: 600 11px var(--mono);
+    }
+    .freshness::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--signal);
+      box-shadow: 0 0 0 4px rgb(200 255 69 / 12%);
+    }
+
+    main { padding-bottom: 120px; }
+    .hero {
+      background:
+        linear-gradient(130deg, rgb(200 255 69 / 8%), transparent 43%),
+        var(--ink);
+      color: var(--white);
+      border-bottom: 1px solid var(--line-dark);
+    }
+    .hero-inner {
+      width: min(1240px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 68px 0 54px;
+    }
+    .eyebrow {
+      margin: 0 0 17px;
+      color: var(--signal);
+      font: 700 11px/1.4 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 850px;
+      margin: 0;
+      font-size: clamp(42px, 6.5vw, 78px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      font-weight: 760;
+    }
+    .hero-copy {
+      max-width: 690px;
+      margin: 22px 0 30px;
+      color: #cfd4df;
+      font-size: 18px;
+    }
+    .search-form {
+      max-width: 920px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+    .search-input {
+      min-width: 0;
+      height: 62px;
+      border: 1px solid #566078;
+      border-radius: 10px;
+      background: #202a41;
+      color: var(--white);
+      padding: 0 20px;
+      font-size: 16px;
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 2%);
+    }
+    .search-input::placeholder { color: #929caf; }
+    .primary-button {
+      min-height: 48px;
+      border: 1px solid var(--signal);
+      border-radius: 9px;
+      background: var(--signal);
+      color: var(--signal-dark);
+      padding: 0 24px;
+      font-weight: 800;
+    }
+    .primary-button:hover { background: #d4ff71; }
+    .search-form .primary-button { min-width: 150px; }
+    .example-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      align-items: center;
+      color: #a8b0c1;
+      font-size: 12px;
+    }
+    .example-button {
+      border: 1px solid #46516a;
+      border-radius: 999px;
+      background: transparent;
+      color: #d5d9e1;
+      padding: 7px 11px;
+      font-size: 12px;
+    }
+
+    .workspace {
+      width: min(1240px, calc(100% - 40px));
+      margin: 0 auto;
+      padding-top: 26px;
+    }
+    .catalog-strip {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      font: 650 11px var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .055em;
+    }
+    .catalog-strip strong { color: var(--ink); }
+    .catalog-strip span { color: var(--muted); }
+    .context-panel {
+      margin-bottom: 20px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+    .context-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+    .section-label {
+      margin: 0 0 4px;
+      color: var(--muted);
+      font: 700 10px var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .context-title { margin: 0; font-size: 15px; }
+    .text-button {
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      padding: 0;
+      font-size: 12px;
+      font-weight: 750;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #aeb2bc;
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--ink-2);
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 670;
+    }
+    .chip.hard { border-color: #66718a; background: #edf0f5; }
+
+    .results-layout {
+      display: grid;
+      grid-template-columns: 205px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+    .filter-rail {
+      position: sticky;
+      top: 92px;
+      border-top: 2px solid var(--ink);
+    }
+    .filter-group { padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .filter-group h3 {
+      margin: 0 0 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+    .filter-option {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .filter-option.active { color: var(--ink); font-weight: 750; }
+    .filter-count { font-family: var(--mono); font-size: 10px; }
+
+    .results-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .results-header h2 { margin: 0; font-size: 23px; letter-spacing: -.025em; }
+    .results-header p { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+    .sort-label {
+      color: var(--muted);
+      font: 600 11px var(--mono);
+    }
+    .project-list { display: grid; gap: 12px; }
+    .project-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      padding: 20px;
+      transition: border-color .15s ease, transform .15s ease;
+    }
+    .project-card:hover { border-color: var(--line-dark); transform: translateY(-1px); }
+    .project-card.selected { border-color: var(--ink); box-shadow: inset 4px 0 0 var(--signal); }
+    .project-top { display: flex; gap: 16px; align-items: start; }
+    .project-mark {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--ink);
+      border-radius: 10px;
+      background: var(--ink);
+      color: var(--signal);
+      font: 800 13px var(--mono);
+    }
+    .project-heading { flex: 1; min-width: 0; }
+    .project-heading h3 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+    .project-meta { margin-top: 3px; color: var(--muted); font: 600 10px var(--mono); }
+    .compare-toggle {
+      flex: 0 0 auto;
+      border: 1px solid var(--ink);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink);
+      padding: 8px 11px;
+      font-size: 11px;
+      font-weight: 760;
+    }
+    .compare-toggle[aria-pressed="true"] { background: var(--ink); color: var(--signal); }
+    .summary { margin: 14px 0; color: #3e4658; font-size: 13px; }
+    .match-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+    .match-list { display: flex; flex-wrap: wrap; gap: 7px; }
+    .match {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      border-radius: 5px;
+      background: #eef4df;
+      color: #31420d;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 690;
+    }
+    .match.partial { background: #edf0ff; color: #34498c; }
+    .constraint {
+      border-left: 3px solid var(--coral);
+      padding-left: 10px;
+      color: #5f433f;
+      font-size: 11px;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 16px;
+      padding-top: 13px;
+      border-top: 1px solid #dcdbd3;
+    }
+    .status-counts { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); font: 600 10px var(--mono); }
+    .status-counts strong { color: var(--ink); }
+    .card-link { color: var(--blue); font-size: 11px; font-weight: 760; text-decoration: none; }
+
+    .compare-tray {
+      position: fixed;
+      z-index: 35;
+      left: 50%;
+      bottom: 20px;
+      width: min(960px, calc(100% - 32px));
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid #2c3852;
+      border-radius: 13px;
+      background: var(--ink);
+      color: var(--white);
+      padding: 13px 14px 13px 18px;
+      box-shadow: var(--shadow);
+    }
+    .tray-label { color: #aeb6c7; font: 700 10px var(--mono); letter-spacing: .08em; }
+    .tray-items { flex: 1; display: flex; flex-wrap: wrap; gap: 7px; }
+    .tray-item {
+      border: 1px solid #556078;
+      border-radius: 999px;
+      background: #202c45;
+      color: var(--white);
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    .tray-button { min-height: 42px; }
+
+    .comparison-page { width: min(1440px, calc(100% - 40px)); margin: 0 auto; padding: 36px 0 80px; }
+    .back-button {
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      padding: 0;
+      font-size: 12px;
+      font-weight: 760;
+    }
+    .comparison-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, .7fr);
+      gap: 28px;
+      margin: 25px 0;
+    }
+    .comparison-intro h1 { color: var(--ink); font-size: clamp(36px, 5vw, 62px); }
+    .comparison-intro p { color: var(--muted); }
+    .decision-note {
+      align-self: end;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: var(--white);
+      padding: 18px;
+    }
+    .decision-note .section-label { color: var(--signal); }
+    .decision-note p { margin: 5px 0 0; color: #d2d6df; font-size: 13px; }
+    .comparison-shell {
+      overflow-x: auto;
+      border: 1px solid var(--line-dark);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+    .comparison-table { width: 100%; min-width: 920px; border-collapse: collapse; table-layout: fixed; }
+    .comparison-table th, .comparison-table td {
+      padding: 14px 16px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 12px;
+    }
+    .comparison-table tr:last-child td { border-bottom: 0; }
+    .comparison-table th:last-child, .comparison-table td:last-child { border-right: 0; }
+    .comparison-table thead th { background: var(--ink); color: var(--white); }
+    .comparison-table thead th:first-child { width: 220px; color: var(--signal); }
+    .comparison-table tbody th { background: #eceae1; font-size: 11px; text-transform: uppercase; letter-spacing: .045em; }
+    .group-row th {
+      background: #d9d7ce !important;
+      color: var(--ink);
+      font: 750 10px var(--mono) !important;
+    }
+    .cell-status { display: inline-flex; align-items: center; gap: 6px; margin-top: 7px; font: 700 9px var(--mono); text-transform: uppercase; }
+    .cell-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--signal-dark); }
+    .cell-status.documented::before { background: var(--blue); }
+    .cell-status.unknown::before { background: #999; }
+    .evidence-button {
+      display: block;
+      margin-top: 9px;
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      padding: 0;
+      font-size: 10px;
+      font-weight: 780;
+    }
+    .shared-button {
+      width: 100%;
+      border: 0;
+      border-top: 1px solid var(--line);
+      background: #eceae1;
+      color: var(--ink);
+      padding: 14px;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgb(17 26 46 / 38%);
+    }
+    .evidence-drawer {
+      position: fixed;
+      z-index: 55;
+      top: 0;
+      right: 0;
+      width: min(560px, 44vw);
+      height: 100dvh;
+      overflow-y: auto;
+      border-left: 1px solid var(--line-dark);
+      background: var(--paper);
+      padding: 26px;
+      box-shadow: -20px 0 60px rgb(17 26 46 / 20%);
+    }
+    .drawer-header { display: flex; justify-content: space-between; gap: 16px; }
+    .drawer-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--ink);
+      font-size: 18px;
+    }
+    .evidence-drawer h2 { margin: 22px 0 8px; font-size: 25px; line-height: 1.15; letter-spacing: -.025em; }
+    .drawer-copy { color: var(--muted); font-size: 13px; }
+    .evidence-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 22px 0;
+    }
+    .meta-box { border: 1px solid var(--line); border-radius: 8px; padding: 11px; }
+    .meta-box span { display: block; color: var(--muted); font: 650 9px var(--mono); text-transform: uppercase; }
+    .meta-box strong { display: block; margin-top: 4px; font-size: 12px; }
+    .locator { margin: 22px 0 8px; color: var(--ink); font: 700 11px var(--mono); }
+    .code-block {
+      overflow-x: auto;
+      border: 1px solid #37425a;
+      border-radius: 9px;
+      background: var(--ink);
+      color: #e8ecf3;
+      padding: 16px;
+      font: 12px/1.65 var(--mono);
+      white-space: pre;
+    }
+    .fixture-note {
+      margin-top: 20px;
+      border-left: 4px solid var(--coral);
+      background: #fff0eb;
+      padding: 12px;
+      color: #633d36;
+      font-size: 11px;
+    }
+
+    @media (max-width: 900px) {
+      .header-inner { gap: 16px; }
+      .nav-link, .freshness { display: none; }
+      .results-layout { grid-template-columns: 1fr; }
+      .filter-rail { display: none; }
+      .match-grid { grid-template-columns: 1fr; }
+      .comparison-intro { grid-template-columns: 1fr; }
+      .evidence-drawer { width: min(680px, 80vw); }
+    }
+    @media (max-width: 650px) {
+      .prototype-banner { padding-inline: 12px; }
+      .header-inner, .hero-inner, .workspace, .comparison-page { width: min(100% - 28px, 1240px); }
+      .hero-inner { padding: 48px 0 40px; }
+      h1 { font-size: 44px; }
+      .hero-copy { font-size: 15px; }
+      .search-form { grid-template-columns: 1fr; }
+      .search-form .primary-button { height: 52px; }
+      .catalog-strip { align-items: start; flex-direction: column; padding: 14px 0; }
+      .context-top, .project-top, .card-footer, .results-header { align-items: start; flex-direction: column; }
+      .compare-toggle { width: 100%; }
+      .project-mark { display: none; }
+      .compare-tray { align-items: stretch; flex-direction: column; bottom: 8px; }
+      .tray-button { width: 100%; }
+      .evidence-drawer { width: 100%; }
+      .evidence-meta { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-banner">Illustrative design fixture · not validated project intelligence</div>
+  <header class="app-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#" id="home-link">
+        <span class="wordmark-mark">AP</span>
+        <span>Agent Rumble</span>
+      </a>
+      <button class="nav-link active" type="button">Explore</button>
+      <button class="nav-link" type="button">Collections</button>
+      <span class="freshness">Catalog updated 2h ago</span>
+      <button class="nav-link" type="button">API</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="explore-view">
+      <section class="hero">
+        <div class="hero-inner">
+          <p class="eyebrow">Preprocessed · Source-evidenced · Agent-ready</p>
+          <h1>Stop re-analyzing.<br>Start deciding.</h1>
+          <p class="hero-copy">Discover and compare AI projects through prepared intelligence grounded in repository evidence—not another pass over README claims.</p>
+          <form class="search-form" id="search-form">
+            <label hidden for="search-input">Describe what you are building</label>
+            <input class="search-input" id="search-input" value="Customer-support agent with human approval, retrieval and self-hosted deployment" autocomplete="off">
+            <button class="primary-button" type="submit">Find projects</button>
+          </form>
+          <div class="example-row">
+            <span>Try</span>
+            <button class="example-button" type="button">Stateful agent orchestration</button>
+            <button class="example-button" type="button">MCP servers for knowledge tools</button>
+            <button class="example-button" type="button">Open-source agent evaluation</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="workspace" id="results">
+        <div class="catalog-strip">
+          <strong>42 preprocessed projects · 5 architecture categories</strong>
+          <span>Snapshot 18 Jul 2026 · schema 0.2 · classification 0.1</span>
+        </div>
+
+        <section class="context-panel" aria-labelledby="context-title">
+          <div class="context-top">
+            <div>
+              <p class="section-label">Interpreted assessment context</p>
+              <h2 class="context-title" id="context-title">Customer-support agent with controlled actions and internal knowledge</h2>
+            </div>
+            <button class="text-button" type="button">Edit requirements</button>
+          </div>
+          <div class="chips" aria-label="Interpreted requirements">
+            <span class="chip hard">Agent framework</span>
+            <span class="chip hard">Python</span>
+            <span class="chip hard">Tool calling</span>
+            <span class="chip hard">Human approval</span>
+            <span class="chip">Retrieval</span>
+            <span class="chip">Self-hosted preferred</span>
+            <span class="chip">Tracing</span>
+          </div>
+        </section>
+
+        <div class="results-layout">
+          <aside class="filter-rail" aria-label="Search filters">
+            <div class="filter-group">
+              <h3>Project role</h3>
+              <div class="filter-option active"><span>Agent framework</span><span class="filter-count">8</span></div>
+              <div class="filter-option"><span>Agent SDK</span><span class="filter-count">6</span></div>
+              <div class="filter-option"><span>Orchestration</span><span class="filter-count">5</span></div>
+              <div class="filter-option"><span>Evaluation</span><span class="filter-count">7</span></div>
+            </div>
+            <div class="filter-group">
+              <h3>Capability</h3>
+              <div class="filter-option active"><span>Tool calling</span><span class="filter-count">15</span></div>
+              <div class="filter-option active"><span>Human approval</span><span class="filter-count">7</span></div>
+              <div class="filter-option"><span>Durable state</span><span class="filter-count">6</span></div>
+              <div class="filter-option"><span>MCP</span><span class="filter-count">11</span></div>
+            </div>
+            <div class="filter-group">
+              <h3>Catalog</h3>
+              <div class="filter-option"><span>Confirmed claims</span><span class="filter-count">614</span></div>
+              <div class="filter-option"><span>Evidence records</span><span class="filter-count">1,208</span></div>
+            </div>
+          </aside>
+
+          <section aria-labelledby="results-title">
+            <div class="results-header">
+              <div>
+                <h2 id="results-title">3 strong candidates</h2>
+                <p>Different roles; compare architecture before feature counts.</p>
+              </div>
+              <span class="sort-label">Sorted by requirement match</span>
+            </div>
+
+            <div class="project-list">
+              <article class="project-card" data-project="openai" data-name="OpenAI Agents SDK">
+                <div class="project-top">
+                  <span class="project-mark">OA</span>
+                  <div class="project-heading">
+                    <h3>OpenAI Agents SDK</h3>
+                    <div class="project-meta">AGENT SDK · PYTHON · MIT · REVISION 7F3A…</div>
+                  </div>
+                  <button class="compare-toggle" type="button" aria-pressed="false">+ Compare</button>
+                </div>
+                <p class="summary">A lightweight SDK for agent workflows, tools, handoffs, guardrails, sessions, and tracing.</p>
+                <div class="match-grid">
+                  <div>
+                    <p class="section-label">Why it matched</p>
+                    <div class="match-list">
+                      <span class="match">✓ Tool calling</span>
+                      <span class="match">✓ Human approval</span>
+                      <span class="match partial">◐ Retrieval integration</span>
+                    </div>
+                  </div>
+                  <div class="constraint"><strong>Inspect:</strong> durable workflow persistence and self-hosted trace requirements.</div>
+                </div>
+                <div class="card-footer">
+                  <div class="status-counts"><span><strong>18</strong> confirmed</span><span><strong>7</strong> documented</span><span><strong>2</strong> unknown</span></div>
+                  <a class="card-link" href="https://github.com/openai/openai-agents-python">View prepared card →</a>
+                </div>
+              </article>
+
+              <article class="project-card" data-project="langgraph" data-name="LangGraph">
+                <div class="project-top">
+                  <span class="project-mark">LG</span>
+                  <div class="project-heading">
+                    <h3>LangGraph</h3>
+                    <div class="project-meta">ORCHESTRATION FRAMEWORK · PYTHON · REVISION B921…</div>
+                  </div>
+                  <button class="compare-toggle" type="button" aria-pressed="false">+ Compare</button>
+                </div>
+                <p class="summary">A low-level orchestration framework for long-running, stateful agent workflows.</p>
+                <div class="match-grid">
+                  <div>
+                    <p class="section-label">Why it matched</p>
+                    <div class="match-list">
+                      <span class="match">✓ Human approval</span>
+                      <span class="match">✓ Durable state</span>
+                      <span class="match partial">◐ Retrieval ecosystem</span>
+                    </div>
+                  </div>
+                  <div class="constraint"><strong>Inspect:</strong> operational dependencies and which observability path is acceptable.</div>
+                </div>
+                <div class="card-footer">
+                  <div class="status-counts"><span><strong>21</strong> confirmed</span><span><strong>6</strong> documented</span><span><strong>3</strong> unknown</span></div>
+                  <a class="card-link" href="https://github.com/langchain-ai/langgraph">View prepared card →</a>
+                </div>
+              </article>
+
+              <article class="project-card" data-project="crewai" data-name="CrewAI">
+                <div class="project-top">
+                  <span class="project-mark">CR</span>
+                  <div class="project-heading">
+                    <h3>CrewAI</h3>
+                    <div class="project-meta">MULTI-AGENT FRAMEWORK · PYTHON · MIT · REVISION C042…</div>
+                  </div>
+                  <button class="compare-toggle" type="button" aria-pressed="false">+ Compare</button>
+                </div>
+                <p class="summary">A framework for coordinating role-based agents through crews and structured flows.</p>
+                <div class="match-grid">
+                  <div>
+                    <p class="section-label">Why it matched</p>
+                    <div class="match-list">
+                      <span class="match">✓ Tool integration</span>
+                      <span class="match partial">◐ Human approval</span>
+                      <span class="match partial">◐ Tracing options</span>
+                    </div>
+                  </div>
+                  <div class="constraint"><strong>Inspect:</strong> exact approval semantics and optional hosted-platform boundaries.</div>
+                </div>
+                <div class="card-footer">
+                  <div class="status-counts"><span><strong>16</strong> confirmed</span><span><strong>10</strong> documented</span><span><strong>4</strong> unknown</span></div>
+                  <a class="card-link" href="https://github.com/crewAIInc/crewAI">View prepared card →</a>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <section class="comparison-page" id="comparison-view" hidden aria-labelledby="comparison-title">
+      <button class="back-button" id="back-button" type="button">← Back to search results</button>
+      <div class="comparison-intro">
+        <div>
+          <p class="eyebrow" style="color:#33425f">Contextual comparison · 3 projects</p>
+          <h1 id="comparison-title">Choose a foundation for a controlled customer-support agent.</h1>
+          <p>This comparison prioritizes Python, tool calling, human approval, retrieval, tracing, and self-hosted operation. It is not a universal ranking.</p>
+          <div class="chips">
+            <span class="chip hard">Human approval required</span>
+            <span class="chip hard">Python required</span>
+            <span class="chip">Self-hosted preferred</span>
+            <span class="chip">2-week prototype</span>
+          </div>
+        </div>
+        <aside class="decision-note">
+          <p class="section-label">What changes the decision</p>
+          <p>These projects overlap, but differ in orchestration level, persistence model, approval control, and operational dependencies. Validate those before choosing a prototype.</p>
+        </aside>
+      </div>
+
+      <div class="comparison-shell">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Material differences first</th><th>OpenAI Agents SDK</th><th>LangGraph</th><th>CrewAI</th></tr>
+          </thead>
+          <tbody>
+            <tr class="group-row"><th colspan="4">Role and center of gravity</th></tr>
+            <tr>
+              <th scope="row">Primary role</th>
+              <td>Agent SDK<div class="cell-status">Illustrative status</div></td>
+              <td>Stateful orchestration<div class="cell-status">Illustrative status</div></td>
+              <td>Multi-agent framework<div class="cell-status">Illustrative status</div></td>
+            </tr>
+            <tr class="group-row"><th colspan="4">Current assessment requirements</th></tr>
+            <tr>
+              <th scope="row">Human approval</th>
+              <td>Approval interrupts represented in workflow state.<div class="cell-status">Confirmed in source</div><button class="evidence-button" type="button">View 2 evidence records →</button></td>
+              <td>Graph execution can pause for review and resume.<div class="cell-status">Confirmed in source</div><button class="evidence-button" type="button">View 3 evidence records →</button></td>
+              <td>Approval behavior requires scope validation.<div class="cell-status documented">Documented</div><button class="evidence-button" type="button">View 1 evidence record →</button></td>
+            </tr>
+            <tr>
+              <th scope="row">Durable state</th>
+              <td>Session state; durable workflow behavior needs validation.<div class="cell-status unknown">Open question</div></td>
+              <td>Persistence is central to the orchestration model.<div class="cell-status">Confirmed in source</div><button class="evidence-button" type="button">View evidence →</button></td>
+              <td>Flow persistence semantics require validation.<div class="cell-status documented">Documented</div></td>
+            </tr>
+            <tr>
+              <th scope="row">Hosted dependency</th>
+              <td>Core SDK can be installed as a library.<div class="cell-status">Confirmed in source</div></td>
+              <td>Core library and optional hosted ecosystem need separating.<div class="cell-status documented">Documented</div></td>
+              <td>Open-source core and hosted offering need boundary review.<div class="cell-status documented">Documented</div></td>
+            </tr>
+            <tr class="group-row"><th colspan="4">Prototype guidance</th></tr>
+            <tr>
+              <th scope="row">Prototype when</th>
+              <td>You want a compact agent SDK and explicit tool/guardrail primitives.</td>
+              <td>You need visible workflow state and durable, resumable control flow.</td>
+              <td>You prefer role-based multi-agent coordination and higher-level flows.</td>
+            </tr>
+            <tr>
+              <th scope="row">Validate first</th>
+              <td>Persistence, trace-data handling, and retrieval composition.</td>
+              <td>Deployment topology, ecosystem dependencies, and operational weight.</td>
+              <td>Approval semantics, telemetry boundaries, and failure recovery.</td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="shared-button" type="button">Show 12 shared attributes ↓</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="compare-tray" id="compare-tray" hidden aria-live="polite">
+    <span class="tray-label">Shortlist</span>
+    <div class="tray-items" id="tray-items"></div>
+    <button class="primary-button tray-button" id="compare-button" type="button">Compare projects →</button>
+  </div>
+
+  <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+  <aside class="evidence-drawer" id="evidence-drawer" role="dialog" aria-modal="true" aria-labelledby="evidence-title" hidden>
+    <div class="drawer-header">
+      <div>
+        <p class="section-label">Claim evidence · illustrative fixture</p>
+        <span class="cell-status">Confirmed in source</span>
+      </div>
+      <button class="drawer-close" id="drawer-close" type="button" aria-label="Close evidence inspector">×</button>
+    </div>
+    <h2 id="evidence-title">Human approval can pause execution before a controlled action.</h2>
+    <p class="drawer-copy">This claim matters because the current Assessment Context requires a person to approve consequential customer-support actions.</p>
+    <div class="evidence-meta">
+      <div class="meta-box"><span>Confidence</span><strong>High</strong></div>
+      <div class="meta-box"><span>Verification</span><strong>Statically confirmed</strong></div>
+      <div class="meta-box"><span>Snapshot</span><strong>Illustrative revision</strong></div>
+      <div class="meta-box"><span>Evidence</span><strong>2 supporting · 0 conflicting</strong></div>
+    </div>
+    <p class="section-label">Evidence 1 of 2</p>
+    <p class="locator">src/[validated-path].py · lines supplied by canonical card</p>
+    <div class="code-block"># Exact source excerpt appears here.
+# It is resolved from evidence_id in the
+# validated Agent Project Card, not generated
+# independently by the frontend.</div>
+    <div class="fixture-note"><strong>Prototype safeguard:</strong> the comparison values, locators, and claim counts on this page illustrate the intended interface. Replace them with validated card fixtures before presenting them as project intelligence.</div>
+  </aside>
+
+  <script>
+    const selected = new Map();
+    const cards = [...document.querySelectorAll('.project-card')];
+    const tray = document.getElementById('compare-tray');
+    const trayItems = document.getElementById('tray-items');
+    const compareButton = document.getElementById('compare-button');
+    const exploreView = document.getElementById('explore-view');
+    const comparisonView = document.getElementById('comparison-view');
+    const drawer = document.getElementById('evidence-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const drawerClose = document.getElementById('drawer-close');
+    let lastEvidenceButton = null;
+
+    function renderTray() {
+      tray.hidden = selected.size === 0;
+      trayItems.replaceChildren();
+      selected.forEach((name, id) => {
+        const item = document.createElement('button');
+        item.className = 'tray-item';
+        item.type = 'button';
+        item.textContent = `${name} ×`;
+        item.addEventListener('click', () => toggleProject(id));
+        trayItems.append(item);
+      });
+      compareButton.disabled = selected.size < 2;
+      compareButton.style.opacity = selected.size < 2 ? '.55' : '1';
+      compareButton.textContent = selected.size < 2 ? 'Add one more project' : `Compare ${selected.size} projects →`;
+    }
+
+    function toggleProject(id) {
+      const card = cards.find((item) => item.dataset.project === id);
+      const button = card.querySelector('.compare-toggle');
+      if (selected.has(id)) {
+        selected.delete(id);
+        card.classList.remove('selected');
+        button.setAttribute('aria-pressed', 'false');
+        button.textContent = '+ Compare';
+      } else if (selected.size < 4) {
+        selected.set(id, card.dataset.name);
+        card.classList.add('selected');
+        button.setAttribute('aria-pressed', 'true');
+        button.textContent = '✓ Shortlisted';
+      }
+      renderTray();
+    }
+
+    cards.forEach((card) => {
+      card.querySelector('.compare-toggle').addEventListener('click', () => toggleProject(card.dataset.project));
+    });
+
+    document.getElementById('search-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.querySelectorAll('.example-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.getElementById('search-input').value = button.textContent;
+        document.getElementById('search-input').focus();
+      });
+    });
+
+    compareButton.addEventListener('click', () => {
+      if (selected.size < 2) return;
+      exploreView.hidden = true;
+      comparisonView.hidden = false;
+      tray.hidden = true;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('comparison-title').focus?.();
+    });
+
+    document.getElementById('back-button').addEventListener('click', () => {
+      comparisonView.hidden = true;
+      exploreView.hidden = false;
+      renderTray();
+      window.scrollTo({ top: document.getElementById('results').offsetTop - 60, behavior: 'smooth' });
+    });
+
+    function openDrawer(button) {
+      lastEvidenceButton = button;
+      drawer.hidden = false;
+      backdrop.hidden = false;
+      document.body.style.overflow = 'hidden';
+      drawerClose.focus();
+    }
+
+    function closeDrawer() {
+      drawer.hidden = true;
+      backdrop.hidden = true;
+      document.body.style.overflow = '';
+      lastEvidenceButton?.focus();
+    }
+
+    document.querySelectorAll('.evidence-button').forEach((button) => {
+      button.addEventListener('click', () => openDrawer(button));
+    });
+    drawerClose.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !drawer.hidden) closeDrawer();
+    });
+
+    document.getElementById('home-link').addEventListener('click', (event) => {
+      event.preventDefault();
+      comparisonView.hidden = true;
+      exploreView.hidden = false;
+      renderTray();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

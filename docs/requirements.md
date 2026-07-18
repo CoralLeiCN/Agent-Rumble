@@ -1,9 +1,10 @@
 # Requirements
 
 This file is the canonical record of stakeholder-requested outcomes and
-constraints for Agent Project Intelligence. Requirements are organized by topic
-instead of sequence-numbered tickets. The [product specification](specification/README.md)
-defines the normative behavior that satisfies them.
+constraints for Agent Rumble and its underlying Agent Project Intelligence
+system. Requirements are organized by topic instead of sequence-numbered
+tickets. The [product specification](specification/README.md) defines the
+normative behavior that satisfies them.
 
 A requirement may mandate a technology when that choice comes from a
 stakeholder, but it does not invent solution details, explain architectural
@@ -31,6 +32,32 @@ The agent should support:
 
 The agent should explore the project's Git repository, documentation, and
 relevant information.
+
+### Catalog-First Discovery and Comparison
+
+The first product experience should provide a preprocessed catalog of Agent
+Project Cards for a selected set of leading public GitHub repositories made for
+or used in AI systems.
+
+Users and agents should be able to search this catalog and compare projects
+directly without first providing a repository link or waiting for repository
+analysis.
+
+The catalog should help both human users and agents rapidly complete project
+discovery, analysis, and trade-off decisions. It should cut through verbose,
+low-signal, or AI-generated README content by prioritizing accurate,
+source-evidenced project intelligence.
+
+User-provided repository intake and on-demand Agent Project Card generation may
+be delivered as a P2 feature after the catalog-first experience.
+
+### Public Product Naming
+
+Use **Agent Rumble** as the public product and user-interface name.
+
+Keep **Agent Project Intelligence** as the name of the underlying system and
+analysis capability. Keep **Agent Project Card** as the formal name of the
+canonical artifact.
 
 ### Output
 
@@ -72,20 +99,30 @@ core Agent Project Card tool.
 
 Use Codex as the harness for project analysis. The instructions for generating
 an Agent Project Card should be provided by an Agent Project Card skill attached
-to Codex.
+to Codex. The first product experience should use this core tool to preprocess
+the repositories included in the catalog.
 
 ### Direct Codex Session
 
 A user should be able to create an Agent Project Card in their own Codex session
-by using the attached skill.
+by using the attached skill. This direct, user-initiated generation mode may be
+delivered as a P2 feature.
 
 ### API
 
 Agent Project Intelligence should wrap Codex and the Agent Project Card skill
 behind an API.
 
-The API should be able to serve as the backend for a later frontend where a user
-provides a Git repository link to create an Agent Project Card.
+The first API and frontend experience should allow users and agents to search,
+retrieve, and compare preprocessed cards. API support for providing a Git
+repository link to create an Agent Project Card may be delivered as a P2
+feature.
+
+### Public Page Discoverability
+
+Search-engine indexing and rich social previews for public Agent Project Card
+pages may be delivered as a P2 feature. They are not required for the first
+frontend release.
 
 ## Implementation Technology
 
@@ -182,6 +219,10 @@ add extra writing rules.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Public product naming | Selected Agent Rumble as the public product and UI name while retaining Agent Project Intelligence for the underlying system and Agent Project Card for the canonical artifact. |
+| 2026-07-18 | Public page discoverability | Deferred search-engine indexing and rich social previews for public Agent Project Card pages to P2. |
+| 2026-07-18 | Catalog-first discovery and comparison | Clarified that the product accelerates discovery, analysis, and trade-off decisions for humans and agents by prioritizing accurate source evidence over low-signal or AI-generated README content. |
+| 2026-07-18 | Catalog-first discovery and comparison | Prioritized search and comparison across preprocessed cards for selected leading AI-related public GitHub repositories; deferred user-provided repository intake and on-demand analysis to P2. |
 | 2026-07-18 | Agent Project Card | Shortened the downloaded repository test-data path to `test-data/repos/`. |
 | 2026-07-18 | Agent Project Card | Required the downloaded repository test-data folder to remain outside Git tracking. |
 | 2026-07-18 | Agent Project Card | Added a repository test-data location for downloaded GitHub repositories used to test Agent Project Card creation. |

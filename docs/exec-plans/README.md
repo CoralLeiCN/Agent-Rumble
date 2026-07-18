@@ -11,6 +11,7 @@ must first be recorded in the responsible documentation area.
 ## Proposed
 
 * [Parallel MVP Execution Plan](proposed/mvp/README.md)
+* [Frontend Catalog Experience Plan](proposed/frontend-catalog-experience.md)
 
 ## Active
 

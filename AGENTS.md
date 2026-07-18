@@ -6,7 +6,10 @@ These instructions apply to the entire repository.
 
 ## Project Purpose
 
-This repository defines and will implement **Agent Project Intelligence**, a system that explores agent-related software projects and produces standardized **Agent Project Cards**.
+This repository defines and will implement **Agent Rumble**, the public product
+experience powered by **Agent Project Intelligence**, a system that explores
+agent-related software projects and produces standardized **Agent Project
+Cards**.
 
 The system covers both projects that implement agents directly and supporting projects such as:
 
@@ -66,7 +69,8 @@ Do not create or update `uv.lock` with an older `uv` version. Older versions can
 
 Use these terms consistently:
 
-* **Agent Project Intelligence:** the product
+* **Agent Rumble:** the public product and user-interface name
+* **Agent Project Intelligence:** the underlying system and analysis capability
 * **Agent Project Card:** the canonical, versioned output artifact
 * **Card Summary:** a compact human-readable or visual projection of a card
 * **Project:** the logical software product, component, service, or system being analyzed

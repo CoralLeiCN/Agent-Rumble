@@ -1,6 +1,6 @@
 # System Behavior and Quality Specification
 
-Part of the [Agent Project Intelligence product specification](README.md).
+Part of the [Agent Rumble product specification](README.md).
 
 ## 15. Functional Behavior
 
@@ -48,14 +48,23 @@ The system must:
 
 ### Access and Invocation
 
-The system must support the following ways to use the core Agent Project Card tool:
+The first product experience must:
 
-* Direct use in a user's Codex session, with the Agent Project Card generation instructions provided by a skill attached to Codex
-* API use, where Agent Project Intelligence wraps Codex and the same Agent Project Card skill
+* Use Codex and the Agent Project Card skill to preprocess cards for the selected
+  catalog cohort
+* Allow users and agents to search, retrieve, and compare those preprocessed
+  cards through an API
+* Provide a frontend over the same API and canonical cards
 
-The API must support starting card generation from a Git repository link. It must be usable as the backend for a later frontend that collects the link from the user and requests creation of the card.
+The public frontend uses the Agent Rumble name. Search-engine indexing and rich
+social previews for public card pages are deferred to P2 and are not required by
+the first frontend release.
 
-Both access modes must produce the same canonical Agent Project Card and follow the same analysis and validation rules.
+P2 may add direct skill use in a user's Codex session and API or frontend intake
+of a user-provided Git repository link for on-demand card generation.
+
+All preprocessing and later on-demand generation modes must produce the same
+canonical Agent Project Card and follow the same analysis and validation rules.
 
 ### Implementation Technology
 
@@ -90,16 +99,18 @@ The cooldown reduces exposure to newly published compromised releases but does n
 
 ### Search and Retrieval
 
-The system should:
+For the preprocessed catalog, the system must:
 
 * Index cards
-* Support semantic and structured search
+* Let users and agents search cards without first submitting a repository
+* Support search by stated need and structured project attributes
 * Filter by category, capability, language, license, maturity, and architecture layer
-* Retrieve projects relevant to a use case
+* Retrieve projects relevant to a use case or requirements
+* Return the card source snapshot and analysis age with results
 
 ### Comparison
 
-The system should:
+For the preprocessed catalog, the system must:
 
 * Compare projects using a shared schema
 * Highlight meaningful differences
@@ -107,6 +118,8 @@ The system should:
 * Identify complementary rather than only competing projects
 * State the comparison cohort, use case, requirements, and source snapshots
 * Compare interface compatibility and prerequisites as well as capabilities
+* Preserve unknown, not-applicable, not-analyzed, and no-evidence-found states
+  rather than presenting them as negative differences
 
 ### Refresh and Change Tracking
 

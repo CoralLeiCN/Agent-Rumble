@@ -47,12 +47,15 @@ Codex session and use through an API that can later serve a frontend.
   analyze projects and produce Agent Project Cards.
 * Provide the card-generation instructions through an Agent Project Card skill
   attached to Codex.
-* Allow a user to invoke that skill directly in their own Codex session.
-* Wrap Codex and the same skill behind an API. For the initial API integration,
-  run Codex through its MCP server interface and orchestrate it with the OpenAI
-  Agents SDK.
-* Allow a later frontend to submit a user-provided Git repository link to the API
-  to start card generation.
+* Use the skill first to preprocess the selected repository cohort for the
+  searchable and comparable catalog required by the first product experience.
+* Expose preprocessed cards through an API used by users, agents, and the React
+  frontend.
+* In P2, allow a user to invoke the skill directly in their own Codex session
+  and allow a frontend or API client to submit a Git repository link for
+  on-demand generation.
+* For Codex integration, run Codex through its MCP server interface and
+  orchestrate it with the OpenAI Agents SDK.
 
 Codex must operate within the declared project boundary and analysis
 configuration. Its output must pass through the claim, evidence, card-schema,
@@ -62,14 +65,14 @@ and validation controls defined by the product specification.
 
 * Python environment and dependency-management workflows will use `uv`.
 * Agent orchestration, handoffs, and traces will use the OpenAI Agents SDK.
-* Direct Codex-session use and API use will share the Agent Project Card skill
-  and canonical output contract.
+* Catalog preprocessing and P2 direct or on-demand generation will share the
+  Agent Project Card skill and canonical output contract.
 * The Codex integration must not expand analysis authority or execute untrusted
   repository code in the MVP.
 * Codex output is analyzer output, not a separate source of truth; the canonical
   output remains the machine-readable Agent Project Card.
-* The later frontend will use the API instead of implementing a separate
-  card-generation path.
+* The frontend will use catalog APIs instead of implementing separate search,
+  comparison, or card-generation sources of truth.
 * Database, search, remaining frontend design, deployment-platform,
   model-selection, service-decomposition, and delivery-sequence decisions
   remain open.
@@ -239,5 +242,6 @@ frontend project under `frontend/`.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Agent workflow and runtime | Aligned the accepted Codex integration with the catalog-first requirement: preprocessing and catalog access precede P2 direct and on-demand generation. |
 | 2026-07-18 | Documentation structure | Consolidated the existing accepted decisions into this topic-organized record, replaced sequence-numbered records with heading-based links, and established this single change log. |
 | 2026-07-18 | Application layout | Established separate top-level frontend and backend project areas and a root `uv` workspace for the backend member. |

@@ -1,6 +1,6 @@
 # Project Classification and Sources
 
-Part of the [Agent Project Intelligence product specification](README.md).
+Part of the [Agent Rumble product specification](README.md).
 
 ## 9. Project Classification System
 

@@ -1,12 +1,16 @@
 # Repository Exploration Workflow
 
-Part of the [Agent Project Intelligence product specification](README.md).
+Part of the [Agent Rumble product specification](README.md).
 
 ## 11. Repository Exploration Workflow
 
 ### Step 1: Project Intake and Scope
 
-The user provides one or more repository URLs, a project reference, or selects a project from a catalog. The system establishes a project boundary before analysis so a monorepo package, multi-repository system, or hosted component is not accidentally treated as an unrelated whole.
+For catalog preprocessing, an operator-managed job supplies one or more
+repository URLs or a project reference from the selected cohort. P2 on-demand
+analysis may accept the same input from a user. The system establishes a project
+boundary before analysis so a monorepo package, multi-repository system, or
+hosted component is not accidentally treated as an unrelated whole.
 
 The system records:
 

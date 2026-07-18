@@ -1,6 +1,7 @@
-# Agent Project Intelligence Product Specification
+# Agent Rumble Product Specification
 
-* **Working product name:** Agent Project Intelligence
+* **Public product name:** Agent Rumble
+* **Underlying system:** Agent Project Intelligence
 * **Primary output:** Agent Project Card
 * **Requirements record:** [`../requirements.md`](../requirements.md)
 * **Design documents:** [`../design-docs/`](../design-docs/README.md)
@@ -39,5 +40,8 @@ silently become product requirements.
 | --- | --- |
 | [Agent Project Card](../requirements.md#agent-project-card) | Sections 1–20 across the specification files above; ecosystem trends are covered specifically by [section 7.7](01-product-overview.md#77-analyze-ecosystem-trends) and [section 13](04-card-schema-and-outputs.md#13-card-output-formats). |
 | [Core Tool and Access](../requirements.md#core-tool-and-access) | [Section 7](01-product-overview.md#7-core-tool-and-use-cases), [Access and Invocation](05-system-behavior-and-quality.md#access-and-invocation), the [proposed system architecture](../design-docs/system-design.md#proposed-system-architecture), and the [Agent Workflow and Runtime decisions](../decisions.md#agent-workflow-and-runtime). |
+| [Catalog-First Discovery and Comparison](../requirements.md#catalog-first-discovery-and-comparison) | [Catalog-First Access](01-product-overview.md#catalog-first-access), [Search and Retrieval](05-system-behavior-and-quality.md#search-and-retrieval), [Comparison](05-system-behavior-and-quality.md#comparison), and [MVP Scope](06-mvp-scope-and-evaluation.md#19-mvp-scope). |
+| [Public Product Naming](../requirements.md#public-product-naming) | [Product Naming](01-product-overview.md#product-naming). |
+| [Public Page Discoverability](../requirements.md#public-page-discoverability) | [Access and Invocation](05-system-behavior-and-quality.md#access-and-invocation), [MVP Scope](06-mvp-scope-and-evaluation.md#19-mvp-scope), and the [Product Roadmap](../roadmap.md#public-page-discoverability). |
 | [Implementation Technology](../requirements.md#implementation-technology) | [Implementation Technology](05-system-behavior-and-quality.md#implementation-technology), [Dependency Release Cooldown](05-system-behavior-and-quality.md#dependency-release-cooldown), the technology sections in the [System Design](../design-docs/system-design.md#initial-agent-technology-stack), and the [architecture decisions](../decisions.md). |
 | [Documentation Governance](../requirements.md#documentation-governance) | [Section 4.3](01-product-overview.md#43-requirements-and-traceability), this specification index, the [documentation map](../README.md), the [repository rules](../../AGENTS.md#documentation-area-rules), and the area indexes for [design documents](../design-docs/README.md) and [execution plans](../exec-plans/README.md). |

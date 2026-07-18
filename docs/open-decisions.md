@@ -4,17 +4,21 @@ These product choices remain unresolved. Recording them here prevents a design d
 
 ## Product and Source Scope
 
-1. Whether the product eventually covers hosted products without public code.
-2. Which project types are required beyond the representative categories already named for the MVP.
-3. Which linked first-party documentation sources are included in the MVP.
-4. Whether popularity and community metrics are included.
-5. How much source code may be retained after analysis.
-6. Which fields are mandatory for downstream recommendation.
+1. How the initial catalog cohort is selected and refreshed, including what
+   “leading” means without treating popularity as a universal quality score.
+2. Whether the product eventually covers hosted products without public code.
+3. Which project types are required beyond the representative categories already named for the MVP.
+4. Which linked first-party documentation sources are included in the MVP.
+5. Whether popularity and community metrics are included.
+6. How much source code may be retained after analysis.
+7. Which fields are mandatory for downstream recommendation.
 
 ## Delivery Scope
 
-1. The delivery sequence for the direct Codex-session mode, the API, and the later frontend, and the scope of the first release for each selected mode.
-2. Whether the MVP accepts multiple repositories per project or only represents that relationship in the schema.
+1. The scope and delivery sequence of P2 user-provided repository analysis across
+   direct Codex-session, API, and frontend modes.
+2. Whether preprocessing accepts multiple repositories per project or only
+   represents that relationship in the schema.
 
 ## MVP Evaluation Protocol
 
