@@ -78,6 +78,55 @@ and validation controls defined by the product specification.
 
 * [Use Codex with the Agents SDK](https://learn.chatgpt.com/docs/mcp-server)
 
+## Application Layout
+
+### Frontend and Backend Project Areas
+
+**Status:** Accepted
+
+**Date:** 2026-07-18
+
+**Related requirement:**
+[Application Layout](requirements.md#application-layout)
+
+#### Context
+
+Agent Project Intelligence contains a Python FastAPI backend and a React
+frontend with different source trees, tests, dependencies, and development
+workflows. The repository needs an explicit boundary between them while
+retaining shared documentation and workspace-level configuration.
+
+The FastAPI Full Stack Template demonstrates this boundary with separate
+top-level `backend/` and `frontend/` directories and a root `uv` workspace.
+Its other technology choices are not inputs to this decision.
+
+#### Decision
+
+* Keep the FastAPI Python project, its source, tests, and Python project metadata
+  under `backend/`.
+* Keep the React project, its source, tests, and frontend dependency metadata
+  under `frontend/`.
+* Keep shared product documentation and cross-project configuration at the
+  repository root.
+* Use a root `uv` workspace with `backend/` as a member so the repository can
+  retain a single locked Python dependency workflow.
+
+#### Consequences
+
+* Backend and frontend code have visible, independent project boundaries.
+* Backend-only tools can run against `backend/` without treating frontend code
+  as part of the Python package.
+* Frontend tooling can be selected and configured within `frontend/` without
+  changing the backend project metadata.
+* Shared orchestration may coordinate both projects from the repository root.
+* This decision does not select frontend build tooling, routing, rendering mode,
+  component libraries, hosting, a database, authentication, containers, or a
+  deployment topology.
+
+#### References
+
+* [FastAPI Full Stack Template repository layout](https://github.com/fastapi/full-stack-fastapi-template)
+
 ## Backend
 
 ### FastAPI Application
@@ -86,8 +135,9 @@ and validation controls defined by the product specification.
 
 **Date:** 2026-07-18
 
-**Related requirement:**
-[Implementation Technology](requirements.md#implementation-technology)
+**Related requirements:**
+[Backend Framework and Layout](requirements.md#backend-framework-and-layout) and
+[Application Layout](requirements.md#application-layout)
 
 #### Context
 
@@ -100,10 +150,10 @@ frontend framework is selected separately in [React Frontend](#react-frontend).
 
 * Use FastAPI as the backend framework.
 * Keep the backend in the `agent_project_intelligence` Python package under
-  `src/`.
+  `backend/src/`.
 * Assemble the application in a small entry-point module and organize endpoint
   groups with FastAPI routers.
-* Keep backend tests in a separate top-level `tests/` tree.
+* Keep backend tests under `backend/tests/`, separate from the source tree.
 
 #### Consequences
 
@@ -162,8 +212,9 @@ environment variables from `.env` files.
 
 **Date:** 2026-07-18
 
-**Related requirement:**
-[Implementation Technology](requirements.md#implementation-technology)
+**Related requirements:**
+[Frontend Framework](requirements.md#frontend-framework) and
+[Application Layout](requirements.md#application-layout)
 
 #### Context
 
@@ -174,7 +225,8 @@ selected.
 
 #### Decision
 
-Use React as the frontend framework for Agent Project Intelligence.
+Use React as the frontend framework for Agent Project Intelligence and keep the
+frontend project under `frontend/`.
 
 #### Consequences
 
@@ -188,3 +240,4 @@ Use React as the frontend framework for Agent Project Intelligence.
 | Date | Topic | Change |
 | --- | --- | --- |
 | 2026-07-18 | Documentation structure | Consolidated the existing accepted decisions into this topic-organized record, replaced sequence-numbered records with heading-based links, and established this single change log. |
+| 2026-07-18 | Application layout | Established separate top-level frontend and backend project areas and a root `uv` workspace for the backend member. |

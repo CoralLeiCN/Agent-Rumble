@@ -156,26 +156,47 @@ Dependency resolution enforces a seven-day release cooldown: registry packages
 uploaded within the preceding week are not eligible for a new lockfile. Locked
 installs continue to use the reviewed versions recorded in `uv.lock`.
 
-## Backend Development
+## Project Layout
 
-The FastAPI backend uses this `src/` package layout:
+The application follows the same high-level boundary used by the FastAPI Full
+Stack Template: the frontend and backend are separate top-level projects.
 
 ```text
-src/agent_project_intelligence/
-├── main.py                 # Application factory and ASGI entry point
-└── api/
-    ├── router.py           # Top-level API router
-    └── routes/
-        └── health.py       # Health endpoint
-tests/
-└── api/                    # API-level tests
+backend/                    # FastAPI Python project, source, and tests
+frontend/                   # React project boundary
+docs/                       # Shared product and engineering documentation
+pyproject.toml              # Root uv workspace and dependency policy
+uv.lock                     # Locked Python workspace dependencies
 ```
 
-Add endpoint groups under `api/routes/` and include their routers from
-`api/router.py`. Start the development server from the repository root:
+This adopts the project split only. Database, authentication, container,
+frontend build-tool, UI-library, and deployment choices from the reference
+template are not selected by this repository structure.
+
+## Backend Development
+
+The FastAPI backend uses this project layout:
+
+```text
+backend/
+├── pyproject.toml          # Backend package and dependency metadata
+├── src/agent_project_intelligence/
+│   ├── main.py             # Application factory and ASGI entry point
+│   └── api/
+│       ├── router.py       # Top-level API router
+│       └── routes/
+│           └── health.py   # Health endpoint
+└── tests/
+    └── api/                # API-level tests
+```
+
+Add endpoint groups under
+`backend/src/agent_project_intelligence/api/routes/` and include their routers
+from `backend/src/agent_project_intelligence/api/router.py`. Start the
+development server from the repository root:
 
 ```shell
-uv run --locked fastapi dev src/agent_project_intelligence/main.py
+uv run --locked fastapi dev backend/src/agent_project_intelligence/main.py
 ```
 
 The API documentation is available at `http://127.0.0.1:8000/docs`, and the
@@ -184,8 +205,15 @@ health endpoint is available at `http://127.0.0.1:8000/health`.
 Run the backend tests with:
 
 ```shell
-uv run --locked pytest
+uv run --locked pytest backend/tests
 ```
+
+## Frontend Development
+
+The React frontend belongs under `frontend/`. Its build tooling, routing,
+rendering mode, component libraries, and hosting have not yet been selected, so
+the directory currently records the project boundary without choosing a
+scaffold.
 
 For the detailed sources of truth, see:
 

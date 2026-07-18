@@ -1,28 +1,6 @@
-[project]
-name = "agent-project-intelligence"
-version = "0.1.0"
-description = "Evidence-backed intelligence for software projects in the AI agent ecosystem."
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "fastapi[standard]>=0.139.0",
-    "openai-agents>=0.18.2",
-    "pydantic>=2.13.4",
-]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [tool.uv]
 required-version = ">=0.9.17"
 exclude-newer = "1 week"
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-
-[dependency-groups]
-dev = [
-    "httpx2>=2.5.0",
-    "pytest>=9.1.1",
-]
+[tool.uv.workspace]
+members = ["backend"]

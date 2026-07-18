@@ -66,8 +66,9 @@ establish these constraints:
 * Use the OpenAI Agents SDK to build the agent workflow.
 * Use Codex as the project-analysis harness.
 * Provide the card-generation instructions through an Agent Project Card skill attached to Codex.
-* Use FastAPI as the backend framework and establish its initial Python project layout under `src/`.
-* Use React as the frontend framework.
+* Separate application code into top-level `backend/` and `frontend/` project areas.
+* Use FastAPI as the backend framework and establish its initial Python project layout under `backend/src/`.
+* Use React as the frontend framework, with frontend code contained under `frontend/`.
 * Use Pydantic with Python type annotations to define typed application data models.
 * Use `BaseSettings` from Pydantic Settings for typed application settings.
 * Use `load_dotenv()` from `python-dotenv` to load environment variables from `.env` files.
@@ -77,7 +78,13 @@ establish these constraints:
 The [Dependency Release Cooldown requirement](../requirements.md#dependency-release-cooldown)
 requires a seven-day cooldown for registry dependencies resolved by `uv`.
 
-The root `pyproject.toml` configures `exclude-newer = "1 week"` and requires `uv >= 0.9.17`, the first version that supports relative cooldown durations. During a new resolution, `uv` excludes direct and transitive registry distribution artifacts uploaded within the preceding seven days and records the resulting cutoff timestamp in `uv.lock`. Locked synchronization continues to use the reviewed versions and hashes already recorded in `uv.lock`.
+The root `pyproject.toml` defines the `backend/` project as a `uv` workspace
+member, configures `exclude-newer = "1 week"`, and requires `uv >= 0.9.17`, the
+first version that supports relative cooldown durations. During a new
+resolution, `uv` excludes direct and transitive registry distribution artifacts
+uploaded within the preceding seven days and records the relative cooldown in
+the root `uv.lock`. Locked synchronization continues to use the reviewed
+versions and hashes already recorded in `uv.lock`.
 
 The cooldown reduces exposure to newly published compromised releases but does not guarantee that dependencies are safe. It does not apply to Git, URL, or local path dependencies.
 

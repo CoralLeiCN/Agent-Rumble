@@ -98,7 +98,13 @@ Cards.
 ### Backend Framework and Layout
 
 Use FastAPI as the backend framework for Agent Project Intelligence and
-establish a backend project layout based on FastAPI.
+establish a backend project layout based on FastAPI within the backend project
+area.
+
+### Application Layout
+
+Separate the frontend and backend into top-level `frontend/` and `backend/`
+project areas.
 
 ### Frontend Framework
 
@@ -170,3 +176,4 @@ add extra writing rules.
 | Date | Topic | Change |
 | --- | --- | --- |
 | 2026-07-18 | Documentation governance | Consolidated the existing requirements into this topic-organized record, replaced sequence-numbered tickets with heading-based links, and established this single change log. |
+| 2026-07-18 | Implementation technology | Required separate top-level frontend and backend project areas. |

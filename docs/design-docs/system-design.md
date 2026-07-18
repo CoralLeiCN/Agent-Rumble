@@ -6,6 +6,13 @@ This design describes a proposed implementation of the [Agent Project Intelligen
 
 The sections below describe logical responsibilities, not independently deployable services. The MVP should keep them together in a small end-to-end implementation unless an accepted architecture decision justifies further decomposition.
 
+The repository has separate top-level `backend/` and `frontend/` project areas.
+Shared product documentation and cross-project configuration remain at the
+repository root. This is a source and tooling boundary, not a decision to deploy
+the frontend and backend as independently operated services. A root `uv`
+workspace includes the Python backend as a member and retains one locked Python
+dependency workflow.
+
 ### Core Agent Project Card Tool
 
 The core tool consists of Codex as the project-analysis harness and an Agent Project Card skill attached to Codex. The skill provides the card-generation instructions. It must preserve the declared project boundary and the analysis, evidence, schema, and validation rules in the product specification.
@@ -145,10 +152,12 @@ below.
 ### Backend Application Framework
 
 The [Backend Framework and Layout requirement](../requirements.md#backend-framework-and-layout)
-establishes FastAPI as the backend framework. The initial backend uses a Python package under `src/`,
-a small application entry point, modular `APIRouter` route groups, and a
-separate test tree. A health endpoint provides the first runnable vertical
-slice and a stable target for application-level tests.
+establishes FastAPI as the backend framework. The initial backend uses a Python
+package under `backend/src/`, a small application entry point, modular
+`APIRouter` route groups, and a test tree under `backend/tests/`. The backend
+owns its Python project metadata in `backend/pyproject.toml`. A health endpoint
+provides the first runnable vertical slice and a stable target for
+application-level tests.
 
 The [FastAPI Application decision](../decisions.md#fastapi-application) records
 the framework and layout choice. Persistence, deployment, and
@@ -170,7 +179,8 @@ records these choices and their configuration responsibilities.
 
 The [Frontend Framework requirement](../requirements.md#frontend-framework)
 establishes React as the frontend framework. The React frontend consumes
-interfaces provided by the FastAPI backend.
+interfaces provided by the FastAPI backend and is contained within the
+top-level `frontend/` project area.
 
 The [React Frontend decision](../decisions.md#react-frontend) records this choice.
 Frontend routing, build tooling, rendering mode, component libraries, and

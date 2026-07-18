@@ -43,8 +43,9 @@ Follow `docs/writing_guidelines.md`. Rephrase user requirements into a clearer s
 Use the `uv` project workflow required by [Implementation Technology](docs/requirements.md#implementation-technology).
 The project requires `uv >= 0.9.17` so dependency resolution can enforce the
 [seven-day release cooldown](docs/requirements.md#dependency-release-cooldown).
-From the repository root, create or synchronize the local environment from the
-committed lockfile with:
+The Python backend is the `backend/` member of the root `uv` workspace. From the
+repository root, create or synchronize the local environment from the committed
+lockfile with:
 
 ```shell
 uv sync --locked
@@ -53,8 +54,8 @@ uv sync --locked
 Do not require a separate `uv python install` or `uv venv` step. `uv` reads Python 3.12 from `.python-version` and creates the project environment at `.venv` when needed. Run repository commands through the locked environment without requiring activation:
 
 ```shell
-uv run --locked pytest
-uv run --locked fastapi dev src/agent_project_intelligence/main.py
+uv run --locked pytest backend/tests
+uv run --locked fastapi dev backend/src/agent_project_intelligence/main.py
 ```
 
 Activating `.venv` is optional.
