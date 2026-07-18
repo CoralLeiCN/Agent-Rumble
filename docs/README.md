@@ -30,6 +30,9 @@ The central distinction is:
 
 ## Supporting Documents
 
+* [Developer guide](development.md) contains local setup, repository layout,
+  and development workflow notes without becoming a source of product
+  requirements or architecture decisions.
 * [Deferred backlog](backlog.md) records requested capabilities and
   implementation work that stakeholders have explicitly postponed. It records
   delivery status without replacing requirements or decisions and does not
