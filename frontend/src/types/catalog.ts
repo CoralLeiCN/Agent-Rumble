@@ -118,6 +118,22 @@ export interface ClaimEvidenceRecord {
   conflictingEvidence: ResolvedEvidence[];
 }
 
+/** Prepared Rumble evidence before it is projected into the canonical drawer. */
+export interface EvidenceRecord {
+  id: string;
+  projectId: string;
+  claim: string;
+  whyItMatters: string;
+  verificationStatus: VerificationStatus;
+  confidence: Confidence;
+  repository: string;
+  revision: string;
+  locator: string;
+  excerpt: string;
+  sourceUrl: string;
+  relationship?: "supporting" | "conflicting";
+}
+
 export interface ComparisonCell {
   pointer: string | null;
   state: ComparisonState;

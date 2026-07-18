@@ -238,6 +238,48 @@ uv run --locked fastapi dev backend/src/agent_project_intelligence/main.py
 The API documentation is available at `http://127.0.0.1:8000/docs`, and the
 health endpoint is available at `http://127.0.0.1:8000/health`.
 
+The first playable comparison slice is **Rumble Arena**. `GET
+/api/v1/rumble/demo` returns the prepared OpenAI Agents SDK versus LangGraph
+matchup, and `POST /api/v1/rumble` projects it as three themed rounds. Each
+projection request includes the complete prepared matchup and its validated
+claim/evidence registry; a bare or invented claim reference is rejected. Each
+round preserves source snapshots, claim IDs, verification status, confidence,
+and exact null states. The response deliberately contains no total score or
+universal winner.
+
+To play the React experience, keep the backend running and start the frontend
+in another terminal:
+
+```shell
+cd frontend
+npm ci
+npm run dev
+```
+
+Open the Vite URL, choose OpenAI Agents SDK and LangGraph, then select `Enter
+Rumble`. From the matchup screen choose `Enter solo fight`, `Local 2-player`,
+`Solo fullscreen`, or the original `Guided evidence tour`.
+
+Arcade controls:
+
+* Player 1: `A` / `D` to move, `W` to jump, `F` to jab, `G` for the
+  contextual trait special, and `S` to guard
+* Player 2: left/right and up to move and jump, `M` to jab, `N` for the
+  contextual trait special, and down to guard
+* `P` or `Escape` pauses; `R` restarts
+* Solo mode exposes on-screen movement, jump, jab, trait, and guard controls on touch
+  devices
+
+The arcade match is a classic 2D versus fighter with human boxer animations for
+idle, movement, attacks, guard, hurt, and KO. Each fighter uses
+the exact project name, starts each round with 100 HP, and needs two round wins.
+Its distinct signature attack is themed from that project's contextual edge in
+the prepared comparison sheet; projectile, rush, launcher, and pulse forms have
+the same damage and cooldown budget. KO, time result, HP, and round score reflect
+player or CPU actions only—they are not project conclusions. The frontend uses
+the local API through Vite's development proxy and falls back to the identical
+committed snapshot when the API is unavailable.
+
 Run the backend tests with:
 
 ```shell

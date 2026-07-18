@@ -326,6 +326,62 @@ A downstream analysis can aggregate a declared collection of Agent Project Cards
 
 Every trend result should identify its project cohort, source snapshots or time range, metric definition, denominator, data completeness, and supporting card records. Unknown or unanalyzed fields must not be treated as evidence that a technology or capability is absent. Claims about change over time require comparable cards from multiple source snapshots.
 
+### 7.8 Rumble Arena
+
+Rumble Arena is a playful projection of the standard two-project comparison.
+The user selects two projects from the preprocessed catalog and supplies or
+confirms the Assessment Context. The system groups decision-relevant
+differences into themed rounds such as capabilities, integration, operations,
+and evidence.
+
+Rumble Arena must include an arcade game mode that the user actively plays. In
+that mode, player input controls play and changes the match state. Game-themed
+styling, animation, or a sequence of ordinary comparison screens does not by
+itself constitute the arcade game mode.
+
+The arcade mode must present the match in a classic 2D versus-fighter style.
+Each fighter must display its project's public name as the fighter name, and
+the match interface must show a health bar for each fighter.
+
+Fighters must use human-looking character designs and visibly move their bodies
+during play. The implementation should reuse an existing or open-source
+character design where one is available. The arena must offer a user-initiated
+fullscreen option as well as its embedded presentation.
+
+Each fighter must have a distinct attack set themed around a contextual winning
+trait assigned to that project in the prepared comparison-sheet projection.
+The attack theme must remain traceable to the applicable comparison trait and
+Assessment Context. A trait-derived move is a presentation and gameplay
+identity for the fighter; it is not a new project claim, a replacement for the
+canonical comparison, or evidence that the project is universally better.
+
+Contextual verdicts, evidence quantity, confidence, verification status, and
+null states must not automatically determine a fighter's health, attack damage,
+reach, speed, or likelihood of winning. Combat tuning must preserve a playable
+match without presenting a contextual comparison advantage as an automatic
+power advantage.
+
+Each round must:
+
+* Preserve the two source snapshots and project-role relationship
+* Show the applicable requirement or constraint
+* Preserve each project's value or exact null state
+* Link material findings to claims and expose confidence and verification status
+* Describe an advantage only within the declared Assessment Context
+* Use an inconclusive or trade-off result when the evidence does not justify an advantage
+
+An arcade match may produce a gameplay win, loss, or draw according to player
+actions and the game rules. Player actions, transient match state, and the
+gameplay result are entertainment state rather than claims or assessments about
+the projects. The gameplay result must not alter either canonical Agent Project
+Card, establish a contextual advantage, or be presented as evidence that one
+project is better than the other.
+
+The evidence-backed comparison does not total contextual round results, compute
+a project power level, or declare a universal project winner. The user may
+record a contextual preference, but that choice is not written back to either
+canonical Agent Project Card.
+
 ---
 
 ## 8. Product Terminology

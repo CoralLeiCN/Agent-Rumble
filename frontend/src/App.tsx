@@ -5,9 +5,11 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
+import { ArenaScreen } from "./arena/ArenaScreen";
 import { ContractComparison } from "./comparison/ContractComparison";
 import { catalogGateway } from "./data/catalogGateway";
 import { preparedQuery } from "./data/fixtures";
+import { isPreparedRumblePair } from "./data/rumbleGateway";
 import {
   confidencePresentation,
   evidenceStatusPresentation,
@@ -18,13 +20,14 @@ import type {
   CatalogDataSource,
   ClaimEvidenceRecord,
   ComparisonResponse,
+  EvidenceRecord,
   ProjectSummary,
   SearchResponse,
   VerificationStatus,
 } from "./types/catalog";
 import type { EvidenceStatus } from "./types/projectCard";
 
-type View = "explore" | "results" | "comparison";
+type View = "explore" | "results" | "comparison" | "arena";
 type PendingAction = "search" | "comparison" | "evidence" | null;
 
 function StatusBadge({ status }: { status: VerificationStatus }) {
@@ -298,6 +301,40 @@ function readableSourceValue(value: string) {
   return value.replace(/_/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
+function projectArenaEvidence(record: EvidenceRecord): ClaimEvidenceRecord {
+  const relationship = record.relationship ?? "supporting";
+  const resolvedEvidence = {
+    id: record.id,
+    relationship,
+    evidenceStatus: record.verificationStatus === "documented"
+      ? "documented_only" as const
+      : "confirmed" as const,
+    confidence: record.confidence,
+    sourceType: "repository_file",
+    provenance: "first_party",
+    retrievedAt: "Not recorded",
+    accessScope: "public",
+    repository: record.repository,
+    revision: record.revision,
+    locator: record.locator,
+    excerpt: record.excerpt,
+    sourceUrl: record.sourceUrl,
+  };
+  return {
+    claimId: record.id,
+    projectId: record.projectId,
+    claim: record.claim,
+    claimKind: "assessment",
+    appliesTo: record.projectId,
+    assessmentContextId: null,
+    whyItMatters: record.whyItMatters,
+    verificationStatus: record.verificationStatus,
+    confidence: record.confidence,
+    supportingEvidence: relationship === "supporting" ? [resolvedEvidence] : [],
+    conflictingEvidence: relationship === "conflicting" ? [resolvedEvidence] : [],
+  };
+}
+
 function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: EvidenceDrawerProps) {
   const drawerRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -466,6 +503,7 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
   const mainRef = useRef<HTMLElement>(null);
   const evidenceTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const canEnterRumble = isPreparedRumblePair(shortlist);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -543,6 +581,14 @@ export function App() {
     }
   };
 
+  const openArenaEvidence = (record: EvidenceRecord, trigger: HTMLButtonElement) => {
+    evidenceTriggerRef.current = trigger;
+    setEvidence(projectArenaEvidence(record));
+    setError(null);
+    setPending(null);
+    setDrawerOpen(true);
+  };
+
   const closeDrawer = () => {
     setDrawerOpen(false);
     setEvidence(null);
@@ -580,6 +626,13 @@ export function App() {
               onOpenEvidence={(id, trigger) => void openEvidence(id, trigger)}
             />
           )}
+          {view === "arena" && (
+            <ArenaScreen
+              projectIds={shortlist}
+              onExit={() => announceView("results")}
+              onOpenEvidence={openArenaEvidence}
+            />
+          )}
           {error && !drawerOpen && <p className="page-error" role="alert">{error}</p>}
         </main>
         {view === "results" && shortlist.length > 0 && (
@@ -589,14 +642,25 @@ export function App() {
               <strong>{shortlist.length} / 3 projects</strong>
               <p>{shortlist.map((id) => response?.projects.find((project) => project.id === id)?.name).join(" · ")}</p>
             </div>
-            <button
-              className="button button--primary"
-              type="button"
-              disabled={shortlist.length < 2 || pending === "comparison"}
-              onClick={() => void openComparison()}
-            >
-              {pending === "comparison" ? "Preparing…" : shortlist.length < 2 ? "Select one more" : "Compare projects →"}
-            </button>
+            <div className="compare-tray__actions">
+              <button
+                className={`button ${canEnterRumble ? "button--tray-secondary" : "button--primary"}`}
+                type="button"
+                disabled={shortlist.length < 2 || pending === "comparison"}
+                onClick={() => void openComparison()}
+              >
+                {pending === "comparison" ? "Preparing…" : shortlist.length < 2 ? "Select one more" : "Compare projects →"}
+              </button>
+              {canEnterRumble && (
+                <button
+                  className="button button--primary"
+                  type="button"
+                  onClick={() => announceView("arena")}
+                >
+                  Enter Rumble →
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

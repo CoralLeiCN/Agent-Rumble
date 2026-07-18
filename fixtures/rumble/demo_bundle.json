@@ -1,0 +1,280 @@
+{
+  "fixture_label": "Rumble Arena prepared demo: OpenAI Agents SDK vs LangGraph",
+  "prepared_at": "2026-07-18T11:57:40Z",
+  "coverage_notice": "Prepared from narrow static inspection of pinned public repository source and documentation. No upstream code was executed. This is not runtime verification, a comprehensive project analysis, a security audit, or a universal ranking. A no_evidence_found cell describes this inspection only and must not be treated as proof that a capability is absent.",
+  "matchups": [
+    {
+      "matchup_id": "openai-agents-sdk-vs-langgraph-support-poc",
+      "display_label": "Support Agent Showdown: OpenAI Agents SDK vs LangGraph",
+      "request": {
+        "assessment_context": {
+          "title": "Internal support agent proof of concept",
+          "use_case": "Build a Python support agent with approval and tracing.",
+          "cohort_project_ids": [
+            "openai-agents-sdk",
+            "langgraph"
+          ],
+          "requirements": [
+            "Human approval support",
+            "Self-hosted operation"
+          ],
+          "organizational_constraints": [
+            "No mandatory hosted control plane"
+          ],
+          "assessed_at": "2026-07-18"
+        },
+        "entrants": [
+          {
+            "project_id": "openai-agents-sdk",
+            "project_name": "OpenAI Agents SDK for Python",
+            "project_roles": [
+              "agent_sdk",
+              "agent_framework"
+            ],
+            "source_snapshot": {
+              "card_id": "fixture-card-openai-agents-sdk",
+              "card_version": 1,
+              "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+              "analyzed_at": "2026-07-18T11:57:40Z"
+            }
+          },
+          {
+            "project_id": "langgraph",
+            "project_name": "LangGraph",
+            "project_roles": [
+              "agent_framework",
+              "workflow_orchestrator"
+            ],
+            "source_snapshot": {
+              "card_id": "fixture-card-langgraph",
+              "card_version": 1,
+              "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+              "analyzed_at": "2026-07-18T11:57:40Z"
+            }
+          }
+        ],
+        "comparison_rows": [
+          {
+            "dimension": "capability",
+            "label": "Approval Gate Smackdown",
+            "requirement": "Pause a sensitive support tool call until a human approves or rejects it.",
+            "entrant_a": {
+              "state": "value",
+              "value": "Function tools have a per-call approval gate that interrupts before execution and resumes through RunState.",
+              "alignment": "satisfies",
+              "verification_status": "statically_confirmed",
+              "confidence": "high",
+              "claim_ids": [
+                "claim-openai-native-tool-approval"
+              ]
+            },
+            "entrant_b": {
+              "state": "value",
+              "value": "A generic interrupt and Command flow can host approval input, with the gate assembled in graph logic and backed by a checkpointer.",
+              "alignment": "partially_satisfies",
+              "verification_status": "statically_confirmed",
+              "confidence": "high",
+              "claim_ids": [
+                "claim-langgraph-resumable-interrupt"
+              ]
+            }
+          },
+          {
+            "dimension": "operations",
+            "label": "Restart Comeback Combo",
+            "requirement": "Persist a paused approval in PostgreSQL and resume it after the support service restarts.",
+            "entrant_a": {
+              "state": "value",
+              "value": "RunState serializes approval state for later resume; the application chooses and wires the PostgreSQL storage layer.",
+              "alignment": "partially_satisfies",
+              "verification_status": "statically_confirmed",
+              "confidence": "high",
+              "claim_ids": [
+                "claim-openai-serializable-run-state"
+              ]
+            },
+            "entrant_b": {
+              "state": "value",
+              "value": "Interrupts use persisted graph state, and the repository includes a PostgresSaver that writes checkpoints to PostgreSQL.",
+              "alignment": "satisfies",
+              "verification_status": "statically_confirmed",
+              "confidence": "high",
+              "claim_ids": [
+                "claim-langgraph-postgres-checkpoints"
+              ]
+            }
+          },
+          {
+            "dimension": "integration",
+            "label": "Audit Bell-Ringer",
+            "requirement": "Emit explicit approval pause and resume callbacks to an in-process audit adapter without a hosted control plane.",
+            "entrant_a": {
+              "state": "no_evidence_found",
+              "alignment": "unclear",
+              "verification_status": "unverified",
+              "confidence": "unknown",
+              "claim_ids": []
+            },
+            "entrant_b": {
+              "state": "value",
+              "value": "GraphCallbackHandler exposes interrupt and resume hooks with checkpoint-specific lifecycle event payloads.",
+              "alignment": "satisfies",
+              "verification_status": "statically_confirmed",
+              "confidence": "high",
+              "claim_ids": [
+                "claim-langgraph-lifecycle-callbacks"
+              ]
+            }
+          }
+        ]
+      },
+      "claims": [
+        {
+          "claim_id": "claim-openai-native-tool-approval",
+          "project_id": "openai-agents-sdk",
+          "statement": "FunctionTool exposes an always-on or per-call needs_approval gate that interrupts before tool execution and resolves through RunState.",
+          "why_it_matters": "A support action such as a refund or cancellation can be held before its side effect occurs.",
+          "verification_status": "statically_confirmed",
+          "confidence": "high",
+          "supporting_evidence": [
+            {
+              "evidence_id": "evidence-openai-function-tool-needs-approval",
+              "repository": "openai/openai-agents-python",
+              "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+              "path": "src/agents/tool.py",
+              "locator": "lines 428-435",
+              "excerpt": "needs_approval interrupts the run before execution; RunState approves or rejects the specific call.",
+              "source_url": "https://github.com/openai/openai-agents-python/blob/65886fa16dcdb482090b30b74de1d0cc80b9f4c6/src/agents/tool.py#L428-L435"
+            }
+          ],
+          "conflicting_evidence": []
+        },
+        {
+          "claim_id": "claim-langgraph-resumable-interrupt",
+          "project_id": "langgraph",
+          "statement": "LangGraph interrupt pauses graph execution, surfaces a value to the client, and resumes through Command using persisted graph state.",
+          "why_it_matters": "A support workflow can place a human decision point before a sensitive node, although the application defines that approval policy in its graph.",
+          "verification_status": "statically_confirmed",
+          "confidence": "high",
+          "supporting_evidence": [
+            {
+              "evidence_id": "evidence-langgraph-interrupt-command",
+              "repository": "langchain-ai/langgraph",
+              "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+              "path": "libs/langgraph/langgraph/types.py",
+              "locator": "lines 811-831",
+              "excerpt": "interrupt pauses execution, surfaces a value to the client, resumes through Command, and requires a checkpointer.",
+              "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/types.py#L811-L831"
+            }
+          ],
+          "conflicting_evidence": []
+        },
+        {
+          "claim_id": "claim-openai-serializable-run-state",
+          "project_id": "openai-agents-sdk",
+          "statement": "RunState provides JSON-compatible serialization and deserialization intended to resume a paused run later.",
+          "why_it_matters": "A support service can store pending approval work in its chosen database or queue and reconstruct it after a restart.",
+          "verification_status": "statically_confirmed",
+          "confidence": "high",
+          "supporting_evidence": [
+            {
+              "evidence_id": "evidence-openai-run-state-to-json",
+              "repository": "openai/openai-agents-python",
+              "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+              "path": "src/agents/run_state.py",
+              "locator": "lines 724-734",
+              "excerpt": "to_json serializes run state to a JSON-compatible dictionary that can resume the run later.",
+              "source_url": "https://github.com/openai/openai-agents-python/blob/65886fa16dcdb482090b30b74de1d0cc80b9f4c6/src/agents/run_state.py#L724-L734"
+            },
+            {
+              "evidence_id": "evidence-openai-run-state-from-json",
+              "repository": "openai/openai-agents-python",
+              "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+              "path": "src/agents/run_state.py",
+              "locator": "lines 1141-1154",
+              "excerpt": "from_json reconstructs RunState from a dictionary created by to_json.",
+              "source_url": "https://github.com/openai/openai-agents-python/blob/65886fa16dcdb482090b30b74de1d0cc80b9f4c6/src/agents/run_state.py#L1141-L1154"
+            },
+            {
+              "evidence_id": "evidence-openai-long-running-approvals",
+              "repository": "openai/openai-agents-python",
+              "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+              "path": "docs/human_in_the_loop.md",
+              "locator": "lines 181-193",
+              "excerpt": "RunState can store pending work in an application database or queue and recreate it later.",
+              "source_url": "https://github.com/openai/openai-agents-python/blob/65886fa16dcdb482090b30b74de1d0cc80b9f4c6/docs/human_in_the_loop.md#L181-L193"
+            }
+          ],
+          "conflicting_evidence": []
+        },
+        {
+          "claim_id": "claim-langgraph-postgres-checkpoints",
+          "project_id": "langgraph",
+          "statement": "LangGraph provides a PostgresSaver implementation that persists checkpoints used by durable, resumable graph workflows.",
+          "why_it_matters": "The support service can use a repository-provided PostgreSQL checkpointer for approval state instead of designing the persistence adapter from scratch.",
+          "verification_status": "statically_confirmed",
+          "confidence": "high",
+          "supporting_evidence": [
+            {
+              "evidence_id": "evidence-langgraph-postgres-saver-class",
+              "repository": "langchain-ai/langgraph",
+              "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+              "path": "libs/checkpoint-postgres/langgraph/checkpoint/postgres/__init__.py",
+              "locator": "lines 40-41",
+              "excerpt": "PostgresSaver is a checkpointer that stores checkpoints in a Postgres database.",
+              "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-postgres/langgraph/checkpoint/postgres/__init__.py#L40-L41"
+            },
+            {
+              "evidence_id": "evidence-langgraph-postgres-saver-put",
+              "repository": "langchain-ai/langgraph",
+              "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+              "path": "libs/checkpoint-postgres/langgraph/checkpoint/postgres/__init__.py",
+              "locator": "lines 263-273",
+              "excerpt": "PostgresSaver.put saves a checkpoint and its associated configuration to the Postgres database.",
+              "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-postgres/langgraph/checkpoint/postgres/__init__.py#L263-L273"
+            },
+            {
+              "evidence_id": "evidence-langgraph-interrupt-needs-checkpointer",
+              "repository": "langchain-ai/langgraph",
+              "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+              "path": "libs/langgraph/langgraph/types.py",
+              "locator": "lines 822-831",
+              "excerpt": "A client resumes with Command; interrupt requires a checkpointer because it relies on persisted graph state.",
+              "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/types.py#L822-L831"
+            }
+          ],
+          "conflicting_evidence": []
+        },
+        {
+          "claim_id": "claim-langgraph-lifecycle-callbacks",
+          "project_id": "langgraph",
+          "statement": "GraphCallbackHandler exposes graph-specific on_interrupt and on_resume callbacks with checkpoint-linked event payloads.",
+          "why_it_matters": "The support service can feed approval lifecycle events into an in-process audit adapter without making a hosted control plane part of the callback path.",
+          "verification_status": "statically_confirmed",
+          "confidence": "high",
+          "supporting_evidence": [
+            {
+              "evidence_id": "evidence-langgraph-lifecycle-events",
+              "repository": "langchain-ai/langgraph",
+              "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+              "path": "libs/langgraph/langgraph/callbacks.py",
+              "locator": "lines 42-79",
+              "excerpt": "Interrupt and resume events carry checkpoint identifiers and namespaces for paused and resumed graph execution.",
+              "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/callbacks.py#L42-L79"
+            },
+            {
+              "evidence_id": "evidence-langgraph-callback-handler-hooks",
+              "repository": "langchain-ai/langgraph",
+              "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+              "path": "libs/langgraph/langgraph/callbacks.py",
+              "locator": "lines 87-107",
+              "excerpt": "GraphCallbackHandler defines on_interrupt and on_resume hooks and can be passed through graph invocation callbacks.",
+              "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/callbacks.py#L87-L107"
+            }
+          ],
+          "conflicting_evidence": []
+        }
+      ]
+    }
+  ]
+}

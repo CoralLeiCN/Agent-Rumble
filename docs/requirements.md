@@ -192,6 +192,32 @@ Search-engine indexing and rich social previews for public Agent Project Card
 pages may be delivered as a P2 feature. They are not required for the first
 frontend release.
 
+## Rumble Arena
+
+Provide a playful head-to-head comparison mode for two projects from the
+preprocessed catalog.
+
+Present the comparison as themed rounds grounded in the projects' Agent
+Project Cards and an explicit Assessment Context. Preserve the evidence,
+confidence, verification status, source snapshot, project-role, and null-state
+distinctions that apply to ordinary comparisons.
+
+The mode should make contextual advantages and trade-offs entertaining to
+explore without creating a universal project score or declaring a universal
+winner.
+
+Rumble Arena should offer an arcade game mode that users can actively play,
+rather than only a game-themed website interface.
+
+The arcade mode should use a classic 2D versus-fighter style and show a health
+bar for each fighter. Each fighter should use its project name as its fighter
+name and have distinct attacks themed around that project's contextual winning
+trait in the prepared comparison sheet.
+
+Arcade fighters should use human-looking character designs with visible body
+movement, reusing an existing or open-source design where available. Users
+should have an option to enter fullscreen.
+
 ## Frontend Experience
 
 ### Canonical Card Field Coverage
@@ -338,6 +364,10 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Rumble Arena | Requested human-looking fighters with visible body movement, reuse of an existing or open-source character design where available, and a fullscreen option. |
+| 2026-07-18 | Rumble Arena | Requested a classic 2D versus-fighter style with health bars, project-named fighters, and distinct attacks themed around each project's contextual winning comparison trait. |
+| 2026-07-18 | Rumble Arena | Added an actively playable arcade game mode rather than only a game-themed website interface. |
+| 2026-07-18 | Rumble Arena | Added a playful, evidence-backed head-to-head comparison mode for two catalog projects without universal scores or winners. |
 | 2026-07-18 | Frontend experience | Required customer-facing product language and a compact comparison hierarchy that groups fields, prioritizes the most useful details, collapses the remainder, removes duplication, and avoids standalone sections for card and schema identifiers. |
 | 2026-07-18 | Frontend experience | Required the decision and comparison experience to make every current canonical card field available, derive field coverage from the card contract rather than UI mocks, and stay aligned as card data and fields evolve. |
 | 2026-07-18 | Core tool and access | Required tools to be provided as skills and services, with a Codex plugin supported first and Codex used heavily as the core harness. |

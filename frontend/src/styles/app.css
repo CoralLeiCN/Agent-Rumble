@@ -142,6 +142,12 @@
   color: var(--color-action-text);
 }
 
+.button--tray-secondary {
+  border-color: #7affd7;
+  color: #7affd7;
+  background: transparent;
+}
+
 .button--quiet {
   background: transparent;
 }
@@ -763,6 +769,12 @@
   margin: 0.2rem 0 0;
   color: #abb3c2;
   font-size: 0.66rem;
+}
+
+.compare-tray__actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.55rem;
 }
 
 .back-link {
@@ -2135,6 +2147,11 @@
 
   .compare-tray p {
     display: none;
+  }
+
+  .compare-tray__actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .comparison-note {

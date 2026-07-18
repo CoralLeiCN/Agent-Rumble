@@ -20,6 +20,9 @@ Deliver one fixture-backed path that lets a user:
    consequential comparison cell.
 6. Inspect every field in the current canonical Agent Project Card contract,
    including shared or equal fields through progressive disclosure.
+7. Enter a classic 2D versus-fighter arcade mode with project-named, visibly
+   animated fighters, health bars, fullscreen play, and contextual-trait-themed
+   attacks while gameplay results remain separate from project assessment.
 
 The prototype must run locally without a backend, model call, repository
 analysis, account, or user-provided repository intake. Illustrative data must be
@@ -61,6 +64,11 @@ The data remains illustrative, and the user has not yet completed responsive,
 zoom, reduced-motion, and browser keyboard validation; this plan therefore
 remains **Active**.
 
+The Rumble Arena vertical slice consumes the local FastAPI projection endpoint
+when available and retains a visibly labelled bundled snapshot for reliable
+demonstration. Its Phaser runtime provides solo and local play, state-driven
+CC0 boxer animation, touch controls, and embedded or fullscreen presentation.
+
 ## Source Traceability
 
 The implementation must preserve these accepted inputs:
@@ -89,6 +97,10 @@ The implementation must preserve these accepted inputs:
   [`Customer-Facing Presentation`](../../requirements.md#customer-facing-presentation),
   [`Compact Comparison Hierarchy`](../../requirements.md#compact-comparison-hierarchy),
   and [`Frontend Presentation`](../../specification/05-system-behavior-and-quality.md#frontend-presentation).
+* Arcade comparison behavior:
+  [`Rumble Arena`](../../requirements.md#rumble-arena),
+  [`Rumble Arena specification`](../../specification/01-product-overview.md#78-rumble-arena),
+  and [`Comparison`](../../specification/05-system-behavior-and-quality.md#comparison).
 * Required React framework:
   [`Frontend Framework`](../../requirements.md#frontend-framework) and the
   accepted [`React Frontend`](../../decisions.md#react-frontend) decision.
@@ -116,6 +128,7 @@ produce a fast local test surface:
 | Data | Typed bundled fixtures behind a small catalog adapter | Does not define a frontend-owned card model or production API contract. |
 | Styling | CSS custom properties plus locally scoped CSS | Does not select a production styling system or component library. |
 | Components | Native semantic elements and small local primitives | Does not accept a production UI dependency. |
+| Arcade runtime | Lazily loaded Phaser 3.90 with Arcade Physics and a vendored CC0 boxer animation set | Does not make Phaser part of card analysis or accept a permanent game-engine architecture. |
 
 The prototype must keep transport, fixture data, status presentation, and visual
 tokens behind replaceable seams so later production work can connect canonical
@@ -201,6 +214,18 @@ least 44 by 44 CSS pixels.
 * Keep this plan Active until the local commands pass and the user completes or
   accepts the test path.
 
+### 6. Arcade Game Mode
+
+* Offer solo play against a lightweight CPU and local two-player play from the
+  prepared matchup intro.
+* Keep exact project names and both health bars visible during play.
+* Render human-looking fighters with visible idle, walk, jab, trait-special,
+  guard, hurt, and KO movement using the vendored CC0 boxer frame set.
+* Keep trait-derived attacks traceable to prepared comparison findings while
+  preserving equal health, damage, cooldown, and combat budgets.
+* Offer fullscreen from the mode chooser and the live cabinet, with embedded
+  play remaining available when fullscreen is blocked.
+
 ## File Ownership
 
 To avoid overlapping edits during delegated implementation:
@@ -241,6 +266,8 @@ Current recorded result:
 * Development-mode loading of the packaged schema through Vite passes.
 * Contract-derived field inventory and complete-field presentation coverage
   tests pass.
+* Arcade controls change live match state, all 45 boxer frames load, the
+  fullscreen controls are present, and leaving the mode destroys the runtime.
 * User-run local browser, responsive, zoom, reduced-motion, keyboard, and network
   inspection remain outstanding.
 
@@ -281,6 +308,10 @@ The local tester should be able to answer yes to each item:
 * Is the paper-and-ink editorial research identity coherent across desktop and
   mobile, and do the tokens/components feel reusable beyond the prototype?
 * Can I complete the full path with keyboard controls and at 200 percent zoom?
+* Can I identify both projects by fighter name, see both health bars, move,
+  attack, guard, take damage, and enter fullscreen before or during a match?
+* Do the fighters read as human characters with visible state-driven movement,
+  without presenting the arcade victor as the better project?
 * Are any confusing labels, missing decision details, or visual-system gaps
   recorded before the prototype is considered complete?
 

@@ -197,6 +197,37 @@ For the preprocessed catalog, the system must:
   unavailable-value semantics when presenting any field
 * Preserve unknown, not-applicable, not-analyzed, and no-evidence-found states
   rather than presenting them as negative differences
+* Allow a two-project comparison to be projected as Rumble Arena themed rounds
+  and as an actively playable arcade game mode
+* In arcade game mode, let player input control play and change the active match
+  state; themed styling, animation, or a linear round viewer alone is not
+  sufficient
+* Present arcade play in a classic 2D versus-fighter style, label each fighter
+  with its project's public name, and show a health bar for each fighter
+* Render human-looking fighters with visible body movement, reusing an existing
+  or open-source character design where one is available
+* Offer a user-initiated fullscreen option for arcade play
+* Give each fighter distinct attacks themed around that project's contextual
+  winning trait in the prepared comparison-sheet projection, with the theme
+  traceable to its comparison trait and Assessment Context
+* Derive every project fact, assessment, and contextual advantage communicated
+  in Rumble Arena from the same card and comparison data used by the standard
+  comparison
+* Treat contextual-trait-derived attacks as presentation and gameplay identity,
+  not as canonical assessments or evidence that one project is universally
+  better
+* Do not automatically translate contextual verdicts, evidence quantity,
+  confidence, verification status, or null states into fighter health, damage,
+  reach, speed, or another combat advantage
+* Keep player actions, transient match state, and any gameplay outcome distinct
+  from project claims and assessments
+* Permit a gameplay win, loss, or draw according to player actions and game
+  rules without using that result to score either project, establish contextual
+  fit or advantage, or alter either canonical Agent Project Card
+* State contextual round advantages without totaling the rounds, calculating a
+  universal project score, or declaring a universal project winner
+* Treat a role mismatch, equivalent contextual fit, or insufficient evidence as
+  a trade-off or inconclusive round rather than forcing a winner
 
 ### Refresh and Change Tracking
 

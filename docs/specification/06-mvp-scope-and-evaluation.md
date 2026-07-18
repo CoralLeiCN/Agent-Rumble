@@ -71,6 +71,10 @@ documentation even though the schema models multi-source projects.
 * Capability support-status distinctions
 * Basic keyword search over card text and structured card attributes
 * Shortlisting and contextual comparison of catalog projects
+* An actively playable, classic 2D versus-fighter Rumble Arena mode with
+  human-looking, visibly moving, project-named fighters, health bars, a
+  fullscreen option, and distinct attacks themed around the prepared
+  comparison's contextual winning traits
 * Manual operator-managed card refresh
 * Prompt-injection resistance for repository content
 
@@ -135,6 +139,18 @@ The MVP is successful when it can analyze a representative set of agent-related 
     available in the decision and comparison experience, with field coverage
     derived from the contract and selected card data rather than a fixed mock or
     user-interface field list.
+18. Present two-project comparisons as evidence-backed Rumble Arena rounds
+    without computing a universal score or forcing a universal project winner.
+19. Let a user actively control an arcade match whose state changes in response
+    to gameplay input, while keeping its gameplay outcome distinct from project
+    claims, contextual assessment, and the canonical Agent Project Cards.
+20. Present each project's public name on its fighter, show both fighters'
+    health bars, and provide distinct attacks traceable to their contextual
+    winning comparison traits without turning those traits into universal
+    project judgments or automatic combat advantages.
+21. Render human-looking fighters with visible body movement by reusing an
+    existing or open-source design where available, and let the user enter
+    fullscreen arcade play.
 
 Numeric acceptance thresholds remain an [open decision](../open-decisions.md#mvp-evaluation-protocol) until the evaluation set, rubric, reviewer process, and denominator are recorded.
 

@@ -117,4 +117,21 @@ describe("Agent Rumble customer experience", () => {
       expect(requirement.querySelector(".requirement__label")).not.toBeNull();
     });
   });
+
+  it("enters the prepared two-project Rumble Arena from the shortlist", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Find projects" }));
+    await screen.findByRole("heading", { name: "3 projects to compare" });
+    const compareButtons = screen.getAllByRole("button", { name: "+ Compare" });
+    await user.click(compareButtons[0]);
+    await user.click(compareButtons[1]);
+    await user.click(screen.getByRole("button", { name: "Enter Rumble →" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "Internal support agent proof of concept" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Solo fullscreen ⛶" })).toBeEnabled();
+  });
 });

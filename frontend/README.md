@@ -13,6 +13,8 @@ The prototype demonstrates one complete interaction:
 4. Compare prioritized project details in customer-readable sections and expand
    lower-priority details when needed.
 5. Open the supporting source details for a consequential comparison value.
+6. Select OpenAI Agents SDK and LangGraph, enter Rumble Arena, and either inspect
+   the evidence-backed rounds or play a versus-fighter exhibition.
 
 The sample cards have contract-valid draft v0.2 shape, but their project,
 claim, source, revision, and locator content remains **illustrative and not
@@ -29,7 +31,10 @@ npm install
 npm run dev
 ```
 
-Vite prints the local URL, normally `http://localhost:5173`.
+Vite prints the local URL, normally `http://localhost:5173`. When the FastAPI
+backend is running on `http://127.0.0.1:8000`, Vite proxies `/api` requests to
+it. Rumble Arena uses its clearly labelled bundled snapshot if the API is
+unavailable.
 
 To test against the backend, copy `.env.example` to `.env`, start FastAPI on
 `http://localhost:8000`, and restart Vite:
@@ -64,8 +69,10 @@ npm run preview
 ## Prototype Architecture
 
 The prototype intentionally has no routing, state-management, or
-component-library dependency. View state lives in `App.tsx`; catalog access is
-isolated behind a transport-independent gateway.
+component-library dependency. View state lives in `App.tsx`; the Rumble gateway
+and catalog gateway isolate transport concerns. The Rumble gateway provides
+both HTTP and bundled adapters so the interaction can be tested without
+accepting production architecture choices.
 
 The reusable seams are:
 
@@ -109,8 +116,39 @@ The reusable seams are:
   the only illustrative data source. `projectCardValidation.ts` checks their
   schema version, null-state pointers, and reference integrity in tests.
 
+The arcade layer reuses Phaser 3.90 and its Arcade Physics runtime. It is loaded
+only after the user chooses an arcade mode, owns transient game state only, and
+is destroyed when the player leaves. Project facts and contextual verdicts stay
+in the React projection. A contextual edge supplies a signature move's name,
+description, and delivery form, but never changes its damage/cooldown budget,
+base fighter health, CPU difficulty, or the gameplay result.
+
+The fighter frames reuse Raga2D's CC0 **Boxer Game Character** asset. Source,
+license, and local modifications are recorded in
+[`public/arcade/boxer/SOURCE.md`](public/arcade/boxer/SOURCE.md).
+
 Repository evidence is rendered as inert text. The prototype never injects
 source fragments as HTML and makes no model or live-analysis calls.
+
+## Arcade Controls
+
+Choose the prepared OpenAI Agents SDK and LangGraph pair, select `Enter Rumble`,
+then choose a mode:
+
+* **Solo vs CPU:** Player 1 uses `A` / `D` to move, `W` to jump, `F` to jab,
+  `G` for the project-trait special, and `S` to guard. Matching touch controls
+  appear on coarse-pointer devices.
+* **Local 2-player:** Player 1 keeps those controls; Player 2 uses left/right,
+  up to jump, `M` to jab, `N` for the trait special, and down to guard.
+* **Solo fullscreen:** Starts a solo match while requesting browser fullscreen.
+* **Guided evidence tour:** Retains the non-game evidence walkthrough.
+
+Use `P` or `Escape` to pause, `R` to restart, or the cabinet controls for pause,
+restart, fullscreen, and exit. Each exact project-name fighter starts a round at
+100 HP; the first to two round wins takes the exhibition. HP, KO, time, and
+round wins come only from gameplay. Prepared comparison traits theme distinct
+move delivery, while evidence stays read-only and an exhibition winner is never
+a project winner.
 
 ## Accessibility and Responsive Behavior
 
