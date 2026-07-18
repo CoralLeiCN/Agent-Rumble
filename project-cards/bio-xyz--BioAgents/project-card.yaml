@@ -1,0 +1,1536 @@
+schema_version: "0.2"
+card_id: "card-bio-xyz-bioagents"
+card_version: 1
+
+field_states:
+  /project/license: no_evidence_found
+  /source_snapshot/source_revisions/0/tag: not_applicable
+  /source_snapshot/release_versions: not_applicable
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+
+project:
+  project_id: "project-bio-xyz-bioagents"
+  name: "BioAgents"
+  primary_type: agent_application
+  type_rationale: >-
+    Although the README describes BioAgents as a framework, the analyzed project
+    boundary is a deployable, full-stack biological-research application: it
+    includes a web client, HTTP and WebSocket APIs, persistent conversation
+    state, specialized research-agent workflows, background workers, and
+    deployment configuration. It does expose internal extension points, but it
+    is not packaged primarily as a reusable SDK.
+  boundary: >-
+    The historical BioAgents product implemented by the single public
+    bio-xyz/BioAgents repository at commit
+    2699692df52c2b24892058bcf148e8a152ac4017. Included are the root application
+    package and manifests, Bun/Elysia backend, Preact client, agent workflows,
+    retrieval and file-processing code, Supabase schema, queue and WebSocket
+    infrastructure, Docker configuration, repository documentation,
+    representative tests, and CI configuration. Excluded are the successor BIOS
+    product and websites, linked external service repositories and hosted APIs,
+    third-party dependency source, issues and pull requests, editor/assistant
+    configuration content, binary fixtures, and all runtime behavior.
+  repositories:
+    - source_id: "source-bioagents-repository"
+      url: "https://github.com/bio-xyz/BioAgents"
+      owner: "bio-xyz"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "package.json"
+        - "bun.lock"
+        - "src/"
+        - "client/src/"
+        - "characters/"
+        - "documentation/"
+        - "supabase/"
+        - ".github/workflows/"
+        - "Dockerfile"
+        - "docker-compose.yml"
+        - "docker-compose.worker.yml"
+        - "docker-compose.swarm.yml"
+      excluded_paths:
+        - ".claude/ skill content (loader inspected; skill instructions not analyzed as control input)"
+        - ".cursor/"
+        - ".vscode/"
+        - ".husky/"
+        - "test/fixtures/ binary contents"
+        - "Linked external repositories, hosted services, issues, pull requests, and release assets"
+  packages:
+    - "bioagents-openai-agentkit (private root Bun package)"
+    - "docusaurus-temp 0.0.0 (private documentation package)"
+  services:
+    - "BioAgents Elysia API and WebSocket server"
+    - "BioAgents BullMQ worker process"
+    - "BioAgents Preact web client"
+    - "Repository-hosted Docusaurus documentation"
+  documentation_sites:
+    - "Repository-hosted Docusaurus source under documentation/"
+  license: null
+  status: archived
+
+source_snapshot:
+  analyzed_at: "2026-07-18T11:53:36Z"
+  source_revisions:
+    - source_id: "source-bioagents-repository"
+      branch: "main"
+      tag: null
+      commit: "2699692df52c2b24892058bcf148e8a152ac4017"
+      retrieved_at: "2026-07-18T11:50:12Z"
+      content_digest: "git-tree-sha1:f2c2bf9def5e50ae1c15f62ca8d40a6a48e9f5d5"
+  release_versions: []
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    source_checkout:
+      method: "shallow Git clone from the public repository"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "README and repository manifests"
+      - "API entry point and route registration"
+      - "Chat agent loop and internal tool registry"
+      - "Deep-research orchestration and specialized agent dispatch"
+      - "Knowledge retrieval, document ingestion, and file upload paths"
+      - "Queue, worker, WebSocket, authentication, and deployment paths"
+      - "Representative tests and GitHub Actions CI"
+    intentionally_not_analyzed:
+      - "Runtime behavior, benchmark reproduction, and end-to-end installation"
+      - "External BioLiterature, Bio Data Analysis, Edison, and OpenScholar implementations"
+      - "Hosted BIOS successor product and migration compatibility"
+      - "Third-party dependency internals and security posture"
+      - "Issue, pull-request, and community history"
+    source_safety: >-
+      Repository content was treated only as untrusted evidence. Instructions in
+      repository files were not followed, dependencies were not installed, and
+      project code was not executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    An archived, self-hostable TypeScript application for conversational and
+    iterative multi-agent research in biology and the life sciences.
+  purpose: >-
+    BioAgents combines literature retrieval, dataset-analysis integrations,
+    planning, hypothesis generation, reflection, persistent research state, and
+    a web experience to support biological research workflows.
+  target_users:
+    - "Biological and life-science researchers"
+    - "Research software engineers evaluating agentic research workflows"
+    - "Developers studying a historical full-stack multi-agent application"
+  primary_use_cases:
+    - "Answer biological research questions with literature-search tools"
+    - "Run iterative deep-research workflows over literature and uploaded datasets"
+    - "Search a configurable local scientific knowledge base"
+    - "Study or adapt an archived multi-agent research architecture"
+
+classification:
+  secondary_characteristics:
+    - "multi-agent research application"
+    - "retrieval-augmented generation"
+    - "human-feedback and autonomous iterative workflow"
+    - "full-stack web application"
+    - "self-hostable historical source"
+  domains:
+    - "biology"
+    - "life sciences"
+    - "scientific literature research"
+    - "scientific data analysis"
+  delivery_forms:
+    - "self-hosted web application"
+    - "HTTP and WebSocket API"
+    - "Docker deployment"
+  agent_patterns:
+    - "planning"
+    - "task decomposition"
+    - "parallel agent execution"
+    - "tool use"
+    - "hypothesis generation"
+    - "reflection"
+    - "iterative continuation with user feedback"
+    - "persistent conversation state"
+  architecture_layers:
+    - "web client"
+    - "API and authentication"
+    - "agent orchestration"
+    - "specialized literature and analysis agents"
+    - "retrieval and document processing"
+    - "persistence and object storage"
+    - "background jobs and real-time notifications"
+  claim_ids:
+    - "claim-classification"
+    - "claim-deep-research"
+    - "claim-application-stack"
+    - "claim-archived-status"
+
+capabilities:
+  - capability_id: "capability-conversational-research-chat"
+    ontology_id: "x-bioagents:conversational-research-chat"
+    name: "Conversational biological-research chat"
+    description: >-
+      Runs an Anthropic-backed chat agent loop that can stream responses, load a
+      bounded conversation history, and invoke a literature-search tool selected
+      by the model.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "The /api/chat route and web chat experience"
+    interfaces:
+      - "HTTP /api/chat"
+      - "Preact web client"
+      - "WebSocket progress notifications when queue mode is enabled"
+    prerequisites:
+      - "Anthropic API access for the current chat-agent loop"
+      - "Configured literature source for tool-assisted answers"
+      - "Supabase-backed conversation records for persisted history"
+    configuration_requirements:
+      - "ANTHROPIC_API_KEY"
+      - "CHAT_AGENT_MODEL"
+      - "CHAT_AGENT_MAX_TOOL_CALLS"
+      - "CHAT_AGENT_MAX_TOKENS"
+      - "At least one of OPENSCHOLAR_API_URL, BIO_LIT_AGENT_API_URL, or KNOWLEDGE_DOCS_PATH for literature tool use"
+    limitations:
+      - "The chat path uses the Anthropic SDK directly rather than the project's multi-provider adapter."
+      - "Its registered tool surface at the analyzed snapshot is limited to literature_search."
+      - "No runtime behavior was verified."
+    confidence: high
+    claim_ids:
+      - "claim-chat-agent-loop"
+      - "claim-multi-provider-llm"
+    evidence_refs:
+      - "evidence-chat-runner"
+      - "evidence-chat-loop"
+      - "evidence-chat-literature-tool"
+
+  - capability_id: "capability-iterative-deep-research"
+    ontology_id: "x-bioagents:iterative-deep-research"
+    name: "Iterative multi-agent deep research"
+    description: >-
+      Plans literature and analysis tasks, executes enabled work concurrently,
+      updates hypotheses and research state, reflects on results, proposes next
+      steps, and can continue automatically before generating an iteration reply.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "The /api/deep-research route family"
+    interfaces:
+      - "HTTP /api/deep-research/start"
+      - "HTTP deep-research status and branching routes"
+      - "Preact research-state interface"
+    prerequisites:
+      - "A configured model provider for each orchestration agent"
+      - "Supabase persistence"
+      - "At least one configured literature backend"
+      - "A configured external analysis backend for dataset-analysis tasks"
+    configuration_requirements:
+      - "PLANNING_LLM_PROVIDER and PLANNING_LLM_MODEL"
+      - "HYP_LLM_PROVIDER and HYP_LLM_MODEL"
+      - "REFLECTION_LLM_PROVIDER and REFLECTION_LLM_MODEL"
+      - "REPLY_LLM_PROVIDER and REPLY_LLM_MODEL"
+      - "PRIMARY_LITERATURE_AGENT"
+      - "PRIMARY_ANALYSIS_AGENT"
+    limitations:
+      - "Literature and data-analysis execution depends materially on external services not included in this project boundary."
+      - "The orchestration path was inspected statically but not run."
+    confidence: high
+    claim_ids:
+      - "claim-deep-research"
+      - "claim-persistent-research-state"
+    evidence_refs:
+      - "evidence-deep-plan-and-literature"
+      - "evidence-deep-analysis-and-reflection"
+      - "evidence-deep-continuation-and-reply"
+      - "evidence-documented-agent-flow"
+
+  - capability_id: "capability-scientific-literature-retrieval"
+    ontology_id: "x-bioagents:scientific-literature-retrieval"
+    name: "Scientific literature retrieval and synthesis"
+    description: >-
+      Dispatches research objectives to BioLiterature, OpenScholar, Edison, or a
+      local knowledge-search implementation and returns synthesized text to chat
+      or deep-research workflows.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Chat literature tool and deep-research literature tasks"
+    interfaces:
+      - "Internal literatureAgent TypeScript function"
+      - "Model-callable literature_search tool"
+      - "External HTTP APIs"
+    prerequisites:
+      - "Credentials and endpoints for the selected hosted literature backend"
+      - "Supabase and embedding configuration for local knowledge search"
+    configuration_requirements:
+      - "PRIMARY_LITERATURE_AGENT"
+      - "OPENSCHOLAR_API_URL and OPENSCHOLAR_API_KEY when using OpenScholar"
+      - "BIO_LIT_AGENT_API_URL when using BioLiterature"
+      - "EDISON_API_URL and EDISON_API_KEY when using Edison"
+      - "KNOWLEDGE_DOCS_PATH when using the local knowledge base"
+    limitations:
+      - "External retrieval quality, coverage, availability, and citation correctness were not verified."
+      - "The available backends differ between chat and deep-research modes."
+    confidence: high
+    claim_ids:
+      - "claim-literature-backends"
+    evidence_refs:
+      - "evidence-literature-dispatch"
+      - "evidence-chat-literature-tool"
+      - "evidence-deep-plan-and-literature"
+
+  - capability_id: "capability-external-dataset-analysis"
+    ontology_id: "x-bioagents:external-dataset-analysis"
+    name: "Dataset analysis through external research agents"
+    description: >-
+      Sends uploaded datasets and an analysis objective to either the Edison or
+      Bio Data Analysis integration and returns textual results, job identifiers,
+      reasoning traces, and optional artifacts.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Deep-research ANALYSIS tasks"
+    interfaces:
+      - "Internal analysisAgent TypeScript function"
+      - "External Edison and Bio Data Analysis HTTP APIs"
+    prerequisites:
+      - "Uploaded datasets"
+      - "Configured Edison or Bio Data Analysis service"
+      - "S3-compatible storage for the file-oriented workflow"
+    configuration_requirements:
+      - "PRIMARY_ANALYSIS_AGENT"
+      - "EDISON_API_URL and EDISON_API_KEY, or DATA_ANALYSIS_API_URL and DATA_ANALYSIS_API_KEY"
+    limitations:
+      - "The computation is delegated to external services whose code and runtime were outside the boundary."
+      - "Static inspection confirms integration paths, not correctness of scientific analysis."
+    confidence: high
+    claim_ids:
+      - "claim-analysis-backends"
+    evidence_refs:
+      - "evidence-analysis-dispatch"
+      - "evidence-deep-analysis-and-reflection"
+
+  - capability_id: "capability-local-knowledge-rag"
+    ontology_id: "x-bioagents:local-knowledge-rag"
+    name: "Local document knowledge base and semantic retrieval"
+    description: >-
+      Loads repository- or operator-supplied documents, extracts their text,
+      chunks new documents, stores chunks through Supabase, and searches them
+      through the project's vector-search and optional reranking path.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "KNOWLEDGE literature tasks and literature_search source=knowledge"
+    interfaces:
+      - "Filesystem document directory"
+      - "Internal VectorSearchWithDocuments API"
+      - "Supabase documents table and vector-search functions"
+    prerequisites:
+      - "Supabase service access"
+      - "An embedding provider"
+      - "A readable document directory"
+    configuration_requirements:
+      - "KNOWLEDGE_DOCS_PATH"
+      - "EMBEDDING_PROVIDER"
+      - "TEXT_EMBEDDING_MODEL"
+      - "Optional COHERE_API_KEY for reranking"
+    limitations:
+      - "Document ingestion, vector schema compatibility, and retrieval quality were not run or measured."
+      - "The document processor accepts Markdown, DOCX, and PDF for this path; other upload formats use separate processing paths."
+    confidence: high
+    claim_ids:
+      - "claim-local-knowledge-retrieval"
+    evidence_refs:
+      - "evidence-knowledge-agent"
+      - "evidence-vector-document-ingestion"
+      - "evidence-document-processor"
+
+  - capability_id: "capability-file-ingestion"
+    ontology_id: "x-bioagents:file-ingestion"
+    name: "Research file upload, extraction, and storage"
+    description: >-
+      Creates presigned S3-compatible uploads tied to conversation state and
+      contains processing paths for spreadsheets, CSV, Markdown, JSON, text,
+      PDF, and common image formats, including PDF text extraction and image OCR.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Direct file APIs, background file processing, and research dataset context"
+    interfaces:
+      - "HTTP /api/files routes"
+      - "S3-compatible presigned upload URLs"
+      - "In-process or BullMQ file processing"
+    prerequisites:
+      - "Configured S3-compatible storage"
+      - "Supabase conversation and file-status records"
+    configuration_requirements:
+      - "S3_BUCKET"
+      - "S3_REGION"
+      - "S3_ACCESS_KEY_ID"
+      - "S3_SECRET_ACCESS_KEY"
+      - "Optional S3_ENDPOINT"
+    limitations:
+      - "Separate legacy and direct-upload processing paths expose different limits and parsing behavior."
+      - "OCR, PDF extraction, and model consumption were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-file-ingestion"
+    evidence_refs:
+      - "evidence-file-types"
+      - "evidence-file-upload-service"
+      - "evidence-file-content-extraction"
+
+  - capability_id: "capability-multi-provider-llm"
+    ontology_id: "x-bioagents:multi-provider-llm-routing"
+    name: "Configurable multi-provider LLM layer"
+    description: >-
+      Provides adapters for OpenAI, Google, Anthropic, and OpenRouter with retry,
+      fallback, and token-usage tracking for orchestration-agent calls.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Planning, hypothesis, reflection, reply, and other calls using the shared LLM provider layer"
+    interfaces:
+      - "Internal LLM TypeScript class"
+      - "Provider-specific hosted APIs"
+    prerequisites:
+      - "Credentials for the selected provider"
+    configuration_requirements:
+      - "Per-agent *_LLM_PROVIDER and *_LLM_MODEL variables"
+      - "Corresponding provider API key"
+    limitations:
+      - "The /api/chat agent loop bypasses this layer and requires Anthropic at the analyzed revision."
+      - "Fallback behavior and provider parity were not runtime verified."
+    confidence: high
+    claim_ids:
+      - "claim-multi-provider-llm"
+    evidence_refs:
+      - "evidence-llm-provider-imports"
+      - "evidence-llm-provider-dispatch"
+      - "evidence-chat-runner"
+
+  - capability_id: "capability-queued-real-time-execution"
+    ontology_id: "x-bioagents:queued-real-time-execution"
+    name: "Queued background execution and real-time progress"
+    description: >-
+      Uses optional BullMQ queues and Redis-backed workers for chat, deep
+      research, file processing, paper generation, and message sweeping, with
+      authenticated WebSocket subscriptions for conversation updates.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Production-style queue mode when USE_JOB_QUEUE=true"
+    interfaces:
+      - "BullMQ and Redis"
+      - "Dedicated Bun worker process"
+      - "WebSocket /api/ws"
+      - "Bull Board admin dashboard"
+    prerequisites:
+      - "Redis"
+      - "A separately running worker process"
+      - "Authentication configuration for production use"
+    configuration_requirements:
+      - "USE_JOB_QUEUE=true"
+      - "REDIS_URL"
+      - "Queue concurrency and rate-limit variables"
+      - "BIOAGENTS_SECRET for JWT mode"
+    limitations:
+      - "Queue recovery, scaling, and WebSocket delivery were not load- or runtime-tested in this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-queued-execution"
+      - "claim-security-controls"
+    evidence_refs:
+      - "evidence-queue-definitions"
+      - "evidence-websocket-auth-and-subscriptions"
+      - "evidence-api-startup"
+
+architecture:
+  overview: >-
+    A Bun-hosted TypeScript application with an Elysia HTTP/WebSocket server and
+    Preact client. Chat uses an Anthropic tool loop, while deep research uses an
+    application-managed pipeline of planning, literature, analysis, hypothesis,
+    reflection, continuation, and reply agents. Supabase stores application and
+    retrieval data; S3-compatible storage holds uploads; optional BullMQ/Redis
+    workers execute long-running jobs and publish progress to WebSocket clients.
+  languages:
+    - "TypeScript"
+    - "JavaScript/JSX"
+    - "SQL/PLpgSQL"
+    - "CSS"
+  frameworks_and_sdks:
+    - name: "Elysia"
+      version_constraint: "^1.4.12"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-application-stack"
+    - name: "Preact"
+      version_constraint: "^10.27.2"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-application-stack"
+    - name: "Docusaurus"
+      version_constraint: "3.9.2"
+      dependency_relation: development
+      required: false
+      claim_ids:
+        - "claim-application-stack"
+  model_providers:
+    - name: "Anthropic API via @anthropic-ai/sdk"
+      version_constraint: "^0.90.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-chat-agent-loop"
+        - "claim-multi-provider-llm"
+    - name: "OpenAI API via openai"
+      version_constraint: "^6.34.0"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-multi-provider-llm"
+    - name: "Google AI via @google/genai"
+      version_constraint: "^1.25.0"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-multi-provider-llm"
+    - name: "OpenRouter via the project's OpenRouter adapter"
+      version_constraint: "OpenAI-compatible API; no distinct package constraint"
+      dependency_relation: hosted
+      required: false
+      claim_ids:
+        - "claim-multi-provider-llm"
+  runtime_and_orchestration:
+    - "Bun runtime and package manager"
+    - name: "BullMQ"
+      version_constraint: "^5.66.0"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-queued-execution"
+    - "Application-managed multi-agent orchestration"
+    - "Anthropic messages tool loop for conversational chat"
+  tools_and_mcp:
+    tools:
+      - name: "Internal literature_search model tool"
+        version_constraint: "Repository implementation at analyzed commit"
+        dependency_relation: bundled
+        required: false
+        claim_ids:
+          - "claim-chat-agent-loop"
+          - "claim-literature-backends"
+    mcp_role: unclear
+    mcp_details:
+      - "src/mcp/index.ts contains only a 'Coming soon' comment at the analyzed revision."
+      - "No implemented MCP client or server role was identified at targeted depth; this is not proof that MCP is absent from every historical or external component."
+  skills:
+    - name: "Claude Agent SDK filesystem-skill helper"
+      version_constraint: "@anthropic-ai/claude-agent-sdk ^0.1.26"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-skill-runner-permissions"
+  memory_and_state:
+    - name: "Supabase client"
+      version_constraint: "@supabase/supabase-js ^2.76.1"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-persistent-research-state"
+        - "claim-application-stack"
+    - "PostgreSQL-backed ConversationState and message records"
+    - name: "Redis client via ioredis"
+      version_constraint: "^5.8.2"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-queued-execution"
+  retrieval_and_knowledge:
+    - "Supabase-backed document chunks and vector-search functions"
+    - name: "Cohere reranking"
+      version_constraint: "cohere-ai ^7.19.0"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-local-knowledge-retrieval"
+    - "OpenAI-configurable text embeddings"
+    - "BioLiterature, OpenScholar, and Edison hosted literature integrations"
+  document_processing:
+    - name: "pdf-parse"
+      version_constraint: "2.4.5"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-file-ingestion"
+        - "claim-local-knowledge-retrieval"
+    - name: "mammoth"
+      version_constraint: "^1.11.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-local-knowledge-retrieval"
+    - name: "Papa Parse"
+      version_constraint: "papaparse ^5.5.3"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-file-ingestion"
+    - name: "SheetJS xlsx"
+      version_constraint: "^0.18.5"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-file-ingestion"
+    - name: "Tesseract.js"
+      version_constraint: "^7.0.0"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-file-ingestion"
+  execution_and_sandbox:
+    - name: "Claude Agent SDK helper permitting Skill, Read, Grep, and Bash tools"
+      version_constraint: "@anthropic-ai/claude-agent-sdk ^0.1.26"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-skill-runner-permissions"
+    - "No project-defined isolation boundary for that helper was established at targeted depth."
+  gateways_and_routing:
+    - "Elysia route composition"
+    - "Per-agent LLM provider/model routing"
+    - "Environment-selected literature and analysis backends"
+  storage_and_databases:
+    - "Supabase-hosted PostgreSQL"
+    - name: "AWS S3 client"
+      version_constraint: "@aws-sdk/client-s3 ^3.934.0"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-file-ingestion"
+    - "S3-compatible object storage"
+    - "Redis persistence for optional BullMQ queues"
+  interfaces:
+    - "Elysia HTTP JSON API"
+    - "Authenticated WebSocket /api/ws"
+    - "Preact browser UI"
+    - "Bull Board queue administration UI"
+  deployment:
+    - "Bun process"
+    - "Docker image"
+    - "Docker Compose API, worker, and Redis configurations"
+    - "Supabase migrations"
+  observability_and_evaluation:
+    - name: "Pino structured logging"
+      version_constraint: "^10.1.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-application-stack"
+    - "HTTP health endpoint with optional Redis status"
+    - "Token-usage persistence"
+    - "GitHub Actions unit and integration test workflow"
+  security_and_permissions:
+    - name: "jose JWT implementation"
+      version_constraint: "^6.1.0"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-security-controls"
+    - "CORS origin allowlist and response security headers"
+    - "JWT/password/no-auth modes"
+    - "Conversation-scoped WebSocket subscription checks"
+    - "Application rate limiting"
+  data_flows:
+    - >-
+      A chat message and bounded history flow into the Anthropic chat loop; the
+      model may call literature_search, whose result is returned to the loop
+      before a streamed or non-streamed answer is persisted.
+    - >-
+      A deep-research request flows through planning into concurrent literature
+      and dataset-analysis tasks, then hypothesis and reflection/discovery,
+      next-step planning, an optional continuation decision, and a user-facing
+      reply; ConversationState is persisted between stages.
+    - >-
+      Uploaded files flow through S3-compatible object storage and file-status
+      records into synchronous or queued extraction and description, after which
+      dataset metadata is attached to the conversation state.
+    - >-
+      Local knowledge documents flow through extraction and chunking into
+      Supabase; embedded queries retrieve and optionally rerank chunks for the
+      literature agent.
+  control_flows:
+    - "The chat model chooses whether and how often to call the registered literature tool, bounded by a configurable soft tool-call cap."
+    - "The planning agent emits LITERATURE and ANALYSIS tasks, which the deep-research route executes concurrently at each plan level."
+    - "The continuation agent determines whether another deep-research iteration runs automatically or control returns to the user."
+    - "USE_JOB_QUEUE selects in-process execution or BullMQ/Redis-backed worker execution."
+
+components:
+  - component_id: "component-api-server"
+    name: "API and WebSocket server"
+    path: "src/index.ts"
+    project_type: "application_interface"
+    purpose: "Compose HTTP routes, WebSocket handling, security middleware, UI serving, health checks, and queue-aware startup."
+    claim_ids:
+      - "claim-application-stack"
+      - "claim-security-controls"
+      - "claim-queued-execution"
+  - component_id: "component-chat-agent"
+    name: "Conversational chat agent loop"
+    path: "src/chat-agent/"
+    project_type: "agent_harness_runtime"
+    purpose: "Run an Anthropic messages loop with registered tools, streaming callbacks, bounded history, and a tool-call cap."
+    claim_ids:
+      - "claim-chat-agent-loop"
+  - component_id: "component-deep-research"
+    name: "Deep-research orchestrator"
+    path: "src/routes/deep-research/start.ts"
+    project_type: "agent_application"
+    purpose: "Coordinate planning, research tasks, hypothesis updates, reflection, continuation, persistence, and replies."
+    claim_ids:
+      - "claim-deep-research"
+      - "claim-persistent-research-state"
+  - component_id: "component-specialized-agents"
+    name: "Specialized research agents"
+    path: "src/agents/"
+    project_type: "agent_application_components"
+    purpose: "Implement planning, literature, analysis, hypothesis, reflection, discovery, continuation, reply, clarification, and upload roles."
+    claim_ids:
+      - "claim-deep-research"
+      - "claim-literature-backends"
+      - "claim-analysis-backends"
+  - component_id: "component-knowledge-retrieval"
+    name: "Document ingestion and retrieval"
+    path: "src/embeddings/"
+    project_type: "x-supporting-component"
+    purpose: "Extract, chunk, embed, persist, search, and optionally rerank local knowledge documents."
+    claim_ids:
+      - "claim-local-knowledge-retrieval"
+  - component_id: "component-file-services"
+    name: "File and storage services"
+    path: "src/services/files/ and src/storage/"
+    project_type: "x-supporting-component"
+    purpose: "Create presigned uploads, track file state, extract content, generate descriptions, and connect files to research state."
+    claim_ids:
+      - "claim-file-ingestion"
+  - component_id: "component-workers"
+    name: "Queue and worker layer"
+    path: "src/services/queue/ and src/worker.ts"
+    project_type: "agent_harness_runtime"
+    purpose: "Run optional Redis-backed background work for chat, deep research, files, papers, and cleanup."
+    claim_ids:
+      - "claim-queued-execution"
+  - component_id: "component-web-client"
+    name: "Preact web client"
+    path: "client/src/"
+    project_type: "application_interface"
+    purpose: "Provide chat, login, file-upload, research-state, artifact, and real-time progress experiences."
+    claim_ids:
+      - "claim-application-stack"
+
+usage:
+  installation: >-
+    For historical evaluation, clone the pinned revision, install the locked Bun
+    dependencies with bun install, copy .env.example to .env, configure model and
+    supporting services, apply Supabase migrations, and use either the Bun
+    development process or Docker deployment. These instructions were not run.
+  minimal_start: >-
+    Configure Supabase and ANTHROPIC_API_KEY for the current chat path, then run
+    bun run dev and access the application on its configured port. Deep research,
+    file handling, local knowledge, and queue mode require additional services
+    and environment variables.
+  configuration:
+    - "Environment variables select per-agent model providers and models."
+    - "PRIMARY_LITERATURE_AGENT and PRIMARY_ANALYSIS_AGENT select external research backends."
+    - "KNOWLEDGE_DOCS_PATH and embedding/reranking variables configure local RAG."
+    - "AUTH_MODE, BIOAGENTS_SECRET, UI_PASSWORD, and allowed origins configure access."
+    - "USE_JOB_QUEUE, REDIS_URL, concurrency, and rate-limit variables configure background execution."
+    - "S3-compatible storage variables configure file uploads."
+  required_services:
+    - "At least one hosted LLM provider; Anthropic is required for /api/chat at the analyzed revision"
+    - "Supabase/PostgreSQL for application state and local retrieval"
+    - "Selected external literature and analysis services for those capabilities"
+    - "S3-compatible storage for direct file upload and external analysis paths"
+    - "Redis and a worker process only when queue mode is enabled"
+  extension_points:
+    - "Add specialized agents under src/agents/ and export them into orchestration routes"
+    - "Register chat-agent tools through src/chat-agent/registry.ts"
+    - "Add or modify shared LLM adapters under src/llm/adapters/"
+    - "Select or extend literature and analysis backends"
+    - "Provide character identity/system configuration under characters/"
+    - "Add local knowledge documents under the configured knowledge directory"
+
+assessment:
+  contexts:
+    - context_id: "context-historical-reference-evaluation"
+      use_case: >-
+        Evaluate whether the archived BioAgents repository is useful as an
+        architectural reference or a starting point for an internally maintained
+        biological-research agent application.
+      comparison_cohort:
+        - "Open-source biological-research agent applications (not separately analyzed in this card)"
+      requirements:
+        - "A reproducible public TypeScript source snapshot"
+        - "Visible multi-agent research orchestration"
+        - "Evidence for literature, data-analysis, retrieval, persistence, and deployment paths"
+        - "Clear identification of maintenance, licensing, runtime, and external-service uncertainty"
+      organizational_constraints:
+        - "Static analysis only"
+        - "No installation or execution of untrusted project code"
+        - "No access to proprietary or hosted external service implementations"
+        - "Any adopted code would need an internally owned maintenance and security review"
+      assessed_at: "2026-07-18T11:53:36Z"
+  maturity: unclear
+  maturity_signals:
+    - statement: "The repository contains unit and integration test configuration, type checking, and CI services for Supabase and Redis."
+      reasoning: "These are positive engineering-process signals, but this analysis did not inspect historical CI results or execute the tests."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-ci-and-tests"
+    - statement: "The repository declares itself archived and no longer maintained."
+      reasoning: "Archive status is a lifecycle signal, not a direct measure of whether the last code snapshot worked in production."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-archived-status"
+  strengths:
+    - statement: "The source makes the multi-stage research control flow and agent responsibilities unusually explicit."
+      reasoning: "Planning, parallel literature/analysis work, hypothesis, reflection, continuation, and reply stages are visible as separate calls and state transitions."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-deep-research"
+    - statement: "The project covers a broad end-to-end application surface rather than only an agent loop."
+      reasoning: "The boundary includes UI, APIs, persistence, file handling, retrieval, queues, real-time progress, deployment, and tests."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-application-stack"
+        - "claim-file-ingestion"
+        - "claim-queued-execution"
+  limitations:
+    - statement: "Core literature and dataset-analysis results depend on external hosted services outside this project boundary."
+      reasoning: "The repository contains adapters and orchestration, but not the BioLiterature, Bio Data Analysis, Edison, or OpenScholar implementations being called."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-literature-backends"
+        - "claim-analysis-backends"
+    - statement: "Provider configurability is uneven across modes."
+      reasoning: "The shared LLM layer supports four providers, while the conversational chat loop directly requires the Anthropic SDK and key."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-multi-provider-llm"
+    - statement: "End-to-end behavior, scientific correctness, and deployment reproducibility remain unverified."
+      reasoning: "The permitted analysis mode was targeted static inspection; no project code or external service was run."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-deep-research"
+        - "claim-analysis-backends"
+  risks:
+    - statement: "Production adoption would create an immediate internal maintenance obligation."
+      reasoning: "The upstream repository is archived and explicitly redirects users to a different actively maintained product."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-archived-status"
+    - statement: "The Claude Agent SDK skill helper requires a dedicated execution-permission and isolation review before use."
+      reasoning: "Its configured allowed tool set includes Bash as well as project filesystem tools, and no project-defined sandbox was established in this targeted analysis."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-skill-runner-permissions"
+  best_fit:
+    - statement: "Best suited to architecture study, historical comparison, or a deliberate internal fork with owned maintenance."
+      reasoning: "The snapshot exposes a substantial multi-agent application architecture, but archive status and external dependencies make direct unsupported production adoption unsuitable."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-reference-suitability"
+  poor_fit:
+    - statement: "Poor fit for teams requiring an actively maintained, turnkey, self-contained production dependency."
+      reasoning: "The repository is archived, its license was not identified at this analysis depth, and several core capabilities call external services that were not evaluated."
+      context_id: "context-historical-reference-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-reference-suitability"
+        - "claim-archived-status"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "Bun"
+      scope: "Application runtime, package manager, scripts, and worker execution"
+      confidence: high
+      claim_ids:
+        - "claim-application-stack"
+    - target_project: "Supabase"
+      scope: "Application state, PostgreSQL schema, local document retrieval, and storage integration"
+      confidence: high
+      claim_ids:
+        - "claim-application-stack"
+        - "claim-persistent-research-state"
+        - "claim-local-knowledge-retrieval"
+    - target_project: "Anthropic API"
+      scope: "Required by the current conversational chat-agent loop"
+      confidence: high
+      claim_ids:
+        - "claim-chat-agent-loop"
+        - "claim-multi-provider-llm"
+  integrates_with:
+    - target_project: "BioLiterature"
+      scope: "Fast and deep scientific literature search"
+      confidence: high
+      claim_ids:
+        - "claim-literature-backends"
+    - target_project: "OpenScholar"
+      scope: "Optional scientific literature search"
+      confidence: high
+      claim_ids:
+        - "claim-literature-backends"
+    - target_project: "Edison"
+      scope: "Deep literature search and dataset analysis"
+      confidence: high
+      claim_ids:
+        - "claim-literature-backends"
+        - "claim-analysis-backends"
+    - target_project: "Bio Data Analysis"
+      scope: "External dataset-analysis backend"
+      confidence: high
+      claim_ids:
+        - "claim-analysis-backends"
+    - target_project: "OpenAI, Google AI, and OpenRouter"
+      scope: "Configurable model providers for shared LLM-layer calls"
+      confidence: high
+      claim_ids:
+        - "claim-multi-provider-llm"
+    - target_project: "Cohere"
+      scope: "Optional reranking for local knowledge retrieval"
+      confidence: high
+      claim_ids:
+        - "claim-local-knowledge-retrieval"
+    - target_project: "S3-compatible object storage"
+      scope: "Presigned file uploads and dataset storage"
+      confidence: high
+      claim_ids:
+        - "claim-file-ingestion"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "The analyzed BioAgents project is primarily a deployable agent application rather than a reusable agent framework or SDK."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "project-bio-xyz-bioagents at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-application"
+      - "evidence-package-manifest"
+      - "evidence-documented-system-architecture"
+    conflicting_evidence_ids: []
+    reasoning: "The README's use of 'framework' is outweighed for primary-type purposes by the repository boundary: a private application package with UI, API server, persistence, deployment, and application-specific research workflows."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-chat-agent-loop"
+    statement: "The conversational chat path implements an Anthropic messages loop with bounded history, streaming support, a configurable tool-call cap, and a registered literature-search tool."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "src/chat-agent/ at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-chat-runner"
+      - "evidence-chat-loop"
+      - "evidence-chat-literature-tool"
+    conflicting_evidence_ids: []
+    reasoning: "The runner configures Anthropic, loads history, and registers the tool; the loop passes tool definitions to the model, executes tool_use blocks, and stops exposing tools at the configured cap."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-deep-research"
+    statement: "The deep-research route statically implements a multi-stage loop of planning, concurrent literature and analysis tasks, hypothesis generation, reflection/discovery, next-step planning, continuation decisions, and replies."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "src/routes/deep-research/start.ts at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-deep-plan-and-literature"
+      - "evidence-deep-analysis-and-reflection"
+      - "evidence-deep-continuation-and-reply"
+      - "evidence-documented-agent-flow"
+    conflicting_evidence_ids: []
+    reasoning: "Representative control-flow sections contain direct calls to each specialized agent and explicit state transitions between stages."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-literature-backends"
+    statement: "BioAgents dispatches literature tasks across BioLiterature, OpenScholar, Edison, and local-knowledge implementations, subject to mode and configuration."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Literature integration code at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-literature-dispatch"
+      - "evidence-chat-literature-tool"
+      - "evidence-deep-plan-and-literature"
+    conflicting_evidence_ids: []
+    reasoning: "Both the literatureAgent switch and its chat/deep-research callers enumerate and select these backends. External implementations were not inspected."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-analysis-backends"
+    statement: "BioAgents delegates deep-research dataset analysis to either Edison or Bio Data Analysis integrations and captures returned output, jobs, reasoning, and artifacts."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Analysis integration code at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-analysis-dispatch"
+      - "evidence-deep-analysis-and-reflection"
+    conflicting_evidence_ids: []
+    reasoning: "The analysisAgent dispatches on EDISON or BIO and the deep-research route selects and consumes the result. Scientific correctness and external service behavior remain unverified."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-local-knowledge-retrieval"
+    statement: "The local KNOWLEDGE path loads documents, extracts and chunks their contents, stores new chunks through Supabase, and searches them through the vector retrieval layer."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "src/agents/literature/knowledge.ts and src/embeddings/ at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-knowledge-agent"
+      - "evidence-vector-document-ingestion"
+      - "evidence-document-processor"
+    conflicting_evidence_ids: []
+    reasoning: "The knowledge agent initializes VectorSearchWithDocuments, while that implementation processes directories, chunks new documents, persists batches, and performs searches."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-file-ingestion"
+    statement: "The repository implements S3-compatible uploads and processing for structured text, spreadsheet, PDF, and image inputs, including PDF extraction and image OCR paths."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "File and storage services at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-file-types"
+      - "evidence-file-upload-service"
+      - "evidence-file-content-extraction"
+    conflicting_evidence_ids: []
+    reasoning: "Supported-type configuration, presigned-upload code, and extraction functions are present. The paths were not executed and expose differing limits and behaviors."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-multi-provider-llm"
+    statement: "The shared LLM layer supports OpenAI, Google, Anthropic, and OpenRouter adapters, but the separate conversational chat loop directly requires Anthropic."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "src/llm/ and src/chat-agent/runner.ts at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-llm-provider-imports"
+      - "evidence-llm-provider-dispatch"
+      - "evidence-chat-runner"
+    conflicting_evidence_ids: []
+    reasoning: "The provider class imports and dispatches four adapters; the chat runner separately reads ANTHROPIC_API_KEY and defaults an Anthropic model."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-queued-execution"
+    statement: "Optional queue mode defines BullMQ/Redis queues and workers for long-running tasks and broadcasts progress through authenticated, conversation-scoped WebSocket subscriptions."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Queue, worker, and WebSocket code at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-queue-definitions"
+      - "evidence-websocket-auth-and-subscriptions"
+      - "evidence-api-startup"
+    conflicting_evidence_ids: []
+    reasoning: "Queue definitions include per-job retry policies, the API starts Redis subscription in queue mode, and WebSocket clients must authenticate before conversation subscription."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-application-stack"
+    statement: "The project is a Bun/TypeScript application using Elysia for its server, Preact for its web client, Supabase/PostgreSQL for persistence, and Docker-oriented deployment configuration."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The BioAgents application boundary at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-package-manifest"
+      - "evidence-documented-system-architecture"
+      - "evidence-docker-deployment"
+    conflicting_evidence_ids: []
+    reasoning: "The root manifest, documented architecture, source entry point, and Compose services agree on the primary application stack."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-persistent-research-state"
+    statement: "BioAgents persists conversation-level research plans, objectives, hypotheses, findings, and related state across requests."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "ConversationState documentation and deep-research persistence path at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-state"
+      - "evidence-deep-plan-and-literature"
+    conflicting_evidence_ids: []
+    reasoning: "The README defines persistent ConversationState fields, and the deep-research route repeatedly writes plan, objective, task, and activity changes through database operations."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-security-controls"
+    statement: "The application statically includes CORS allowlisting, response security headers, JWT-capable authentication, and authenticated conversation-scoped WebSocket subscriptions."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "API and WebSocket paths at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-api-security"
+      - "evidence-websocket-auth-and-subscriptions"
+    conflicting_evidence_ids: []
+    reasoning: "The controls are present in source, but their deployment configuration and resistance to attack were not tested."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-archived-status"
+    statement: "The BioAgents repository is archived, no longer maintained, and retained for historical reference while users are directed to BIOS."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "The repository lifecycle at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-archived-readme"
+    conflicting_evidence_ids: []
+    reasoning: "The first-party README contains an explicit archive and maintenance notice."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-ci-and-tests"
+    statement: "The repository configures type checking, unit tests, and Supabase/Redis integration tests in GitHub Actions."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: ".github/workflows/ci.yml at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-ci-workflow"
+    conflicting_evidence_ids: []
+    reasoning: "The workflow installs the frozen Bun lockfile, runs type checking and tests, then provisions Redis and Supabase for integration tests. Historical check outcomes were not analyzed."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-skill-runner-permissions"
+    statement: "A Claude Agent SDK helper is configured to permit Skill, Read, Grep, and Bash tools when invoked."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "src/llm/skills/skills.ts at the recorded source snapshot"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-skill-runner"
+    conflicting_evidence_ids: []
+    reasoning: "The allowedTools array is explicit. A targeted reference search found only the helper definition, so reachability and intended production use remain open questions."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+  - claim_id: "claim-reference-suitability"
+    statement: "Under the declared context, BioAgents is more suitable as an architectural reference or deliberately owned fork than as a turnkey maintained production dependency."
+    claim_kind: assessment
+    verification_status: unverified
+    confidence: high
+    applies_to: "context-historical-reference-evaluation"
+    assessment_context_id: "context-historical-reference-evaluation"
+    supporting_evidence_ids:
+      - "evidence-archived-readme"
+      - "evidence-documented-system-architecture"
+      - "evidence-deep-plan-and-literature"
+      - "evidence-ci-workflow"
+    conflicting_evidence_ids: []
+    reasoning: "The source exposes substantial, inspectable architecture and engineering scaffolding, but archive status, unknown licensing, external-service reliance, and lack of runtime verification impose adoption work that a turnkey dependency should not require."
+    last_verified_at: "2026-07-18T11:53:36Z"
+
+sources:
+  - source_id: "source-bioagents-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/bio-xyz/BioAgents"
+    revision_or_version: "2699692df52c2b24892058bcf148e8a152ac4017"
+    retrieved_at: "2026-07-18T11:50:12Z"
+    content_digest: "git-tree-sha1:f2c2bf9def5e50ae1c15f62ca8d40a6a48e9f5d5"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-archived-readme"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "BioAgents (Archived) notice"
+      line_start: 1
+      line_end: 8
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "This repository is archived and no longer maintained."
+    note: "First-party lifecycle notice; also redirects users to the separately maintained BIOS product."
+
+  - evidence_id: "evidence-readme-application"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Agent Backend / Routes and Agents"
+      line_start: 50
+      line_end: 119
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Routes, specialized agents, and agent extension instructions"
+    note: "Documents the product routes and application-specific agent roles."
+
+  - evidence_id: "evidence-readme-state"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "README.md"
+      symbol_or_section: "State Management and LLM Library"
+      line_start: 121
+      line_end: 154
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Conversation State is persistent across the entire conversation."
+    note: "Documents persistent plans, insights, hypotheses, methodology, and objectives."
+
+  - evidence_id: "evidence-documented-system-architecture"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "documentation/content/architecture/overview.md"
+      symbol_or_section: "System Components"
+      line_start: 7
+      line_end: 44
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Client, Elysia/Bun API, Redis, Supabase, and worker process"
+    note: "First-party architecture description consistent with inspected manifests and source entry points."
+
+  - evidence_id: "evidence-documented-agent-flow"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "documentation/content/architecture/overview.md"
+      symbol_or_section: "Agent Architecture / Deep Research Flow"
+      line_start: 46
+      line_end: 80
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Planning, literature/analysis, hypothesis, reflection, and reply flow"
+    note: "Documents the intended multi-agent control flow."
+
+  - evidence_id: "evidence-package-manifest"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "package.json"
+      symbol_or_section: "dependencies, package identity, and scripts"
+      line_start: 1
+      line_end: 77
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "bioagents-openai-agentkit; Elysia, Preact, Supabase, BullMQ, provider SDKs, and Bun scripts"
+    note: "Confirms direct dependency constraints and that the root package is private."
+
+  - evidence_id: "evidence-chat-runner"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/chat-agent/runner.ts"
+      symbol_or_section: "runChatAgent"
+      line_start: 78
+      line_end: 178
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "runChatAgent"
+    note: "Registers the literature tool, requires Anthropic, caps history/context, and invokes the loop."
+
+  - evidence_id: "evidence-chat-loop"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/chat-agent/loop.ts"
+      symbol_or_section: "runAgentLoop"
+      line_start: 25
+      line_end: 174
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "runAgentLoop"
+    note: "Shows streaming and non-streaming model calls, tool_use execution, result reinsertion, token accounting, and the soft cap."
+
+  - evidence_id: "evidence-chat-literature-tool"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/chat-agent/tools/literature-search.ts"
+      symbol_or_section: "literature_search registration"
+      line_start: 21
+      line_end: 107
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "registerTool({ name: literature_search, ... })"
+    note: "Defines model-facing schema and dispatch to OpenScholar, BioLiterature, or local knowledge."
+
+  - evidence_id: "evidence-deep-plan-and-literature"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/routes/deep-research/start.ts"
+      symbol_or_section: "Planning and concurrent literature task execution"
+      line_start: 1192
+      line_end: 1397
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "planningAgent; literatureAgent; Promise.all(literaturePromises)"
+    note: "Shows planning, plan-state persistence, configured literature sources, and concurrent execution."
+
+  - evidence_id: "evidence-deep-analysis-and-reflection"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/routes/deep-research/start.ts"
+      symbol_or_section: "Analysis, hypothesis, reflection, and discovery"
+      line_start: 1509
+      line_end: 1620
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "analysisAgent; hypothesisAgent; Promise.all([reflectionAgent, discoveryAgent])"
+    note: "Shows external analysis dispatch, hypothesis updates, and parallel reflection/discovery."
+
+  - evidence_id: "evidence-deep-continuation-and-reply"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/routes/deep-research/start.ts"
+      symbol_or_section: "Next planning, continuation decision, and reply"
+      line_start: 1671
+      line_end: 1802
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "planningAgent(mode=next); continueResearchAgent; replyAgent"
+    note: "Shows suggestion persistence, bounded autonomous continuation, and per-iteration reply generation."
+
+  - evidence_id: "evidence-literature-dispatch"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/agents/literature/index.ts"
+      symbol_or_section: "literatureAgent"
+      line_start: 22
+      line_end: 89
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "OPENSCHOLAR, KNOWLEDGE, BIOLIT, BIOLITDEEP, EDISON"
+    note: "Confirms supported dispatch values and the direct backend functions called for each."
+
+  - evidence_id: "evidence-analysis-dispatch"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/agents/analysis/index.ts"
+      symbol_or_section: "analysisAgent"
+      line_start: 26
+      line_end: 101
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "analyzeWithEdison; analyzeWithBio"
+    note: "Confirms the two external analysis dispatch paths and returned artifact/reasoning fields."
+
+  - evidence_id: "evidence-knowledge-agent"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/agents/literature/knowledge.ts"
+      symbol_or_section: "initKnowledgeBase and searchKnowledge"
+      line_start: 12
+      line_end: 64
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "VectorSearchWithDocuments"
+    note: "Loads documents from KNOWLEDGE_DOCS_PATH and exposes vector-search results as literature output."
+
+  - evidence_id: "evidence-vector-document-ingestion"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/embeddings/vectorSearchWithDocs.ts"
+      symbol_or_section: "VectorSearchWithDocuments.loadDocsOnStartup"
+      line_start: 11
+      line_end: 126
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "processDirectory; chunkDocument; addDocuments"
+    note: "Shows existing-document checks, extraction, chunking, and batched persistence."
+
+  - evidence_id: "evidence-document-processor"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/embeddings/documentProcessor.ts"
+      symbol_or_section: "DocumentProcessor"
+      line_start: 20
+      line_end: 106
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Markdown, DOCX, and PDF document extraction"
+    note: "Confirms recursive local document processing and format-specific extraction for the knowledge path."
+
+  - evidence_id: "evidence-file-types"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/agents/fileUpload/config.ts"
+      symbol_or_section: "FILE_TYPES"
+      line_start: 12
+      line_end: 62
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Excel, CSV, Markdown, JSON, text, PDF, and image types"
+    note: "Confirms one upload path's supported formats and static limits."
+
+  - evidence_id: "evidence-file-upload-service"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/services/files/index.ts"
+      symbol_or_section: "requestUploadUrl"
+      line_start: 69
+      line_end: 95
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "MAX_UPLOAD_SIZE_BYTES; getStorageProvider"
+    note: "Shows server-side size checks and the required S3-compatible storage provider for direct uploads."
+
+  - evidence_id: "evidence-file-content-extraction"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/services/files/description.ts"
+      symbol_or_section: "parseFilePreview, extractPDFText, and extractImageContent"
+      line_start: 110
+      line_end: 208
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "PDFParse; Tesseract.createWorker"
+    note: "Confirms PDF text extraction and image OCR in the direct file-processing path."
+
+  - evidence_id: "evidence-llm-provider-imports"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/llm/provider.ts"
+      symbol_or_section: "provider adapter imports"
+      line_start: 1
+      line_end: 9
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "AnthropicAdapter, GoogleAdapter, OpenAIAdapter, OpenRouterAdapter"
+    note: "Identifies the direct provider adapter set."
+
+  - evidence_id: "evidence-llm-provider-dispatch"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/llm/provider.ts"
+      symbol_or_section: "LLM.createAdapter"
+      line_start: 237
+      line_end: 250
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "openai, google, anthropic, openrouter"
+    note: "Confirms runtime dispatch among the four shared LLM adapters."
+
+  - evidence_id: "evidence-queue-definitions"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/services/queue/queues.ts"
+      symbol_or_section: "BullMQ queue definitions"
+      line_start: 24
+      line_end: 154
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "chat, deep-research, and file-process queues"
+    note: "Shows lazy queue creation, Redis connections, retry/backoff, and retention policies."
+
+  - evidence_id: "evidence-websocket-auth-and-subscriptions"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/services/websocket/handler.ts"
+      symbol_or_section: "websocketHandler"
+      line_start: 103
+      line_end: 245
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "/api/ws authentication and conversation subscription"
+    note: "Shows first-message authentication, JWT verification, conversation ownership lookup, and subscription state."
+
+  - evidence_id: "evidence-api-startup"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/index.ts"
+      symbol_or_section: "app startup and Redis subscription"
+      line_start: 350
+      line_end: 408
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "startRedisSubscription when job queue is enabled"
+    note: "Confirms queue-mode WebSocket bridge startup and in-process fallback behavior."
+
+  - evidence_id: "evidence-api-security"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/index.ts"
+      symbol_or_section: "Elysia middleware and security headers"
+      line_start: 70
+      line_end: 129
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "CORS origin validation and response security headers"
+    note: "Static controls only; this evidence is not a security audit or runtime verification."
+
+  - evidence_id: "evidence-docker-deployment"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "docker-compose.yml"
+      symbol_or_section: "API and Redis services"
+      line_start: 19
+      line_end: 171
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "bioagents API, migrations, environment, health check, and Redis"
+    note: "Confirms production-oriented Compose configuration; it was not deployed."
+
+  - evidence_id: "evidence-ci-workflow"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: ".github/workflows/ci.yml"
+      symbol_or_section: "test and integration jobs"
+      line_start: 34
+      line_end: 112
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "bun run typecheck; bun test; Supabase and Redis integration"
+    note: "Confirms CI configuration, not historical pass status."
+
+  - evidence_id: "evidence-skill-runner"
+    source_id: "source-bioagents-repository"
+    locator:
+      path: "src/llm/skills/skills.ts"
+      symbol_or_section: "callAnthropicWithSkills"
+      line_start: 43
+      line_end: 50
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "allowedTools: [Skill, Read, Grep, Bash]"
+    note: "The helper's explicit permission surface is confirmed; reachability, isolation, and production use were not."
+
+open_questions:
+  - question: "What license, if any, governs reuse of this repository snapshot?"
+    reason: "No root license file or package.json license declaration was found at targeted depth; absence of evidence is not proof that no license applies."
+    related_claim_ids:
+      - "claim-reference-suitability"
+  - question: "Which external BioLiterature, Bio Data Analysis, Edison, and OpenScholar versions remain compatible with this archived commit?"
+    reason: "Those services are material to core capabilities but were outside the project boundary and were not runtime tested."
+    related_claim_ids:
+      - "claim-literature-backends"
+      - "claim-analysis-backends"
+  - question: "What is the supported migration path from this repository to the actively maintained BIOS product?"
+    reason: "The archive notice links to BIOS but does not establish source, API, data, or deployment compatibility."
+    related_claim_ids:
+      - "claim-archived-status"
+      - "claim-reference-suitability"
+  - question: "Was callAnthropicWithSkills intended to be reachable in production, and what isolation policy should govern its Bash access?"
+    reason: "A targeted reference search found the helper definition but no caller, while its configured tool permissions are broad."
+    related_claim_ids:
+      - "claim-skill-runner-permissions"
+  - question: "Does BioAgents implement an MCP client or server in another revision or external component?"
+    reason: "The analyzed src/mcp/index.ts contains only a placeholder, and no implemented role was identified in the targeted snapshot."
+    related_claim_ids: []
