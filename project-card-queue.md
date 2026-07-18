@@ -8,3 +8,4 @@ will be confirmed when generation begins.
 | --- | --- | --- | --- |
 | Eigent | [eigent-ai/eigent](https://github.com/eigent-ai/eigent) | Queued | Not generated |
 | Biomni | [snap-stanford/biomni](https://github.com/snap-stanford/biomni) | Queued | Not generated |
+| BioAgents | [bio-xyz/BioAgents](https://github.com/bio-xyz/BioAgents) | Queued | Not generated |
