@@ -1,0 +1,1258 @@
+schema_version: "0.2"
+card_id: "card-anthropics-claude-agent-sdk-python"
+card_version: 1
+
+field_states:
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /assessment/gaps: not_analyzed
+  /relationships/comparable_projects: not_analyzed
+
+project:
+  project_id: "project-anthropics-claude-agent-sdk-python"
+  name: "Claude Agent SDK for Python"
+  primary_type: agent_framework_sdk
+  type_rationale: >-
+    The project is a typed Python SDK for embedding Claude Code's agent loop in
+    applications. It exposes one-shot and bidirectional clients, tool and MCP
+    integration, hooks, subagents, skills, session controls, permission policy,
+    and structured output, while delegating the actual agent runtime to a
+    bundled or user-supplied Claude Code CLI.
+  boundary: >-
+    The Claude Agent SDK for Python package, public Python source, examples,
+    tests, build metadata, and repository-hosted documentation in the single
+    anthropics/claude-agent-sdk-python repository at tag v0.2.122 and commit
+    94ff18e08551e1b96ba2668d90eacfedd92a3a55. Included are the public API,
+    subprocess transport and control protocol, in-process SDK MCP bridge,
+    session-store interfaces, representative tests, and CI definitions.
+    Excluded are the bundled binary's source and runtime behavior, the Claude
+    Code repository and service implementation, Anthropic model and API
+    internals, externally linked documentation, third-party dependency source,
+    issues and pull requests, package artifacts, and all dynamic execution.
+  repositories:
+    - source_id: "source-claude-sdk-repository"
+      url: "https://github.com/anthropics/claude-agent-sdk-python"
+      owner: "anthropics"
+      role: primary
+      included_paths:
+        - "README.md"
+        - "LICENSE"
+        - "CHANGELOG.md"
+        - "pyproject.toml"
+        - "src/claude_agent_sdk/"
+        - "examples/"
+        - "tests/"
+        - "e2e-tests/"
+        - ".github/workflows/"
+      excluded_paths:
+        - "Bundled Claude Code executable content under src/claude_agent_sdk/_bundled/"
+        - "External documentation and service implementations"
+        - "Third-party dependency source, issues, pull requests, and release artifacts"
+        - "Runtime execution, dependency installation, and dynamic security testing"
+  packages:
+    - "claude-agent-sdk 0.2.122 Python package"
+  services:
+    - "Claude Code CLI subprocess invoked by the SDK"
+    - "Anthropic-hosted Claude API reached through Claude Code"
+  documentation_sites:
+    - "Repository README and examples"
+    - "https://platform.claude.com/docs/en/agent-sdk/python (linked but not analyzed)"
+  license: >-
+    MIT for repository source; the README additionally states that use of the
+    SDK is governed by Anthropic's Commercial Terms of Service except for
+    components covered by their own licenses.
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:14:14Z"
+  source_revisions:
+    - source_id: "source-claude-sdk-repository"
+      branch: "main"
+      tag: "v0.2.122"
+      commit: "94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+      retrieved_at: "2026-07-18T13:14:14Z"
+      content_digest: "git-tree-sha1:880ffea736ae1b09f751973b55e0052e8c6a7275"
+  release_versions:
+    - "Git tag v0.2.122"
+    - "Python package 0.2.122"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    source_checkout:
+      method: "Filtered Git clone of the public repository at its exact default-branch revision"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+    mapping_coverage:
+      - "README, package metadata, license, and release tag"
+      - "Public one-shot and bidirectional client APIs"
+      - "ClaudeAgentOptions tool, permission, MCP, agent, skill, sandbox, output, and session controls"
+      - "Subprocess CLI transport and SDK MCP control bridge"
+      - "SessionStore protocol and in-memory reference implementation"
+      - "Representative unit, end-to-end, example, lint, and multi-platform CI configuration"
+    intentionally_not_analyzed:
+      - "Runtime behavior, task quality, latency, cost, and API compatibility in a live environment"
+      - "Bundled Claude Code binary contents and the upstream Claude Code implementation"
+      - "Externally hosted documentation beyond links present in repository files"
+      - "Historical CI results, package signatures, vulnerability enumeration, and penetration testing"
+      - "Issues, pull requests, contributor history, and exhaustive test-by-test coverage"
+    source_safety: >-
+      Repository content was treated only as untrusted evidence. Instructions
+      in documentation, source, examples, and workflows were not followed;
+      dependencies were not installed and project code was not executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A typed Python SDK that embeds Claude Code's agent loop through one-shot or
+    interactive clients, with tools, MCP, hooks, subagents, skills, permissions,
+    structured output, and session management.
+  purpose: >-
+    The SDK lets Python applications drive Claude Code programmatically while
+    configuring its working directory, tools, permissions, agent definitions,
+    extension points, execution safeguards, and persisted conversation state.
+  target_users:
+    - "Python developers embedding a coding or general-purpose agent in applications"
+    - "Teams building interactive agent services or automation around Claude Code"
+    - "Platform engineers integrating custom tools, MCP servers, hooks, and session storage"
+  primary_use_cases:
+    - "Run one-shot asynchronous agent queries"
+    - "Build bidirectional multi-turn and streaming agent experiences"
+    - "Expose Python functions as in-process MCP tools"
+    - "Define subagents, skills, plugins, hooks, and permission decisions"
+    - "Resume, fork, inspect, and externally mirror session transcripts"
+    - "Constrain turns, spend, tools, filesystem access, and command execution"
+
+classification:
+  secondary_characteristics:
+    - "Claude Code embedding SDK"
+    - "typed asynchronous Python client"
+    - "agent extension and control layer"
+    - "MCP client and in-process MCP tool host"
+    - "CLI-backed agent runtime adapter"
+  domains:
+    - "software development"
+    - "general-purpose task automation"
+    - "agent application development"
+  delivery_forms:
+    - "Python package"
+    - "bundled platform-specific CLI executable in built wheels"
+  agent_patterns:
+    - "model-directed tool use"
+    - "single-agent conversation loop"
+    - "programmatic subagent delegation"
+    - "human or callback permission decisions"
+    - "event hooks"
+    - "session resume and fork"
+  architecture_layers:
+    - "public Python API and typed messages"
+    - "SDK control protocol"
+    - "subprocess transport"
+    - "Claude Code CLI agent runtime"
+    - "MCP servers and tools"
+    - "local and external session stores"
+  claim_ids:
+    - "claim-classification"
+    - "claim-cli-runtime"
+    - "claim-interactive-client"
+
+capabilities:
+  - capability_id: "capability-query-modes"
+    ontology_id: "x-claude-sdk:query-modes"
+    name: "One-shot and bidirectional agent queries"
+    description: >-
+      Provides an async query iterator for simple requests and a stateful client
+      for streaming, follow-up messages, interrupts, and runtime controls.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Public query() and ClaudeSDKClient APIs"
+    interfaces:
+      - "Python async iterator"
+      - "Python async context manager and bidirectional message stream"
+    prerequisites:
+      - "Python 3.10 or newer"
+      - "A bundled, system, or explicitly configured Claude Code CLI"
+      - "Valid access to Anthropic's Claude service"
+    configuration_requirements:
+      - "ClaudeAgentOptions for non-default behavior"
+    limitations:
+      - "The SDK delegates agent execution to Claude Code rather than implementing the loop independently."
+      - "A client must stay within the async runtime context where it connected."
+      - "No query was executed in this analysis."
+    confidence: high
+    claim_ids:
+      - "claim-query-api"
+      - "claim-interactive-client"
+      - "claim-cli-runtime"
+    evidence_refs:
+      - "evidence-readme-query"
+      - "evidence-query-implementation"
+      - "evidence-client-modes"
+      - "evidence-client-connect"
+
+  - capability_id: "capability-tool-governance"
+    ontology_id: "x-claude-sdk:tool-governance"
+    name: "Tool selection and permission governance"
+    description: >-
+      Selects the base tool set, auto-approves or disallows named tools, applies
+      permission modes, and supports application callbacks and hooks for tool-use decisions.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "ClaudeAgentOptions and the streaming control protocol"
+    interfaces:
+      - "tools, allowed_tools, disallowed_tools, and permission_mode options"
+      - "can_use_tool callback"
+      - "PreToolUse and related hooks"
+    prerequisites:
+      - "A streaming client for can_use_tool callbacks"
+    configuration_requirements:
+      - "Explicit policy appropriate to the host application's trust model"
+    limitations:
+      - "Auto-approved tools and permissive modes can bypass can_use_tool callbacks."
+      - "The bypassPermissions mode bypasses permission checks and requires careful governance."
+    confidence: high
+    claim_ids:
+      - "claim-tool-permissions"
+      - "claim-hooks"
+    evidence_refs:
+      - "evidence-options-permissions"
+      - "evidence-readme-tools"
+      - "evidence-hooks"
+
+  - capability_id: "capability-mcp-tools"
+    ontology_id: "x-claude-sdk:mcp-tools"
+    name: "External and in-process MCP integration"
+    description: >-
+      Configures stdio, SSE, HTTP, and SDK MCP servers and exposes decorated
+      Python functions through an in-process MCP server bridge.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "MCP configuration, tool decorator, and SDK control bridge"
+    interfaces:
+      - "ClaudeAgentOptions.mcp_servers"
+      - "tool decorator and create_sdk_mcp_server"
+      - "MCP status, reconnect, and toggle client controls"
+    prerequisites:
+      - "mcp Python package >=1.23.0,<2.0.0"
+      - "External server processes or endpoints when configured"
+    configuration_requirements:
+      - "Named MCP server definitions and permission rules for their tools"
+    limitations:
+      - "The in-process bridge manually routes a tools-focused subset of MCP messages."
+      - "External MCP server availability and security were not analyzed."
+    confidence: high
+    claim_ids:
+      - "claim-mcp"
+    evidence_refs:
+      - "evidence-readme-mcp"
+      - "evidence-mcp-implementation"
+      - "evidence-control-mcp"
+      - "evidence-options-permissions"
+
+  - capability_id: "capability-hooks"
+    ontology_id: "x-claude-sdk:event-hooks"
+    name: "Agent lifecycle hooks"
+    description: >-
+      Runs application callbacks for tool, prompt, session, subagent,
+      notification, and compaction lifecycle events and can modify behavior.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "ClaudeSDKClient streaming sessions"
+    interfaces:
+      - "HookMatcher callback registration"
+      - "Hook event messages in the output stream"
+    prerequisites:
+      - "Bidirectional ClaudeSDKClient use"
+    configuration_requirements:
+      - "Independent callbacks because same-event matchers may run concurrently"
+    limitations:
+      - "Callback side effects and ordering across concurrent matchers are host-application responsibilities."
+    confidence: high
+    claim_ids:
+      - "claim-hooks"
+    evidence_refs:
+      - "evidence-hooks"
+      - "evidence-options-extensions"
+
+  - capability_id: "capability-subagents-skills-plugins"
+    ontology_id: "x-claude-sdk:agent-extensions"
+    name: "Programmatic subagents, skills, and plugins"
+    description: >-
+      Supplies custom subagent definitions, filters enabled skills, and loads
+      local plugins containing commands, agents, skills, and hooks.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "ClaudeAgentOptions and CLI initialization"
+    interfaces:
+      - "agents mapping"
+      - "skills option"
+      - "local plugin configuration"
+    prerequisites:
+      - "Agent, skill, or plugin definitions available to the host process"
+    configuration_requirements:
+      - "Appropriate setting_sources and plugin paths"
+    limitations:
+      - "Only local plugins are documented by the analyzed option type."
+      - "Skill filtering is explicitly not a sandbox and skill files remain reachable by other tools."
+    confidence: high
+    claim_ids:
+      - "claim-agent-extensions"
+    evidence_refs:
+      - "evidence-options-extensions"
+      - "evidence-transport-skills"
+
+  - capability_id: "capability-session-management"
+    ontology_id: "x-claude-sdk:session-management"
+    name: "Session resume, fork, inspection, and external storage"
+    description: >-
+      Resumes and forks sessions, lists and reads session or subagent messages,
+      mutates session metadata, and mirrors transcripts through a pluggable store.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "Public session APIs, ClaudeAgentOptions, and SessionStore protocol"
+    interfaces:
+      - "resume, continue_conversation, session_id, and fork_session options"
+      - "SessionStore async protocol"
+      - "session list, message, rename, tag, delete, import, and fork functions"
+    prerequisites:
+      - "Local Claude configuration storage or a compatible SessionStore adapter"
+    configuration_requirements:
+      - "Tenant-appropriate project_key and retention policy for external stores"
+    limitations:
+      - "The subprocess still writes a local transcript even when an external store is configured."
+      - "The bundled in-memory store is for testing and loses data at process exit."
+    confidence: high
+    claim_ids:
+      - "claim-sessions"
+    evidence_refs:
+      - "evidence-options-sessions"
+      - "evidence-session-store"
+      - "evidence-session-exports"
+
+  - capability_id: "capability-execution-controls"
+    ontology_id: "x-claude-sdk:execution-controls"
+    name: "Execution, budget, and output controls"
+    description: >-
+      Configures working directories, accessible directories, turn and spend
+      limits, command sandbox behavior, structured JSON output, and file checkpoint rewind.
+    support_status: statically_confirmed
+    evidence_status: confirmed
+    scope: "ClaudeAgentOptions and ClaudeSDKClient control methods"
+    interfaces:
+      - "cwd, add_dirs, max_turns, max_budget_usd, and sandbox options"
+      - "output_format JSON schema option"
+      - "rewind_files and interrupt client controls"
+    prerequisites:
+      - "Supported Claude Code CLI and host platform"
+    configuration_requirements:
+      - "Permission rules for filesystem and network restrictions"
+      - "enable_file_checkpointing for rewind support"
+    limitations:
+      - "Sandbox support is documented for macOS and Linux, not Windows."
+      - "The analyzed source states that filesystem and network restrictions are governed by permission rules, not sandbox settings alone."
+    confidence: high
+    claim_ids:
+      - "claim-execution-controls"
+      - "claim-structured-output"
+    evidence_refs:
+      - "evidence-options-controls"
+
+architecture:
+  overview: >-
+    Python callers use query() or ClaudeSDKClient. The SDK converts options into
+    Claude Code CLI flags and initialization/control messages, spawns the bundled
+    or configured CLI through an AnyIO subprocess transport, parses streamed
+    JSON messages into typed Python objects, and bridges callbacks, in-process
+    MCP tools, and optional session-store transcript mirroring in the parent process.
+  languages:
+    - "Python 3.10+"
+  frameworks_and_sdks:
+    - name: "AnyIO"
+      version_constraint: ">=4.0.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-metadata"
+    - name: "MCP Python SDK"
+      version_constraint: ">=1.23.0,<2.0.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-mcp"
+  model_providers:
+    - name: "Anthropic Claude through Claude Code"
+      version_constraint: "CLI-selected Claude model"
+      dependency_relation: hosted
+      required: true
+      claim_ids:
+        - "claim-cli-runtime"
+  runtime_and_orchestration:
+    - name: "Claude Code CLI"
+      version_constraint: "Bundled version tracked separately by package release tooling"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-cli-runtime"
+    - name: "AnyIO task groups and subprocess streams"
+      version_constraint: ">=4.0.0"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-interactive-client"
+  tools_and_mcp:
+    tools:
+      - name: "Claude Code built-in tools"
+        version_constraint: "Provided by selected Claude Code CLI"
+        dependency_relation: bundled
+        required: false
+        claim_ids:
+          - "claim-tool-permissions"
+      - name: "SDK MCP tool bridge"
+        version_constraint: "claude-agent-sdk 0.2.122"
+        dependency_relation: direct
+        required: false
+        claim_ids:
+          - "claim-mcp"
+    mcp_role: both
+    mcp_details:
+      - "The SDK configures external MCP servers as a client."
+      - "Python functions can be exposed as tools through in-process SDK MCP servers."
+  skills:
+    - name: "Claude Code skills"
+      version_constraint: "Discovered by Claude Code from configured setting sources and plugins"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-agent-extensions"
+  memory_and_state:
+    - name: "Claude Code local JSONL session transcripts"
+      version_constraint: "Selected Claude Code CLI format"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-sessions"
+    - name: "Pluggable SessionStore"
+      version_constraint: "claude-agent-sdk 0.2.122 protocol"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-sessions"
+  retrieval_and_knowledge: []
+  document_processing: []
+  execution_and_sandbox:
+    - name: "Claude Code command sandbox"
+      version_constraint: "macOS/Linux support exposed by ClaudeAgentOptions"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-execution-controls"
+    - name: "File checkpointing"
+      version_constraint: "ClaudeAgentOptions.enable_file_checkpointing"
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-execution-controls"
+  gateways_and_routing: []
+  storage_and_databases:
+    - name: "Host-provided SessionStore backend"
+      version_constraint: "Async append/load protocol; optional list/delete/subkey methods"
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-sessions"
+  interfaces:
+    - name: "Python async API"
+      version_constraint: "claude-agent-sdk 0.2.122"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-query-api"
+        - "claim-interactive-client"
+    - name: "Stream JSON subprocess protocol"
+      version_constraint: "Claude Code CLI control protocol"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-cli-runtime"
+  deployment:
+    - name: "Platform-specific Python wheels with bundled Claude Code CLI"
+      version_constraint: "Package 0.2.122"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-cli-runtime"
+  observability_and_evaluation:
+    - name: "stderr callback and typed stream events"
+      version_constraint: "claude-agent-sdk 0.2.122"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-interactive-client"
+  security_and_permissions:
+    - name: "Claude Code permission modes and tool rules"
+      version_constraint: "Selected Claude Code CLI"
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-tool-permissions"
+    - name: "Application can_use_tool callback and PreToolUse hooks"
+      version_constraint: "claude-agent-sdk 0.2.122"
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-tool-permissions"
+        - "claim-hooks"
+  data_flows:
+    - "A Python caller submits text or an async message stream to query() or ClaudeSDKClient."
+    - "The SDK serializes options into CLI arguments and an initialization control message."
+    - "Claude Code streams JSON messages; the SDK parses them into typed Python messages."
+    - "Permission, hook, and SDK MCP requests cross the control channel to application callbacks."
+    - "Optional transcript-mirror frames are batched to a host SessionStore while local CLI persistence remains active."
+  control_flows:
+    - "query() constructs an internal client for a bounded unidirectional exchange."
+    - "ClaudeSDKClient maintains a bidirectional transport and accepts interrupts and runtime control requests."
+    - "The CLI drives the agent loop and requests tool or hook decisions through the SDK control protocol."
+    - "The host can stop tasks, change permission mode or model, manage MCP servers, and rewind checkpointed files."
+
+components:
+  - component_id: "component-public-api"
+    name: "Public API and types"
+    path: "src/claude_agent_sdk/__init__.py; src/claude_agent_sdk/types.py"
+    project_type: "agent_framework_sdk"
+    purpose: "Exports clients, typed messages, options, tools, hooks, agents, and session APIs."
+    claim_ids:
+      - "claim-query-api"
+      - "claim-package-metadata"
+  - component_id: "component-client"
+    name: "ClaudeSDKClient"
+    path: "src/claude_agent_sdk/client.py"
+    project_type: "agent_framework_sdk"
+    purpose: "Manages bidirectional sessions and runtime control operations."
+    claim_ids:
+      - "claim-interactive-client"
+  - component_id: "component-query"
+    name: "One-shot query interface"
+    path: "src/claude_agent_sdk/query.py"
+    project_type: "agent_framework_sdk"
+    purpose: "Provides the simple async-iterator query surface."
+    claim_ids:
+      - "claim-query-api"
+  - component_id: "component-control"
+    name: "Internal control protocol"
+    path: "src/claude_agent_sdk/_internal/query.py"
+    project_type: "agent_harness_runtime"
+    purpose: "Routes streamed messages, permission and hook requests, MCP calls, and runtime controls."
+    claim_ids:
+      - "claim-hooks"
+      - "claim-mcp"
+  - component_id: "component-transport"
+    name: "Claude Code subprocess transport"
+    path: "src/claude_agent_sdk/_internal/transport/subprocess_cli.py"
+    project_type: "agent_harness_runtime"
+    purpose: "Locates the CLI, builds arguments, starts the subprocess, and carries stream JSON."
+    claim_ids:
+      - "claim-cli-runtime"
+      - "claim-tool-permissions"
+  - component_id: "component-session-store"
+    name: "Session storage and management"
+    path: "src/claude_agent_sdk/_internal/session_store.py and related session modules"
+    project_type: "x-supporting-component"
+    purpose: "Mirrors, resumes, lists, reads, mutates, and forks session data."
+    claim_ids:
+      - "claim-sessions"
+
+usage:
+  installation: "Install from PyPI with `pip install claude-agent-sdk`; built wheels bundle Claude Code by default."
+  minimal_start: >-
+    Import query and iterate asynchronously over query(prompt="..."); use
+    ClaudeSDKClient as an async context manager for bidirectional sessions.
+  configuration:
+    - "ClaudeAgentOptions selects model, prompts, tools, permissions, working directories, MCP servers, hooks, agents, skills, plugins, and output format."
+    - "cli_path overrides the bundled or discovered Claude Code executable."
+    - "setting_sources can isolate or enable user, project, and local filesystem settings."
+    - "session_store supplies optional external transcript persistence and resume."
+  required_services:
+    - "Anthropic Claude access through Claude Code"
+  extension_points:
+    - "Custom Transport implementation"
+    - "In-process SDK MCP tools and external MCP servers"
+    - "Hook and can_use_tool callbacks"
+    - "Programmatic subagent definitions"
+    - "Skills and local plugins"
+    - "SessionStore adapters"
+
+assessment:
+  contexts:
+    - context_id: "context-static-python-sdk-evaluation"
+      use_case: "Static evaluation of a Python SDK for embedding a governed Claude Code agent in an application."
+      comparison_cohort:
+        - "Python agent frameworks and SDKs"
+        - "CLI-backed agent embedding libraries"
+      requirements:
+        - "Typed asynchronous APIs"
+        - "Tool and permission controls"
+        - "Extensible tools, hooks, and subagents"
+        - "Reproducible package metadata and tested platform support"
+      organizational_constraints:
+        - "Public repository evidence only"
+        - "No project code execution or external service calls"
+        - "Runtime quality, policy enforcement, and bundled binary behavior remain unverified"
+      assessed_at: "2026-07-18T13:14:14Z"
+  maturity: early
+  maturity_signals:
+    - statement: "The package has a tagged 0.2.122 release, typed APIs, extensive unit and end-to-end tests, and multi-platform CI."
+      reasoning: "These are strong engineering signals, but the package metadata still classifies the project as Alpha."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-package-metadata"
+        - "claim-ci"
+        - "claim-maturity"
+  strengths:
+    - statement: "The SDK exposes both a compact one-shot API and a controllable bidirectional client."
+      reasoning: "Applications can choose a simple iterator or a stateful stream with interrupts and live controls."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-query-api"
+        - "claim-interactive-client"
+    - statement: "Its extension surface covers in-process MCP tools, external MCP servers, hooks, subagents, skills, plugins, and custom storage."
+      reasoning: "The public option and helper types expose multiple integration points without requiring changes to the SDK core."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-mcp"
+        - "claim-hooks"
+        - "claim-agent-extensions"
+        - "claim-sessions"
+  limitations:
+    - statement: "The Python package is not a standalone agent runtime."
+      reasoning: "Core execution, built-in tools, and model access are delegated to a bundled or configured Claude Code CLI and hosted service."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-cli-runtime"
+    - statement: "Some safeguards require coordinated configuration across tool availability, allow and deny rules, callbacks, settings sources, and sandbox settings."
+      reasoning: "The option documentation identifies shadowing and explicitly says skill filtering is not a sandbox."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-tool-permissions"
+        - "claim-agent-extensions"
+        - "claim-execution-controls"
+  risks:
+    - statement: "Permissive tool settings can allow file, shell, or network effects without an application callback."
+      reasoning: "allowed_tools and bypass modes can short-circuit can_use_tool; deployment policy must be tested in its actual host environment."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-tool-permissions"
+    - statement: "Bundled executable behavior is outside the analyzed source boundary."
+      reasoning: "The repository transport launches a CLI, but the executable implementation was not inspected or executed."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-cli-runtime"
+  best_fit:
+    - statement: "Python applications that want Claude Code's agent capabilities with typed control and extension APIs."
+      reasoning: "The SDK directly supports async queries, streaming control, tool governance, MCP, hooks, and session integration."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-interactive-client"
+  poor_fit:
+    - statement: "Deployments requiring a provider-neutral or fully in-process open agent runtime."
+      reasoning: "The core loop and built-in tool behavior depend on Claude Code and Anthropic service access."
+      context_id: "context-static-python-sdk-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-cli-runtime"
+  gaps: []
+
+relationships:
+  depends_on:
+    - target_project: "Claude Code"
+      scope: "Bundled or configured executable implements the agent runtime, built-in tools, and service protocol."
+      confidence: high
+      claim_ids:
+        - "claim-cli-runtime"
+    - target_project: "Anthropic Claude API"
+      scope: "Hosted model access used through Claude Code."
+      confidence: high
+      claim_ids:
+        - "claim-cli-runtime"
+  integrates_with:
+    - target_project: "Model Context Protocol servers"
+      scope: "External MCP clients and in-process SDK MCP tool servers."
+      confidence: high
+      claim_ids:
+        - "claim-mcp"
+    - target_project: "Host-provided session stores"
+      scope: "Async adapters for transcript mirroring and resume."
+      confidence: high
+      claim_ids:
+        - "claim-sessions"
+  comparable_projects: []
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "Claude Agent SDK for Python is primarily a Python agent framework and SDK for embedding Claude Code."
+    claim_kind: interpretive
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Project boundary at the recorded source snapshot"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-metadata"
+      - "evidence-readme-query"
+      - "evidence-client-modes"
+    conflicting_evidence_ids: []
+    reasoning: "The package exposes reusable clients and configuration rather than a standalone end-user application."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-package-metadata"
+    statement: "The analyzed release is typed Python package claude-agent-sdk 0.2.122 for Python 3.10+, with direct AnyIO and MCP dependencies and Alpha status metadata."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "pyproject.toml at commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-metadata"
+    conflicting_evidence_ids: []
+    reasoning: "Direct package metadata."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-query-api"
+    statement: "query() provides an asynchronous iterator for one-shot or unidirectional prompt streams."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Public query API"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-query"
+      - "evidence-query-implementation"
+    conflicting_evidence_ids: []
+    reasoning: "README usage and source API agree."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-interactive-client"
+    statement: "ClaudeSDKClient maintains a bidirectional session with follow-up input, streaming output, interrupts, and runtime controls."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "ClaudeSDKClient"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-client-modes"
+      - "evidence-client-connect"
+    conflicting_evidence_ids: []
+    reasoning: "Client source describes and implements the stateful transport and controls."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-cli-runtime"
+    statement: "The SDK delegates agent execution to a bundled, system, or explicitly configured Claude Code CLI subprocess."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Default SDK transport and packaged wheels"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-install"
+      - "evidence-transport-cli"
+      - "evidence-client-connect"
+    conflicting_evidence_ids: []
+    reasoning: "The README and transport source independently show CLI discovery and subprocess construction."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-tool-permissions"
+    statement: "Tool availability, allow and deny rules, permission modes, callbacks, and hooks are independently configurable and can shadow one another."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "ClaudeAgentOptions tool governance"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-tools"
+      - "evidence-options-permissions"
+    conflicting_evidence_ids: []
+    reasoning: "The public option documentation explicitly distinguishes availability from auto-approval and documents callback shadowing."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-mcp"
+    statement: "The SDK supports external MCP servers and in-process SDK MCP servers backed by decorated Python tool functions."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "MCP configuration and SDK bridge"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-mcp"
+      - "evidence-mcp-implementation"
+      - "evidence-control-mcp"
+    conflicting_evidence_ids: []
+    reasoning: "README examples match the tool decorator and control-bridge implementation."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-hooks"
+    statement: "Applications can register lifecycle hooks that receive control callbacks and may influence agent behavior."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Streaming client hook system"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-hooks"
+      - "evidence-options-extensions"
+    conflicting_evidence_ids: []
+    reasoning: "The public documentation and option types expose hook matching and dispatch semantics."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-agent-extensions"
+    statement: "The SDK accepts programmatic subagents, skill filters, and local plugins as agent extension mechanisms."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "ClaudeAgentOptions extension surface"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-options-extensions"
+      - "evidence-transport-skills"
+    conflicting_evidence_ids: []
+    reasoning: "Option definitions and transport argument construction expose these mechanisms."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-sessions"
+    statement: "The SDK exports local session inspection and mutation APIs and defines optional external transcript mirroring and resume through SessionStore."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Session APIs at the recorded snapshot"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-options-sessions"
+      - "evidence-session-store"
+      - "evidence-session-exports"
+    conflicting_evidence_ids: []
+    reasoning: "Public exports, options, and the SessionStore protocol define the surface; runtime persistence was not tested."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-license-terms"
+    statement: "The repository source is MIT-licensed, while the README states that use of the SDK is also governed by Anthropic's Commercial Terms except where a component has another license."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Repository license and README terms statement"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-license"
+      - "evidence-commercial-terms"
+    conflicting_evidence_ids: []
+    reasoning: "This records both first-party statements without offering a legal interpretation."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-execution-controls"
+    statement: "The SDK statically exposes working-directory, tool, turn, spend, sandbox, interrupt, and file-rewind controls."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "ClaudeAgentOptions and ClaudeSDKClient"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-options-permissions"
+      - "evidence-options-controls"
+    conflicting_evidence_ids: []
+    reasoning: "The public option and client methods define these controls; enforcement was not runtime verified."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-structured-output"
+    statement: "The SDK accepts a JSON Schema output format and exposes structured result data."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "ClaudeAgentOptions.output_format and result messages"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-options-controls"
+    conflicting_evidence_ids: []
+    reasoning: "Direct option documentation."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-ci"
+    statement: "Repository CI defines unit tests on Linux, macOS, and Windows plus authenticated end-to-end and example runs."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "GitHub Actions configuration"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-ci"
+    conflicting_evidence_ids: []
+    reasoning: "Workflow configuration is direct evidence that these checks are defined, not that any historical run passed."
+    last_verified_at: "2026-07-18T13:14:14Z"
+  - claim_id: "claim-maturity"
+    statement: "The project is assessed as early maturity for production evaluation because strong test and release signals coexist with an Alpha package classifier."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "Recorded assessment context"
+    assessment_context_id: "context-static-python-sdk-evaluation"
+    supporting_evidence_ids:
+      - "evidence-metadata"
+      - "evidence-ci"
+    conflicting_evidence_ids: []
+    reasoning: "The maturity projection weighs explicit lifecycle metadata alongside repository engineering controls."
+    last_verified_at: "2026-07-18T13:14:14Z"
+
+sources:
+  - source_id: "source-claude-sdk-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55; tag v0.2.122"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-tree-sha1:880ffea736ae1b09f751973b55e0052e8c6a7275"
+    access_scope: public
+  - source_id: "source-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/README.md"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:8d8445238128a27eb691f934f778dfd1c7a7d24d"
+    access_scope: public
+  - source_id: "source-pyproject"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/pyproject.toml"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:76b867e89e268e8de0e7e7b931d08900a25c913a"
+    access_scope: public
+  - source_id: "source-client"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/src/claude_agent_sdk/client.py"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:03705f0853b48d500fc40a6db8c2f888afe071d5"
+    access_scope: public
+  - source_id: "source-query"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/src/claude_agent_sdk/query.py"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:a91ed5194050718d831cad86cc1bfd910b8a7fa6"
+    access_scope: public
+  - source_id: "source-types"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/src/claude_agent_sdk/types.py"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:5b7926449b9cf191fa71a2f0f9892319bd21aeef"
+    access_scope: public
+  - source_id: "source-init"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/src/claude_agent_sdk/__init__.py"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:91937a00af3d63a20b84c123050da5b1cc4cede9"
+    access_scope: public
+  - source_id: "source-transport"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/src/claude_agent_sdk/_internal/transport/subprocess_cli.py"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:faaec2d5ec16bd503929f0334ad15598a108c1e7"
+    access_scope: public
+  - source_id: "source-control"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/src/claude_agent_sdk/_internal/query.py"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:7aded9384663f1ec2269f11a243f68009a8fedd4"
+    access_scope: public
+  - source_id: "source-session-store"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/src/claude_agent_sdk/_internal/session_store.py"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:bb6a2155b08ad546227eba9f2349d95bffd910fa"
+    access_scope: public
+  - source_id: "source-ci"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/.github/workflows/test.yml"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:1468de3f581931fc6c933eb59d26288991f6d97d"
+    access_scope: public
+  - source_id: "source-license"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/anthropics/claude-agent-sdk-python/blob/94ff18e08551e1b96ba2668d90eacfedd92a3a55/LICENSE"
+    revision_or_version: "commit 94ff18e08551e1b96ba2668d90eacfedd92a3a55"
+    retrieved_at: "2026-07-18T13:14:14Z"
+    content_digest: "git-blob-sha1:3fa6a64e52f30d3ad836f98b3f0da6f4b6263bb8"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-metadata"
+    source_id: "source-pyproject"
+    locator:
+      path: "pyproject.toml"
+      symbol_or_section: "[project]"
+      line_start: 5
+      line_end: 44
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "name = claude-agent-sdk; version = 0.2.122; Python >=3.10; Alpha classifier; AnyIO and MCP dependencies"
+    note: "Direct package metadata."
+  - evidence_id: "evidence-readme-install"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Installation"
+      line_start: 1
+      line_end: 18
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "The package installs from PyPI and bundles Claude Code by default, with a configurable CLI path."
+    note: "Documentation evidence; built artifact contents were not inspected."
+  - evidence_id: "evidence-readme-query"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Quick Start and Basic Usage: query()"
+      line_start: 20
+      line_end: 55
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "query() returns an AsyncIterator of response messages and accepts ClaudeAgentOptions."
+    note: "First-party usage documentation; implementation support is recorded separately."
+  - evidence_id: "evidence-query-implementation"
+    source_id: "source-query"
+    locator:
+      path: "src/claude_agent_sdk/query.py"
+      symbol_or_section: "query"
+      line_start: 11
+      line_end: 126
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Defines the one-shot or unidirectional async iterator and delegates prompts and options to InternalClient.process_query."
+    note: "Static implementation evidence; no query was executed."
+  - evidence_id: "evidence-client-modes"
+    source_id: "source-client"
+    locator:
+      path: "src/claude_agent_sdk/client.py"
+      symbol_or_section: "ClaudeSDKClient"
+      line_start: 27
+      line_end: 65
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Bidirectional, stateful client with streaming, follow-ups, and interrupts; client is tied to one async context."
+    note: "Direct class documentation in implementation source."
+  - evidence_id: "evidence-client-connect"
+    source_id: "source-client"
+    locator:
+      path: "src/claude_agent_sdk/client.py"
+      symbol_or_section: "ClaudeSDKClient._connect_inner"
+      line_start: 148
+      line_end: 273
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Creates SubprocessCLITransport, passes SDK MCP servers, hooks, agents, and skills to Query, and initializes the stream."
+    note: "Static implementation evidence; subprocess behavior was not executed."
+  - evidence_id: "evidence-readme-tools"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Using Tools"
+      line_start: 57
+      line_end: 73
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "allowed_tools auto-approves tools, disallowed_tools blocks them, and other decisions fall through to permission policy."
+    note: "First-party documentation."
+  - evidence_id: "evidence-options-permissions"
+    source_id: "source-types"
+    locator:
+      path: "src/claude_agent_sdk/types.py"
+      symbol_or_section: "ClaudeAgentOptions tool and permission fields"
+      line_start: 1726
+      line_end: 1911
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Defines base tools, allowed and disallowed tools, permission modes, limits, cwd, and can_use_tool shadowing semantics."
+    note: "Direct typed public option definitions."
+  - evidence_id: "evidence-readme-mcp"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Custom Tools and Mixed Server Support"
+      line_start: 85
+      line_end: 185
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Custom Python functions become in-process SDK MCP tools and may be mixed with external servers."
+    note: "First-party usage documentation."
+  - evidence_id: "evidence-mcp-implementation"
+    source_id: "source-init"
+    locator:
+      path: "src/claude_agent_sdk/__init__.py"
+      symbol_or_section: "SdkMcpTool, tool, and create_sdk_mcp_server"
+      line_start: 159
+      line_end: 355
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Defines typed SDK MCP tools and constructs an MCP Server with tools/call handlers."
+    note: "Defines the public tool and SDK-server construction helpers."
+  - evidence_id: "evidence-control-mcp"
+    source_id: "source-control"
+    locator:
+      path: "src/claude_agent_sdk/_internal/query.py"
+      symbol_or_section: "Query._handle_sdk_mcp_request"
+      line_start: 548
+      line_end: 620
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Bridges CLI JSON-RPC requests to in-process SDK MCP servers and manually handles initialize and tools/list requests."
+    note: "Static control-bridge evidence; later branches in the same method handle tool calls."
+  - evidence_id: "evidence-hooks"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Hooks"
+      line_start: 187
+      line_end: 237
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Hooks are application callbacks at agent-loop lifecycle points and can deny a Bash tool call."
+    note: "First-party hook example."
+  - evidence_id: "evidence-options-extensions"
+    source_id: "source-types"
+    locator:
+      path: "src/claude_agent_sdk/types.py"
+      symbol_or_section: "ClaudeAgentOptions hooks, agents, skills, and plugins"
+      line_start: 1913
+      line_end: 2002
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Defines concurrent hook dispatch, programmatic agents, skill filtering, setting sources, sandbox notes, and local plugins."
+    note: "Skill filtering is explicitly described as a context filter rather than a sandbox."
+  - evidence_id: "evidence-transport-skills"
+    source_id: "source-transport"
+    locator:
+      path: "src/claude_agent_sdk/_internal/transport/subprocess_cli.py"
+      symbol_or_section: "SubprocessCLITransport._apply_skills_defaults and _build_command"
+      line_start: 244
+      line_end: 390
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Maps skills to scoped Skill tool allow entries and translates options into CLI flags."
+    note: "Static transport construction; CLI acceptance was not executed."
+  - evidence_id: "evidence-options-sessions"
+    source_id: "source-types"
+    locator:
+      path: "src/claude_agent_sdk/types.py"
+      symbol_or_section: "ClaudeAgentOptions session fields"
+      line_start: 1786
+      line_end: 1804
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Defines continue, resume, explicit session ID, and related constraints."
+    note: "fork_session and external store fields appear later in the same public options class."
+  - evidence_id: "evidence-session-store"
+    source_id: "source-types"
+    locator:
+      path: "src/claude_agent_sdk/types.py"
+      symbol_or_section: "SessionStore protocol"
+      line_start: 1332
+      line_end: 1543
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Defines keys, transcript entries, batching, required append/load, optional list/delete, retention responsibilities, and subagent subkeys."
+    note: "The in-memory reference implementation is present but was not executed."
+  - evidence_id: "evidence-session-exports"
+    source_id: "source-init"
+    locator:
+      path: "src/claude_agent_sdk/__init__.py"
+      symbol_or_section: "public session imports"
+      line_start: 28
+      line_end: 53
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Exports session import, rename, tag, delete, fork, list, info, message, and subagent APIs for local and SessionStore-backed use."
+    note: "Confirms the public surface; individual runtime paths were not executed."
+  - evidence_id: "evidence-options-controls"
+    source_id: "source-types"
+    locator:
+      path: "src/claude_agent_sdk/types.py"
+      symbol_or_section: "ClaudeAgentOptions sandbox, structured output, checkpointing, and session store"
+      line_start: 1985
+      line_end: 2082
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Defines command sandbox settings, JSON Schema output, file checkpointing, and externally mirrored session storage."
+    note: "Static API evidence; enforcement and persistence were not runtime verified."
+  - evidence_id: "evidence-transport-cli"
+    source_id: "source-transport"
+    locator:
+      path: "src/claude_agent_sdk/_internal/transport/subprocess_cli.py"
+      symbol_or_section: "SubprocessCLITransport CLI discovery"
+      line_start: 111
+      line_end: 188
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "The default transport locates a bundled CLI first, then searches system locations."
+    note: "Static source inspection only."
+  - evidence_id: "evidence-ci"
+    source_id: "source-ci"
+    locator:
+      path: ".github/workflows/test.yml"
+      symbol_or_section: "test, test-e2e, test-e2e-docker, and test-examples jobs"
+      line_start: 1
+      line_end: 234
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Defines multi-platform unit tests and authenticated end-to-end, Docker, and example jobs."
+    note: "Workflow definition only; historical run status was not analyzed."
+  - evidence_id: "evidence-license"
+    source_id: "source-license"
+    locator:
+      path: "LICENSE"
+      symbol_or_section: "MIT License"
+      line_start: 1
+      line_end: 20
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "MIT License, copyright Anthropic, PBC."
+    note: "First-party repository license text; no legal interpretation is made."
+  - evidence_id: "evidence-commercial-terms"
+    source_id: "source-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "License and terms"
+      line_start: 357
+      line_end: 359
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "README states SDK use is governed by Anthropic Commercial Terms except for components under other licenses."
+    note: "First-party terms statement; no legal interpretation is made."
+
+open_questions:
+  - question: "Which exact Claude Code executable version is bundled in each published 0.2.122 platform wheel?"
+    reason: "The source checkout records package release metadata, but built wheel contents were outside the boundary."
+    related_claim_ids:
+      - "claim-cli-runtime"
+  - question: "How do the documented permission and sandbox controls behave across supported host platforms in deployment-specific policies?"
+    reason: "The analysis did not execute tools or exercise enforcement paths."
+    related_claim_ids:
+      - "claim-tool-permissions"
+      - "claim-execution-controls"
+  - question: "What compatibility guarantees apply between this SDK, Claude Code control-protocol versions, and session transcript formats?"
+    reason: "The package version is explicit, but runtime protocol compatibility was not tested."
+    related_claim_ids:
+      - "claim-cli-runtime"
+      - "claim-sessions"

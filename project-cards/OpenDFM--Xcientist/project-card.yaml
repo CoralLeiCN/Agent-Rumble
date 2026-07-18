@@ -1,0 +1,1388 @@
+schema_version: "0.2"
+card_id: "card-opendfm-xcientist"
+card_version: 1
+
+field_states:
+  /project/license: unknown
+  /source_snapshot/source_revisions/0/tag: not_applicable
+  /source_snapshot/source_revisions/1/branch: not_applicable
+  /source_snapshot/source_revisions/1/commit: not_applicable
+  /source_snapshot/ontology_versions/capabilities: unknown
+  /architecture/model_providers: no_evidence_found
+  /architecture/skills: no_evidence_found
+  /architecture/gateways_and_routing: no_evidence_found
+  /architecture/runtime_and_orchestration/0/version_constraint: unknown
+  /architecture/runtime_and_orchestration/1/version_constraint: unknown
+  /architecture/tools_and_mcp/tools/0/version_constraint: unknown
+  /architecture/tools_and_mcp/tools/1/version_constraint: unknown
+  /architecture/memory_and_state/0/version_constraint: unknown
+  /architecture/memory_and_state/1/version_constraint: unknown
+  /architecture/memory_and_state/2/version_constraint: unknown
+  /architecture/retrieval_and_knowledge/0/version_constraint: unknown
+  /architecture/retrieval_and_knowledge/1/version_constraint: unknown
+  /architecture/execution_and_sandbox/0/version_constraint: unknown
+  /architecture/execution_and_sandbox/1/version_constraint: unknown
+  /architecture/storage_and_databases/0/version_constraint: unknown
+  /architecture/storage_and_databases/1/version_constraint: unknown
+  /architecture/interfaces/0/version_constraint: unknown
+  /architecture/interfaces/1/version_constraint: unknown
+  /architecture/interfaces/2/version_constraint: unknown
+  /architecture/deployment/0/version_constraint: unknown
+  /architecture/deployment/1/version_constraint: unknown
+  /architecture/observability_and_evaluation/0/version_constraint: unknown
+  /architecture/observability_and_evaluation/1/version_constraint: unknown
+  /architecture/security_and_permissions/0/version_constraint: unknown
+  /architecture/security_and_permissions/1/version_constraint: unknown
+  /components/0/path: no_evidence_found
+  /components/1/path: no_evidence_found
+  /components/2/path: no_evidence_found
+  /components/3/path: no_evidence_found
+  /components/4/path: no_evidence_found
+  /components/5/path: no_evidence_found
+  /components/6/path: no_evidence_found
+  /claims/0/assessment_context_id: not_applicable
+  /claims/1/assessment_context_id: not_applicable
+  /claims/2/assessment_context_id: not_applicable
+  /claims/3/assessment_context_id: not_applicable
+  /claims/4/assessment_context_id: not_applicable
+  /claims/5/assessment_context_id: not_applicable
+  /claims/6/assessment_context_id: not_applicable
+  /claims/7/assessment_context_id: not_applicable
+  /claims/8/assessment_context_id: not_applicable
+  /claims/9/assessment_context_id: not_applicable
+  /evidence/1/locator/line_start: not_applicable
+  /evidence/1/locator/line_end: not_applicable
+  /evidence/2/locator/line_start: not_applicable
+  /evidence/2/locator/line_end: not_applicable
+  /evidence/3/locator/line_start: not_applicable
+  /evidence/3/locator/line_end: not_applicable
+  /evidence/4/locator/line_start: not_applicable
+  /evidence/4/locator/line_end: not_applicable
+  /evidence/5/locator/line_start: not_applicable
+  /evidence/5/locator/line_end: not_applicable
+  /evidence/6/locator/line_start: not_applicable
+  /evidence/6/locator/line_end: not_applicable
+  /evidence/7/locator/line_start: not_applicable
+  /evidence/7/locator/line_end: not_applicable
+  /evidence/8/locator/line_start: not_applicable
+  /evidence/8/locator/line_end: not_applicable
+  /evidence/9/locator/line_start: not_applicable
+  /evidence/9/locator/line_end: not_applicable
+  /evidence/10/locator/line_start: not_applicable
+  /evidence/10/locator/line_end: not_applicable
+  /evidence/11/locator/line_start: not_applicable
+  /evidence/11/locator/line_end: not_applicable
+  /evidence/12/locator/line_start: not_applicable
+  /evidence/12/locator/line_end: not_applicable
+
+project:
+  project_id: "project-opendfm-xcientist"
+  name: "Xcientist"
+  primary_type: agent_harness_runtime
+  type_rationale: >-
+    Xcientist is documented as a research harness that coordinates multiple
+    agentic stages across literature synthesis, structured ideation, experiment
+    execution and validation, reporting, and user inspection. Its central
+    product boundary is the governed runtime and artifact trail around AI-assisted
+    scientific discovery, rather than one domain-specific agent or a general SDK
+    intended to construct unrelated agent applications. This classification is
+    based on first-party documentation only because no implementation source was
+    present in the repository snapshot.
+  boundary: >-
+    The logical Xcientist research harness as described by the public
+    OpenDFM/Xcientist repository at commit
+    d72410e703338f3f8e82b2a790338f47cb89ee76 and the repository-linked paper
+    arXiv:2606.18874v2. The repository snapshot contains only README.md; therefore
+    the paper is included as first-party project documentation for intended and
+    reported architecture, capabilities, experiments, interfaces, and constraints.
+    Excluded are unreleased source code and documentation, the private/internal
+    deployment, underlying model-provider behavior, the 50,000-paper corpus,
+    experiment workspaces and datasets, DeepSurvey and MinerU source, Semantic
+    Scholar internals, generated research artifacts, and all runtime verification.
+  repositories:
+    - source_id: "source-xcientist-repository"
+      url: "https://github.com/OpenDFM/Xcientist"
+      owner: "OpenDFM"
+      role: primary
+      included_paths:
+        - "README.md"
+      excluded_paths:
+        - "Unreleased cleaned code and documentation"
+        - "Internal frontend, backend, database, workspaces, prompts, configuration, and deployment"
+        - "External paper corpus, datasets, models, repositories, and generated artifacts"
+        - "Issues, pull requests, discussions, and community metadata"
+  packages: []
+  services:
+    - "Documented topic-centric web frontend"
+    - "Documented orchestration backend with REST and WebSocket interfaces"
+    - "Documented relational persistence and local artifact storage"
+    - "Documented containerized stage-execution environment"
+  documentation_sites:
+    - "https://kotohanon.github.io/Xcientist/"
+    - "https://arxiv.org/abs/2606.18874"
+  license: null
+  status: active
+
+source_snapshot:
+  analyzed_at: "2026-07-18T13:38:00Z"
+  source_revisions:
+    - source_id: "source-xcientist-repository"
+      branch: "main"
+      tag: null
+      commit: "d72410e703338f3f8e82b2a790338f47cb89ee76"
+      retrieved_at: "2026-07-18T13:21:15Z"
+      content_digest: "git-tree-sha1:d1b00f57ca865e74a60ecd11bd86b99c29e86407"
+    - source_id: "source-xcientist-paper-v2"
+      branch: null
+      tag: "arXiv:2606.18874v2"
+      commit: null
+      retrieved_at: "2026-07-18T13:21:15Z"
+      content_digest: "sha256:3e08ddf9cbcb51367e138c76da1b6fcb9492a41eb8f1dcfc39d66b62dc1cebfe"
+  release_versions:
+    - "No software release or Git tag present in the repository snapshot"
+    - "Project paper arXiv:2606.18874v2, revised 2026-06-24"
+  analysis_depth: targeted
+  analysis_configuration:
+    analysis_mode: static
+    dynamic_analysis: false
+    executed_project_code: false
+    installed_project_dependencies: false
+    network_calls_by_project: false
+    source_checkout:
+      method: "Git partial clone and exact detached checkout of the public default branch"
+      working_tree_dirty: false
+      commit_is_complete_snapshot: true
+      repository_tree_files:
+        - "README.md"
+    documentation_retrieval:
+      paper_uri: "https://arxiv.org/pdf/2606.18874v2"
+      paper_revision: "v2"
+      paper_pages: 65
+      project_page_inspection: "Only the static application shell was retrievable; no claims rely on it"
+    mapping_coverage:
+      - "Repository tree, README release notice, Git history, and exact tree digest"
+      - "Paper abstract, architecture overview, methods, implementation appendix, case studies, and stated constraints"
+      - "Paper Graph, literature synthesis, ideation, experiment validation, reporting, interface, persistence, and deployment descriptions"
+      - "Claim-drift motivation and the three reported scientific case studies"
+    intentionally_not_analyzed:
+      - "Unreleased source code, manifests, license files, tests, CI, schemas, prompts, and configuration"
+      - "Runtime correctness, scientific reproducibility, model quality, security, isolation, or performance"
+      - "Underlying DeepSurvey, MinerU, Semantic Scholar, model, dataset, and third-party repository implementations"
+      - "The full 50,000-paper corpus, experiment workspaces, generated reports, traces, and ablation artifacts"
+      - "Paper peer-review status, independent replication, issues, pull requests, and community history"
+    evidence_interpretation: >-
+      Paper descriptions are recorded as first-party documented claims, not as
+      statically confirmed implementation. Repository absence is preserved as an
+      uncertainty and not interpreted as proof that the documented system does
+      not exist internally.
+    source_safety: >-
+      Repository and paper content were treated only as untrusted evidence.
+      Embedded instructions, prompt contracts, workflow commands, and research
+      procedures were not followed as control input. No Xcientist code, agent,
+      model, dataset, experiment, command, container, or external repository was
+      executed.
+  analyzer_version: "agent-project-card-skill/0.1"
+  ontology_versions:
+    classification: "0.1"
+    capabilities: null
+
+summary:
+  one_line: >-
+    A documented AI-science research harness that preserves literature evidence,
+    structured ideas, validator-gated experiments, repair traces, ablations, and
+    audited claims as an inspectable research trajectory.
+  purpose: >-
+    Xcientist aims to make AI-assisted scientific discovery more attributable
+    and governable by externalizing research synthesis and experimental
+    validation into persistent artifacts, explicit contracts, independent
+    validation gates, bounded repair, and user-visible inspection surfaces.
+  target_users:
+    - "AI-for-science researchers"
+    - "Researchers studying autonomous scientific agents"
+    - "Teams that need inspectable literature, ideation, experiment, and reporting trails"
+    - "Reviewers or operators supervising long-horizon AI-assisted research runs"
+  primary_use_cases:
+    - "Build graph-grounded literature reviews and method-evolution analyses"
+    - "Generate and refine structured research ideas under novelty, feasibility, and validation constraints"
+    - "Prepare, implement, run, validate, ablate, and repair scientific experiments"
+    - "Audit whether implementations and empirical evidence support generated claims"
+    - "Inspect run state, artifacts, messages, traces, approvals, and failures through a web interface"
+
+classification:
+  secondary_characteristics:
+    - "AI scientist system"
+    - "multi-stage research workflow"
+    - "contract-governed execution harness"
+    - "artifact- and evidence-centric orchestration"
+    - "human-inspectable research runtime"
+    - "multi-agent literature, ideation, validation, and reporting pipeline"
+  domains:
+    - "AI-assisted scientific discovery"
+    - "computer-science literature synthesis"
+    - "machine-learning experiment automation"
+    - "scientific claim validation"
+    - "research process auditability"
+  delivery_forms:
+    - "documented web application"
+    - "documented backend service"
+    - "documented single-host research runtime"
+    - "public research paper"
+    - "public release-placeholder repository"
+  agent_patterns:
+    - "staged multi-agent workflow"
+    - "plan-execute-verify-repair"
+    - "worker-validator separation"
+    - "memory-guided Monte Carlo Tree Search"
+    - "cross-mode idea generation and fusion"
+    - "evidence-driven repair"
+    - "human approval and intervention"
+  architecture_layers:
+    - "Paper Graph Infrastructure"
+    - "Research Harness"
+    - "literature review and research synthesis"
+    - "structured idea search and fusion"
+    - "contract-governed experiment validation"
+    - "audited report writing"
+    - "frontend, backend, persistence, and stage execution"
+  claim_ids:
+    - "claim-classification"
+    - "claim-paper-graph"
+    - "claim-literature-synthesis"
+    - "claim-ideation"
+    - "claim-experiment-validation"
+    - "claim-interface"
+
+capabilities:
+  - capability_id: "capability-paper-graph"
+    ontology_id: "x-xcientist:paper-graph"
+    name: "Paper Graph Infrastructure"
+    description: >-
+      Parses full-text computer-science papers into schema-bound problems,
+      contributions, components, limitations, innovations, baselines, datasets,
+      quotes, and typed method-evolution relations for downstream retrieval and
+      validation planning.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented Paper Graph Infrastructure in arXiv:2606.18874v2"
+    interfaces:
+      - "Topic and seed-paper retrieval"
+      - "Graph-backed downstream literature and validation queries"
+      - "Semantic Scholar identifiers and citation/reference relations"
+    prerequisites:
+      - "Computer-science paper corpus"
+      - "Semantic Scholar metadata and API access"
+      - "MinerU full-text parsing"
+      - "Model-backed structured extraction"
+    configuration_requirements:
+      - "Ideation and experimental extraction schemas"
+      - "Entity-resolution and graph-construction rules"
+      - "Bounded retrieval and filtering parameters"
+    limitations:
+      - "The documented corpus is computer-science focused."
+      - "Graph source, schemas, extraction prompts, and data were not released in the repository snapshot."
+      - "Extraction accuracy and quote fidelity were not independently verified."
+    confidence: high
+    claim_ids:
+      - "claim-paper-graph"
+      - "claim-release-state"
+    evidence_refs:
+      - "evidence-paper-architecture"
+      - "evidence-paper-graph-methods"
+
+  - capability_id: "capability-literature-synthesis"
+    ontology_id: "x-xcientist:literature-synthesis"
+    name: "Graph-grounded literature synthesis"
+    description: >-
+      Uses DeepSurvey to expand and filter literature, extract full-text keynotes,
+      cluster papers, model relations, analyze code repositories, draft surveys,
+      enforce citations, and refine outputs at multiple granularities.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented literature review stage"
+    interfaces:
+      - "Research topic or seed papers"
+      - "Structured survey, paper keynotes, comparison tables, relation graphs, and Q&A summaries"
+    prerequisites:
+      - "Paper Graph and Semantic Scholar access"
+      - "Full-text paper retrieval"
+      - "DeepSurvey subsystem"
+      - "LLM-backed filtering, extraction, drafting, and refinement"
+    configuration_requirements:
+      - "Topic, seed set, expansion depth, filters, clusters, and outline"
+      - "Citation assignment and verification rules"
+    limitations:
+      - "The paper reports approximately 50,000 indexed computer-science papers, not a general scientific corpus."
+      - "Survey and citation quality were not reproduced from released artifacts."
+    confidence: high
+    claim_ids:
+      - "claim-literature-synthesis"
+      - "claim-release-state"
+    evidence_refs:
+      - "evidence-literature-synthesis"
+
+  - capability_id: "capability-structured-ideation"
+    ontology_id: "x-xcientist:structured-ideation"
+    name: "Structured, evidence-grounded ideation"
+    description: >-
+      Searches editable idea states under multiple Idea Taste Modes using
+      memory-guided MCTS, component-level edit operators, multidimensional
+      evaluation, constrained cross-mode fusion, referee review, and local repair.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented idea-generation stage"
+    interfaces:
+      - "Topic, prepared root context, prior idea, and validation memory"
+      - "Structured candidate ideas, fusion metadata, and minimal validation plans"
+    prerequisites:
+      - "Survey-grounded evidence and graph references"
+      - "LLM generator and evaluator"
+      - "Vector and symbolic memory from prior trajectories"
+    configuration_requirements:
+      - "Idea Taste Modes"
+      - "MCTS search budget and evaluation rubric"
+      - "Root-domain constraints, edit operators, and refinement scope"
+    limitations:
+      - "Search quality, cost, reproducibility, and sensitivity to evaluator models were not independently tested."
+      - "No source, prompt, model configuration, or recorded search tree was available."
+    confidence: high
+    claim_ids:
+      - "claim-ideation"
+      - "claim-release-state"
+    evidence_refs:
+      - "evidence-ideation"
+
+  - capability_id: "capability-experiment-validation"
+    ontology_id: "x-xcientist:contract-governed-validation"
+    name: "Contract-governed experiment validation"
+    description: >-
+      Converts an idea into a run-scoped workspace, then gates repository and
+      environment preparation, implementation, smoke testing, standard science,
+      component-wise ablation, repair, and convergence on independent validator
+      reports and real execution artifacts.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented experiment-validation stage"
+    interfaces:
+      - "Prepared repository, dataset, model, and environment inventory"
+      - "Self-contained project code and verification commands"
+      - "Standard and ablation result directories"
+      - "Machine-readable phase status and convergence artifacts"
+    prerequisites:
+      - "Permission to clone or inspect repositories and run scientific code"
+      - "Datasets, models, compute, environment construction, and command execution"
+      - "Worker, validator, scheduler, and run-local workspace"
+    configuration_requirements:
+      - "Goals, input paths, permitted write roots, required outputs, and done conditions"
+      - "Canonical component list and one ablation switch per component"
+      - "Repair and master-iteration limits"
+    limitations:
+      - "The paper documents workspace scoping and optional containers but does not establish a hardened security sandbox."
+      - "Validator correctness, benchmark validity, resource use, and full reproducibility were not verified."
+    confidence: high
+    claim_ids:
+      - "claim-experiment-validation"
+      - "claim-execution-risk"
+      - "claim-release-state"
+    evidence_refs:
+      - "evidence-experiment-validation"
+      - "evidence-system-deployment"
+
+  - capability_id: "capability-claim-drift-audit"
+    ontology_id: "x-xcientist:claim-drift-audit"
+    name: "Claim drift detection and boundary control"
+    description: >-
+      Compares a proposed mechanism with executable implementation, ablation or
+      diagnostic evidence, and final claim text, then bounds or revises claims
+      when evidence cannot attribute outcomes to the claimed mechanism.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented cross-stage research-audit behavior"
+    interfaces:
+      - "Idea contracts"
+      - "Implementation and provenance artifacts"
+      - "Ablation and diagnostic evidence"
+      - "Final claim statements"
+    prerequisites:
+      - "Persistent artifacts and component-to-evidence mappings across all stages"
+    configuration_requirements:
+      - "Canonical mechanism and component definitions"
+      - "Attribution and claim-boundary criteria"
+    limitations:
+      - "The claim-drift rubric, validator implementation, and false-positive or false-negative behavior were not available."
+    confidence: high
+    claim_ids:
+      - "claim-claim-drift"
+      - "claim-auditability-strength"
+    evidence_refs:
+      - "evidence-claim-drift"
+      - "evidence-experiment-validation"
+
+  - capability_id: "capability-report-audit"
+    ontology_id: "x-xcientist:report-audit"
+    name: "Evidence-grounded report writing and audit"
+    description: >-
+      Maps experiment code, results, literature, citations, and planned figures
+      into a report, scores source fidelity and research integrity, repairs
+      verified issues, and checkpoints progress for resumability.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented report-writing stage"
+    interfaces:
+      - "blog_idea.md composition contract"
+      - "blog_article.md report"
+      - "blog_analysis.md audit"
+      - "graph method and figure files"
+      - "workflow_status.json checkpoint"
+    prerequisites:
+      - "Validated experiment workspace, source, results, and downloaded papers"
+      - "LLM writing and analysis"
+      - "Image-generation provider for final figures"
+    configuration_requirements:
+      - "Outline, citation table, source-fidelity rubric, score threshold, and iteration limit"
+    limitations:
+      - "A score above the documented threshold does not independently establish scientific correctness."
+      - "Generated reports and audit outputs were not released for inspection."
+    confidence: high
+    claim_ids:
+      - "claim-report-audit"
+      - "claim-scientific-validity-boundary"
+    evidence_refs:
+      - "evidence-report-audit"
+
+  - capability_id: "capability-user-inspection"
+    ontology_id: "x-xcientist:run-inspection"
+    name: "Topic-centric run inspection and approval"
+    description: >-
+      Presents review, ideation, and experiment lanes over persistent run state,
+      with topic creation, launch, trace and artifact browsing, message views,
+      approval interaction, failure visibility, and snapshot-plus-WebSocket updates.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented frontend and backend interface"
+    interfaces:
+      - "Web frontend"
+      - "REST endpoints"
+      - "WebSocket event stream"
+      - "Trace, artifact, message, and approval views"
+    prerequisites:
+      - "Frontend, backend, relational persistence, and artifact storage"
+    configuration_requirements:
+      - "Stable lane identifiers, event contracts, module availability, and approval policies"
+    limitations:
+      - "Interface behavior, access control, multi-user isolation, and approval enforcement were not statically inspectable."
+    confidence: high
+    claim_ids:
+      - "claim-interface"
+      - "claim-release-state"
+    evidence_refs:
+      - "evidence-system-interface"
+
+  - capability_id: "capability-run-persistence"
+    ontology_id: "x-xcientist:run-persistence"
+    name: "Run-scoped artifacts, events, checkpoints, and resumption"
+    description: >-
+      Materializes each run into a local workspace, records normalized events and
+      artifacts, persists scheduler and workflow state, exposes failures, and
+      resumes long-running stages from checkpoints.
+    support_status: documented
+    evidence_status: documented_only
+    scope: "Documented backend, stage scheduler, and reporting workflow"
+    interfaces:
+      - "Run-local directories and configuration"
+      - "Structured scheduler status and decision files"
+      - "workflow_status.json"
+      - "Persistent artifacts and normalized events"
+    prerequisites:
+      - "Relational database and local filesystem"
+      - "Single-host orchestration"
+    configuration_requirements:
+      - "Run identifiers, output roots, stage state, checkpoint policy, and event schema"
+    limitations:
+      - "Local filesystem artifacts do not provide cross-host management."
+      - "The paper explicitly limits current operation to single-host internal use and controlled demonstrations."
+    confidence: high
+    claim_ids:
+      - "claim-interface"
+      - "claim-deployment-scope"
+    evidence_refs:
+      - "evidence-system-interface"
+      - "evidence-system-deployment"
+
+architecture:
+  overview: >-
+    The paper documents three top-level layers. Paper Graph Infrastructure turns
+    full-text papers into a typed method-evolution evidence graph. The Research
+    Harness connects DeepSurvey-based literature review, structured MCTS
+    ideation, contract-governed experiment validation, repair, claim audit, and
+    report writing. A topic-centric frontend and orchestration backend expose
+    persistent run state, artifacts, events, messages, traces, and approvals over
+    REST and WebSocket interfaces. Deployment is described as single-host with a
+    relational database, local filesystem artifacts, run-local workspaces, and
+    optional containerized stage execution. None of these implementation details
+    could be confirmed from released code.
+  languages:
+    - "JSON and Markdown documented for artifacts and contracts"
+  frameworks_and_sdks:
+    - name: "DeepSurvey"
+      version_constraint: "arXiv:2605.29522"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-literature-synthesis"
+  model_providers: []
+  runtime_and_orchestration:
+    - name: "Xcientist Research Harness"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-classification"
+        - "claim-experiment-validation"
+    - name: "Master scheduler and stage controller"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-experiment-validation"
+        - "claim-deployment-scope"
+  tools_and_mcp:
+    tools:
+      - name: "Semantic Scholar API and Open Data Platform"
+        version_constraint: null
+        dependency_relation: hosted
+        required: true
+        claim_ids:
+          - "claim-paper-graph"
+          - "claim-literature-synthesis"
+      - name: "Repository acquisition and code-analysis workers"
+        version_constraint: null
+        dependency_relation: bundled
+        required: true
+        claim_ids:
+          - "claim-literature-synthesis"
+          - "claim-experiment-validation"
+    mcp_role: none
+    mcp_details:
+      - "No MCP client or server role was identified in the repository or paper at targeted depth"
+  skills: []
+  memory_and_state:
+    - name: "Vector memory for ideation edits and feedback"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-ideation"
+    - name: "Symbolic memory from component ablations"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-ideation"
+        - "claim-experiment-validation"
+    - name: "Run checkpoints and structured state artifacts"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-interface"
+        - "claim-deployment-scope"
+  retrieval_and_knowledge:
+    - name: "Xcientist heterogeneous method-evolution graph"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-paper-graph"
+    - name: "Semantic Scholar"
+      version_constraint: null
+      dependency_relation: hosted
+      required: true
+      claim_ids:
+        - "claim-paper-graph"
+        - "claim-literature-synthesis"
+  document_processing:
+    - name: "MinerU"
+      version_constraint: "arXiv:2409.18839"
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-paper-graph"
+  execution_and_sandbox:
+    - name: "Run-local experiment workspaces"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-experiment-validation"
+        - "claim-execution-risk"
+    - name: "Containerized stage execution"
+      version_constraint: null
+      dependency_relation: direct
+      required: false
+      claim_ids:
+        - "claim-deployment-scope"
+        - "claim-execution-risk"
+  gateways_and_routing: []
+  storage_and_databases:
+    - name: "Relational database"
+      version_constraint: null
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-interface"
+        - "claim-deployment-scope"
+    - name: "Local filesystem artifact storage"
+      version_constraint: null
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-interface"
+        - "claim-deployment-scope"
+  interfaces:
+    - name: "Topic-centric web frontend"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-interface"
+    - name: "REST API"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-interface"
+    - name: "WebSocket event stream"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-interface"
+  deployment:
+    - name: "Single-host internal deployment"
+      version_constraint: null
+      dependency_relation: direct
+      required: true
+      claim_ids:
+        - "claim-deployment-scope"
+    - name: "Containerized stage runtime"
+      version_constraint: null
+      dependency_relation: optional
+      required: false
+      claim_ids:
+        - "claim-deployment-scope"
+  observability_and_evaluation:
+    - name: "Normalized events, traces, messages, artifacts, and approvals"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-interface"
+    - name: "Validator-backed phase reports and component ablations"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-experiment-validation"
+        - "claim-claim-drift"
+  security_and_permissions:
+    - name: "Stage contracts with permitted write roots"
+      version_constraint: null
+      dependency_relation: bundled
+      required: true
+      claim_ids:
+        - "claim-experiment-validation"
+        - "claim-execution-risk"
+    - name: "Approval interactions and module-availability policy"
+      version_constraint: null
+      dependency_relation: bundled
+      required: false
+      claim_ids:
+        - "claim-interface"
+        - "claim-execution-risk"
+  data_flows:
+    - "Full-text papers and Semantic Scholar metadata are parsed into schema-bound evidence records, resolved into graph entities, and stored as a method-evolution graph."
+    - "A topic or seed set retrieves graph and citation evidence; DeepSurvey creates keynotes, clusters, relation analyses, code reports, outlines, surveys, and citation checks."
+    - "Structured evidence and prior validation memory seed multiple MCTS idea searches; selected ideas are fused, evaluated, repaired, and converted into a validation plan."
+    - "Preparation stages acquire repositories, construct environments, stage datasets and models, and produce authoritative handoff artifacts."
+    - "Implementation, standard experiments, and per-component ablations write run-local code and results; validators gate each transition and the scheduler records progress or blocking issues."
+    - "Report writing reads source, validated results, and literature evidence, then audits and repairs technical claims and citations."
+    - "The backend persists run metadata, events, messages, approvals, traces, and artifacts; the frontend initializes from a snapshot and receives WebSocket updates."
+  control_flows:
+    - "The research trajectory proceeds through literature review, idea generation, experiment validation, repair, claim audit, and report writing."
+    - "MCTS expands component-level idea edits, simulates multidimensional evaluation, backpropagates scores, and feeds selected candidates into constrained fusion."
+    - "An independent validator must pass each preparation or experiment stage before the worker can advance; failed checks trigger bounded repair."
+    - "The master scheduler prioritizes self-containment, implementation, standard science, and complete component-wise ablation gates."
+    - "Convergence requires validator-backed pass states, no blocking issues, and a complete component-to-evidence mapping; otherwise best progress and stop reason are recorded."
+
+components:
+  - component_id: "component-paper-graph"
+    name: "Paper Graph Infrastructure"
+    path: null
+    project_type: "supporting knowledge and retrieval layer"
+    purpose: "Builds the schema-bound, quote-preserving heterogeneous evidence graph used by research synthesis and validation."
+    claim_ids:
+      - "claim-paper-graph"
+      - "claim-release-state"
+  - component_id: "component-literature"
+    name: "Literature Review"
+    path: null
+    project_type: "agent application component"
+    purpose: "Runs DeepSurvey retrieval, full-text keynote extraction, clustering, analysis, drafting, citation enforcement, and refinement."
+    claim_ids:
+      - "claim-literature-synthesis"
+      - "claim-release-state"
+  - component_id: "component-ideation"
+    name: "Idea Generation"
+    path: null
+    project_type: "agent application component"
+    purpose: "Searches structured idea states across taste modes, fuses candidates, and repairs a selected mechanism."
+    claim_ids:
+      - "claim-ideation"
+      - "claim-release-state"
+  - component_id: "component-validation"
+    name: "Experiment Validation"
+    path: null
+    project_type: "agent_harness_runtime"
+    purpose: "Prepares workspaces, implements ideas, executes benchmarks and ablations, validates artifacts, repairs failures, and judges convergence."
+    claim_ids:
+      - "claim-experiment-validation"
+      - "claim-execution-risk"
+  - component_id: "component-reporting"
+    name: "Report Writing"
+    path: null
+    project_type: "agent application component"
+    purpose: "Writes, audits, repairs, illustrates, and checkpoints a source- and evidence-grounded research report."
+    claim_ids:
+      - "claim-report-audit"
+      - "claim-scientific-validity-boundary"
+  - component_id: "component-backend"
+    name: "Unified AI Scientist backend"
+    path: null
+    project_type: "supporting runtime component"
+    purpose: "Manages topics, runs, stage dispatch, persistent state, normalized events, artifact registration, policies, and failure propagation."
+    claim_ids:
+      - "claim-interface"
+      - "claim-deployment-scope"
+  - component_id: "component-frontend"
+    name: "Topic-centric frontend"
+    path: null
+    project_type: "supporting interface component"
+    purpose: "Exposes review, ideation, and experiment lanes with traces, artifacts, messages, approvals, and run history."
+    claim_ids:
+      - "claim-interface"
+      - "claim-deployment-scope"
+
+usage:
+  installation: >-
+    No installation procedure is available in the recorded repository snapshot;
+    README.md states that cleaned code and documentation are planned for staged
+    release after internal review.
+  minimal_start: >-
+    The paper documents creating a research topic and launching a run through a
+    web interface, after which the backend dispatches literature, ideation,
+    experiment, and report stages. No runnable command, API schema, configuration
+    example, or released entry point could be verified.
+  configuration:
+    - "Research topic or seed papers"
+    - "Paper retrieval, graph expansion, extraction, and filtering rules"
+    - "Idea Taste Modes, MCTS budget, evaluator rubric, and refinement scope"
+    - "Repository, environment, dataset, model, benchmark, write-root, and verification contracts"
+    - "Canonical components, ablation plan, repair limits, and convergence gates"
+    - "Module availability, approval, persistence, event, and artifact policies"
+  required_services:
+    - "Semantic Scholar and access to full-text papers"
+    - "Model-provider services for extraction, agents, evaluation, and writing"
+    - "Source repositories, datasets, models, and compute required by each experiment"
+    - "Relational persistence and local artifact storage"
+    - "Optional image-generation provider for report figures"
+  extension_points:
+    - "Paper extraction schema and graph relation fields"
+    - "Literature retrieval, filtering, clustering, and analysis stages"
+    - "Idea Taste Modes, edit operators, evaluators, and memory"
+    - "Preparation, implementation, science, ablation, validator, and repair contracts"
+    - "Report audit rubric and figure-generation provider"
+    - "Frontend lanes, backend stage mapping, events, artifacts, and approval policy"
+
+assessment:
+  contexts:
+    - context_id: "context-xcientist-research-harness-evaluation"
+      use_case: >-
+        Evaluating Xcientist as an inspectable AI-science research harness for
+        literature-grounded ideation, executable experiment validation, and
+        evidence-bounded scientific reporting when only a release-placeholder
+        repository and a first-party research paper are publicly available.
+      comparison_cohort:
+        - "AI scientist and autonomous research systems"
+        - "Long-horizon scientific-agent harnesses"
+        - "Evidence- and artifact-centric research workflow systems"
+      requirements:
+        - "Traceable evidence from literature through final claims"
+        - "Explicit contracts and independent validation gates"
+        - "Reproducible, scoped experiment workspaces and component ablations"
+        - "Human inspection, approval, failure visibility, and resumability"
+        - "Reviewable source code, license, dependencies, tests, and deployment controls"
+      organizational_constraints:
+        - "Static public-source review only"
+        - "No authorization to run scientific code, agents, models, or experiments"
+        - "Repository content is limited to README.md at the recorded commit"
+        - "Scientific claims require independent domain and reproducibility review"
+      assessed_at: "2026-07-18T13:38:00Z"
+  maturity: experimental
+  maturity_signals:
+    - statement: "Xcientist is experimental in the declared public-source evaluation context."
+      reasoning: >-
+        A detailed 65-page first-party paper documents architecture, methods,
+        reported cases, and operational constraints, but the repository snapshot
+        contains only a ten-line staged-release notice with no code, manifest,
+        license, tests, configuration, or runnable interface.
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-experimental-maturity"
+        - "claim-release-state"
+  strengths:
+    - statement: "The documented architecture makes intermediate scientific reasoning and evidence first-class artifacts rather than retaining only final outputs."
+      reasoning: >-
+        Literature evidence, idea states, implementation contracts, ablations,
+        validator reports, repair traces, artifacts, events, approvals, and claim
+        bounds are described as persistent and inspectable across the workflow.
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-auditability-strength"
+    - statement: "The documented worker-validator separation and component-wise ablation gates directly address attribution and claim-drift concerns."
+      reasoning: >-
+        Actions and acceptance decisions are separated, and convergence requires
+        a complete mapping from canonical components to validation evidence.
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-auditability-strength"
+        - "claim-claim-drift"
+  limitations:
+    - statement: "The public repository does not yet permit implementation-level verification or installation."
+      reasoning: "The exact repository tree contains only README.md and announces a future cleaned-code and documentation release."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-release-state"
+    - statement: "The documented deployment targets single-host internal use and controlled demonstrations rather than production-grade distributed scheduling."
+      reasoning: "The paper explicitly states this operational boundary and identifies local-filesystem and single-host constraints."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-deployment-scope"
+    - statement: "Contract and report-audit passes do not by themselves prove scientific validity."
+      reasoning: "The paper itself says the interface stack does not solve scientific validity, evaluation quality, or autonomous-reasoning reliability."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-scientific-validity-boundary"
+  risks:
+    - statement: "The experiment harness is documented to clone repositories, construct environments, stage datasets and models, edit code, and execute commands, creating a high-authority trust boundary."
+      reasoning: >-
+        Run-local paths, permitted write roots, validators, and optional containers
+        are useful controls, but no released implementation establishes hardened
+        sandboxing, network restrictions, secrets isolation, or containment.
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-execution-risk"
+    - statement: "Model-backed extraction, ideation, validation, and writing can still produce systematic errors that validators inherit or miss."
+      reasoning: >-
+        The paper describes explicit checks and repair loops, but validator and
+        evaluator models, prompts, calibration, and independent failure rates are
+        not available in the repository snapshot.
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: medium
+      claim_ids:
+        - "claim-scientific-validity-boundary"
+        - "claim-release-state"
+  best_fit:
+    - statement: "Research on accountable AI-science workflows where preserving the evidence-to-claim trajectory is a primary objective."
+      reasoning: "The paper's core architecture explicitly externalizes evidence, ideas, contracts, experiments, repairs, and claim audit."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-auditability-strength"
+    - statement: "Controlled single-host demonstrations and internal evaluations of literature-to-experiment research agents."
+      reasoning: "This matches the deployment scope and documented web inspection model."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-deployment-scope"
+  poor_fit:
+    - statement: "Teams that require an installable, inspectable, licensed open-source system at the recorded snapshot."
+      reasoning: "No implementation, manifest, license, test, or setup documentation is present in the repository tree."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-release-state"
+    - statement: "Multi-tenant, distributed, production-critical scientific automation without additional isolation, access control, artifact storage, and independent validation."
+      reasoning: "The paper limits the current topology to single-host use and does not establish production security or scientific correctness."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-deployment-scope"
+        - "claim-execution-risk"
+        - "claim-scientific-validity-boundary"
+  gaps:
+    - statement: "Public implementation evidence is absent."
+      reasoning: "The repository snapshot does not include the documented frontend, backend, agents, contracts, validators, schemas, tests, or deployment."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-release-state"
+    - statement: "The software license, model providers, exact technology stack, dependency versions, and security controls are not publicly evidenced."
+      reasoning: "Neither the ten-line README nor the paper provides inspectable manifests or source for these required evaluation details."
+      context_id: "context-xcientist-research-harness-evaluation"
+      confidence: high
+      claim_ids:
+        - "claim-release-state"
+        - "claim-execution-risk"
+
+relationships:
+  depends_on:
+    - target_project: "DeepSurvey"
+      scope: "Documented literature-review subsystem adopted by Xcientist."
+      confidence: high
+      claim_ids:
+        - "claim-literature-synthesis"
+    - target_project: "MinerU"
+      scope: "Documented full-text paper parser for Paper Graph ingestion."
+      confidence: high
+      claim_ids:
+        - "claim-paper-graph"
+    - target_project: "Semantic Scholar"
+      scope: "Documented source of paper indexing, citation/reference expansion, metadata, and entity identifiers."
+      confidence: high
+      claim_ids:
+        - "claim-paper-graph"
+        - "claim-literature-synthesis"
+  integrates_with:
+    - target_project: "External scientific code repositories"
+      scope: "Repository acquisition, code analysis, reference copying, implementation, and benchmark preparation."
+      confidence: high
+      claim_ids:
+        - "claim-experiment-validation"
+        - "claim-execution-risk"
+    - target_project: "Image generation provider"
+      scope: "Documented optional report-figure generation."
+      confidence: medium
+      claim_ids:
+        - "claim-report-audit"
+  comparable_projects:
+    - target_project: "AI Scientist-v2"
+      scope: "Automated scientific-discovery system used by the paper as a claim-drift motivating comparison."
+      confidence: high
+      claim_ids:
+        - "claim-classification"
+        - "claim-claim-drift"
+    - target_project: "EvoScientist"
+      scope: "Multi-agent AI scientist system in the paper's comparison cohort."
+      confidence: medium
+      claim_ids:
+        - "claim-classification"
+
+claims:
+  - claim_id: "claim-classification"
+    statement: "Xcientist is documented as an AI-science agent harness and runtime that governs a multi-stage research workflow."
+    claim_kind: interpretive
+    verification_status: documented
+    confidence: high
+    applies_to: "Xcientist as described by the repository and arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-state"
+      - "evidence-paper-abstract"
+      - "evidence-paper-architecture"
+    conflicting_evidence_ids: []
+    reasoning: "The first-party sources repeatedly identify the project as a research harness and organize it around orchestration, contracts, artifacts, and inspection."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-release-state"
+    statement: "At the recorded commit, the public repository contains only README.md and says cleaned code and documentation are being prepared for staged release."
+    claim_kind: factual
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "OpenDFM/Xcientist commit d72410e703338f3f8e82b2a790338f47cb89ee76"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-readme-state"
+      - "evidence-repository-tree"
+    conflicting_evidence_ids: []
+    reasoning: "The exact Git tree and README directly establish the public release state; they do not prove that no internal implementation exists."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-paper-graph"
+    statement: "The paper documents a MinerU- and Semantic Scholar-backed heterogeneous method-evolution graph built from approximately 50,000 computer-science papers."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Paper Graph Infrastructure described in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-paper-graph-methods"
+    conflicting_evidence_ids: []
+    reasoning: "The paper specifies ingestion, extraction passes, entity types, resolution keys, edge types, and reported graph sizes, but no graph artifacts were inspected."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-literature-synthesis"
+    statement: "The paper documents a DeepSurvey-based literature stage with graph expansion, full-text keynotes, clustering, relation analysis, code analysis, outline-driven drafting, citation enforcement, and iterative refinement."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Literature Review described in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-literature-synthesis"
+    conflicting_evidence_ids: []
+    reasoning: "The methods section details the staged pipeline, while released implementation evidence is absent."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-ideation"
+    statement: "The paper documents structured idea search using multiple taste modes, memory-guided MCTS, component edits, multidimensional evaluation, constrained fusion, and local repair."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Idea Generation described in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-ideation"
+    conflicting_evidence_ids: []
+    reasoning: "The paper specifies state, search, memory, scoring, and fusion concepts but does not expose code or run artifacts."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-experiment-validation"
+    statement: "The paper documents validator-gated preparation, implementation, smoke testing, standard experiments, component-wise ablation, repair, and convergence in self-contained workspaces."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Experiment Validation described in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-experiment-validation"
+    conflicting_evidence_ids: []
+    reasoning: "The paper defines phases, artifacts, gates, validators, and convergence conditions, but none were statically confirmed from code."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-report-audit"
+    statement: "The paper documents report writing through composition contracts, source and citation checks, scored analysis, bounded repair, figure generation, and checkpoint resumption."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Report Writing described in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-report-audit"
+    conflicting_evidence_ids: []
+    reasoning: "The appendix states required artifacts, audit categories, a score threshold, iteration limit, and workflow checkpoint behavior."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-interface"
+    statement: "The paper documents a topic-centric frontend and orchestration backend with REST, WebSocket updates, persistent runs, artifacts, events, messages, traces, and approval interaction."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "System Interface described in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-system-interface"
+    conflicting_evidence_ids: []
+    reasoning: "The interface appendix describes responsibilities and runtime state flow, but no frontend or backend source was released."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-claim-drift"
+    statement: "The paper defines claim drift as runnable artifacts lacking enough preserved evidence to attribute outcomes to the originally claimed mechanism."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Claim-audit framing in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-paper-abstract"
+      - "evidence-claim-drift"
+    conflicting_evidence_ids: []
+    reasoning: "The paper introduces, motivates, and applies this definition to preserved proposal, implementation, and validation evidence."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-reported-cases"
+    statement: "The paper reports Xcientist case studies in training-free agent memory, graph-structured traffic forecasting, and multi-scale physics-informed neural networks."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "Reported evaluations in arXiv:2606.18874v2"
+    assessment_context_id: null
+    supporting_evidence_ids:
+      - "evidence-reported-cases"
+    conflicting_evidence_ids: []
+    reasoning: "These are first-party reported evaluations; no experiment artifacts or independent reproduction were inspected."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-experimental-maturity"
+    statement: "Xcientist is experimental for the declared public-source research-harness evaluation context."
+    claim_kind: assessment
+    verification_status: statically_confirmed
+    confidence: high
+    applies_to: "The recorded source snapshot under context-xcientist-research-harness-evaluation"
+    assessment_context_id: "context-xcientist-research-harness-evaluation"
+    supporting_evidence_ids:
+      - "evidence-readme-state"
+      - "evidence-repository-tree"
+      - "evidence-system-deployment"
+    conflicting_evidence_ids: []
+    reasoning: "A detailed paper and reported studies exist, but public implementation evidence is absent and the documented runtime is scoped to internal single-host use."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-auditability-strength"
+    statement: "Making evidence, idea states, contracts, validator results, ablations, repairs, and claim bounds persistent is a strength for the declared evaluation context."
+    claim_kind: assessment
+    verification_status: documented
+    confidence: high
+    applies_to: "The recorded source snapshot under context-xcientist-research-harness-evaluation"
+    assessment_context_id: "context-xcientist-research-harness-evaluation"
+    supporting_evidence_ids:
+      - "evidence-paper-abstract"
+      - "evidence-paper-architecture"
+      - "evidence-experiment-validation"
+      - "evidence-system-interface"
+    conflicting_evidence_ids: []
+    reasoning: "These mechanisms directly support the assessment requirements for traceability and human inspection, while remaining documentation-only."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-execution-risk"
+    statement: "Xcientist's documented repository acquisition, environment construction, data and model staging, code editing, command execution, and external services create a high-authority trust boundary."
+    claim_kind: assessment
+    verification_status: documented
+    confidence: high
+    applies_to: "The recorded source snapshot under context-xcientist-research-harness-evaluation"
+    assessment_context_id: "context-xcientist-research-harness-evaluation"
+    supporting_evidence_ids:
+      - "evidence-experiment-validation"
+      - "evidence-system-deployment"
+    conflicting_evidence_ids: []
+    reasoning: "The paper describes contracts, write roots, workspaces, and optional containers, but unreleased source prevents evaluation of actual containment and authorization."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-deployment-scope"
+    statement: "The documented current deployment is single-host, uses relational persistence and local filesystem artifacts, and does not claim production-grade distributed scheduling."
+    claim_kind: factual
+    verification_status: documented
+    confidence: high
+    applies_to: "The recorded source snapshot under context-xcientist-research-harness-evaluation"
+    assessment_context_id: "context-xcientist-research-harness-evaluation"
+    supporting_evidence_ids:
+      - "evidence-system-deployment"
+    conflicting_evidence_ids: []
+    reasoning: "The system-interface appendix states these operational limits explicitly."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+  - claim_id: "claim-scientific-validity-boundary"
+    statement: "The documented interface, contracts, and audits do not by themselves establish scientific validity, evaluation quality, or autonomous-reasoning reliability."
+    claim_kind: assessment
+    verification_status: documented
+    confidence: high
+    applies_to: "The recorded source snapshot under context-xcientist-research-harness-evaluation"
+    assessment_context_id: "context-xcientist-research-harness-evaluation"
+    supporting_evidence_ids:
+      - "evidence-system-deployment"
+      - "evidence-report-audit"
+    conflicting_evidence_ids: []
+    reasoning: "The paper explicitly preserves this boundary, and no independent scientific reproduction was performed."
+    last_verified_at: "2026-07-18T13:38:00Z"
+
+sources:
+  - source_id: "source-xcientist-repository"
+    source_type: repository
+    provenance: first_party
+    uri: "https://github.com/OpenDFM/Xcientist"
+    revision_or_version: "d72410e703338f3f8e82b2a790338f47cb89ee76"
+    retrieved_at: "2026-07-18T13:21:15Z"
+    content_digest: "git-tree-sha1:d1b00f57ca865e74a60ecd11bd86b99c29e86407"
+    access_scope: public
+  - source_id: "source-xcientist-readme"
+    source_type: repository_file
+    provenance: first_party
+    uri: "https://github.com/OpenDFM/Xcientist/blob/d72410e703338f3f8e82b2a790338f47cb89ee76/README.md"
+    revision_or_version: "d72410e703338f3f8e82b2a790338f47cb89ee76"
+    retrieved_at: "2026-07-18T13:21:15Z"
+    content_digest: "sha256:99e57a5e18ecffbc6e5b2f7dc80b2a9da89494af045647175bebbc0bed032d43"
+    access_scope: public
+  - source_id: "source-xcientist-paper-v2"
+    source_type: documentation
+    provenance: first_party
+    uri: "https://arxiv.org/pdf/2606.18874v2"
+    revision_or_version: "arXiv:2606.18874v2, revised 2026-06-24"
+    retrieved_at: "2026-07-18T13:21:15Z"
+    content_digest: "sha256:3e08ddf9cbcb51367e138c76da1b6fcb9492a41eb8f1dcfc39d66b62dc1cebfe"
+    access_scope: public
+
+evidence:
+  - evidence_id: "evidence-readme-state"
+    source_id: "source-xcientist-readme"
+    locator:
+      path: "README.md"
+      symbol_or_section: "Entire file"
+      line_start: 1
+      line_end: 10
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "Release notice, research-harness description, preparation status, project page, and paper link"
+    note: "Directly supports repository state and intended project identity."
+  - evidence_id: "evidence-repository-tree"
+    source_id: "source-xcientist-repository"
+    locator:
+      path: "Git tree d1b00f57ca865e74a60ecd11bd86b99c29e86407"
+      symbol_or_section: "git ls-tree -r --long HEAD"
+      line_start: null
+      line_end: null
+    evidence_status: confirmed
+    confidence: high
+    excerpt_or_symbol: "One regular blob: README.md"
+    note: "Static Git tree inspection; absence is limited to this exact public snapshot."
+  - evidence_id: "evidence-paper-abstract"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Abstract, PDF page 1"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Persistent literature evidence, idea states, implementation plans, ablations, and repair traces in a contract-governed research harness"
+    note: "First-party paper claim; not implementation confirmation."
+  - evidence_id: "evidence-paper-architecture"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Section 2, Xcientist Architecture Overview, PDF pages 5-6"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Paper Graph Infrastructure, Research Harness, and System User Interface layers"
+    note: "Documents intended three-layer architecture and artifact flow."
+  - evidence_id: "evidence-paper-graph-methods"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Section 5 and Appendix A.1, PDF pages 17-26"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "MinerU parsing, three-pass extraction, Semantic Scholar grounding, heterogeneous graph construction, and reported graph counts"
+    note: "No corpus, graph, schema, or extraction implementation was inspected."
+  - evidence_id: "evidence-literature-synthesis"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Section 5 and Appendix A.2, PDF pages 18 and 26-28"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "DeepSurvey graph retrieval, full-text keynotes, clustering, relation analysis, code analysis, citation enforcement, and refinement"
+    note: "Supports documented capability, not runtime quality."
+  - evidence_id: "evidence-ideation"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Section 5 and Appendix A.3, PDF pages 18 and 28-31"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Idea Taste Modes, structured MCTS, vector and symbolic memory, scoring, constrained fusion, and referee repair"
+    note: "No prompts, models, search trees, or evaluations were statically inspected."
+  - evidence_id: "evidence-experiment-validation"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Section 5 and Appendix A.4, PDF pages 18-19 and 31-34"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Validator supremacy, worker-validator separation, scoped workspaces, preparation, implementation, smoke tests, standard science, ablations, repair, and convergence"
+    note: "Documents high-authority execution as well as intended controls; no runtime was exercised."
+  - evidence_id: "evidence-report-audit"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Section 5 and Appendix A.5, PDF pages 19 and 34-37"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Composition contract, source fidelity, citation checks, scored audit, repair loop, figures, and workflow checkpoint"
+    note: "Supports documented reporting and the boundary that audits are not independent scientific proof."
+  - evidence_id: "evidence-system-interface"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Appendix A.6, PDF pages 37-39"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Topic-centric frontend, backend orchestration, REST, WebSocket snapshot-stream state, run workspaces, artifacts, events, traces, messages, and approvals"
+    note: "No interface source, schema, authentication, or deployed service was inspected."
+  - evidence_id: "evidence-system-deployment"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Appendix A.6.1 and A.6.7-A.6.8, PDF pages 38-40"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Single-host internal scope, relational persistence, local artifact storage, optional containerized stages, and no production distributed-scheduling claim"
+    note: "The paper also states that this stack does not solve scientific validity or agent reliability."
+  - evidence_id: "evidence-claim-drift"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Section 3.1, PDF pages 7-8"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Runnable artifacts may fail to preserve enough evidence for the originally claimed mechanism"
+    note: "Paper-motivated failure-mode analysis, not independently reproduced."
+  - evidence_id: "evidence-reported-cases"
+    source_id: "source-xcientist-paper-v2"
+    locator:
+      path: "arXiv:2606.18874v2 PDF"
+      symbol_or_section: "Sections 3.2-3.4, PDF pages 9-15"
+      line_start: null
+      line_end: null
+    evidence_status: documented_only
+    confidence: high
+    excerpt_or_symbol: "Training-free memory, graph forecasting, and multi-scale PINN case studies with iterative diagnosis, repair, and reported results"
+    note: "First-party reported evaluation; experiment workspaces and results were unavailable."
+
+open_questions:
+  - question: "When will the repository contain the cleaned code, documentation, license, manifests, tests, prompts, schemas, and deployment configuration described by the paper?"
+    reason: "The README promises a staged release, but the exact recorded tree contains only README.md."
+    related_claim_ids:
+      - "claim-release-state"
+      - "claim-experimental-maturity"
+  - question: "Which model providers, models, prompts, evaluator configurations, and cost controls were used for each stage and reported case study?"
+    reason: "These materially affect behavior and reproducibility but are not inspectable in the repository snapshot."
+    related_claim_ids:
+      - "claim-ideation"
+      - "claim-experiment-validation"
+      - "claim-scientific-validity-boundary"
+  - question: "What concrete isolation, network, credential, approval, and artifact-access controls constrain repository and command execution?"
+    reason: "The paper documents workspaces, write roots, validators, and optional containers, but no security implementation is public."
+    related_claim_ids:
+      - "claim-execution-risk"
+      - "claim-deployment-scope"
+  - question: "Can independent reviewers reproduce the Paper Graph, three scientific case studies, validator decisions, component ablations, claim-drift judgments, and final reports?"
+    reason: "No corpus, experiment workspace, generated artifacts, or released runtime was available for independent static or dynamic verification."
+    related_claim_ids:
+      - "claim-paper-graph"
+      - "claim-reported-cases"
+      - "claim-claim-drift"
+      - "claim-scientific-validity-boundary"
