@@ -29,7 +29,7 @@ silently become product requirements.
 
 * [`System Design`](../design-docs/system-design.md) describes the proposed implementation architecture and exploration strategy.
 * [`Technical Risks and Mitigations`](../design-docs/risks-and-mitigations.md) records design risks and proposed responses.
-* [`MVP Delivery Plan`](../exec-plans/proposed/mvp-delivery-plan.md) is a proposed plan rather than an active product commitment.
+* [`Parallel MVP Execution Plan`](../exec-plans/proposed/mvp/README.md) is a proposed plan rather than an active product commitment.
 * [`Product Roadmap`](../roadmap.md) contains possible post-MVP capabilities.
 * [`Open Decisions`](../open-decisions.md) records choices that remain unresolved.
 

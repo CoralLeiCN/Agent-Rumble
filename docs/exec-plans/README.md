@@ -10,7 +10,7 @@ must first be recorded in the responsible documentation area.
 
 ## Proposed
 
-* [MVP Delivery Plan](proposed/mvp-delivery-plan.md)
+* [Parallel MVP Execution Plan](proposed/mvp/README.md)
 
 ## Active
 
