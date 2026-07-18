@@ -1,14 +1,20 @@
 # Agent Rumble
 
-Agent Rumble is the public product experience powered by **Agent Project
-Intelligence**. It turns evidence from agent-related software projects into
-versioned, machine-readable **Agent Project Cards** that help people and agents
-understand, compare, and evaluate those projects.
+Agent Rumble is an evidence-backed discovery and comparison experience for
+agent-related software projects, powered by **Agent Project Intelligence**. It
+helps people and agents search a prepared catalog, build a shortlist, compare
+projects for a specific use case, and inspect the evidence behind important
+differences.
 
-The project covers agent applications as well as frameworks, SDKs, skills,
-tools, MCP implementations, retrieval and memory systems, evaluation and
-observability tools, document parsers, sandboxes, model gateways, and related
-infrastructure.
+Agent Project Intelligence turns repository evidence into versioned,
+machine-readable **Agent Project Cards**. Current cards focus on agent
+applications, frameworks, SDKs, and skills.
+
+### Why We’re Building This
+
+Coding agents are reshaping how software gets built—but as the ecosystem grows, it is becoming harder to understand what each agent does and how they differ.
+
+Inspired by model cards and data cards, the **Agent Project Card** creates a shared standard for describing agents—making them easier to discover, compare, evaluate, and benchmark.
 
 ## Documentation
 
