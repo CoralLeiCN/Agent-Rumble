@@ -1,8 +1,13 @@
-import { evidence, makeComparison, searchFixture } from "./fixtures";
+import { preparedQuery, projectCards, searchProjectionContext } from "./fixtures";
+import {
+  projectCardsToClaimEvidence,
+  projectCardsToComparison,
+  projectCardsToSearchResponse,
+} from "./projectCardAdapter";
 import type {
   CatalogGateway,
+  ClaimEvidenceRecord,
   ComparisonResponse,
-  EvidenceRecord,
   SearchResponse,
 } from "../types/catalog";
 
@@ -11,21 +16,24 @@ const pause = () => new Promise<void>((resolve) => window.setTimeout(resolve, 18
 export class StaticCatalogGateway implements CatalogGateway {
   async searchProjects(query: string): Promise<SearchResponse> {
     await pause();
-    return { ...searchFixture, query: query.trim() || searchFixture.query };
+    return projectCardsToSearchResponse(
+      projectCards,
+      query.trim() || preparedQuery,
+      searchProjectionContext,
+    );
   }
 
   async compareProjects(projectIds: string[]): Promise<ComparisonResponse> {
     await pause();
-    return makeComparison(projectIds);
+    return projectCardsToComparison(
+      projectCards,
+      projectIds,
+    );
   }
 
-  async getEvidence(evidenceId: string): Promise<EvidenceRecord> {
+  async getClaimEvidence(claimId: string): Promise<ClaimEvidenceRecord> {
     await pause();
-    const record = evidence[evidenceId];
-    if (!record) {
-      throw new Error(`No illustrative evidence fixture exists for ${evidenceId}.`);
-    }
-    return record;
+    return projectCardsToClaimEvidence(projectCards, claimId);
   }
 }
 

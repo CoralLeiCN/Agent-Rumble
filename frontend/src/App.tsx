@@ -7,27 +7,51 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { catalogGateway } from "./data/catalogGateway";
-import { preparedQuery, projects as allProjects } from "./data/fixtures";
+import { preparedQuery } from "./data/fixtures";
 import {
   comparisonStatePresentation,
   confidencePresentation,
+  evidenceStatusPresentation,
   requirementPresentation,
+  supportStatusPresentation,
   verificationPresentation,
 } from "./status/statusPresentation";
 import type {
+  AssessmentContextView,
+  ClaimEvidenceRecord,
   ComparisonCell,
   ComparisonResponse,
-  EvidenceRecord,
   ProjectSummary,
   SearchResponse,
   VerificationStatus,
 } from "./types/catalog";
+import type { EvidenceStatus, SupportStatus } from "./types/projectCard";
 
 type View = "explore" | "results" | "comparison";
 type PendingAction = "search" | "comparison" | "evidence" | null;
 
 function StatusBadge({ status }: { status: VerificationStatus }) {
   const presentation = verificationPresentation[status];
+  return (
+    <span className={`status-badge status-badge--${presentation.tone}`}>
+      <span aria-hidden="true">{presentation.symbol}</span>
+      {presentation.label}
+    </span>
+  );
+}
+
+function EvidenceStatusBadge({ status }: { status: EvidenceStatus }) {
+  const presentation = evidenceStatusPresentation[status];
+  return (
+    <span className={`status-badge status-badge--${presentation.tone}`}>
+      <span aria-hidden="true">{presentation.symbol}</span>
+      {presentation.label}
+    </span>
+  );
+}
+
+function SupportStatusBadge({ status }: { status: SupportStatus }) {
+  const presentation = supportStatusPresentation[status];
   return (
     <span className={`status-badge status-badge--${presentation.tone}`}>
       <span aria-hidden="true">{presentation.symbol}</span>
@@ -60,8 +84,30 @@ function PrototypeNotice() {
   return (
     <div className="prototype-notice" role="note">
       <span>Illustrative prototype</span>
-      Unvalidated fixture data · not project intelligence
+      Schema-valid draft v0.2 fixture cards · illustrative project content, not verified project intelligence
     </div>
+  );
+}
+
+function AssessmentContextSummary({ contexts }: { contexts: AssessmentContextView[] }) {
+  const useCases = [...new Set(contexts.map(({ useCase }) => useCase))];
+  const constraints = [...new Set(contexts.flatMap(({ organizationalConstraints }) => organizationalConstraints))];
+  const dates = [...new Set(contexts.map(({ assessedAt }) => assessedAt.slice(0, 10)))];
+  return (
+    <section className="assessment-context" aria-label="Canonical assessment context">
+      <div>
+        <span>Use case</span>
+        <strong>{useCases.join(" · ") || "Not recorded"}</strong>
+      </div>
+      <div>
+        <span>Organizational constraints</span>
+        <strong>{constraints.join(" · ") || "None recorded"}</strong>
+      </div>
+      <div>
+        <span>Assessed</span>
+        <strong>{dates.join(" · ") || "Not recorded"}</strong>
+      </div>
+    </section>
   );
 }
 
@@ -131,12 +177,12 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
         <div>
           <div className="eyebrow"><span>Interpretation</span> Deterministic catalog match</div>
           <h1 id="results-title">Three projects for review</h1>
-          <p>{response.assessmentContext}</p>
         </div>
         <button className="button button--quiet" type="button" onClick={onEdit}>
           ← Edit request
         </button>
       </div>
+      <AssessmentContextSummary contexts={response.assessmentContexts} />
 
       <section className="interpretation" aria-labelledby="interpretation-title">
         <div className="section-heading">
@@ -205,7 +251,7 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
       <div className="project-row__main">
         <div className="project-row__heading">
           <div>
-            <p>{project.owner} / public repository</p>
+            <p>{project.owner} / primary public source</p>
             <h2>{project.name}</h2>
           </div>
           <button
@@ -223,6 +269,11 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
           {project.languages.map((language) => <span key={language}>{language}</span>)}
         </div>
         <p className="project-row__summary">{project.summary}</p>
+        <div className="project-row__boundary">
+          <strong>Project boundary</strong>
+          <span>{project.boundary}</span>
+          <code>{project.sourceCount} source{project.sourceCount === 1 ? "" : "s"}</code>
+        </div>
         <div className="project-row__match">
           <span aria-hidden="true">↳</span>
           <p><strong>Why it surfaced</strong>{project.matchReason}</p>
@@ -231,10 +282,23 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
           <strong>Important constraint</strong><span>{project.constraint}</span>
         </div>
         <div className="snapshot-strip">
-          <StatusBadge status={project.verificationStatus} />
-          <span>{confidencePresentation[project.confidence]}</span>
-          <code>REV {project.revision}</code>
-          <time dateTime={project.analyzedAt}>SNAPSHOT {project.analyzedAt}</time>
+          <div className="snapshot-strip__primary">
+            <span className="snapshot-strip__label">Match claim</span>
+            <StatusBadge status={project.matchClaim.verificationStatus} />
+            <span>{confidencePresentation[project.matchClaim.confidence]}</span>
+            <code>DEPTH {project.analysisDepth}</code>
+            <code>REV {project.revision}</code>
+            <time dateTime={project.analyzedAt}>SNAPSHOT {project.analyzedAt}</time>
+          </div>
+          <details className="snapshot-strip__metadata">
+            <summary>Card metadata</summary>
+            <div>
+              <code>CLAIM {project.matchClaim.claimId}</code>
+              <code>CARD {project.cardId} / v{project.cardVersion}</code>
+              <code>SCHEMA {project.schemaVersion}</code>
+              <code>TYPE {project.canonicalPrimaryType}</code>
+            </div>
+          </details>
         </div>
       </div>
     </article>
@@ -243,13 +307,14 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
 
 interface ComparisonProps {
   comparison: ComparisonResponse;
+  projects: ProjectSummary[];
   onBack: () => void;
-  onOpenEvidence: (evidenceId: string, trigger: HTMLButtonElement) => void;
+  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
 }
 
-function Comparison({ comparison, onBack, onOpenEvidence }: ComparisonProps) {
+function Comparison({ comparison, projects, onBack, onOpenEvidence }: ComparisonProps) {
   const selectedProjects = comparison.projectIds
-    .map((id) => allProjects.find((project) => project.id === id))
+    .map((id) => projects.find((project) => project.id === id))
     .filter((project): project is ProjectSummary => Boolean(project));
   const groupedRows = useMemo(() => {
     return comparison.rows.reduce<Record<string, typeof comparison.rows>>((groups, row) => {
@@ -268,8 +333,8 @@ function Comparison({ comparison, onBack, onOpenEvidence }: ComparisonProps) {
             {selectedProjects.length === 2 ? "Two" : "Three"} approaches, one explicit context.
           </h1>
         </div>
-        <p>{comparison.assessmentContext}</p>
       </div>
+      <AssessmentContextSummary contexts={comparison.assessmentContexts} />
       <div className="comparison-note">
         <strong>Read roles before features.</strong>
         These projects overlap but are not always substitutes. This view exposes meaningful
@@ -301,13 +366,13 @@ function Comparison({ comparison, onBack, onOpenEvidence }: ComparisonProps) {
           </tbody>
         </table>
       </div>
-      <button className="shared-attributes" type="button" disabled>
-        + {comparison.sharedAttributeCount} shared attributes collapsed
+      <div className="shared-attributes" role="note">
+        <strong>{comparison.sharedAttributeCount} shared attributes are omitted from this difference-first prototype.</strong>
         <span>Available in the production card projection</span>
-      </button>
+      </div>
       <p className="fixture-footnote">
-        Prototype safeguard: values and locators above are illustrative fixtures. They are not
-        validated Agent Project Cards and must not be used for adoption decisions.
+        Prototype safeguard: these fixture cards have contract-valid draft v0.2 shape, but their
+        project claims and locators are illustrative and must not be used for adoption decisions.
       </p>
     </section>
   );
@@ -317,7 +382,7 @@ interface TableGroupProps {
   group: string;
   rows: ComparisonResponse["rows"];
   projects: ProjectSummary[];
-  onOpenEvidence: (evidenceId: string, trigger: HTMLButtonElement) => void;
+  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
 }
 
 function TableGroup({ group, rows, projects, onOpenEvidence }: TableGroupProps) {
@@ -346,7 +411,7 @@ function ComparisonValue({
   onOpenEvidence,
 }: {
   cell: ComparisonCell;
-  onOpenEvidence: (evidenceId: string, trigger: HTMLButtonElement) => void;
+  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
 }) {
   if (cell.state !== "value") {
     const state = comparisonStatePresentation[cell.state];
@@ -355,17 +420,31 @@ function ComparisonValue({
   return (
     <div className="comparison-value">
       <p>{cell.value}</p>
-      {cell.verificationStatus && (
-        <div className="comparison-value__meta">
-          <StatusBadge status={cell.verificationStatus} />
-          {cell.confidence && <span>{confidencePresentation[cell.confidence]}</span>}
+      {(cell.supportStatus || cell.evidenceStatus || cell.confidence) && (
+        <div className="comparison-value__semantics">
+          {cell.supportStatus && (
+            <div><span>Capability support</span><SupportStatusBadge status={cell.supportStatus} /></div>
+          )}
+          {cell.evidenceStatus && (
+            <div><span>Evidence status</span><EvidenceStatusBadge status={cell.evidenceStatus} /></div>
+          )}
+          {cell.confidence && (
+            <div><span>Capability confidence</span><strong>{confidencePresentation[cell.confidence]}</strong></div>
+          )}
+          {cell.verificationStatus && (
+            <div>
+              <span>Referenced claim</span>
+              <StatusBadge status={cell.verificationStatus} />
+              {cell.claimConfidence && <small>{confidencePresentation[cell.claimConfidence]}</small>}
+            </div>
+          )}
         </div>
       )}
-      {cell.evidenceId && (
+      {cell.claimId && (
         <button
           className="evidence-link"
           type="button"
-          onClick={(event) => onOpenEvidence(cell.evidenceId as string, event.currentTarget)}
+          onClick={(event) => onOpenEvidence(cell.claimId as string, event.currentTarget)}
         >
           View source evidence →
         </button>
@@ -375,7 +454,7 @@ function ComparisonValue({
 }
 
 interface EvidenceDrawerProps {
-  evidence: EvidenceRecord | null;
+  evidence: ClaimEvidenceRecord | null;
   pending: boolean;
   error: string | null;
   onClose: () => void;
@@ -417,7 +496,7 @@ function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerPro
         onKeyDown={handleKeyDown}
       >
         <div className="drawer-header">
-          <div><span>Evidence inspector</span><code>{evidence?.id ?? "LOADING"}</code></div>
+          <div><span>Claim evidence inspector</span><code>{evidence?.claimId ?? "LOADING"}</code></div>
           <button ref={closeRef} type="button" onClick={onClose} aria-label="Close evidence inspector">×</button>
         </div>
         {pending && (
@@ -434,26 +513,110 @@ function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerPro
         )}
         {evidence && (
           <div className="drawer-content">
-            <StatusBadge status={evidence.verificationStatus} />
-            <span className="drawer-confidence">{confidencePresentation[evidence.confidence]}</span>
+            <div className="drawer-claim-semantics">
+              <div>
+                <span>Claim verification</span>
+                <StatusBadge status={evidence.verificationStatus} />
+              </div>
+              <div>
+                <span>Claim confidence</span>
+                <strong>{confidencePresentation[evidence.confidence]}</strong>
+              </div>
+            </div>
             <h2 id="evidence-title">{evidence.claim}</h2>
+            <dl className="claim-ledger">
+              <div><dt>Claim kind</dt><dd>{evidence.claimKind}</dd></div>
+              <div><dt>Applies to</dt><dd><code>{evidence.appliesTo}</code></dd></div>
+              <div>
+                <dt>Assessment context</dt>
+                <dd><code>{evidence.assessmentContextId ?? "Not applicable"}</code></dd>
+              </div>
+            </dl>
             <section>
               <h3>Why this matters</h3>
               <p>{evidence.whyItMatters}</p>
             </section>
-            <dl className="evidence-ledger">
-              <div><dt>Repository</dt><dd>{evidence.repository}</dd></div>
-              <div><dt>Revision</dt><dd><code>{evidence.revision}</code></dd></div>
-              <div><dt>Locator</dt><dd>{evidence.locator}</dd></div>
-            </dl>
-            <pre aria-label="Illustrative source excerpt"><code>{evidence.excerpt}</code></pre>
-            <div className="drawer-warning">
-              <strong>Illustrative only.</strong> This excerpt and locator have not passed Agent
-              Project Card validation.
+            <div className="evidence-stack">
+              <h3>Supporting evidence / {evidence.supportingEvidence.length}</h3>
+              {evidence.supportingEvidence.length === 0 && (
+                <p className="empty-evidence">○ No supporting evidence linked</p>
+              )}
+              {evidence.supportingEvidence.map((record) => (
+                <div className="evidence-record" key={record.id}>
+                  <div className="evidence-record__heading">
+                    <div>
+                      <span>Evidence status</span>
+                      <EvidenceStatusBadge status={record.evidenceStatus} />
+                    </div>
+                    <div>
+                      <span>Evidence confidence</span>
+                      <strong>{confidencePresentation[record.confidence]}</strong>
+                    </div>
+                    <code>{record.id}</code>
+                  </div>
+                  <dl className="evidence-ledger">
+                    <div><dt>Source</dt><dd>{record.repository}</dd></div>
+                    <div><dt>Source type</dt><dd>{record.sourceType}</dd></div>
+                    <div><dt>Provenance</dt><dd>{record.provenance}</dd></div>
+                    <div><dt>Access</dt><dd>{record.accessScope}</dd></div>
+                    <div><dt>Retrieved</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
+                    <div><dt>Revision</dt><dd><code>{record.revision}</code></dd></div>
+                    <div><dt>Locator</dt><dd>{record.locator}</dd></div>
+                  </dl>
+                  <pre aria-label="Illustrative source excerpt"><code>{record.excerpt}</code></pre>
+                  {record.sourceUrl ? (
+                    <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
+                      Open pinned public source ↗
+                    </a>
+                  ) : (
+                    <p className="source-unavailable">No public revision-pinned external link is available.</p>
+                  )}
+                </div>
+              ))}
+              {evidence.conflictingEvidence.length > 0 && (
+                <>
+                  <h3 className="evidence-stack__conflict">
+                    Conflicting evidence / {evidence.conflictingEvidence.length}
+                  </h3>
+                  {evidence.conflictingEvidence.map((record) => (
+                    <div className="evidence-record evidence-record--conflict" key={record.id}>
+                      <div className="evidence-record__heading">
+                        <div>
+                          <span>Evidence status</span>
+                          <EvidenceStatusBadge status={record.evidenceStatus} />
+                        </div>
+                        <div>
+                          <span>Evidence confidence</span>
+                          <strong>{confidencePresentation[record.confidence]}</strong>
+                        </div>
+                        <code>{record.id}</code>
+                      </div>
+                      <dl className="evidence-ledger">
+                        <div><dt>Source</dt><dd>{record.repository}</dd></div>
+                        <div><dt>Source type</dt><dd>{record.sourceType}</dd></div>
+                        <div><dt>Provenance</dt><dd>{record.provenance}</dd></div>
+                        <div><dt>Access</dt><dd>{record.accessScope}</dd></div>
+                        <div><dt>Retrieved</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
+                        <div><dt>Revision</dt><dd><code>{record.revision}</code></dd></div>
+                        <div><dt>Locator</dt><dd>{record.locator}</dd></div>
+                      </dl>
+                      <pre aria-label="Illustrative conflicting source excerpt"><code>{record.excerpt}</code></pre>
+                      {record.sourceUrl ? (
+                        <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
+                          Open pinned public source ↗
+                        </a>
+                      ) : (
+                        <p className="source-unavailable">No public revision-pinned external link is available.</p>
+                      )}
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
-            <a className="button button--source" href={evidence.sourceUrl} target="_blank" rel="noreferrer">
-              Open pinned source ↗
-            </a>
+            <div className="drawer-warning">
+              <strong>Contract-valid fixture shape.</strong> The project claim, excerpt, and locator
+              are illustrative and have not been verified as project intelligence.
+            </div>
           </div>
         )}
       </aside>
@@ -467,7 +630,7 @@ export function App() {
   const [response, setResponse] = useState<SearchResponse | null>(null);
   const [shortlist, setShortlist] = useState<string[]>([]);
   const [comparison, setComparison] = useState<ComparisonResponse | null>(null);
-  const [evidence, setEvidence] = useState<EvidenceRecord | null>(null);
+  const [evidence, setEvidence] = useState<ClaimEvidenceRecord | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [pending, setPending] = useState<PendingAction>(null);
   const [error, setError] = useState<string | null>(null);
@@ -481,6 +644,15 @@ export function App() {
     document.addEventListener("keydown", closeOnEscape);
     return () => document.removeEventListener("keydown", closeOnEscape);
   });
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [drawerOpen]);
 
   const announceView = (nextView: View) => {
     setView(nextView);
@@ -526,14 +698,14 @@ export function App() {
     }
   };
 
-  const openEvidence = async (evidenceId: string, trigger: HTMLButtonElement) => {
+  const openEvidence = async (claimId: string, trigger: HTMLButtonElement) => {
     evidenceTriggerRef.current = trigger;
     setEvidence(null);
     setError(null);
     setDrawerOpen(true);
     setPending("evidence");
     try {
-      setEvidence(await catalogGateway.getEvidence(evidenceId));
+      setEvidence(await catalogGateway.getClaimEvidence(claimId));
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "The evidence could not be resolved.");
     } finally {
@@ -559,38 +731,45 @@ export function App() {
 
   return (
     <>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <PrototypeNotice />
-      <AppHeader onExplore={reset} />
-      <main id="main-content" ref={mainRef} tabIndex={-1}>
-        {view === "explore" && (
-          <Explore query={query} pending={pending === "search"} onQueryChange={setQuery} onSubmit={() => void search()} />
-        )}
-        {view === "results" && response && (
-          <Results response={response} shortlist={shortlist} onToggle={toggleProject} onEdit={() => announceView("explore")} />
-        )}
-        {view === "comparison" && comparison && (
-          <Comparison comparison={comparison} onBack={() => announceView("results")} onOpenEvidence={(id, trigger) => void openEvidence(id, trigger)} />
-        )}
-        {error && !drawerOpen && <p className="page-error" role="alert">{error}</p>}
-      </main>
-      {view === "results" && shortlist.length > 0 && (
-        <div className="compare-tray" aria-live="polite">
-          <div>
-            <span>Shortlist</span>
-            <strong>{shortlist.length} / 3 projects</strong>
-            <p>{shortlist.map((id) => allProjects.find((project) => project.id === id)?.name).join(" · ")}</p>
+      <div className="app-shell" inert={drawerOpen ? true : undefined}>
+        <a className="skip-link" href="#main-content">Skip to content</a>
+        <PrototypeNotice />
+        <AppHeader onExplore={reset} />
+        <main id="main-content" ref={mainRef} tabIndex={-1}>
+          {view === "explore" && (
+            <Explore query={query} pending={pending === "search"} onQueryChange={setQuery} onSubmit={() => void search()} />
+          )}
+          {view === "results" && response && (
+            <Results response={response} shortlist={shortlist} onToggle={toggleProject} onEdit={() => announceView("explore")} />
+          )}
+          {view === "comparison" && comparison && (
+            <Comparison
+              comparison={comparison}
+              projects={response?.projects ?? []}
+              onBack={() => announceView("results")}
+              onOpenEvidence={(id, trigger) => void openEvidence(id, trigger)}
+            />
+          )}
+          {error && !drawerOpen && <p className="page-error" role="alert">{error}</p>}
+        </main>
+        {view === "results" && shortlist.length > 0 && (
+          <div className="compare-tray" aria-live="polite">
+            <div>
+              <span>Shortlist</span>
+              <strong>{shortlist.length} / 3 projects</strong>
+              <p>{shortlist.map((id) => response?.projects.find((project) => project.id === id)?.name).join(" · ")}</p>
+            </div>
+            <button
+              className="button button--primary"
+              type="button"
+              disabled={shortlist.length < 2 || pending === "comparison"}
+              onClick={() => void openComparison()}
+            >
+              {pending === "comparison" ? "Preparing…" : shortlist.length < 2 ? "Select one more" : "Compare projects →"}
+            </button>
           </div>
-          <button
-            className="button button--primary"
-            type="button"
-            disabled={shortlist.length < 2 || pending === "comparison"}
-            onClick={() => void openComparison()}
-          >
-            {pending === "comparison" ? "Preparing…" : shortlist.length < 2 ? "Select one more" : "Compare projects →"}
-          </button>
-        </div>
-      )}
+        )}
+      </div>
       {drawerOpen && (
         <EvidenceDrawer evidence={evidence} pending={pending === "evidence"} error={error} onClose={closeDrawer} />
       )}

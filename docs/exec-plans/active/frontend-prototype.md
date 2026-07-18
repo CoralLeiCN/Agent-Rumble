@@ -1,6 +1,6 @@
 # Frontend Prototype Execution Plan
 
-**Status:** Active — implementation and local user validation remain
+**Status:** Active — implementation checks pass; user local validation remains
 
 **Date:** 2026-07-18
 
@@ -23,6 +23,20 @@ The prototype must run locally without a backend, model call, repository
 analysis, account, or user-provided repository intake. Illustrative data must be
 clearly labeled as a bundled prototype snapshot rather than validated project
 intelligence.
+
+## Delivery Progress
+
+The implementation now consumes schema-valid, illustrative draft-v0.2 Agent
+Project Card fixtures through a versioned canonical-card adapter. UI projections
+remain derived views rather than a second card source of truth. The adapter
+preserves card and schema versions, exact field states, Assessment Context, and
+the claim-to-supporting-or-conflicting-evidence-to-source chain.
+
+The packaged Agent Project Card structural and semantic validation passes for
+all prototype fixtures. Frontend type checking, behavior tests, and the
+production build also pass. The data remains illustrative rather than validated
+project intelligence, and the user has not yet completed local browser
+validation; this plan therefore remains **Active**.
 
 ## Source Traceability
 
@@ -168,6 +182,14 @@ The prototype does not select a dedicated lint tool while the production
 frontend toolchain remains open. Type checking, behavior tests, and the
 production build are required; production adoption must add the accepted lint
 and formatting workflow.
+
+Current recorded result:
+
+* Packaged structural and semantic validation passes for every illustrative
+  draft-v0.2 Agent Project Card fixture.
+* Frontend type checking, behavior tests, and production build pass.
+* User-run local browser, responsive, zoom, reduced-motion, keyboard, and network
+  inspection remain outstanding.
 
 Validation must also confirm:
 

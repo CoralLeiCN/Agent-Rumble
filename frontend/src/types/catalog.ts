@@ -1,23 +1,16 @@
 export type RequirementKind = "must" | "prefer" | "avoid";
 
-export type VerificationStatus =
-  | "claimed"
-  | "documented"
-  | "statically_confirmed"
-  | "runtime_verified"
-  | "not_analyzed"
-  | "unknown"
-  | "no_evidence_found"
-  | "not_applicable";
+import type {
+  Confidence,
+  EvidenceStatus,
+  FieldState,
+  SupportStatus,
+  VerificationStatus,
+} from "./projectCard";
 
-export type Confidence = "high" | "medium" | "low";
+export type { Confidence, VerificationStatus } from "./projectCard";
 
-export type ComparisonState =
-  | "value"
-  | "unknown"
-  | "not_applicable"
-  | "not_analyzed"
-  | "no_evidence_found";
+export type ComparisonState = "value" | FieldState;
 
 export interface Requirement {
   id: string;
@@ -35,40 +28,79 @@ export interface ProjectSummary {
   matchReason: string;
   constraint: string;
   languages: string[];
+  cardId: string;
+  schemaVersion: string;
+  cardVersion: number;
+  canonicalPrimaryType: string;
+  analysisDepth: string;
+  boundary: string;
+  sourceCount: number;
   revision: string;
   analyzedAt: string;
-  verificationStatus: VerificationStatus;
-  confidence: Confidence;
+  matchClaim: {
+    claimId: string;
+    verificationStatus: VerificationStatus;
+    confidence: Confidence;
+  };
+}
+
+export interface AssessmentContextView {
+  contextId: string;
+  projectId: string;
+  useCase: string;
+  comparisonCohort: string[];
+  requirements: string[];
+  organizationalConstraints: string[];
+  assessedAt: string;
 }
 
 export interface SearchResponse {
   query: string;
-  assessmentContext: string;
+  assessmentContexts: AssessmentContextView[];
   requirements: Requirement[];
   uninterpretedTerms: string[];
   projects: ProjectSummary[];
 }
 
-export interface EvidenceRecord {
+export interface ResolvedEvidence {
   id: string;
-  projectId: string;
-  claim: string;
-  whyItMatters: string;
-  verificationStatus: VerificationStatus;
+  relationship: "supporting" | "conflicting";
+  evidenceStatus: EvidenceStatus;
   confidence: Confidence;
+  sourceType: string;
+  provenance: string;
+  retrievedAt: string;
+  accessScope: string;
   repository: string;
   revision: string;
   locator: string;
   excerpt: string;
-  sourceUrl: string;
+  sourceUrl: string | null;
+}
+
+export interface ClaimEvidenceRecord {
+  claimId: string;
+  projectId: string;
+  claim: string;
+  claimKind: string;
+  appliesTo: string;
+  assessmentContextId: string | null;
+  whyItMatters: string;
+  verificationStatus: VerificationStatus;
+  confidence: Confidence;
+  supportingEvidence: ResolvedEvidence[];
+  conflictingEvidence: ResolvedEvidence[];
 }
 
 export interface ComparisonCell {
   state: ComparisonState;
   value?: string;
+  supportStatus?: SupportStatus;
+  evidenceStatus?: EvidenceStatus;
   verificationStatus?: VerificationStatus;
   confidence?: Confidence;
-  evidenceId?: string;
+  claimConfidence?: Confidence;
+  claimId?: string;
 }
 
 export interface ComparisonRow {
@@ -79,7 +111,7 @@ export interface ComparisonRow {
 }
 
 export interface ComparisonResponse {
-  assessmentContext: string;
+  assessmentContexts: AssessmentContextView[];
   projectIds: string[];
   rows: ComparisonRow[];
   sharedAttributeCount: number;
@@ -88,5 +120,5 @@ export interface ComparisonResponse {
 export interface CatalogGateway {
   searchProjects(query: string): Promise<SearchResponse>;
   compareProjects(projectIds: string[]): Promise<ComparisonResponse>;
-  getEvidence(evidenceId: string): Promise<EvidenceRecord>;
+  getClaimEvidence(claimId: string): Promise<ClaimEvidenceRecord>;
 }

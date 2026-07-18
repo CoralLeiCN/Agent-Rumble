@@ -3,7 +3,7 @@
 This directory is the project boundary for the React frontend and contains a
 locally runnable prototype of the Agent Rumble catalog experience. Production
 frontend interfaces will consume the FastAPI backend in `../backend/`; the
-current prototype uses bundled illustrative fixtures so it can be tested
+current prototype uses bundled schema-valid draft v0.2 fixture cards so it can be tested
 independently.
 
 The prototype demonstrates one complete interaction:
@@ -14,10 +14,11 @@ The prototype demonstrates one complete interaction:
 4. Compare material differences under an explicit Assessment Context.
 5. Open the source-evidence inspector for a consequential claim.
 
-All project, claim, source, revision, and locator data in this prototype is an
-**illustrative, unvalidated fixture**. The interface labels that limitation in
-the persistent notice, comparison footnote, and evidence inspector. Do not use
-the fixture content for project selection or adoption decisions.
+The fixture cards have contract-valid draft v0.2 shape, but their project,
+claim, source, revision, and locator content remains **illustrative and not
+verified project intelligence**. The interface labels that limitation in the
+persistent notice, comparison footnote, and evidence inspector. Do not use the
+fixture content for project selection or adoption decisions.
 
 ## Local Development
 
@@ -56,8 +57,16 @@ can be tested without accepting production architecture choices.
 
 The reusable seams are:
 
-* `src/types/catalog.ts` defines the typed search, comparison, evidence, and
-  exact null-state contracts.
+* `src/types/projectCard.ts` represents the versioned draft Agent Project Card
+  schema v0.2, preserving separate capability support, claim verification,
+  evidence, confidence, and field-state vocabularies.
+* `src/types/catalog.ts` defines typed UI projections without becoming a second
+  card source of truth.
+* `src/data/projectCardAdapter.ts` is the only canonical-card-to-UI adapter. It
+  projects structured Assessment Contexts, result rows, and comparisons without
+  inferring claim verification from capability support. It then resolves the
+  evidence inspector claim-first through supporting or conflicting evidence
+  records and full source provenance.
 * `src/data/catalogGateway.ts` keeps static fixtures behind a `CatalogGateway`.
   A production HTTP adapter can implement the same interface.
 * `src/status/statusPresentation.ts` is the single mapping for verification,
@@ -66,8 +75,9 @@ The reusable seams are:
 * `src/styles/tokens.css` separates surface, action, and verification semantics.
   Electric lime indicates actions and selection accents; confirmed evidence
   uses a distinct green token and an explicit icon-plus-text label.
-* `src/data/fixtures.ts` is the only illustrative data source and can be replaced
-  by validated Agent Project Card projections later.
+* `src/data/fixtures.ts` exports JSON-compatible draft v0.2 card objects and is
+  the only illustrative data source. `projectCardValidation.ts` checks their
+  schema version, null-state pointers, and reference integrity in tests.
 
 Repository evidence is rendered as inert text. The prototype never injects
 source fragments as HTML and makes no model or live-analysis calls.

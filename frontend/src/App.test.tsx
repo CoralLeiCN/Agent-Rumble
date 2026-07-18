@@ -6,10 +6,10 @@ import { App } from "./App";
 describe("Agent Rumble prototype", () => {
   it("completes search, shortlist, compare, evidence, and back navigation", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    const { container } = render(<App />);
 
     expect(
-      screen.getByText(/unvalidated fixture data/i),
+      screen.getByText(/schema-valid draft v0\.2 fixture cards/i),
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
@@ -19,6 +19,15 @@ describe("Agent Rumble prototype", () => {
     expect(screen.getAllByText("Must")).toHaveLength(2);
     expect(screen.getAllByText("Prefer")).toHaveLength(2);
     expect(screen.getByText("Avoid")).toBeInTheDocument();
+    expect(screen.getByText("customer-support agent prototype")).toBeInTheDocument();
+    expect(screen.getByText("Two-week prototype · Self-hosted preferred")).toBeInTheDocument();
+    expect(screen.getByText(/2026-07-15 · 2026-07-14/)).toBeInTheDocument();
+    expect(screen.getAllByText("Project boundary")).toHaveLength(3);
+    expect(screen.getAllByText(/CARD card-.* \/ v1/)).toHaveLength(3);
+    expect(screen.getAllByText("SCHEMA 0.2")).toHaveLength(3);
+    expect(screen.getAllByText("TYPE agent_framework_sdk")).toHaveLength(3);
+    expect(screen.getAllByText("DEPTH targeted")).toHaveLength(3);
+    expect(screen.getAllByText("Card metadata")).toHaveLength(3);
 
     const compareButtons = screen.getAllByRole("button", { name: "+ Compare" });
     await user.click(compareButtons[0]);
@@ -33,15 +42,35 @@ describe("Agent Rumble prototype", () => {
     expect(screen.getByText("Material differences")).toBeInTheDocument();
     expect(screen.getByText("Not analyzed")).toBeInTheDocument();
     expect(screen.getByText("Unknown")).toBeInTheDocument();
+    expect(screen.getAllByText("Statically confirmed").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Confirmed evidence").length).toBeGreaterThan(0);
+    expect(screen.getByText(/12 shared attributes are omitted/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /shared attributes/i })).not.toBeInTheDocument();
 
     await user.click(screen.getAllByRole("button", { name: "View source evidence →" })[0]);
-    const dialog = await screen.findByRole("dialog", { name: /tool execution can pause/i });
+    const dialog = await screen.findByRole("dialog", { name: /tool approval is represented/i });
     expect(within(dialog).getByText("Confirmed in source")).toBeInTheDocument();
+    expect(within(dialog).getByText("Confirmed evidence")).toBeInTheDocument();
+    expect(within(dialog).getByText("Claim verification")).toBeInTheDocument();
+    expect(within(dialog).getByText("Claim confidence")).toBeInTheDocument();
+    expect(within(dialog).getByText("Evidence status")).toBeInTheDocument();
+    expect(within(dialog).getByText("Evidence confidence")).toBeInTheDocument();
+    expect(within(dialog).getByText(/Supporting evidence \/ 1/)).toBeInTheDocument();
+    expect(within(dialog).getByText("factual")).toBeInTheDocument();
+    expect(within(dialog).getByText("context-openai-agents-sdk")).toBeInTheDocument();
+    expect(within(dialog).getByText("first_party")).toBeInTheDocument();
+    expect(within(dialog).getByText("public")).toBeInTheDocument();
+    expect(within(dialog).getByText("2026-07-15T12:00:00Z")).toBeInTheDocument();
     expect(within(dialog).getByText(/src\/agents\/tool.py/)).toBeInTheDocument();
-    expect(within(dialog).getByText(/illustrative only/i)).toBeInTheDocument();
+    expect(within(dialog).getByText(/contract-valid fixture shape/i)).toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: "Open pinned public source ↗" })).toBeInTheDocument();
+    expect(container.querySelector(".app-shell")).toHaveAttribute("inert");
+    expect(document.body.style.overflow).toBe("hidden");
 
     await user.click(within(dialog).getByRole("button", { name: "Close evidence inspector" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(container.querySelector(".app-shell")).not.toHaveAttribute("inert");
+    expect(document.body.style.overflow).toBe("");
 
     await user.click(screen.getByRole("button", { name: "← Back to search results" }));
     expect(
