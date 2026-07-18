@@ -48,6 +48,126 @@ def pointer_path(parts: list[str | int]) -> str:
     return "/" + "/".join(pointer_token(str(part)) for part in parts)
 
 
+def _display_pointer(parts: list[str | int]) -> str:
+    """Render a JSON Pointer without emitting invalid Unicode to a terminal."""
+    return pointer_path(parts).encode("ascii", "backslashreplace").decode("ascii")
+
+
+def _normalize_string(value: str) -> tuple[str, list[tuple[int, int]]]:
+    """Combine UTF-16 surrogate pairs and report residual surrogate code points."""
+    normalized: list[str] = []
+    residual: list[tuple[int, int]] = []
+    index = 0
+    while index < len(value):
+        code_point = ord(value[index])
+        if 0xD800 <= code_point <= 0xDBFF:
+            if index + 1 < len(value):
+                low = ord(value[index + 1])
+                if 0xDC00 <= low <= 0xDFFF:
+                    scalar = 0x10000 + ((code_point - 0xD800) << 10) + (low - 0xDC00)
+                    normalized.append(chr(scalar))
+                    index += 2
+                    continue
+            residual.append((index, code_point))
+        elif 0xDC00 <= code_point <= 0xDFFF:
+            residual.append((index, code_point))
+        normalized.append(value[index])
+        index += 1
+    return "".join(normalized), residual
+
+
+def _surrogate_error(
+    *,
+    path: str,
+    subject: str,
+    index: int,
+    code_point: int,
+) -> str:
+    """Format one precise, encoding-safe Unicode scalar finding."""
+    kind = "high" if code_point <= 0xDBFF else "low"
+    return (
+        f"{path}: {subject} contains lone {kind} surrogate "
+        f"U+{code_point:04X} at string index {index}"
+    )
+
+
+def normalize_unicode_scalars(
+    value: Any,
+    parts: list[str | int] | None = None,
+) -> tuple[Any, list[str]]:
+    """Normalize valid surrogate pairs and reject non-scalar Unicode artifacts.
+
+    This is deliberately limited to JSON interoperability. It does not apply
+    NFC, NFKC, case, whitespace, or any other text normalization.
+    """
+    current_parts = parts or []
+    if isinstance(value, str):
+        normalized, residual = _normalize_string(value)
+        path = _display_pointer(current_parts)
+        errors = [
+            _surrogate_error(
+                path=path,
+                subject="string value",
+                index=index,
+                code_point=code_point,
+            )
+            for index, code_point in residual
+        ]
+        return normalized, errors
+
+    if isinstance(value, list):
+        normalized_items: list[Any] = []
+        errors: list[str] = []
+        for index, child in enumerate(value):
+            normalized_child, child_errors = normalize_unicode_scalars(
+                child,
+                [*current_parts, index],
+            )
+            normalized_items.append(normalized_child)
+            errors.extend(child_errors)
+        return normalized_items, errors
+
+    if isinstance(value, dict):
+        normalized_mapping: dict[Any, Any] = {}
+        original_keys: dict[Any, Any] = {}
+        errors = []
+        object_path = _display_pointer(current_parts)
+        for key, child in value.items():
+            normalized_key = key
+            if isinstance(key, str):
+                normalized_key, residual = _normalize_string(key)
+                errors.extend(
+                    _surrogate_error(
+                        path=object_path,
+                        subject=f"object key {ascii(key)}",
+                        index=index,
+                        code_point=code_point,
+                    )
+                    for index, code_point in residual
+                )
+
+            normalized_child, child_errors = normalize_unicode_scalars(
+                child,
+                [*current_parts, normalized_key],
+            )
+            errors.extend(child_errors)
+            if normalized_key in normalized_mapping:
+                first_key = original_keys[normalized_key]
+                errors.append(
+                    f"{object_path}: Unicode scalar normalization causes object key "
+                    f"collision between {ascii(first_key)} and {ascii(key)} as "
+                    f"{ascii(normalized_key)}"
+                )
+                # Retain the first value only in the rejected normalized result.
+                continue
+
+            normalized_mapping[normalized_key] = normalized_child
+            original_keys[normalized_key] = key
+        return normalized_mapping, errors
+
+    return value, []
+
+
 def resolve_pointer(document: Any, pointer: str) -> Any:
     """Resolve a JSON Pointer, raising KeyError or IndexError when invalid."""
     if pointer == "":
@@ -122,7 +242,10 @@ def iter_technology_claim_refs(architecture: dict[str, Any]) -> Iterator[tuple[s
 
 def semantic_errors(card: dict[str, Any]) -> list[str]:
     """Return cross-field and product-contract validation errors."""
-    errors: list[str] = []
+    normalized_card, errors = normalize_unicode_scalars(card)
+    if not isinstance(normalized_card, dict):
+        return errors
+    card = normalized_card
     field_states = card.get("field_states", {})
 
     if isinstance(field_states, dict):
@@ -324,6 +447,9 @@ def main() -> int:
     errors = schema_errors(card, schema)
     if not errors and isinstance(card, dict):
         errors.extend(semantic_errors(card))
+    else:
+        _, unicode_errors = normalize_unicode_scalars(card)
+        errors.extend(unicode_errors)
 
     if errors:
         print(f"Agent Project Card validation failed with {len(errors)} error(s):", file=sys.stderr)

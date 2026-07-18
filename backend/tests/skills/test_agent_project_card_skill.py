@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from types import ModuleType
 
+import pytest
 import yaml
 
 
@@ -337,6 +338,102 @@ def test_schema_and_semantic_validation_accept_valid_card() -> None:
     assert validator.semantic_errors(card) == []
 
 
+def test_unicode_scalar_normalization_combines_yaml_surrogate_pair_escape() -> None:
+    parsed = yaml.safe_load('value: "\\uD83D\\uDE80"')
+    assert [ord(character) for character in parsed["value"]] == [0xD83D, 0xDE80]
+
+    normalized, errors = validator.normalize_unicode_scalars(parsed)
+
+    assert errors == []
+    assert normalized == {"value": "\U0001F680"}
+
+
+@pytest.mark.parametrize(
+    ("value", "kind", "code_point"),
+    [
+        ("before\ud83dafter", "high", "U+D83D"),
+        ("before\ude80after", "low", "U+DE80"),
+    ],
+)
+def test_unicode_scalar_normalization_rejects_lone_surrogate_values(
+    value: str,
+    kind: str,
+    code_point: str,
+) -> None:
+    normalized, errors = validator.normalize_unicode_scalars(
+        {"summary": {"one_line": value}}
+    )
+
+    assert normalized["summary"]["one_line"] == value
+    assert errors == [
+        f"/summary/one_line: string value contains lone {kind} surrogate "
+        f"{code_point} at string index 6"
+    ]
+
+
+@pytest.mark.parametrize(
+    ("key", "kind", "code_point"),
+    [
+        ("key-\ud83d", "high", "U+D83D"),
+        ("key-\ude80", "low", "U+DE80"),
+    ],
+)
+def test_unicode_scalar_normalization_rejects_lone_surrogate_object_keys(
+    key: str,
+    kind: str,
+    code_point: str,
+) -> None:
+    _, errors = validator.normalize_unicode_scalars({"configuration": {key: True}})
+
+    assert errors == [
+        f"/configuration: object key {ascii(key)} contains lone {kind} surrogate "
+        f"{code_point} at string index 4"
+    ]
+
+
+def test_unicode_scalar_normalization_rejects_normalized_key_collision() -> None:
+    pair_key = "\ud83d\ude80"
+    literal_key = "\U0001F680"
+
+    _, errors = validator.normalize_unicode_scalars(
+        {"configuration": {pair_key: "pair", literal_key: "literal"}}
+    )
+
+    assert errors == [
+        "/configuration: Unicode scalar normalization causes object key collision "
+        f"between {ascii(pair_key)} and {ascii(literal_key)} as {ascii(literal_key)}"
+    ]
+
+
+def test_unicode_scalar_normalization_preserves_astral_and_text_forms() -> None:
+    document = {
+        "astral": "\U0001F680",
+        "nfc": "é",
+        "decomposed": "e\u0301",
+        "case": "Agent Rumble",
+        "whitespace": "  Agent Rumble\n",
+    }
+
+    normalized, errors = validator.normalize_unicode_scalars(document)
+
+    assert errors == []
+    assert normalized == document
+    assert normalized["nfc"] != normalized["decomposed"]
+
+
+def test_valid_card_semantics_use_normalized_scalar_values_without_mutation() -> None:
+    card = valid_card()
+    escaped_value = "Launch \ud83d\ude80"
+    card["summary"]["one_line"] = escaped_value
+
+    assert validator.semantic_errors(card) == []
+    normalized, errors = validator.normalize_unicode_scalars(card)
+
+    assert errors == []
+    assert card["summary"]["one_line"] == escaped_value
+    assert normalized["summary"]["one_line"] == "Launch \U0001F680"
+
+
 def test_card_version_is_required_and_positive() -> None:
     schema = json.loads(
         (SKILL / "references" / "project-card.schema.json").read_text(encoding="utf-8")
@@ -465,6 +562,47 @@ def test_migration_and_validation_cli(tmp_path: Path) -> None:
 
     assert migration.returncode == 0, migration.stderr
     assert validation.returncode == 0, validation.stderr
+
+
+def test_validation_cli_accepts_pair_escape_and_rejects_lone_surrogate(
+    tmp_path: Path,
+) -> None:
+    paired_path = tmp_path / "paired-project-card.yaml"
+    lone_path = tmp_path / "lone-project-card.yaml"
+    paired = valid_card()
+    paired["summary"]["one_line"] = "Launch \ud83d\ude80"
+    lone = valid_card()
+    lone["summary"]["one_line"] = "Launch \ud83d"
+    paired_path.write_text(yaml.safe_dump(paired, sort_keys=False), encoding="utf-8")
+    lone_path.write_text(yaml.safe_dump(lone, sort_keys=False), encoding="utf-8")
+
+    paired_result = subprocess.run(
+        [
+            sys.executable,
+            str(SKILL / "scripts" / "validate_project_card.py"),
+            str(paired_path),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    lone_result = subprocess.run(
+        [
+            sys.executable,
+            str(SKILL / "scripts" / "validate_project_card.py"),
+            str(lone_path),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert paired_result.returncode == 0, paired_result.stderr
+    assert lone_result.returncode == 1
+    assert (
+        "/summary/one_line: string value contains lone high surrogate U+D83D "
+        "at string index 7"
+    ) in lone_result.stderr
 
 
 def test_card_summary_template_preserves_canonical_semantics() -> None:

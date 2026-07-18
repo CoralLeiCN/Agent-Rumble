@@ -174,7 +174,10 @@ export interface ComparisonResponse {
   contractOnlyAttributeCount: number;
 }
 
+export type CatalogDataSource = "http" | "bundled-snapshot";
+
 export interface CatalogGateway {
+  readonly dataSource: CatalogDataSource;
   searchProjects(query: string): Promise<SearchResponse>;
   compareProjects(projectIds: string[]): Promise<ComparisonResponse>;
   getClaimEvidence(claimId: string): Promise<ClaimEvidenceRecord>;

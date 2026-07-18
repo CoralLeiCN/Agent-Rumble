@@ -1,10 +1,9 @@
 # Agent Rumble Frontend Prototype
 
 This directory is the project boundary for the React frontend and contains a
-locally runnable prototype of the Agent Rumble product experience. Production
-frontend interfaces will consume the FastAPI backend in `../backend/`; the
-current prototype uses bundled schema-valid draft v0.2 sample cards so it can
-be tested independently.
+locally runnable prototype of the Agent Rumble product experience. It can
+consume the FastAPI catalog API in `../backend/` or use bundled schema-valid
+draft v0.2 sample cards for independent UI testing.
 
 The prototype demonstrates one complete interaction:
 
@@ -32,6 +31,18 @@ npm run dev
 
 Vite prints the local URL, normally `http://localhost:5173`.
 
+To test against the backend, copy `.env.example` to `.env`, start FastAPI on
+`http://localhost:8000`, and restart Vite:
+
+```dotenv
+VITE_CATALOG_GATEWAY=http
+VITE_CATALOG_API_BASE_URL=http://localhost:8000
+```
+
+Set `VITE_CATALOG_GATEWAY=static`, or omit it, to use the visibly labeled
+bundled snapshot. API failures are surfaced to the user and never silently
+fall back to sample data.
+
 To verify a clean build and run the behavior tests:
 
 ```shell
@@ -52,9 +63,9 @@ npm run preview
 
 ## Prototype Architecture
 
-The prototype intentionally has no routing, state-management, component-library,
-or backend dependency. View state lives in `App.tsx` so the current interaction
-can be tested without accepting production architecture choices.
+The prototype intentionally has no routing, state-management, or
+component-library dependency. View state lives in `App.tsx`; catalog access is
+isolated behind a transport-independent gateway.
 
 The reusable seams are:
 
@@ -83,10 +94,11 @@ The reusable seams are:
   section, searchable collapsed details, exact status semantics, and supporting
   source links without exposing internal paths or record identifiers in the
   primary view.
-* `src/data/catalogGateway.ts` keeps static fixtures behind a `CatalogGateway`
-  and marks their provenance as `fixture`. A production HTTP adapter can return
-  validated canonical cards with `validated_catalog` provenance through the
-  same interface; it must not silently replace an API failure with fixture data.
+* `src/data/catalogGateway.ts` provides both the static fixture gateway and the
+  FastAPI HTTP gateway. HTTP search loads pinned canonical cards, comparison
+  inventories those validated cards through the same schema-derived path, and
+  evidence links resolve through the backend. It never silently replaces an API
+  failure with fixture data.
 * `src/status/statusPresentation.ts` is the single mapping for verification,
   confidence, requirement, and comparison-state language. Screens do not invent
   their own status colors or labels.

@@ -33,6 +33,12 @@ Populate every displayed value from the canonical card, render unavailable
 values from `field_states`, and remove unresolved template markers before
 returning a Card Summary.
 
+Canonical card strings use Unicode scalar-value semantics. A valid UTF-16
+surrogate-pair artifact exposed by a parser is normalized to its single scalar
+value before service use; a residual lone surrogate is invalid. Do not apply
+NFC, NFKC, case, whitespace, or other text normalization as part of this
+interoperability rule.
+
 ## Card Versioning
 
 Identify each canonical card revision with `card_id` and `card_version`.

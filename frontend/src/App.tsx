@@ -15,6 +15,7 @@ import {
   verificationPresentation,
 } from "./status/statusPresentation";
 import type {
+  CatalogDataSource,
   ClaimEvidenceRecord,
   ComparisonResponse,
   ProjectSummary,
@@ -64,7 +65,15 @@ function AppHeader({ onExplore }: { onExplore: () => void }) {
   );
 }
 
-function PrototypeNotice() {
+function CatalogNotice({ dataSource }: { dataSource: CatalogDataSource }) {
+  if (dataSource === "http") {
+    return (
+      <div className="prototype-notice" role="note">
+        <span>Validated catalog</span>
+        Project details are loaded from the backend's pinned, statically analyzed card snapshot.
+      </div>
+    );
+  }
   return (
     <div className="prototype-notice" role="note">
       <span>Sample data</span>
@@ -275,6 +284,7 @@ interface EvidenceDrawerProps {
   evidence: ClaimEvidenceRecord | null;
   pending: boolean;
   error: string | null;
+  isIllustrative: boolean;
   onClose: () => void;
 }
 
@@ -288,7 +298,7 @@ function readableSourceValue(value: string) {
   return value.replace(/_/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
-function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerProps) {
+function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: EvidenceDrawerProps) {
   const drawerRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -431,10 +441,12 @@ function EvidenceDrawer({ evidence, pending, error, onClose }: EvidenceDrawerPro
                 </>
               )}
             </div>
-            <div className="drawer-warning">
-              <strong>Sample data.</strong> This source excerpt and location are illustrative and
-              should be independently verified.
-            </div>
+            {isIllustrative && (
+              <div className="drawer-warning">
+                <strong>Sample data.</strong> This source excerpt and location are illustrative and
+                should be independently verified.
+              </div>
+            )}
           </div>
         )}
       </aside>
@@ -551,7 +563,7 @@ export function App() {
     <>
       <div className="app-shell" inert={drawerOpen ? true : undefined}>
         <a className="skip-link" href="#main-content">Skip to content</a>
-        <PrototypeNotice />
+        <CatalogNotice dataSource={catalogGateway.dataSource} />
         <AppHeader onExplore={reset} />
         <main id="main-content" ref={mainRef} tabIndex={-1}>
           {view === "explore" && (
@@ -589,7 +601,13 @@ export function App() {
         )}
       </div>
       {drawerOpen && (
-        <EvidenceDrawer evidence={evidence} pending={pending === "evidence"} error={error} onClose={closeDrawer} />
+        <EvidenceDrawer
+          evidence={evidence}
+          pending={pending === "evidence"}
+          error={error}
+          isIllustrative={catalogGateway.dataSource === "bundled-snapshot"}
+          onClose={closeDrawer}
+        />
       )}
     </>
   );

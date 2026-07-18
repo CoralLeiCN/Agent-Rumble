@@ -216,6 +216,53 @@ environment variables from `.env` files.
 * [Pydantic Settings](https://docs.pydantic.dev/latest/concepts/pydantic_settings/)
 * [`python-dotenv`](https://bbc2.github.io/python-dotenv/)
 
+### Canonical String Interoperability
+
+**Status:** Accepted
+
+**Date:** 2026-07-18
+
+**Related requirements:**
+[Agent Project Card](requirements.md#agent-project-card) and
+[Agent Project Card Service and Storage](requirements.md#agent-project-card-service-and-storage)
+
+#### Context
+
+Canonical cards are YAML or JSON artifacts consumed by Python services and
+browser clients. JSON and JSON Schema model strings as Unicode characters, but
+some Python YAML parsers expose an escaped UTF-16 surrogate pair as two host
+code points. Residual lone surrogates are not Unicode scalar values and cannot
+be encoded by the backend's UTF-8 JSON response path. Treating every possible
+Python `str` as a distinct canonical value would therefore create values that
+cannot round-trip through the required API and frontend.
+
+#### Decision
+
+* Treat every canonical card string as a sequence of Unicode scalar values.
+* Normalize only a well-formed high-plus-low UTF-16 surrogate-pair artifact to
+  the single scalar value it represents before a validated card enters the
+  catalog.
+* Reject residual lone high or low surrogate code points and object-key
+  collisions produced by that scalar normalization.
+* Do not apply NFC, NFKC, case, whitespace, or other text normalization.
+* Encode project and evidence identifiers for HTTP paths as reversible opaque
+  references after applying the same scalar-value boundary.
+
+#### Consequences
+
+* Canonical cards remain serializable as interoperable UTF-8 JSON and YAML.
+* A literal non-BMP character and its well-formed escaped surrogate-pair form
+  identify the same JSON string value.
+* Python-only strings containing residual surrogate code points are rejected
+  during shared card validation and at API identifier boundaries.
+* Whitespace, controls, slashes, case, composed/decomposed text, and other valid
+  scalar-value distinctions remain exact.
+
+#### References
+
+* [Canonical Machine-Readable Card](specification/04-card-schema-and-outputs.md#canonical-machine-readable-card)
+* [Agent Project Card validator](../plugins/agent-project-card/skills/agent-project-card/scripts/validate_project_card.py)
+
 ## Persistence and Search
 
 ### YAML-First Card Catalog
@@ -307,6 +354,7 @@ frontend project under `frontend/`.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Backend | Established Unicode scalar-value semantics for canonical card strings, with surrogate-pair normalization, residual-surrogate rejection, and no other text normalization. |
 | 2026-07-18 | Persistence and search | Selected a YAML-first card catalog with disposable in-memory keyword and filter state; deferred embeddings and vector search to the backlog. |
 | 2026-07-18 | Agent workflow and runtime | Packaged the shared Agent Project Card skill as a skills-only Codex plugin for marketplace distribution without creating a second skill source of truth. |
 | 2026-07-18 | Agent workflow and runtime | Aligned the accepted Codex integration with the catalog-first requirement: preprocessing and catalog access precede P2 direct and on-demand generation. |

@@ -1,6 +1,7 @@
 # Frontend Catalog Experience Plan
 
-**Status:** Proposed
+**Status:** Active — HTTP catalog integration implemented; production
+architecture and release gates remain
 
 This plan delivers the catalog-first frontend defined by the
 [Frontend Experience](../../design-docs/frontend-experience.md) and
@@ -20,19 +21,20 @@ comparison, and evidence viewing do not invoke an AI model.
 
 ## Current State
 
-* A local Vite, React, and TypeScript prototype implements the prepared Explore,
-  shortlist, comparison, and evidence flow behind a static catalog gateway.
-  Its tooling and in-app navigation remain reversible prototype choices rather
-  than accepted production architecture.
-* FastAPI currently exposes only `/health`.
-* The repository-local Agent Project Card skill includes an executable v0.2
-  schema and deterministic validator, and one real BioAgents card validates.
-  Typed backend card consumption models and catalog projections are not yet
-  implemented.
-* Catalog search, project-card, comparison, and evidence endpoints do not exist.
+* A local Vite, React, and TypeScript implementation provides the Explore,
+  shortlist, comparison, and evidence flow behind one six-operation catalog
+  gateway. Its tooling and in-app navigation remain reversible prototype
+  choices rather than accepted production architecture.
+* FastAPI exposes catalog context, deterministic search, current and versioned
+  cards, evidence, and contextual comparison under `/api/v1`.
+* Three real schema-v0.2 cards validate and are published through the accepted
+  YAML-first catalog. Typed backend projections preserve the canonical status
+  and field-state dimensions.
+* `HttpCatalogGateway` maps the FastAPI contract into frontend types. A static
+  adapter remains available as a visibly labeled bundled fallback.
 * The frontend uses illustrative OpenAI Agents SDK, LangGraph, and CrewAI data
-  that must not be presented as validated project intelligence or copied into
-  the catalog without real preprocessing.
+  only in bundled-snapshot mode; those fixtures are not presented as validated
+  project intelligence or copied into the service catalog.
 
 ## Scope
 

@@ -415,6 +415,14 @@ A versioned JSON or YAML document suitable for:
 * Retrieval systems
 * Downstream agents
 
+Canonical string values use interoperable Unicode scalar-value semantics.
+When a YAML or host-language parser exposes a valid UTF-16 surrogate pair as
+two code points, validation normalizes that pair to its single scalar value
+before the card enters the service catalog. Residual lone surrogate code points
+are invalid because they cannot round-trip through UTF-8 JSON and browser
+clients. This interoperability step does not apply Unicode composition, case,
+whitespace, or compatibility normalization.
+
 ### Summary View
 
 A compact human-readable projection generated from a validated canonical card.

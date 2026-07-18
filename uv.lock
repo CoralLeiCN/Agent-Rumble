@@ -28,6 +28,8 @@ dependencies = [
     { name = "jsonschema" },
     { name = "openai-agents" },
     { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "python-dotenv" },
     { name = "pyyaml" },
 ]
 
@@ -43,6 +45,8 @@ requires-dist = [
     { name = "jsonschema", specifier = ">=4.26.0" },
     { name = "openai-agents", specifier = ">=0.18.2" },
     { name = "pydantic", specifier = ">=2.13.4" },
+    { name = "pydantic-settings", specifier = ">=2.13.1" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "pyyaml", specifier = ">=6.0.3" },
 ]
 

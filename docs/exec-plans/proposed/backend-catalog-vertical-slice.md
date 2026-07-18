@@ -1,13 +1,14 @@
 # Backend Catalog Vertical Slice Plan
 
-**Status:** Proposed — implementation has not started
+**Status:** Active — catalog API and frontend HTTP integration implemented;
+comparison-corpus and release gates remain
 
 **Date:** 2026-07-18
 
-This plan starts the Agent Rumble backend with the first-release catalog
-experience. It uses the validated BioAgents example as the first publication
-input to the accepted YAML-first service catalog under `catalog/cards/` and does
-not add P2 repository submission or on-demand card generation.
+This plan delivers the Agent Rumble backend's first-release catalog experience.
+It publishes the validated BioAgents, Biomni, and Eigent cards to the accepted
+YAML-first service catalog under `catalog/cards/` and does not add P2 repository
+submission or on-demand card generation.
 
 The plan implements the catalog access required by the
 [requirements](../../requirements.md#catalog-first-discovery-and-comparison),
@@ -36,27 +37,27 @@ model, or analyzed repository code.
 
 ## Current Baseline
 
-The repository already contains:
+The implemented slice now contains:
 
 * A root `uv` workspace with a locked Python 3.12 backend and seven-day
   dependency release cooldown.
-* A FastAPI application factory, router, health endpoint, and passing backend
-  tests.
+* A FastAPI application factory, typed settings, CORS configuration, router
+  groups, typed error envelopes, catalog services, and passing backend tests.
 * The repository-local Agent Project Card skill, v0.2 executable schema,
   migration script, deterministic validator, and focused validator tests.
-* One validated real card at
-  `project-cards/bio-xyz--BioAgents/project-card.yaml` with a pinned Source
-  Snapshot, Claims, Evidence, assessments, relationships, and explicit field
-  states.
-* The accepted YAML-first catalog layout at
+* Three structurally and semantically validated real cards under
+  `project-cards/`, published byte-for-byte to the accepted versioned layout at
   `catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml`.
-* A local React prototype backed by illustrative static fixtures and a catalog
-  gateway seam.
+* An all-or-nothing YAML repository, immutable catalog snapshot, exact current
+  and historical card retrieval, evidence resolution, deterministic search,
+  and contextual comparison under `/api/v1`.
+* A React `HttpCatalogGateway` for all six catalog operations plus a visibly
+  labeled bundled-snapshot fallback implementing the same interface.
 
-The backend does not yet contain typed settings, a card/catalog domain layer,
-catalog metadata, validated card loading, search or comparison projections,
-catalog routes, an HTTP frontend gateway, or enough real cards for a meaningful
-comparison.
+The three published cards do not share one canonical Assessment Context.
+Search and general role/capability comparison are available, while the API
+returns `not_analyzed` rather than transferring context-specific fit judgments.
+Selecting a prepared production comparison cohort remains a product/data gate.
 
 ## Contract Rules
 
@@ -124,6 +125,13 @@ The first API prefix is `/api/v1`.
 All endpoints use typed error envelopes. Search results include source revision,
 analysis timestamp and age, card and schema versions, match reasons, and the
 Claim identifiers supporting each reason.
+
+Canonical project and evidence identifiers are arbitrary nonempty strings.
+Official HTTP clients carry them in one reversible opaque path segment using
+`~` plus unpadded base64url of the UTF-8 JSON string representation; card
+versions remain decimal. The route layer decodes the segment before catalog
+lookup so identifier syntax does not narrow the canonical card contract or
+create delimiter ambiguity.
 
 ## Delivery Milestones
 

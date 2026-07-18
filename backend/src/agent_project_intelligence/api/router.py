@@ -2,7 +2,10 @@
 
 from fastapi import APIRouter
 
-from agent_project_intelligence.api.routes import health
+from agent_project_intelligence.api.routes import catalog, health
 
 api_router = APIRouter()
 api_router.include_router(health.router)
+
+catalog_api_router = APIRouter()
+catalog_api_router.include_router(catalog.router)
