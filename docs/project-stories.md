@@ -47,10 +47,10 @@ unfamiliar project easier to understand and reuse as structured intelligence.
 
 ## Demo Session 2: Use the Skill in Your Coding Agent
 
-Show the published Agent Project Card skill and Codex plugin in a user's own
-coding-agent workflow. Give it the representative project, invoke the skill,
-and follow the work from project exploration to the validated canonical card
-and its human-readable Card Summary.
+Show the published Agent Project Card skill, packaged as a Codex plugin, in a
+user's own coding-agent workflow. Give it the representative project, invoke
+the skill, and follow the work from project exploration to the validated
+canonical card and its human-readable Card Summary.
 
 Explain that the skill contains the shared card-generation instructions while
 Codex provides the analysis harness.
@@ -76,8 +76,8 @@ own coding-agent workflow.
 Close by returning to the single concept and its two forms:
 
 * **Agent Project Card** is the concept and canonical artifact.
-* **Agent Project Card skill and Codex plugin** bring the tool into the user's
-  coding-agent workflow.
+* **Agent Project Card skill, packaged as a Codex plugin,** brings the tool into
+  the user's coding-agent workflow.
 * **Agent Project Card as a Service** generates the card from a public GitHub
   link through a hosted web service.
 * **Codex** is the core analysis harness used by the tool.

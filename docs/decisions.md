@@ -37,7 +37,7 @@ static-analysis-only MVP scope, claim-level evidence model, and safety treatment
 of repository content as untrusted data.
 
 The same core card-generation capability must support direct use in a user's
-Codex session and use through an API that can later serve a frontend.
+coding-agent workflow and use through a hosted web service.
 
 #### Decision
 
@@ -54,9 +54,10 @@ Codex session and use through an API that can later serve a frontend.
   searchable and comparable catalog required by the first product experience.
 * Expose preprocessed cards through an API used by users, agents, and the React
   frontend.
-* In P2, allow a user to invoke the skill directly in their own Codex session
-  and allow a frontend or API client to submit a Git repository link for
-  on-demand generation.
+* Allow a user to invoke the published skill, packaged as a Codex plugin, in
+  their own coding-agent workflow.
+* Provide Agent Project Card as a Service so a user can submit a public GitHub
+  repository link for on-demand generation through a hosted web service.
 * For Codex integration, run Codex through its MCP server interface and
   orchestrate it with the OpenAI Agents SDK.
 
@@ -68,8 +69,8 @@ and validation controls defined by the product specification.
 
 * Python environment and dependency-management workflows will use `uv`.
 * Agent orchestration, handoffs, and traces will use the OpenAI Agents SDK.
-* Catalog preprocessing and P2 direct or on-demand generation will share the
-  Agent Project Card skill and canonical output contract.
+* Catalog preprocessing, direct skill use, and hosted on-demand generation will
+  share the Agent Project Card skill and canonical output contract.
 * Marketplace users will receive the same skill content through a versioned
   plugin package.
 * The Codex integration must not expand analysis authority or execute untrusted
@@ -354,6 +355,7 @@ frontend project under `frontend/`.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Agent workflow and runtime | Made direct use of the published skill packaged as a Codex plugin and hosted generation from a public GitHub repository link active delivery forms of the shared Agent Project Card capability, superseding their earlier P2 sequence. |
 | 2026-07-18 | Backend | Established Unicode scalar-value semantics for canonical card strings, with surrogate-pair normalization, residual-surrogate rejection, and no other text normalization. |
 | 2026-07-18 | Persistence and search | Selected a YAML-first card catalog with disposable in-memory keyword and filter state; deferred embeddings and vector search to the backlog. |
 | 2026-07-18 | Agent workflow and runtime | Packaged the shared Agent Project Card skill as a skills-only Codex plugin for marketplace distribution without creating a second skill source of truth. |

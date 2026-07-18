@@ -124,8 +124,9 @@ from a selected cohort of public GitHub repositories written in Python or
 TypeScript. It uses static analysis of repository-hosted source code and
 documentation to produce canonical JSON or YAML cards with generated
 human-readable views, claim-level evidence, confidence, and verification
-status. User-provided repository intake and on-demand analysis are deferred to
-P2.
+status. The same card-generation capability is available through the published
+Agent Project Card skill packaged as a Codex plugin and through Agent Project
+Card as a Service for a user-provided public GitHub repository link.
 
 The initial implementation uses `uv` to manage its Python components, FastAPI
 for the backend, React for the frontend, the OpenAI Agents SDK to orchestrate

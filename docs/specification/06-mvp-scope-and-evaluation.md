@@ -47,12 +47,19 @@ The MVP should focus on a searchable, comparable catalog of trustworthy Agent
 Project Cards preprocessed for a selected cohort of leading public GitHub
 repositories made for or used in AI systems. The preprocessing workflow may
 limit each analysis to one primary repository and repository-hosted
-documentation even though the schema models multi-source projects.
+documentation even though the schema models multi-source projects. The same
+card-generation capability is available through the published skill packaged
+as a Codex plugin and through Agent Project Card as a Service for a
+user-provided public GitHub repository link.
 
 ### Included
 
 * Public GitHub repository intake
 * Operator-managed preprocessing of the selected repository cohort
+* User-provided public GitHub repository intake and on-demand card generation
+  through Agent Project Card as a Service
+* Direct card generation with the published Agent Project Card skill packaged
+  as a Codex plugin in a user's coding-agent workflow
 * Python and TypeScript repositories
 * Static analysis only
 * README and documentation analysis
@@ -81,7 +88,6 @@ documentation even though the schema models multi-source projects.
 ### Excluded
 
 * Private repositories
-* User-provided repository intake and on-demand analysis
 * Search-engine indexing and rich social previews for public card pages
 * [Embedding-based semantic search and vector storage](../backlog.md#semantic-and-vector-search)
 * Automatic code execution
@@ -151,6 +157,10 @@ The MVP is successful when it can analyze a representative set of agent-related 
 21. Render human-looking fighters with visible body movement by reusing an
     existing or open-source design where available, and let the user enter
     fullscreen arcade play.
+22. Allow a user to generate an Agent Project Card from a public GitHub
+    repository link through Agent Project Card as a Service.
+23. Allow a user to generate an Agent Project Card with the published skill
+    packaged as a Codex plugin in their own coding-agent workflow.
 
 Numeric acceptance thresholds remain an [open decision](../open-decisions.md#mvp-evaluation-protocol) until the evaluation set, rubric, reviewer process, and denominator are recorded.
 

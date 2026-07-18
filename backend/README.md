@@ -4,7 +4,8 @@ This directory contains the FastAPI backend and its Python project metadata.
 The first-release backend loads validated, versioned Agent Project Cards from
 the YAML catalog, then exposes retrieval, evidence, deterministic search, and
 contextual comparison APIs for the separate React frontend. On-demand card
-generation remains P2.
+generation is an active product path provided separately by Agent Project Card
+as a Service; it is not implemented by the catalog routes documented here.
 
 From the repository root, synchronize the locked workspace environment:
 

@@ -90,7 +90,7 @@ result reviewable.
 | Primary | Verify an important difference | Claim-level evidence inspector with precise source locators | Trust differentiator |
 | Supporting | Understand one unfamiliar project | Complete Card Summary generated from the canonical card | Detail workflow |
 | Supporting | Let another agent consume the intelligence | Stable search, retrieval, and comparison API over machine-readable cards | Platform story |
-| P2 | Analyze a repository outside the catalog | User-provided repository intake and on-demand generation | Not shown as an unfinished initial feature |
+| Supporting | Analyze a repository outside the catalog | Agent Project Card as a Service accepts a public GitHub repository link and generates a card | Separate hosted-service path |
 
 ## Primary User Journey
 
@@ -313,7 +313,7 @@ Codex's role without putting the entire live presentation on the critical path.
    experience is demonstrable.
 
 This slice demonstrates the product's differentiated search, comparison, and
-evidence model before investing in on-demand repository intake.
+evidence model independently of the Agent Project Card as a Service path.
 
 For a recognizable hackathon comparison, candidate fixtures are the
 [OpenAI Agents SDK](https://github.com/openai/openai-agents-python),

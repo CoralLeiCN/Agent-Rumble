@@ -51,17 +51,19 @@ without installing dependencies or executing scripts.
 **Complete when:** Reviewed TypeScript fixtures produce expected evidence-backed
 static findings and unsupported syntax fails explicitly.
 
-### ANA-4 — Direct Codex-Session Mode
+### ANA-4 — Direct Plugin Mode
 
 **Task:** K-02
 
-Exercise the shared skill against representative fixtures in direct-session
-mode. Document invocation and validate canonical output and generated views.
+Exercise the shared skill packaged as a Codex plugin against representative
+fixtures in a user's coding-agent workflow. Document invocation and validate
+canonical output and generated views.
 
 **Must not:** Create a direct-mode-only skill, schema, or validation path.
 
-**Complete when:** A user can invoke the skill in Codex and obtain a validated
-canonical card plus generated views for a supported fixture.
+**Complete when:** A user can invoke the published plugin skill in their
+coding-agent workflow and obtain a validated canonical card plus generated
+views for a supported fixture.
 
 ### ANA-5 — Agents SDK and Codex MCP Orchestration
 

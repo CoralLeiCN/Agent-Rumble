@@ -11,18 +11,6 @@ When an entry is prioritized, update its source requirement, the product
 specification, any required architecture decision, and the applicable execution
 plan before implementation begins.
 
-## Repository Analysis Access
-
-### On-Demand Repository Analysis
-
-**Delivery:** P2
-
-Allow a user to provide a public Git repository in a direct Codex session or
-through the API and frontend, then generate an Agent Project Card on demand.
-This remains deferred behind the catalog-first MVP.
-
-**Source:** [Core Tool and Access requirements](requirements.md#core-tool-and-access)
-
 ## Public Card Pages
 
 ### Public Page Discoverability

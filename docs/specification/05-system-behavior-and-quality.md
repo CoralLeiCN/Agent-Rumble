@@ -67,8 +67,10 @@ To provide Agent Project Cards as a service, the system must:
 
 ### Access and Invocation
 
-Provide tools as skills and as services. Support a Codex plugin first for skill
-delivery. Both forms use Codex as the core harness.
+Provide the Agent Project Card tool as a published skill packaged as a Codex
+plugin for a user's own coding-agent workflow and as Agent Project Card as a
+Service. The hosted service accepts a public GitHub repository link and
+generates a card. Both forms use Codex as the core harness.
 
 The first product experience must:
 
@@ -77,20 +79,22 @@ The first product experience must:
 * Allow users and agents to search, retrieve, and compare those preprocessed
   cards through an API
 * Provide a frontend over the same API and canonical cards
+* Allow a user to generate a card from a public GitHub repository link through
+  Agent Project Card as a Service
+* Allow a user to invoke the published skill, packaged as a Codex plugin, in
+  their own coding-agent workflow
 
 The public frontend uses the Agent Rumble name. Search-engine indexing and rich
 social previews for public card pages are deferred to P2 and are not required by
 the first frontend release.
 
-P2 may add direct skill use in a user's Codex session and API or frontend intake
-of a user-provided Git repository link for on-demand card generation.
-
-All preprocessing and later on-demand generation modes must produce the same
+All preprocessing and on-demand generation modes must produce the same
 canonical Agent Project Card and follow the same analysis and validation rules.
 
-The Agent Project Card skill is versioned in this repository. Direct and API
-adapters must select the same released skill version, including its packaged
-analysis contract, schema, migration behavior, and deterministic validation.
+The Agent Project Card skill is versioned in this repository. Direct-plugin and
+hosted-service adapters must select the same released skill version, including
+its packaged analysis contract, schema, migration behavior, and deterministic
+validation.
 
 For public marketplace distribution, the same released skill must be packaged
 as a skills-only Codex plugin. The plugin version identifies the distributable

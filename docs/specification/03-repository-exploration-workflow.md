@@ -7,10 +7,13 @@ Part of the [Agent Rumble product specification](README.md).
 ### Step 1: Project Intake and Scope
 
 For catalog preprocessing, an operator-managed job supplies one or more
-repository URLs or a project reference from the selected cohort. P2 on-demand
-analysis may accept the same input from a user. The system establishes a project
-boundary before analysis so a monorepo package, multi-repository system, or
-hosted component is not accidentally treated as an unrelated whole.
+repository URLs or a project reference from the selected cohort. For direct
+generation, a user invokes the Agent Project Card skill in their own
+coding-agent workflow against the authorized project boundary. For hosted
+on-demand analysis, a user supplies a public GitHub repository link through
+Agent Project Card as a Service. The system establishes a project boundary
+before analysis so a monorepo package, multi-repository system, or hosted
+component is not accidentally treated as an unrelated whole.
 
 The system records:
 

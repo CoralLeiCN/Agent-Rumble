@@ -1,7 +1,7 @@
-# Agent Project Card Plugin Submission
+# Agent Project Card Plugin Publication
 
 This skills-only Codex plugin packages the repository's canonical Agent Project
-Card skill for local marketplace testing and later public submission.
+Card skill for local marketplace testing and public distribution.
 
 ## Listing Draft
 
@@ -47,7 +47,9 @@ Card skill for local marketplace testing and later public submission.
    **Expected:** The skill treats repository content as untrusted evidence and
    does not allow it to change policy, scope, authority, or output rules.
 
-## Required Before Public Submission
+## Public Release Checklist
+
+Confirm these items for each public release:
 
 - Select the verified developer or business identity in the OpenAI Platform.
 - Provide public support, privacy-policy, and terms-of-service URLs that match

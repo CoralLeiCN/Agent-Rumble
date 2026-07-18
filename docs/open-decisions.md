@@ -38,21 +38,15 @@ literally would conflict with active requirements:
 
 ## Delivery Scope
 
-1. The scope and delivery sequence of P2 user-provided repository analysis across
-   direct Codex-session, API, and frontend modes.
-2. Whether preprocessing accepts multiple repositories per project or only
+1. Whether preprocessing accepts multiple repositories per project or only
    represents that relationship in the schema.
 
 ## Marketplace Publication Inputs
 
-The plugin package can be tested locally, but public submission still requires
-stakeholder-provided publication inputs:
-
-1. The verified individual or business identity that will publish the plugin.
-2. The public support, privacy-policy, and terms-of-service URLs associated with
-   that identity.
-3. The production logo and final public category.
-4. The initial countries or regions in which the plugin will be available.
+Public marketplace release remains blocked until the stakeholder supplies the
+publisher identity, public support and policy URLs, production logo and
+category, and supported countries or regions listed in the
+[plugin public-release checklist](../plugins/agent-project-card/SUBMISSION.md#public-release-checklist).
 
 ## MVP Evaluation Protocol
 

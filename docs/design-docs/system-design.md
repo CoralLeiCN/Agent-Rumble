@@ -20,17 +20,17 @@ dependency workflow.
 
 The core tool consists of Codex as the project-analysis harness and an Agent Project Card skill attached to Codex. The skill provides the card-generation instructions. It must preserve the declared project boundary and the analysis, evidence, schema, and validation rules in the product specification.
 
-The core tool first feeds the preprocessed catalog and may later support
-user-initiated generation:
+The core tool feeds the preprocessed catalog and supports user-initiated
+generation:
 
 * **Catalog preprocessing adapter:** an operator-managed workflow invokes Codex
   and the skill for repositories in the selected catalog cohort.
 * **Catalog API:** users, agents, and the frontend search, retrieve, and compare
   preprocessed cards.
-* **Direct Codex-session adapter (P2):** the user invokes the skill in their own
-  Codex session.
-* **On-demand API adapter (P2):** a user-provided Git repository link starts card
-  generation through the API.
+* **Skill and Codex plugin adapter:** the user invokes the skill in their own
+  coding-agent workflow.
+* **Agent Project Card as a Service adapter:** a public GitHub repository link
+  starts card generation through the hosted web service.
 
 The adapters must not create separate card definitions or analysis rules. Every
 generation path invokes the same core capability and produces the same canonical
@@ -301,8 +301,8 @@ requirements establish the following implementation constraints:
 * The OpenAI Agents SDK implements and orchestrates the agent workflow.
 * Codex provides the project-analysis harness used to analyze projects and produce Agent Project Cards.
 * An Agent Project Card skill attached to Codex provides the shared
-  card-generation instructions for catalog preprocessing and P2 direct or
-  on-demand use.
+  card-generation instructions for catalog preprocessing, direct use, and
+  hosted on-demand generation.
 
 For catalog preprocessing, the initial integration runs Codex through its MCP
 server interface and orchestrates it with the OpenAI Agents SDK. The agent
@@ -311,8 +311,8 @@ invokes Codex with the Agent Project Card skill available. Codex output then
 passes through the claim, evidence, card-schema, and validation controls defined
 in the product specification before it enters the catalog.
 
-P2 direct Codex-session and on-demand API modes use the same skill and remain
-subject to the same output and validation contract.
+Direct skill use and Agent Project Card as a Service use the same skill and
+remain subject to the same output and validation contract.
 
 The [Initial Agent Technology Stack decision](../decisions.md#initial-agent-technology-stack)
 records this choice and its consequences. The
@@ -320,9 +320,7 @@ records this choice and its consequences. The
 selects direct YAML storage and basic YAML-derived search for the first
 implementation. Database-backed capabilities, advanced search,
 deployment-platform, model-selection, and service-decomposition choices remain
-open. Catalog preprocessing and catalog access precede the P2 direct Codex-session
-and on-demand API modes. The backend and frontend framework choices are recorded
-below.
+open. The backend and frontend framework choices are recorded below.
 
 ### Backend Application Framework
 

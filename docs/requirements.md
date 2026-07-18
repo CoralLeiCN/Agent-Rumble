@@ -48,8 +48,8 @@ discovery, analysis, and trade-off decisions. It should cut through verbose,
 low-signal, or AI-generated README content by prioritizing accurate,
 source-evidenced project intelligence.
 
-User-provided repository intake and on-demand Agent Project Card generation may
-be delivered as a P2 feature after the catalog-first experience.
+Users should also be able to provide a public GitHub repository link through
+Agent Project Card as a Service and generate an Agent Project Card on demand.
 
 ### Public Product Naming
 
@@ -146,8 +146,11 @@ tool to preprocess the repositories included in the catalog.
 
 ### Tool Delivery
 
-Provide tools as skills and as services. Support a Codex plugin first for skill
-delivery. Both forms should leverage Codex as the core harness.
+Provide the Agent Project Card tool in two forms. Publish the Agent Project Card
+skill as a Codex plugin that users can integrate into their own coding-agent
+workflow. Provide Agent Project Card as a Service through a web service that
+accepts a public GitHub repository link and generates an Agent Project Card.
+Both forms should leverage Codex as the core harness.
 
 ### Repository-Local Skill
 
@@ -164,18 +167,17 @@ repository.
 ### Direct Codex Session
 
 A user should be able to create an Agent Project Card in their own Codex session
-by using the attached skill. This direct, user-initiated generation mode may be
-delivered as a P2 feature.
+by using the attached skill.
 
 ### API
 
 Agent Project Intelligence should wrap Codex and the Agent Project Card skill
 behind an API.
 
-The first API and frontend experience should allow users and agents to search,
-retrieve, and compare preprocessed cards. API support for providing a Git
-repository link to create an Agent Project Card may be delivered as a P2
-feature.
+The API and frontend experience should allow users and agents to search,
+retrieve, and compare preprocessed cards. Agent Project Card as a Service should
+also accept a public GitHub repository link and generate an Agent Project Card
+for that repository.
 
 ### Agent Project Card Service and Storage
 
@@ -364,6 +366,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Core tool and access | Required the Codex-powered Agent Project Card tool to be available both as a published skill packaged as a Codex plugin for users' coding-agent workflows and as a hosted service that generates a card from a public GitHub repository link; on-demand generation is no longer deferred. |
 | 2026-07-18 | Rumble Arena | Requested human-looking fighters with visible body movement, reuse of an existing or open-source character design where available, and a fullscreen option. |
 | 2026-07-18 | Rumble Arena | Requested a classic 2D versus-fighter style with health bars, project-named fighters, and distinct attacks themed around each project's contextual winning comparison trait. |
 | 2026-07-18 | Rumble Arena | Added an actively playable arcade game mode rather than only a game-themed website interface. |

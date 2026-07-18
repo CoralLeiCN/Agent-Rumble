@@ -1,4 +1,4 @@
-# PLAT — Catalog-Platform-and-Experience Cohort
+# PLAT — Catalog-Platform, Hosted-Service, and Experience Cohort
 
 **Status:** Proposed — revised for catalog-first delivery
 
@@ -7,11 +7,12 @@
 **Detailed first slice:**
 [Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md)
 
-This cohort exposes validated, preprocessed Agent Project Cards through FastAPI
-and connects the selected React catalog experience. It implements the accepted
-YAML-first card store and disposable in-memory basic search. It does not accept
+This cohort exposes validated, preprocessed Agent Project Cards through FastAPI,
+connects the selected React catalog experience, and provides a separate hosted
+adapter for on-demand generation. The catalog packets implement the accepted
+YAML-first card store and disposable in-memory basic search; they do not accept
 a Git repository link, start an interactive analysis job, or invoke Codex in a
-public request. Those on-demand modes are P2.
+catalog request. PLAT-8 owns that behavior for Agent Project Card as a Service.
 
 ## Entry Condition
 
@@ -32,6 +33,9 @@ Additional gates apply by packet:
   dimensions and explicit comparison context.
 * PLAT-6 requires the applicable G-02 source-retention boundary and selected
   operator publication flow.
+* PLAT-8 requires the validated ANA application service, the accepted G-06
+  model and runtime configuration, and accepted G-07 production deployment
+  decision before public release.
 
 ## Packet Summary
 
@@ -44,14 +48,15 @@ Additional gates apply by packet:
 | PLAT-5 — React HTTP integration | HTTP gateway and contract alignment | PLAT-2 through PLAT-4 as used by the UI |
 | PLAT-6 — Publication and refresh | Atomic YAML publication, history, diffs, refresh | G-02 and selected operator flow |
 | PLAT-7 — Quality and safety | End-to-end, adversarial, isolation, and parity checks | Applicable completed packets |
+| PLAT-8 — Hosted on-demand generation | Public GitHub intake through Agent Project Card as a Service | ANA-9, ANA-10, G-06, and G-07 |
 
 ## PLAT-1 — YAML Catalog Foundation
 
-**Owns:** P-00 and the catalog portion of P-02
+**Owns:** Catalog foundation portion of P-02; consumes P-00 backend settings
 
-Implement typed backend settings, independent status enums, strict card and API
-projection models, and a `CatalogRepository` interface for the accepted YAML
-layout:
+Extend the P-00 typed backend settings with catalog configuration. Implement
+independent status enums, strict card and API projection models, and a
+`CatalogRepository` interface for the accepted YAML layout:
 
 ```text
 catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml
@@ -160,7 +165,8 @@ Claim differences.
 
 Any request or job state needed by the selected operator flow remains separate
 from the canonical card. Do not add continuous monitoring, user-submitted
-repository intake, relational card projections, or on-demand public analysis.
+repository intake, relational card projections, or on-demand public analysis
+to this catalog-platform packet.
 
 **Complete when:** Restart, atomic publication, idempotency, concurrency,
 lineage, isolation, and diff tests pass without changing the canonical card
@@ -171,13 +177,35 @@ contract.
 **Owns:** Catalog portions of S-05 and E-02
 
 Verify safe path encoding, all-or-nothing catalog loading, source-content
-inertness, cross-card reference isolation, exact status semantics, OpenAPI
-contracts, HTTP/static parity, deterministic search, contextual comparison, and
-any selected frontend flow.
+inertness, cross-card and cross-request isolation, exact status semantics,
+OpenAPI contracts, direct/hosted contract parity, HTTP/static parity,
+deterministic search, contextual comparison, and any selected frontend flow.
 
 **Complete when:** Adversarial cards cannot influence configuration, authority,
 scope, HTML rendering, or another card's results, and applicable regression
 checks pass through locked workflows.
+
+## PLAT-8 — Hosted On-Demand Generation
+
+**Owns:** P-04 hosted-service adapter
+
+Accept a public GitHub repository link through Agent Project Card as a Service
+and delegate analysis to the validated ANA application service. Use the same
+released Agent Project Card skill, canonical card contract, structural and
+semantic validation, and generated projections as catalog preprocessing and
+direct plugin use. Keep request and processing state outside the canonical card,
+and store only validated generated cards through the storage boundary accepted
+by G-07.
+
+The hosted adapter must not add generation behavior to the catalog routes,
+accept private repositories, execute repository code, publish a generated card
+to the public catalog automatically, or select processing, persistence, or
+deployment architecture before G-07 is accepted.
+
+**Complete when:** A public GitHub repository link produces a validated,
+stored, retrievable Agent Project Card through the hosted service; typed failure
+behavior, isolation, direct/hosted parity, and adversarial source-safety tests
+pass; and the accepted production deployment makes the path publicly usable.
 
 ## Merge Order
 
@@ -188,11 +216,13 @@ checks pass through locked workflows.
 4. Merge PLAT-4 after its data gate.
 5. Merge PLAT-5 after the API operations used by the frontend are stable.
 6. Merge PLAT-6 after its source and operator-flow gates.
-7. Complete PLAT-7 across every selected packet.
+7. Merge PLAT-8 after ANA-9, ANA-10, G-06, and G-07.
+8. Complete PLAT-7 across every selected packet.
 
 ## Exit Checkpoint I-3
 
 Validated preprocessed cards are stored and loaded through the accepted
 YAML-first catalog; catalog context, retrieval, evidence, deterministic search,
 and contextual comparison APIs pass; selected frontend flows use the same
-contract; and P2 on-demand analysis remains explicit.
+contract; and Agent Project Card as a Service generates, validates, stores, and
+returns cards from user-provided public GitHub repository links.

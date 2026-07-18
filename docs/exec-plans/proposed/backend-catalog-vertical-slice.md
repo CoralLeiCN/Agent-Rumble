@@ -7,8 +7,9 @@ comparison-corpus and release gates remain
 
 This plan delivers the Agent Rumble backend's first-release catalog experience.
 It publishes the validated BioAgents, Biomni, and Eigent cards to the accepted
-YAML-first service catalog under `catalog/cards/` and does not add P2 repository
-submission or on-demand card generation.
+YAML-first service catalog under `catalog/cards/`. Agent Project Card as a
+Service is an active product path, but its repository-submission and on-demand
+generation work is outside this catalog-specific slice.
 
 The plan implements the catalog access required by the
 [requirements](../../requirements.md#catalog-first-discovery-and-comparison),
@@ -137,16 +138,15 @@ create delimiter ambiguity.
 
 ### Milestone 0 — Plan and Contract Alignment
 
-* Correct the broader MVP plan so catalog access precedes P2 on-demand
-  analysis.
+* Keep the catalog API slice separate from hosted on-demand analysis while both
+  satisfy the shared card contract.
 * Freeze the backend request and response models before changing the frontend
   gateway.
 * Record the development catalog label and comparison limit without claiming
   that the sample cards constitute the selected “leading” production cohort.
 
-**Exit:** Documentation identifies this plan as the first backend slice, and no
-active plan instructs the backend to build a repository-submission endpoint for
-the first release.
+**Exit:** Documentation identifies this as a catalog-specific backend slice and
+does not mistake its endpoint scope for the complete product scope.
 
 ### Milestone 1 — Settings and Card Contract
 
@@ -286,8 +286,10 @@ catalog.
 
 The following are outside this slice or require a recorded decision:
 
-* User-provided repository intake and on-demand analysis: P2.
-* Direct user Codex-session generation: P2.
+* User-provided repository intake and hosted on-demand analysis: separately
+  delivered by Agent Project Card as a Service.
+* Direct user generation: delivered through the Agent Project Card skill
+  packaged as a Codex plugin rather than this catalog API slice.
 * Operator-managed Codex and Agents SDK preprocessing: later backend cohort;
   it must produce the same validated card contract.
 * Manual refresh and publication request state: source-retention and delivery

@@ -37,8 +37,10 @@ These cards become a reusable knowledge layer for downstream products such as:
 The first product experience is a preprocessed catalog of cards for a selected
 set of leading public GitHub repositories made for or used in AI systems. Users
 and agents search and compare this catalog without waiting for a new repository
-analysis. User-provided repository intake and on-demand analysis are deferred to
-P2.
+analysis. The Agent Project Card tool is also available as a published skill
+packaged as a Codex plugin for use in a user's own coding-agent workflow and as
+a hosted web service that generates a card from a user-provided public GitHub
+repository link.
 
 ---
 
@@ -218,22 +220,24 @@ The core tool combines:
 * An Agent Project Card skill attached to Codex, containing the instructions for generating the card
 * The canonical Agent Project Card and its generated human-readable views as the outputs
 
-Tools are provided as skills and as services. Skill delivery supports a Codex
-plugin first. Both forms use Codex as the core harness.
+The tool is provided in two forms. The Agent Project Card skill is published as
+a Codex plugin that users can integrate into their own coding-agent workflow.
+Agent Project Card as a Service is a hosted web service that accepts a public
+GitHub repository link and generates a card. Both forms use Codex as the core
+harness.
 
-The core tool supports catalog preprocessing first and user-initiated generation
-later:
+The core tool supports three usage modes:
 
 | Usage mode | How the user starts card generation | Role of Agent Project Intelligence |
 | --- | --- | --- |
 | Catalog preprocessing | An operator-managed process selects a repository in the catalog cohort. | Codex and the skill analyze the declared project boundary and produce the canonical card before a user searches for it. |
-| Direct Codex session (P2) | The user invokes the Agent Project Card skill in their own Codex session. | The skill guides Codex to analyze the declared project and create the card. |
-| On-demand API (P2) | A client calls an API that wraps Codex and the Agent Project Card skill. | The API starts the same card-generation capability for a user-provided repository. |
+| Skill and Codex plugin | The user invokes the Agent Project Card skill in their own coding-agent workflow. | The skill guides Codex to analyze the declared project and create the card. |
+| Agent Project Card as a Service | The user provides a public GitHub repository link to the hosted web service. | The service starts the same Codex-powered card-generation capability for the repository. |
 
-The first frontend and public API experience search, retrieve, and compare the
-preprocessed cards. The frontend is an access layer and does not define a
-separate card or comparison model. A P2 frontend may accept a Git repository
-link and request on-demand card creation through the API.
+The frontend and public API search, retrieve, and compare preprocessed cards.
+Agent Project Card as a Service also accepts a public GitHub repository link and
+requests card creation. The frontend is an access layer and does not define a
+separate card or comparison model.
 
 Every card-generation mode must produce the same canonical artifact and apply
 the same project-boundary, source-snapshot, claim, evidence, confidence,
@@ -275,8 +279,9 @@ judge whether refresh is needed.
 
 A user selects a project returned by catalog search and inspects its preprocessed
 Agent Project Card. The card identifies the declared project boundary, source
-snapshot, evidence, confidence, and unresolved questions. P2 on-demand analysis
-may additionally allow the user to provide a repository reference.
+snapshot, evidence, confidence, and unresolved questions. A user may also
+provide a public GitHub repository link to Agent Project Card as a Service or
+invoke the skill in their own coding-agent workflow to generate a card.
 
 ### 7.2 Compare Similar Projects
 

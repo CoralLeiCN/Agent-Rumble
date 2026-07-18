@@ -30,11 +30,12 @@ The first backend implementation should follow the proposed
 [Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md).
 It can publish the validated BioAgents example into the accepted YAML-first
 `catalog/cards/` layout without waiting for the repository-analysis pipeline or
-P2 on-demand generation.
+the hosted-service packet.
 
 The DEC, FND, CORE, and ANA cohorts below remain the broader plan for completing
-operator-managed preprocessing and later card generation. Do not use the old
-analysis-job path as the first public API sequence.
+operator-managed preprocessing and the shared card-generation capability. The
+hosted-service packet uses that capability without changing the catalog API's
+first delivery sequence.
 
 ## Cohort Files
 
@@ -44,19 +45,20 @@ analysis-job path as the first public API sequence.
 | 1 | [FND — Contracts and safety](01-foundation.md) | 5 packets, then 1 convergence packet | I-0: contracts, safety fixtures, provisional evaluation harness, and settings are stable. |
 | 2 | [CORE — Repository and core tool](02-core.md) | 4 immediate packets and 1 staggered packet | I-1: supported fixtures are safely mapped, validated, and rendered. |
 | 3 | [ANA — Analyzers and orchestration](03-analyzers.md) | 5 packets in round A, 3 in round B, then 2 convergence packets | I-2: representative projects reach one validated application service. |
-| 4 | [PLAT — Catalog platform and experience](04-platform.md) | Catalog API packets implement the accepted YAML-first store; publication and refresh retain their source and operator-flow gates. | I-3: validated catalog loading, retrieval, search, comparison, evidence, and selected frontend flows are integrated. |
+| 4 | [PLAT — Catalog platform, hosted service, and experience](04-platform.md) | Catalog API packets implement the accepted YAML-first store; a separate hosted-service packet exposes on-demand generation through the shared application service. | I-3: catalog access, hosted on-demand generation, and selected frontend flows are integrated. |
 | 5 | [REL — Evaluation and release](05-release.md) | 1 evaluation owner plus parallel fixes by prior owners | I-4: acceptance evidence and the release report are complete. |
 
 ```mermaid
 flowchart LR
     DEC["DEC decisions"] -.unblocks.-> CORE["CORE repository and core tool"]
     DEC -.unblocks.-> ANA["ANA analyzers and orchestration"]
-    DEC -.unblocks.-> PLAT["PLAT catalog platform and experience"]
+    DEC -.unblocks.-> PLAT["PLAT catalog platform, hosted service, and experience"]
     DEC -.unblocks.-> REL["REL evaluation and release"]
     FND["FND contracts and safety"] -->|I-0| CORE
     CORE -->|I-1| ANA
     CARDS["Validated preprocessed cards"] --> PLAT
     ANA -->|later preprocessing| CARDS
+    ANA -->|on-demand analysis| PLAT
     PLAT -->|I-3| REL
     REL --> I4["I-4 release evidence"]
 ```
@@ -68,11 +70,11 @@ and E-02 has early scaffolding in PLAT, but REL owns final completion of both.
 
 | Cohort | Owned gate or task IDs |
 | --- | --- |
-| DEC | G-01 through G-06 |
+| DEC | G-02, G-03, and G-05 through G-07; G-01 and G-04 are accepted inputs |
 | FND | C-01, C-02, C-03, S-01, P-00; provisional E-01 foundation only |
 | CORE | R-01 through R-04, K-01, S-02, S-03, O-01 |
 | ANA | A-01 through A-06, K-02, K-03, Y-01, S-04 |
-| PLAT | P-01 through P-03, S-05, U-01 through U-03; non-blocked E-02 scaffolding only |
+| PLAT | P-01 through P-04, S-05, U-01 through U-03; non-blocked E-02 scaffolding only |
 | REL | E-01, E-02, and E-03 |
 
 ## Shared Delivery Rules
@@ -92,9 +94,9 @@ project scope, analysis policy, or output requirements.
 
 ### One Canonical Output
 
-Direct Codex-session use, API use, generated Markdown, Card Summary, Evidence
-view, disposable search state, and any selected frontend derive from the same
-versioned `project-card.yaml` files.
+Direct plugin use, hosted-service use, catalog API use, generated Markdown,
+Card Summary, Evidence view, disposable search state, and any selected frontend
+derive from the same versioned `project-card.yaml` files.
 
 ### Work From Published Checkpoints
 
@@ -120,8 +122,8 @@ The following work already exists:
 * A local Vite, React, and TypeScript implementation with HTTP and visibly
   labeled bundled-snapshot catalog gateways. Its broader production
   architecture remains a decision gate.
-* Accepted React, FastAPI, Pydantic, OpenAI Agents SDK, Codex, direct-session,
-  and API-adapter constraints.
+* Accepted React, FastAPI, Pydantic, OpenAI Agents SDK, Codex, direct-plugin,
+  hosted-service, and catalog-API constraints.
 * Specified card semantics, exploration workflow, safety boundaries, and MVP
   acceptance criteria.
 * A repository-local Agent Project Card skill packaged as a plugin, an
@@ -143,8 +145,11 @@ orchestration, production deployment, and release evaluation remain plan work.
 
 Deliver a searchable and comparable catalog of preprocessed, schema-valid,
 evidence-backed Agent Project Cards. Operator-managed static preprocessing
-produces the cards, while the first public API retrieves and compares them
-without accepting a user-provided repository.
+produces the catalog cards, and the catalog API retrieves and compares them
+without accepting a user-provided repository. The same core capability supports
+direct generation through the published skill packaged as a Codex plugin and
+hosted generation through Agent Project Card as a Service for a user-provided
+public GitHub repository link.
 
 The plan stays within the [MVP scope](../../../specification/06-mvp-scope-and-evaluation.md#19-mvp-scope).
 It excludes private repositories, dynamic code execution, continuous
@@ -166,11 +171,14 @@ knowledge-graph implementation, and organization-wide access control.
    changing the catalog contract.
 8. Add atomic publication and durable manual refresh under the accepted
    YAML-first decision and applicable G-02 source boundary.
-9. Resolve G-03 and complete release evaluation.
+9. Expose the validated analysis application service through the hosted
+   on-demand adapter without adding generation behavior to the catalog routes.
+10. Resolve G-03 and complete release evaluation for the catalog, direct
+    plugin, and hosted-service modes.
 
 The focused [backend plan](../backend-catalog-vertical-slice.md) owns steps 1
-through 6. Direct-session and user-provided repository analysis remain P2 and
-are not on the first-release critical path.
+through 6. ANA-4 owns direct use of the skill packaged as a Codex plugin, and
+PLAT-8 owns hosted generation from a public GitHub repository link.
 
 ## Standard Agent Handoff
 
@@ -219,7 +227,7 @@ A packet is complete only when all applicable conditions hold:
 | Project boundary and Source Snapshot | FND, CORE | [Sources](../../../specification/02-classification-and-sources.md#10-input-sources), [Exploration](../../../specification/03-repository-exploration-workflow.md), [Card identity](../../../specification/04-card-schema-and-outputs.md#121-identity-and-source-snapshot) |
 | Classification, capabilities, and architecture | FND, CORE, ANA | [Classification](../../../specification/02-classification-and-sources.md#9-project-classification-system), [Capabilities](../../../specification/04-card-schema-and-outputs.md#125-capabilities) |
 | Canonical card, Claims, Evidence, confidence, and null states | FND, CORE, ANA | [Card Schema](../../../specification/04-card-schema-and-outputs.md#12-agent-project-card-schema), [Card Generation](../../../specification/05-system-behavior-and-quality.md#card-generation) |
-| Direct Codex-session and API use through one skill | CORE, ANA, PLAT | [Core Tool](../../../specification/01-product-overview.md#7-core-tool-and-use-cases), [Access](../../../specification/05-system-behavior-and-quality.md#access-and-invocation) |
+| Direct plugin and hosted-service use through one skill | CORE, ANA, PLAT | [Core Tool](../../../specification/01-product-overview.md#7-core-tool-and-use-cases), [Access](../../../specification/05-system-behavior-and-quality.md#access-and-invocation) |
 | Source safety, no execution, and isolation | FND, ANA, PLAT, REL | [Source Trust](../../../specification/02-classification-and-sources.md#source-trust-and-provenance), [Security](../../../specification/05-system-behavior-and-quality.md#security) |
 | Human-readable views, search, and refresh | CORE, PLAT | [Output Formats](../../../specification/04-card-schema-and-outputs.md#13-card-output-formats), [Search](../../../specification/05-system-behavior-and-quality.md#search-and-retrieval), [Refresh](../../../specification/05-system-behavior-and-quality.md#refresh-and-change-tracking) |
 | Evaluation and release acceptance | FND, REL | [MVP Scope and Evaluation](../../../specification/06-mvp-scope-and-evaluation.md) |

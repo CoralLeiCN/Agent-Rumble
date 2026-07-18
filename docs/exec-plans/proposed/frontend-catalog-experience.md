@@ -465,5 +465,6 @@ After the demo:
 7. Add staging and production environments, deployment gates, observability,
    backups, and smoke tests.
 8. Add saved comparisons and authentication only when their use case is ready.
-9. Add P2 user-provided repository analysis only after the catalog experience is
-   reliable.
+9. Integrate the separately implemented Agent Project Card as a Service path
+   before a combined MVP release presents catalog discovery and hosted
+   generation together.

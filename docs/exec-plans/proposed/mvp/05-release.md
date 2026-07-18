@@ -9,8 +9,8 @@ results to make the release pass.
 
 ## Entry Condition
 
-Checkpoint I-3 is published, G-03 is accepted, and every U-* task selected by
-G-01 is complete.
+Checkpoint I-3 is published, G-03 is accepted, and the catalog, direct-plugin,
+and hosted-service paths required by accepted G-01 are complete.
 
 ## REL-0 — Finalize the Evaluation Corpus and Harness
 
@@ -38,9 +38,10 @@ Extend PLAT-4's harness to automate:
 * Classification, technology, capability, and limitation results
 * Prompt-injection resistance
 * Cross-job isolation
-* Direct/API parity
+* Direct-plugin/hosted-service contract parity
+* Public GitHub repository intake and hosted generation
 * Search and manual refresh
-* All UI flows selected by G-01
+* All required catalog and service access flows
 
 Map every MVP acceptance criterion to an automated check or an explicit
 human-review step with retained evidence and denominator.
@@ -81,7 +82,7 @@ reviewer records, denominators, exceptions, and evidence.
 * Acceptance criteria are met or exceptions are explicit.
 * No critical source-safety, privacy, or cross-job-isolation issue remains.
 * Canonical cards are usable by downstream consumers.
-* Release-mode scope matches G-01.
+* Release-mode scope matches accepted G-01.
 * Deferred work does not silently widen MVP scope.
 
 ## Merge Order
