@@ -46,6 +46,25 @@ The system must:
 * Link material claims to supporting and conflicting evidence
 * Preserve `unknown`, `not_applicable`, `not_analyzed`, and `no_evidence_found` as distinct states
 
+### Agent Project Card Service and Storage
+
+To provide Agent Project Cards as a service, the system must:
+
+* Persist each successfully validated canonical card produced for service use as
+  a versioned `project-card.yaml` file, independently of the generation session
+  or workspace
+* Read the stored YAML files directly for API retrieval, basic search, and
+  structured filtering
+* Associate every stored card with its card ID, card version, schema version,
+  project boundary, and Source Snapshot
+* Preserve prior card versions and identify the current version without
+  silently overwriting historical canonical cards
+* Rebuild any temporary in-memory search state from the canonical YAML files
+  rather than persisting a separate card index as a source of truth
+* Keep human-readable views traceable to the canonical stored card
+* Exclude embeddings, vector storage, and vector-based semantic ranking from the
+  first implementation
+
 ### Access and Invocation
 
 The first product experience must:
@@ -123,9 +142,9 @@ The cooldown reduces exposure to newly published compromised releases but does n
 
 For the preprocessed catalog, the system must:
 
-* Index cards
+* Load validated canonical `project-card.yaml` files directly
 * Let users and agents search cards without first submitting a repository
-* Support search by stated need and structured project attributes
+* Support basic keyword search over card text and structured project attributes
 * Filter by category, capability, language, license, maturity, and architecture layer
 * Retrieve projects relevant to a use case or requirements
 * Return the card source snapshot and analysis age with results

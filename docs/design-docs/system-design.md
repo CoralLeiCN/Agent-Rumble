@@ -259,16 +259,37 @@ Responsibilities:
 * Check that assessments declare their context
 * Flag possible hallucinations
 
+### Card Store
+
+The card store persists each validated canonical Agent Project Card produced for
+service use as a versioned YAML artifact independently of the generation session
+or workspace. The proposed repository layout is:
+
+```text
+catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml
+```
+
+`encoded_card_id` is the percent-encoded UTF-8 card ID used as one safe path
+segment. Each file contains its unencoded card ID, card version, schema version,
+project boundary, and Source Snapshot. Publication validates the complete card
+before placing it at its final path. Historical versions remain in place, and
+the greatest valid card version is the current version for service retrieval.
+
 ### Card Index
 
-Supports:
+For the first implementation, the backend scans and parses the validated YAML
+catalog at startup and after a manual refresh. It may retain an in-memory
+projection for the lifetime of the process, but that projection is disposable
+and rebuildable from the YAML files.
+
+The YAML-derived search path supports:
 
 * Keyword search
-* Semantic search
 * Structured filtering
-* Similarity retrieval
 * Comparison
-* Downstream recommendations
+
+Embedding generation, vector storage, and semantic ranking are deferred to the
+[backlog](../backlog.md#semantic-and-vector-search).
 
 ### Initial Agent Technology Stack
 
@@ -294,11 +315,14 @@ P2 direct Codex-session and on-demand API modes use the same skill and remain
 subject to the same output and validation contract.
 
 The [Initial Agent Technology Stack decision](../decisions.md#initial-agent-technology-stack)
-records this choice and its consequences. Database, search,
+records this choice and its consequences. The
+[YAML-First Card Catalog decision](../decisions.md#yaml-first-card-catalog)
+selects direct YAML storage and basic YAML-derived search for the first
+implementation. Database-backed capabilities, advanced search,
 deployment-platform, model-selection, and service-decomposition choices remain
-open. Catalog preprocessing and catalog access precede the P2 direct
-Codex-session and on-demand API modes. The backend and frontend framework
-choices are recorded below.
+open. Catalog preprocessing and catalog access precede the P2 direct Codex-session
+and on-demand API modes. The backend and frontend framework choices are recorded
+below.
 
 ### Backend Application Framework
 

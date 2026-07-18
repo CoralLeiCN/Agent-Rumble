@@ -4,17 +4,9 @@
 
 The capabilities below are possible post-MVP directions. They are not active requirements and do not expand the [MVP scope](specification/06-mvp-scope-and-evaluation.md#19-mvp-scope).
 
-## On-Demand Repository Analysis
-
-Allow a user to provide a public Git repository in a direct Codex session or
-through the API and frontend, then generate an Agent Project Card on demand.
-This is the P2 counterpart to the catalog-first MVP.
-
-## Public Page Discoverability
-
-Add search-engine indexing and rich social previews for public Agent Project
-Card pages. This P2 capability may use prerendering or server-side rendering
-without changing the canonical card or frontend information model.
+Explicitly requested capabilities and implementation work that have been
+deliberately postponed are tracked separately in the
+[deferred backlog](backlog.md).
 
 ## Multi-Project Comparison
 

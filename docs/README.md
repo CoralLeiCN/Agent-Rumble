@@ -28,12 +28,17 @@ The central distinction is:
 
 ## Supporting Documents
 
-* [Product roadmap](roadmap.md) records possible post-MVP capabilities that are
-  not active requirements.
+* [Deferred backlog](backlog.md) records requested capabilities and
+  implementation work that stakeholders have explicitly postponed. It records
+  delivery status without replacing requirements or decisions and does not
+  authorize implementation.
+* [Product roadmap](roadmap.md) records broader possible future directions that
+  are not active requirements or explicitly deferred commitments.
 * [Open decisions](open-decisions.md) records unresolved product choices without
   silently deciding them.
 * [Writing guidelines](writing_guidelines.md) define how requirements and chat
   writing are structured.
 
-No design document, architecture decision, execution plan, roadmap item, or open decision may
-override an active requirement or silently expand the product specification.
+No backlog entry, design document, architecture decision, execution plan,
+roadmap item, or open decision may override an active requirement or silently
+expand the product specification.

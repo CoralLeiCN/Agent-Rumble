@@ -3,19 +3,20 @@
 **Status:** Proposed
 
 This document proposes a path from hackathon deployment to a production-capable
-Agent Project Intelligence installation. It does not accept a deployment
-platform, database, search engine, authentication provider, or hosting vendor.
-Those choices remain open until recorded in the
-[architecture decisions record](../decisions.md).
+Agent Project Intelligence installation. The
+[YAML-first card catalog](../decisions.md#yaml-first-card-catalog) is accepted
+for the first implementation. Deployment platforms, later database-backed
+capabilities, authentication providers, and hosting vendors remain open until
+recorded in the [architecture decisions record](../decisions.md).
 
 ## Architecture Principle
 
 Interactive catalog use should not invoke an AI model.
 
 Search, filtering, card viewing, and comparison operate on preprocessed,
-versioned Agent Project Cards with conventional database queries. Codex and the
-OpenAI Agents SDK run asynchronously to manufacture and refresh the intelligence
-layer.
+versioned Agent Project Cards loaded directly from canonical YAML files. Codex
+and the OpenAI Agents SDK run outside interactive catalog requests to manufacture
+and refresh the intelligence layer.
 
 This boundary provides:
 
@@ -26,7 +27,11 @@ This boundary provides:
 * Reproducible cards tied to source snapshots
 * Isolation between untrusted repository analysis and public request handling
 
-## Recommended Managed Stack
+## Deferred Managed Scaling Stack
+
+The managed stack below is a possible post-MVP scaling path. It is not required
+for the YAML-first catalog, and its relational and vector projections must not
+be implemented as current scope without a later accepted decision.
 
 ```text
 Browser or downstream agent
@@ -71,9 +76,9 @@ Render Cron Job ──► enqueue new or stale catalog projects
 | FastAPI | Render web service | Direct Python or container deployment with health checks |
 | Preprocessing | Render background worker | Long analysis jobs remain outside HTTP request handling |
 | Scheduled refresh | Render cron job | Enqueue new or stale catalog projects |
-| Canonical relational state | Supabase Postgres | Cards, versions, facets, claims, evidence, jobs, and users |
-| Keyword search | PostgreSQL full-text, GIN, and trigram indexes | Avoid a separate search service for the initial catalog |
-| Semantic search | `pgvector` HNSW index | Natural-language discovery combined with structured filters |
+| Deferred relational state | Supabase Postgres | Possible later projections, jobs, users, and audit records |
+| Deferred keyword index | PostgreSQL full-text, GIN, and trigram indexes | Scale beyond direct YAML-derived search when measurements justify it |
+| Backlog semantic search | `pgvector` HNSW index | Possible later natural-language discovery combined with structured filters |
 | Durable queue | Supabase PGMQ | Queueing, visibility timeouts, retries, and archival within Postgres |
 | Immutable artifacts | Supabase Storage | Canonical card files and retained analysis artifacts |
 | Authentication | Supabase Auth | Public anonymous browsing plus protected administration and saved work |
@@ -92,12 +97,28 @@ Supabase provides Postgres, supported extensions, Auth, Storage, and Queues:
 
 ## Card Storage Model
 
-Store each generated card in two forms:
+To satisfy the
+[Agent Project Card Service and Storage requirement](../requirements.md#agent-project-card-service-and-storage),
+the first implementation stores each generated card once, as an immutable
+canonical YAML artifact:
 
-1. An immutable canonical JSON or YAML artifact in object storage.
-2. Searchable relational projections in Postgres.
+```text
+catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml
+```
 
-The relational model includes:
+`encoded_card_id` is the percent-encoded UTF-8 card ID used as one safe path
+segment. The backend discovers and validates these files, selects the greatest
+valid card version for each card ID, and reads the selected YAML directly for
+service responses. Basic search and filters may use a disposable in-memory
+projection, but no persistent relational or vector projection is part of the
+first implementation.
+
+Publication validates the complete card before atomically placing the YAML file
+at its final versioned path. A failed publication does not expose a partial
+version. Refresh creates a new file rather than changing an existing card's
+meaning in place.
+
+A later scaling design may add relational projections containing:
 
 * Project identity and repository sources
 * Card, schema, ontology, and analyzer versions
@@ -106,26 +127,26 @@ The relational model includes:
 * Technologies, interfaces, prerequisites, and constraints
 * Claims, confidence, verification status, and evidence locators
 * Assessment contexts and contextual conclusions
-* Analysis revision, timestamps, freshness, and embedding
+* Analysis revision, timestamps, and freshness
 
-`project.current_card_id` points to the current immutable card version. Refresh
-creates a new version instead of changing an existing card's meaning in place.
+Any later projection remains derived from an identified YAML card version and
+must be rebuildable. Embeddings and vector search remain in the
+[backlog](../backlog.md#semantic-and-vector-search).
 
 ## Search Pipeline
 
 The first search implementation should:
 
-1. Extract visible, editable requirements from the user's query.
-2. Apply hard filters such as project role, language, license, required
+1. Load and validate the canonical YAML catalog.
+2. Build disposable in-memory text and structured-field representations.
+3. Apply basic keyword matching over card text.
+4. Apply filters such as project role, language, license, required
    capability status, maturity, and freshness.
-3. Rank candidates with PostgreSQL full-text relevance.
-4. Optionally combine vector similarity for natural-language intent.
-5. Boost exact, sufficiently verified capability matches.
-6. Return match explanations derived from card fields and claims.
+5. Return match explanations derived from card fields and claims.
 
-A separate Algolia, Typesense, or Elasticsearch deployment should be introduced
-only when measured catalog scale, latency, typo tolerance, or search analytics
-justify the operational cost.
+A persistent text or vector index should be introduced only when measured
+catalog scale, latency, relevance, or search analytics justify the operational
+cost and a later architecture decision accepts it.
 
 ## Preprocessing Worker
 
@@ -137,8 +158,8 @@ The worker should:
    code.
 4. Run the Agents SDK and Codex analysis under the declared project boundary.
 5. Validate the result against the versioned Agent Project Card schema.
-6. Write the immutable card artifact.
-7. Update relational projections atomically.
+6. Write the immutable YAML card artifact atomically.
+7. Trigger a catalog reload after successful publication.
 8. Complete, retry with backoff, or move the job to a dead-letter path.
 
 An idempotency key should include:
@@ -238,7 +259,7 @@ data and require backups.
 ### Hackathon
 
 1. Pre-generate a small curated catalog.
-2. Load canonical cards and search projections into a Supabase project.
+2. Bundle the validated versioned YAML catalog with the FastAPI deployment.
 3. Deploy the React frontend to Vercel.
 4. Deploy FastAPI to a Render web service.
 5. Keep preprocessing manual or local for the judged demo.
@@ -251,8 +272,8 @@ Live preprocessing should not be a dependency of the judged demo.
 ### Production Transition
 
 1. Create separate staging and production projects and credentials.
-2. Add versioned database migrations for relational projections, `vector`, and
-   `pgmq`.
+2. Publish validated YAML card versions through an atomic deployment or artifact
+   synchronization process.
 3. Package API and worker entry points independently.
 4. Add `render.yaml` for the API, worker, cron job, health checks, and non-secret
    configuration.
@@ -315,8 +336,8 @@ but adds cost and configuration that are unnecessary for the hackathon.
 
 ## Recommendation
 
-Start with Vercel, Render, and Supabase while keeping all expensive Codex work in
-an isolated asynchronous preprocessing pipeline. This is credible beyond the
-demo without requiring the team to build Kubernetes, a separate search cluster,
-queue infrastructure, authentication, TLS automation, or database operations
-during the hackathon.
+Start with the versioned YAML catalog bundled into the FastAPI deployment, using
+Vercel and Render only if those hosting choices are later accepted. Keep all
+expensive Codex work outside interactive requests. Defer Supabase, relational
+search projections, and vector infrastructure until measured needs justify a
+later architecture decision.

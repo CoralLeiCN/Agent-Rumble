@@ -135,6 +135,11 @@ Each documentation area has one responsibility:
 * The topic-organized architecture decisions record documents accepted
   architectural choices, their context, and their consequences.
 * Execution plans organize delivery work.
+* The deferred backlog records requested capabilities and implementation work
+  that stakeholders have deliberately postponed, without replacing their source
+  requirements or decisions.
+* The roadmap records broader possible future directions that are not active
+  requirements or explicitly deferred commitments.
 
 When a requirement mandates a technology, the requirement remains the source of
 that constraint. An architecture decision may reference the mandate as context

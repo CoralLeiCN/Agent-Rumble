@@ -4,15 +4,16 @@
 **Plan index:** [Parallel MVP Execution Plan](README.md)
 
 This cohort exposes the application service through FastAPI, implements the
-selected persistence/search boundary, verifies isolation, and builds the React
-flows selected for release.
+accepted YAML-first persistence and search boundary, verifies isolation, and
+builds the React flows selected for release.
 
 ## Entry Condition
 
 Checkpoint I-2 is published.
 
 * PLAT-1 has no additional decision gate.
-* PLAT-2 requires G-02 and G-04.
+* PLAT-2 requires G-02; G-04 is satisfied by the accepted YAML-first catalog
+  decision.
 * PLAT-3, PLAT-7, and PLAT-8 require G-01 and G-05 and are omitted when the
   frontend is outside the selected release.
 
@@ -34,19 +35,21 @@ findings in the route layer.
 **Complete when:** OpenAPI and integration tests cover valid, invalid, failed,
 and completed jobs and prove parity with direct-session output.
 
-### PLAT-2 — Job and Card Persistence
+### PLAT-2 — Job and YAML Card Persistence
 
 **Task:** P-02
-**Gates:** G-02 and G-04
+**Gate:** G-02
 
-Implement the selected store for requests, status, Source Snapshots, canonical
-cards, and refresh lineage. Keep retained source content within G-02.
+Implement versioned canonical `project-card.yaml` storage under the configured
+catalog root, plus the minimum request and status state required by the selected
+release flow. Keep retained source content within G-02.
 
-Agree with PLAT-1 on a job-store interface, but only this packet implements the
-store; PLAT-1 owns HTTP behavior.
+Agree with PLAT-1 on the storage interface, but only this packet implements it;
+PLAT-1 owns HTTP behavior. Do not add a relational card projection, embeddings,
+or a vector store.
 
-**Complete when:** Restart, concurrency, idempotency, version, isolation, and
-failure tests pass without changing the canonical card contract.
+**Complete when:** Restart, atomic publication, idempotency, version, isolation,
+and failure tests pass without changing the canonical card contract.
 
 ### PLAT-3 — React Foundation
 
@@ -84,10 +87,13 @@ Dispatch applicable packets after PLAT-1 and PLAT-2 merge.
 **Task:** P-03
 **Depends on:** PLAT-2 and CORE-4
 
-Index canonical card projections. Support basic keyword search and filters for
-type, capability, language, license, maturity, and architecture layer. Add
-manual reanalysis against a new Source Snapshot, retain prior card versions,
-and compute material card/Claim differences.
+Load validated canonical YAML cards directly and build only disposable in-memory
+search state. Support basic keyword search and filters for type, capability,
+language, license, maturity, and architecture layer. Add manual reanalysis
+against a new Source Snapshot, retain prior card versions, and compute material
+card/Claim differences. Do not add embeddings, vector search, or a persistent
+card index; those capabilities remain in the
+[deferred backlog](../../../backlog.md#semantic-and-vector-search).
 
 **Complete when:** Search returns expected corpus projects, unknown does not
 behave like absent, and refresh produces traceable lineage and explicit diffs

@@ -78,9 +78,11 @@ and validation controls defined by the product specification.
   output remains the machine-readable Agent Project Card.
 * The frontend will use catalog APIs instead of implementing separate search,
   comparison, or card-generation sources of truth.
-* Database, search, remaining frontend design, deployment-platform,
-  model-selection, service-decomposition, and delivery-sequence decisions
-  remain open.
+* Card persistence and basic search are governed by the
+  [YAML-First Card Catalog](#yaml-first-card-catalog) decision. Database-backed
+  capabilities, advanced search, remaining frontend design,
+  deployment-platform, model-selection, service-decomposition, and
+  delivery-sequence decisions remain open.
 
 #### References
 
@@ -214,6 +216,62 @@ environment variables from `.env` files.
 * [Pydantic Settings](https://docs.pydantic.dev/latest/concepts/pydantic_settings/)
 * [`python-dotenv`](https://bbc2.github.io/python-dotenv/)
 
+## Persistence and Search
+
+### YAML-First Card Catalog
+
+**Status:** Accepted
+
+**Date:** 2026-07-18
+
+**Related requirements:**
+[Agent Project Card Service and Storage](requirements.md#agent-project-card-service-and-storage)
+and
+[Catalog-First Discovery and Comparison](requirements.md#catalog-first-discovery-and-comparison)
+
+#### Context
+
+The first Agent Rumble catalog contains a selected, operator-preprocessed set of
+cards with manual refresh. The canonical artifact is already a validated,
+versioned `project-card.yaml`. The stakeholder selected direct YAML use for the
+first implementation and deferred embedding-based vector search to the backlog.
+
+#### Decision
+
+* Store service catalog cards as versioned canonical YAML files under a
+  configurable catalog root, with `catalog/cards/` as the repository default.
+* Use
+  `catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml` as
+  the default artifact layout, where `encoded_card_id` is the percent-encoded
+  UTF-8 card ID used as one safe path segment.
+* Have the backend discover, validate, parse, and retrieve cards directly from
+  those YAML files.
+* Select the greatest valid `card_version` for a card ID as its current version
+  while retaining all earlier versions.
+* Permit a disposable in-memory projection for basic keyword search and
+  structured filters, rebuilt from the YAML files at startup or manual refresh.
+* Do not require a relational card projection, embeddings, or a vector store for
+  the first implementation. Keep vector-based semantic search in the deferred
+  backlog.
+
+#### Consequences
+
+* The persisted YAML files remain both the canonical artifacts and the direct
+  input to catalog retrieval and search.
+* The first card service does not require database infrastructure or a
+  synchronization path between canonical cards and a persistent search index.
+* Search performance is suitable for the initial curated catalog but must be
+  measured before applying the same design to a substantially larger corpus.
+* Job state, user data, or later product capabilities may introduce separate
+  persistence without changing the canonical card contract.
+* A future semantic or vector index must be rebuildable from identified card
+  versions and accepted through a later architecture decision.
+
+#### References
+
+* [Agent Project Card Service and Storage specification](specification/05-system-behavior-and-quality.md#agent-project-card-service-and-storage)
+* [Semantic and Vector Search backlog](backlog.md#semantic-and-vector-search)
+
 ## Frontend
 
 ### React Frontend
@@ -249,6 +307,7 @@ frontend project under `frontend/`.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Persistence and search | Selected a YAML-first card catalog with disposable in-memory keyword and filter state; deferred embeddings and vector search to the backlog. |
 | 2026-07-18 | Agent workflow and runtime | Packaged the shared Agent Project Card skill as a skills-only Codex plugin for marketplace distribution without creating a second skill source of truth. |
 | 2026-07-18 | Agent workflow and runtime | Aligned the accepted Codex integration with the catalog-first requirement: preprocessing and catalog access precede P2 direct and on-demand generation. |
 | 2026-07-18 | Documentation structure | Consolidated the existing accepted decisions into this topic-organized record, replaced sequence-numbered records with heading-based links, and established this single change log. |

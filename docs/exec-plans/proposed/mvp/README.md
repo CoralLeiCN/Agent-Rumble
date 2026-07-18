@@ -91,8 +91,8 @@ project scope, analysis policy, or output requirements.
 ### One Canonical Output
 
 Direct Codex-session use, API use, generated Markdown, Card Summary, Evidence
-view, search projections, and any selected frontend derive from the same
-versioned machine-readable Agent Project Card.
+view, disposable search state, and any selected frontend derive from the same
+versioned `project-card.yaml` files.
 
 ### Work From Published Checkpoints
 
@@ -121,7 +121,8 @@ The following work already exists:
   acceptance criteria.
 
 The executable schema, ontologies, analyzers, card skill, orchestration,
-persistence, search, refresh, and user-facing card flow remain plan work.
+YAML-backed persistence, basic search, refresh, and user-facing card flow remain
+plan work.
 
 ## MVP Outcome and Boundary
 
@@ -142,7 +143,7 @@ knowledge-graph implementation, and organization-wide access control.
 3. K-01 and G-06, followed by K-03
 4. A-01 through A-06
 5. Y-01, followed by S-04
-6. P-01 in parallel with G-04 and P-02
+6. P-01 in parallel with P-02 under the accepted YAML-first catalog decision
 7. P-03 and S-05
 8. E-02
 9. G-03 and E-03

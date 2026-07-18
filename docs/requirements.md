@@ -172,6 +172,15 @@ retrieve, and compare preprocessed cards. API support for providing a Git
 repository link to create an Agent Project Card may be delivered as a P2
 feature.
 
+### Agent Project Card Service and Storage
+
+Agent Project Intelligence should store generated Agent Project Cards so they
+can be provided through an Agent Project Card service.
+
+The first implementation should store, retrieve, and search validated canonical
+`project-card.yaml` files directly. It should not depend on embeddings or a
+vector store. Vector-based semantic search should remain in the backlog.
+
 ### Public Page Discoverability
 
 Search-engine indexing and rich social previews for public Agent Project Card
@@ -259,6 +268,14 @@ Add repository rules that enforce these responsibilities, keep the source of
 normative content explicit, and prevent duplication from creating competing
 sources of truth.
 
+### Deferred Backlog
+
+Maintain a dedicated backlog for requested capabilities and implementation work
+that stakeholders explicitly defer. Keep this backlog separate from active MVP
+delivery and from broader possible roadmap directions. A backlog entry records
+deferred delivery without replacing its source requirement or accepted
+architecture decision.
+
 ### Requirements Workflow
 
 Maintain structured documentation under `docs/` for tracking user requirements.
@@ -282,6 +299,9 @@ add extra writing rules.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Documentation governance | Added a dedicated backlog for explicitly deferred work, separate from active MVP delivery and broader possible roadmap directions. |
+| 2026-07-18 | Agent Project Card service and storage | Selected direct use of validated `project-card.yaml` files for the first implementation and deferred vector-based semantic search to the backlog. |
+| 2026-07-18 | Agent Project Card service and storage | Required generated Agent Project Cards to be stored so Agent Project Intelligence can provide them through a service. |
 | 2026-07-18 | Core tool and access | Required publication of the Agent Project Card skill to the public Codex marketplace for discovery, installation, and reuse outside this repository. |
 | 2026-07-18 | Agent Project Card | Required every canonical card to carry a distinct card version for tracked evolution, separate from schema and project release versions. |
 | 2026-07-18 | Agent Project Card | Required a repository-local Card Summary template derived from the validated canonical card with snapshot, status, field-state, assessment-context, and evidence traceability preserved. |

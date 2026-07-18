@@ -65,10 +65,11 @@ documentation even though the schema models multi-source projects.
 * Strengths and limitations
 * Maturity indicators
 * Evidence references
-* Canonical JSON or YAML card and generated human-readable views
+* Canonical `project-card.yaml` files used directly for storage, retrieval, and
+  basic search, plus generated human-readable views
 * Claim and evidence records with source snapshots
 * Capability support-status distinctions
-* Search by stated need and structured card attributes
+* Basic keyword search over card text and structured card attributes
 * Shortlisting and contextual comparison of catalog projects
 * Manual operator-managed card refresh
 * Prompt-injection resistance for repository content
@@ -78,6 +79,7 @@ documentation even though the schema models multi-source projects.
 * Private repositories
 * User-provided repository intake and on-demand analysis
 * Search-engine indexing and rich social previews for public card pages
+* [Embedding-based semantic search and vector storage](../backlog.md#semantic-and-vector-search)
 * Automatic code execution
 * Full security scanning
 * Continuous repository monitoring

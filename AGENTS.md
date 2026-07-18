@@ -115,8 +115,13 @@ Place information according to the responsibility defined in
 * Put delivery sequence, work breakdown, and execution status in
   `docs/exec-plans/`. A plan must not create product scope or accept an
   architectural decision.
+* Put requested capabilities and implementation work that stakeholders
+  explicitly defer in `docs/backlog.md`. A backlog entry records delivery status
+  without replacing its source requirement or accepted decision and does not
+  authorize implementation.
 * Put unresolved product choices in `docs/open-decisions.md` and possible future
-  capabilities that are not active requirements in `docs/roadmap.md`.
+  directions that are neither active requirements nor explicitly deferred
+  commitments in `docs/roadmap.md`.
 
 Use links instead of copying normative content between documentation areas. A
 short contextual restatement is allowed only when its source remains explicit.

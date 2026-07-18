@@ -10,7 +10,9 @@ have authority to approve their own recommendations.
 
 ## Entry Condition
 
-None. Dispatch DEC-1 and DEC-2 from the current baseline.
+None. Dispatch DEC-1 and the remaining DEC-2 work from the current baseline.
+G-04 is already resolved by the accepted
+[YAML-First Card Catalog decision](../../../decisions.md#yaml-first-card-catalog).
 
 ## Parallel Packets
 
@@ -39,12 +41,10 @@ explicitly open with its blocked task IDs listed.
 
 ### DEC-2 — Architecture Decisions
 
-**Owns:** G-04, G-05, G-06
+**Owns:** G-05, G-06
 
 Prepare options, consequences, and a recommendation for:
 
-* **G-04:** persistence and basic card-search approach without introducing an
-  unsupported service decomposition.
 * **G-05:** frontend build tooling, routing/rendering approach, and required UI
   foundation if the frontend is selected for release.
 * **G-06:** configurable model/runtime choices for the Agents SDK and Codex MCP
@@ -72,7 +72,7 @@ governing records are consistent; do not wait for all six gates.
 | G-01 | Frontend release packets and final release-mode scope |
 | G-02 | CORE-1 intake, PLAT-2 persistence, and final evaluation corpus scope |
 | G-03 | Final E-01 approval and REL evaluation/release |
-| G-04 | PLAT-2 persistence and PLAT-5 search/refresh |
+| G-04 (accepted) | PLAT-2 YAML persistence and PLAT-5 YAML-derived search/refresh |
 | G-05 | PLAT-3, PLAT-7, and PLAT-8 frontend packets |
 | G-06 | ANA-5 Agents SDK and Codex MCP orchestration |
 

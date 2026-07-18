@@ -144,7 +144,7 @@ multi-project architecture generation are outside the initial MVP.
 This repository is currently specification-first. Initial agent, backend, and
 frontend technology decisions have been recorded, while the remaining product
 requirements, card semantics, analysis workflow, safety boundaries, and MVP
-plan are being defined before storage, detailed user-interface, and deployment
+plan are being defined before detailed user-interface and deployment
 architecture are selected.
 
 ## Development Setup
@@ -172,6 +172,7 @@ Stack Template: the frontend and backend are separate top-level projects.
 
 ```text
 backend/                    # FastAPI Python project, source, and tests
+catalog/cards/              # Versioned canonical project-card.yaml artifacts
 frontend/                   # React project boundary
 docs/                       # Shared product and engineering documentation
 test-data/repos/            # Git-ignored local corpus for card-creation tests
