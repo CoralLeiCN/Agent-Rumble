@@ -68,3 +68,23 @@ Every consequential result or comparison cell should be able to answer:
 
 This makes the prepared intelligence reusable by another AI agent instead of
 being only a human-facing editorial comparison.
+
+## 2026 Catalog and Provenance Review
+
+The prototype design also reviewed current products closer to AI-project
+discovery and source inspection:
+
+| Product | Pattern to learn from | Boundary for Agent Rumble |
+| --- | --- | --- |
+| [GitHub Explore](https://github.com/explore) | Compact repository identity, topics, language, and freshness | A Repository remains one evidence source and must not silently become the Project boundary. |
+| [Hugging Face Models](https://huggingface.co/models) | Persistent facets, URL-addressable filters, and dense result rows | User-supplied tags and engagement signals must not become unexplained quality judgments. |
+| [Official MCP Registry](https://registry.modelcontextprotocol.io/) | Restrained canonical registry presentation and visible version state | Agent Rumble adds analysis, comparison, and evidence depth rather than remaining only an index. |
+| [Backstage Software Catalog](https://backstage.io/docs/features/software-catalog/) | Consistent entity shells, search, filtering, and extensible detail sections | The public catalog must not assume a single internal owner or enterprise admin model. |
+| [Open Source Insights](https://deps.dev/) | Version-specific provenance and drill-down into dependencies and relationships | Package identity and dependency graphs do not define every Agent Project boundary. |
+| [OpenSSF Scorecard](https://scorecard.dev/) | Check-level methodology and a visible path to underlying evidence | Agent Rumble must avoid security-audit framing and aggregate-score anchoring. |
+
+These visual and interaction observations are design inferences from the linked
+products and documentation. They are not claims made by those products.
+
+The resulting reusable design direction is documented in the
+[Frontend Design System](frontend-design-system.md).

@@ -77,6 +77,17 @@ Repository-local, API, and plugin-installed invocation must use identical skill
 content and validation behavior for the same release. Marketplace publication
 must not create a separately maintained copy of the skill.
 
+### Frontend Presentation
+
+To satisfy the
+[Frontend Visual Refinement requirement](../requirements.md#visual-refinement),
+the frontend must use balanced internal spacing for interpreted-requirement
+pills and relaxed, size-appropriate character spacing for the “Three projects
+for review” heading. The broader presentation should apply the referenced Apple
+design principles through clear hierarchy, purposeful restraint, immediate
+interaction feedback, consistent spatial behavior, polished typography, and
+reduced-motion support.
+
 ### Implementation Technology
 
 The [Implementation Technology requirements](../requirements.md#implementation-technology)

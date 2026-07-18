@@ -15,7 +15,7 @@ must first be recorded in the responsible documentation area.
 
 ## Active
 
-No active execution plans are recorded.
+* [Frontend Prototype Execution Plan](active/frontend-prototype.md)
 
 ## Completed
 

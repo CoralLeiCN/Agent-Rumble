@@ -178,6 +178,15 @@ Search-engine indexing and rich social previews for public Agent Project Card
 pages may be delivered as a P2 feature. They are not required for the first
 frontend release.
 
+## Frontend Experience
+
+### Visual Refinement
+
+The Agent Rumble website should apply the referenced Apple design principles to
+improve its visual polish. Interpreted-requirement pills should have balanced
+left padding, and the “Three projects for review” heading should use more
+relaxed character spacing.
+
 ## Implementation Technology
 
 ### Python Tooling
@@ -278,6 +287,7 @@ add extra writing rules.
 | 2026-07-18 | Agent Project Card | Required a repository-local Card Summary template derived from the validated canonical card with snapshot, status, field-state, assessment-context, and evidence traceability preserved. |
 | 2026-07-18 | Core tool and access | Required the Agent Project Card skill to be versioned as part of the Agent Project Intelligence repository. |
 | 2026-07-18 | Agent Project Card | Added the stakeholder-provided schema v0.1 as the normative starting point for `project-card.yaml` and the Codex skill, including its sections, controlled values, evidence expectations, and maturity guidance. |
+| 2026-07-18 | Frontend visual refinement | Requested Apple-design principles, balanced left padding in interpreted-requirement pills, and more relaxed character spacing in the review heading. |
 | 2026-07-18 | Public product naming | Selected Agent Rumble as the public product and UI name while retaining Agent Project Intelligence for the underlying system and Agent Project Card for the canonical artifact. |
 | 2026-07-18 | Public page discoverability | Deferred search-engine indexing and rich social previews for public Agent Project Card pages to P2. |
 | 2026-07-18 | Catalog-first discovery and comparison | Clarified that the product accelerates discovery, analysis, and trade-off decisions for humans and agents by prioritizing accurate source evidence over low-signal or AI-generated README content. |
