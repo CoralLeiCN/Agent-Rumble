@@ -107,7 +107,7 @@ receive repository-provided values without validated mapping.
 
 Create canonical fixtures covering project categories, capability and
 verification statuses, confidence, evidence conflict, assessment contexts, and
-all null states. Add schema round-trip and compatibility tests.
+all null states. Add current-schema conformance and round-trip tests.
 
 Resolve integration problems through the owning contract. Do not let a
 downstream component create a separate schema or vocabulary.

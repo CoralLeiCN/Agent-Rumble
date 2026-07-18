@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-anthropics-claude-agent-sdk-python"
 card_version: 1
 
@@ -168,7 +168,6 @@ capabilities:
       Provides an async query iterator for simple requests and a stateful client
       for streaming, follow-up messages, interrupts, and runtime controls.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Public query() and ClaudeSDKClient APIs"
     interfaces:
       - "Python async iterator"
@@ -201,7 +200,6 @@ capabilities:
       Selects the base tool set, auto-approves or disallows named tools, applies
       permission modes, and supports application callbacks and hooks for tool-use decisions.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "ClaudeAgentOptions and the streaming control protocol"
     interfaces:
       - "tools, allowed_tools, disallowed_tools, and permission_mode options"
@@ -230,7 +228,6 @@ capabilities:
       Configures stdio, SSE, HTTP, and SDK MCP servers and exposes decorated
       Python functions through an in-process MCP server bridge.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "MCP configuration, tool decorator, and SDK control bridge"
     interfaces:
       - "ClaudeAgentOptions.mcp_servers"
@@ -260,7 +257,6 @@ capabilities:
       Runs application callbacks for tool, prompt, session, subagent,
       notification, and compaction lifecycle events and can modify behavior.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "ClaudeSDKClient streaming sessions"
     interfaces:
       - "HookMatcher callback registration"
@@ -285,7 +281,6 @@ capabilities:
       Supplies custom subagent definitions, filters enabled skills, and loads
       local plugins containing commands, agents, skills, and hooks.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "ClaudeAgentOptions and CLI initialization"
     interfaces:
       - "agents mapping"
@@ -312,7 +307,6 @@ capabilities:
       Resumes and forks sessions, lists and reads session or subagent messages,
       mutates session metadata, and mirrors transcripts through a pluggable store.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Public session APIs, ClaudeAgentOptions, and SessionStore protocol"
     interfaces:
       - "resume, continue_conversation, session_id, and fork_session options"
@@ -340,7 +334,6 @@ capabilities:
       Configures working directories, accessible directories, turn and spend
       limits, command sandbox behavior, structured JSON output, and file checkpoint rewind.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "ClaudeAgentOptions and ClaudeSDKClient control methods"
     interfaces:
       - "cwd, add_dirs, max_turns, max_budget_usd, and sandbox options"
@@ -1005,7 +998,6 @@ evidence:
       symbol_or_section: "[project]"
       line_start: 5
       line_end: 44
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "name = claude-agent-sdk; version = 0.2.122; Python >=3.10; Alpha classifier; AnyIO and MCP dependencies"
     note: "Direct package metadata."
@@ -1016,7 +1008,6 @@ evidence:
       symbol_or_section: "Installation"
       line_start: 1
       line_end: 18
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "The package installs from PyPI and bundles Claude Code by default, with a configurable CLI path."
     note: "Documentation evidence; built artifact contents were not inspected."
@@ -1027,7 +1018,6 @@ evidence:
       symbol_or_section: "Quick Start and Basic Usage: query()"
       line_start: 20
       line_end: 55
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "query() returns an AsyncIterator of response messages and accepts ClaudeAgentOptions."
     note: "First-party usage documentation; implementation support is recorded separately."
@@ -1038,7 +1028,6 @@ evidence:
       symbol_or_section: "query"
       line_start: 11
       line_end: 126
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defines the one-shot or unidirectional async iterator and delegates prompts and options to InternalClient.process_query."
     note: "Static implementation evidence; no query was executed."
@@ -1049,7 +1038,6 @@ evidence:
       symbol_or_section: "ClaudeSDKClient"
       line_start: 27
       line_end: 65
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Bidirectional, stateful client with streaming, follow-ups, and interrupts; client is tied to one async context."
     note: "Direct class documentation in implementation source."
@@ -1060,7 +1048,6 @@ evidence:
       symbol_or_section: "ClaudeSDKClient._connect_inner"
       line_start: 148
       line_end: 273
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Creates SubprocessCLITransport, passes SDK MCP servers, hooks, agents, and skills to Query, and initializes the stream."
     note: "Static implementation evidence; subprocess behavior was not executed."
@@ -1071,7 +1058,6 @@ evidence:
       symbol_or_section: "Using Tools"
       line_start: 57
       line_end: 73
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "allowed_tools auto-approves tools, disallowed_tools blocks them, and other decisions fall through to permission policy."
     note: "First-party documentation."
@@ -1082,7 +1068,6 @@ evidence:
       symbol_or_section: "ClaudeAgentOptions tool and permission fields"
       line_start: 1726
       line_end: 1911
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defines base tools, allowed and disallowed tools, permission modes, limits, cwd, and can_use_tool shadowing semantics."
     note: "Direct typed public option definitions."
@@ -1093,7 +1078,6 @@ evidence:
       symbol_or_section: "Custom Tools and Mixed Server Support"
       line_start: 85
       line_end: 185
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Custom Python functions become in-process SDK MCP tools and may be mixed with external servers."
     note: "First-party usage documentation."
@@ -1104,7 +1088,6 @@ evidence:
       symbol_or_section: "SdkMcpTool, tool, and create_sdk_mcp_server"
       line_start: 159
       line_end: 355
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defines typed SDK MCP tools and constructs an MCP Server with tools/call handlers."
     note: "Defines the public tool and SDK-server construction helpers."
@@ -1115,7 +1098,6 @@ evidence:
       symbol_or_section: "Query._handle_sdk_mcp_request"
       line_start: 548
       line_end: 620
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Bridges CLI JSON-RPC requests to in-process SDK MCP servers and manually handles initialize and tools/list requests."
     note: "Static control-bridge evidence; later branches in the same method handle tool calls."
@@ -1126,7 +1108,6 @@ evidence:
       symbol_or_section: "Hooks"
       line_start: 187
       line_end: 237
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Hooks are application callbacks at agent-loop lifecycle points and can deny a Bash tool call."
     note: "First-party hook example."
@@ -1137,7 +1118,6 @@ evidence:
       symbol_or_section: "ClaudeAgentOptions hooks, agents, skills, and plugins"
       line_start: 1913
       line_end: 2002
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defines concurrent hook dispatch, programmatic agents, skill filtering, setting sources, sandbox notes, and local plugins."
     note: "Skill filtering is explicitly described as a context filter rather than a sandbox."
@@ -1148,7 +1128,6 @@ evidence:
       symbol_or_section: "SubprocessCLITransport._apply_skills_defaults and _build_command"
       line_start: 244
       line_end: 390
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Maps skills to scoped Skill tool allow entries and translates options into CLI flags."
     note: "Static transport construction; CLI acceptance was not executed."
@@ -1159,7 +1138,6 @@ evidence:
       symbol_or_section: "ClaudeAgentOptions session fields"
       line_start: 1786
       line_end: 1804
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defines continue, resume, explicit session ID, and related constraints."
     note: "fork_session and external store fields appear later in the same public options class."
@@ -1170,7 +1148,6 @@ evidence:
       symbol_or_section: "SessionStore protocol"
       line_start: 1332
       line_end: 1543
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defines keys, transcript entries, batching, required append/load, optional list/delete, retention responsibilities, and subagent subkeys."
     note: "The in-memory reference implementation is present but was not executed."
@@ -1181,7 +1158,6 @@ evidence:
       symbol_or_section: "public session imports"
       line_start: 28
       line_end: 53
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Exports session import, rename, tag, delete, fork, list, info, message, and subagent APIs for local and SessionStore-backed use."
     note: "Confirms the public surface; individual runtime paths were not executed."
@@ -1192,7 +1168,6 @@ evidence:
       symbol_or_section: "ClaudeAgentOptions sandbox, structured output, checkpointing, and session store"
       line_start: 1985
       line_end: 2082
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defines command sandbox settings, JSON Schema output, file checkpointing, and externally mirrored session storage."
     note: "Static API evidence; enforcement and persistence were not runtime verified."
@@ -1203,7 +1178,6 @@ evidence:
       symbol_or_section: "SubprocessCLITransport CLI discovery"
       line_start: 111
       line_end: 188
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "The default transport locates a bundled CLI first, then searches system locations."
     note: "Static source inspection only."
@@ -1214,7 +1188,6 @@ evidence:
       symbol_or_section: "test, test-e2e, test-e2e-docker, and test-examples jobs"
       line_start: 1
       line_end: 234
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Defines multi-platform unit tests and authenticated end-to-end, Docker, and example jobs."
     note: "Workflow definition only; historical run status was not analyzed."
@@ -1225,7 +1198,6 @@ evidence:
       symbol_or_section: "MIT License"
       line_start: 1
       line_end: 20
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "MIT License, copyright Anthropic, PBC."
     note: "First-party repository license text; no legal interpretation is made."
@@ -1236,7 +1208,6 @@ evidence:
       symbol_or_section: "License and terms"
       line_start: 357
       line_end: 359
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "README states SDK use is governed by Anthropic Commercial Terms except for components under other licenses."
     note: "First-party terms statement; no legal interpretation is made."

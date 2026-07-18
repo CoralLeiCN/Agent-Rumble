@@ -3,7 +3,7 @@
 This directory is the project boundary for the React frontend and contains a
 locally runnable prototype of the Agent Rumble product experience. It uses the
 FastAPI catalog API in `../backend/` by default and can use bundled schema-valid
-draft v0.2 sample cards for independent UI testing.
+pre-release v0.3 sample cards for independent UI testing.
 
 The prototype demonstrates one complete interaction:
 
@@ -16,7 +16,7 @@ The prototype demonstrates one complete interaction:
 6. Select OpenAI Agents SDK and LangGraph, enter Rumble Arena, and either inspect
    the evidence-backed rounds or play a versus-fighter exhibition.
 
-The sample cards have contract-valid draft v0.2 shape, but their project,
+The sample cards have contract-valid pre-release v0.3 shape, but their project,
 claim, source, revision, and locator content remains **illustrative and not
 verified project intelligence**. The interface labels that limitation in the
 persistent sample-data notice and source details. Do not use the sample content
@@ -69,9 +69,9 @@ accepting production architecture choices.
 
 The reusable seams are:
 
-* `src/types/projectCard.ts` represents the versioned draft Agent Project Card
-  schema v0.2, preserving separate capability support, claim verification,
-  evidence, confidence, and field-state vocabularies.
+* `src/types/projectCard.ts` represents the versioned pre-release Agent Project
+  Card schema v0.3, preserving separate capability support, claim verification,
+  confidence, and field-state vocabularies.
 * `src/types/catalog.ts` defines typed UI projections and typed data provenance
   without becoming a second card source of truth.
 * `src/data/projectCardContract.ts` reads the schema packaged with the Agent
@@ -105,7 +105,7 @@ The reusable seams are:
 * `src/styles/tokens.css` separates surface, action, and verification semantics.
   Electric lime indicates actions and selection accents; confirmed evidence
   uses a distinct green token and an explicit icon-plus-text label.
-* `src/data/fixtures.ts` exports JSON-compatible draft v0.2 card objects and is
+* `src/data/fixtures.ts` exports JSON-compatible pre-release v0.3 card objects and is
   the only illustrative data source. `projectCardValidation.ts` checks their
   schema version, null-state pointers, and reference integrity in tests.
 

@@ -1,6 +1,6 @@
 # Agent Project Card Analysis Contract
 
-Use this contract when creating, refreshing, or migrating an Agent Project Card.
+Use this contract when creating or refreshing an Agent Project Card.
 The product specification remains authoritative if this packaged reference
 becomes stale.
 
@@ -150,13 +150,14 @@ For every capability, record:
 - Name, description, and applicable scope
 - Support status: `claimed`, `documented`, `statically_confirmed`,
   `runtime_verified`, `partially_implemented`, `planned`, or `deprecated`
-- Independent v0.1 compatibility evidence status and confidence
+- Independent confidence
 - Interfaces, prerequisites, configuration, and limitations
 - Claim and evidence references
 
-Require at least one valid evidence reference unless `evidence_status` is
-`not_found`. Interpret `not_found` only as no evidence found at the recorded
-analysis depth, not as proof that the capability is absent.
+Connect capabilities to available Evidence through their Claims and
+`evidence_refs`. When analysis finds no evidence, preserve that result through
+Claim verification and the `no_evidence_found` field state rather than inferring
+that the capability is absent.
 
 Record only direct, architecturally meaningful technologies. Preserve version
 constraints and distinguish direct, transitive, development, optional, bundled,
@@ -183,15 +184,6 @@ claims. Do not store a free-floating conclusion only as an evidence note.
 Keep confidence and verification independent. High confidence that a feature is
 documented does not verify its implementation. Static inspection must never be
 labeled runtime verification.
-
-Use the v0.1 `evidence_status` only as a compatibility projection:
-
-| v0.1 value | Meaning in this card |
-| --- | --- |
-| `confirmed` | Directly supported, while the Claim preserves whether support is static or runtime |
-| `documented_only` | Supported by documentation but not implementation verification |
-| `inferred` | Derived from incomplete or indirect evidence with reasoning recorded |
-| `not_found` | No evidence found at the recorded scope and depth; not proof of absence |
 
 ## Unavailable Values
 

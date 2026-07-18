@@ -4,7 +4,7 @@ import type {
   RequirementKind,
   VerificationStatus,
 } from "../types/catalog";
-import type { EvidenceStatus, SupportStatus } from "../types/projectCard";
+import type { SupportStatus } from "../types/projectCard";
 
 interface Presentation {
   label: string;
@@ -39,13 +39,6 @@ export const comparisonStatePresentation: Record<ComparisonState, Presentation> 
   not_applicable: { label: "Not applicable", tone: "muted", symbol: "–" },
   not_analyzed: { label: "Not analyzed", tone: "muted", symbol: "—" },
   no_evidence_found: { label: "No evidence found", tone: "neutral", symbol: "○" },
-};
-
-export const evidenceStatusPresentation: Record<EvidenceStatus, Presentation> = {
-  confirmed: { label: "Confirmed evidence", tone: "positive", symbol: "●" },
-  documented_only: { label: "Documentation evidence", tone: "informational", symbol: "▤" },
-  inferred: { label: "Inferred evidence", tone: "neutral", symbol: "◇" },
-  not_found: { label: "No evidence found", tone: "neutral", symbol: "○" },
 };
 
 export const supportStatusPresentation: Record<SupportStatus, Presentation> = {

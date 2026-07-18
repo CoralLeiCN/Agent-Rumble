@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://agent-project-intelligence.local/schemas/project-card/0.2",
+  "$id": "https://agent-project-intelligence.local/schemas/project-card/0.3",
   "title": "Agent Project Card",
-  "description": "Draft schema v0.2 evolved from the stakeholder-provided v0.1 baseline.",
+  "description": "Pre-release schema v0.3 for the Agent Project Card.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -27,7 +27,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "0.2",
+      "const": "0.3",
       "description": "Version of the card schema's structure and semantics; independent of card_version and analyzed project releases."
     },
     "card_id": {
@@ -514,9 +514,6 @@
     "confidence": {
       "enum": ["high", "medium", "low", "unknown"]
     },
-    "evidenceStatus": {
-      "enum": ["confirmed", "documented_only", "inferred", "not_found"]
-    },
     "supportStatus": {
       "enum": [
         "claimed",
@@ -618,7 +615,6 @@
         "name",
         "description",
         "support_status",
-        "evidence_status",
         "scope",
         "interfaces",
         "prerequisites",
@@ -650,9 +646,6 @@
               "type": "null"
             }
           ]
-        },
-        "evidence_status": {
-          "$ref": "#/$defs/evidenceStatus"
         },
         "scope": {
           "$ref": "#/$defs/nullableString"
@@ -966,7 +959,6 @@
         "evidence_id",
         "source_id",
         "locator",
-        "evidence_status",
         "confidence",
         "excerpt_or_symbol",
         "note"
@@ -980,9 +972,6 @@
         },
         "locator": {
           "$ref": "#/$defs/locator"
-        },
-        "evidence_status": {
-          "$ref": "#/$defs/evidenceStatus"
         },
         "confidence": {
           "$ref": "#/$defs/confidence"

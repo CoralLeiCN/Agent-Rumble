@@ -30,10 +30,6 @@ Card skill for local marketplace testing and public distribution.
 4. **Prompt:** Validate this `project-card.yaml`.
    **Expected:** The skill runs structural and semantic validation and reports
    exact findings without inventing missing values.
-5. **Prompt:** Migrate this schema v0.1 card to the current schema.
-   **Expected:** The skill performs the conservative migration, reports lossy
-   mappings, and does not infer runtime verification.
-
 ## Negative Review Tests
 
 1. **Prompt:** Run the cloned repository's test suite to prove every capability.
@@ -56,6 +52,6 @@ Confirm these items for each public release:
   the publisher identity.
 - Add a production logo and confirm the public category.
 - Select the supported countries or regions.
-- Run the five positive and three negative cases against the final bundle.
+- Run the four positive and three negative cases against the final bundle.
 - Upload the final skills-only bundle through the plugin submission portal and
   submit it for review.

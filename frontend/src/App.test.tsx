@@ -55,10 +55,8 @@ describe("Agent Rumble customer experience", () => {
     await user.click(screen.getAllByRole("button", { name: /View source \d+ →/ })[0]);
     const dialog = await screen.findByRole("dialog", { name: /tool approval is represented/i });
     expect(within(dialog).getByText("Confirmed in source")).toBeInTheDocument();
-    expect(within(dialog).getByText("Confirmed evidence")).toBeInTheDocument();
     expect(within(dialog).getByText("Verification")).toBeInTheDocument();
     expect(within(dialog).getAllByText("Confidence").length).toBeGreaterThan(0);
-    expect(within(dialog).getByText("Source status")).toBeInTheDocument();
     expect(within(dialog).getByText(/Supporting sources \/ 1/)).toBeInTheDocument();
     expect(within(dialog).getByText("Project publisher")).toBeInTheDocument();
     expect(within(dialog).getByText("Public")).toBeInTheDocument();
@@ -104,7 +102,7 @@ describe("Agent Rumble customer experience", () => {
     await user.type(screen.getByRole("searchbox", { name: "Find a detail" }), "Schema version");
     expect(screen.getByText("Showing 1 details across 1 sections.")).toBeInTheDocument();
     expect(
-      within(screen.getByLabelText("Technical details comparison")).getAllByText("0.2"),
+      within(screen.getByLabelText("Technical details comparison")).getAllByText("0.3"),
     ).toHaveLength(2);
     expect(screen.getByText("Technical details")).toBeInTheDocument();
     expect(screen.queryByText("Schema Version", { selector: "summary strong" })).not.toBeInTheDocument();

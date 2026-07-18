@@ -1,6 +1,6 @@
 ---
 name: agent-project-card
-description: Analyze agent-related software projects and create, refresh, validate, or migrate versioned, evidence-backed Agent Project Cards in project-card.yaml. Use when Codex needs to inspect a local or public repository, classify an agent application, framework, SDK, runtime, tool, MCP project, skill, or supporting component, generate a canonical card or Card Summary, refresh a card for a new revision, or validate or migrate a schema v0.1 card.
+description: Analyze agent-related software projects and create, refresh, or validate versioned, evidence-backed Agent Project Cards in project-card.yaml. Use when Codex needs to inspect a local or public repository, classify an agent application, framework, SDK, runtime, tool, MCP project, skill, or supporting component, generate a canonical card or Card Summary, refresh a card for a new revision, or validate an Agent Project Card.
 ---
 
 # Agent Project Card
@@ -11,7 +11,7 @@ the machine-readable card as canonical and generate summaries only from it.
 ## Load the Contract
 
 Read [references/analysis-contract.md](references/analysis-contract.md) before
-analyzing, refreshing, or migrating a card. Consult
+analyzing or refreshing a card. Consult
 [references/project-card.schema.json](references/project-card.schema.json) when
 authoring fields or diagnosing validation failures.
 
@@ -52,7 +52,7 @@ the canonical card validates and a human-readable summary is requested.
    components, interfaces, prerequisites, usage, and relationships.
 5. Create stable claims and connect material conclusions to precisely located
    supporting or conflicting evidence. Keep capability support, verification,
-   evidence status, and confidence independent.
+   and confidence independent.
 6. Add an Assessment Context before recording maturity, strengths, limitations,
    risks, best fit, poor fit, or gaps. Do not turn missing evidence into evidence
    that a capability is absent.
@@ -71,18 +71,6 @@ the canonical card validates and a human-readable summary is requested.
    evidence identifiers, and independent support and verification statuses.
    Remove unused template rows and unresolved template markers. Generate any
    other evidence view only from the validated card.
-
-## Migrate a v0.1 Card
-
-Run the conservative migration before editing an existing v0.1 card:
-
-```shell
-uv run --script <skill-directory>/scripts/migrate_v01_card.py input.yaml --output project-card.yaml
-```
-
-Review every migration warning. Resolve `unknown` field states from evidence when
-possible, then validate the result. Never infer runtime verification from v0.1
-`confirmed`, and never infer a specific absence state from an empty v0.1 value.
 
 ## Report the Result
 

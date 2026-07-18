@@ -2,7 +2,6 @@ import type { SearchProjectionContext } from "./projectCardAdapter";
 import type {
   AgentProjectCard,
   Confidence,
-  EvidenceStatus,
   FieldState,
   SupportStatus,
   VerificationStatus,
@@ -29,7 +28,6 @@ interface FactFixture {
   description: string;
   supportStatus: SupportStatus;
   verificationStatus: VerificationStatus;
-  evidenceStatus: EvidenceStatus;
   confidence: Confidence;
   reasoning: string;
   path: string;
@@ -76,7 +74,7 @@ function makeCard(input: CardFixtureInput): AgentProjectCard {
     ]),
   );
   return {
-    schema_version: "0.2",
+    schema_version: "0.3",
     card_id: `card-${input.id}`,
     card_version: 1,
     field_states: unresolvedFieldStates,
@@ -137,7 +135,6 @@ function makeCard(input: CardFixtureInput): AgentProjectCard {
         name: fact.name,
         description: fact.description,
         support_status: fact.supportStatus,
-        evidence_status: fact.evidenceStatus,
         scope: input.name,
         interfaces: input.languages.map((language) => `${language} API`),
         prerequisites: [],
@@ -153,7 +150,6 @@ function makeCard(input: CardFixtureInput): AgentProjectCard {
         name: capability.name,
         description: "This capability state is preserved from the canonical card.",
         support_status: null,
-        evidence_status: "not_found" as const,
         scope: input.name,
         interfaces: [],
         prerequisites: [],
@@ -267,7 +263,6 @@ function makeCard(input: CardFixtureInput): AgentProjectCard {
         line_start: fact.lineStart,
         line_end: fact.lineEnd,
       },
-      evidence_status: fact.evidenceStatus,
       confidence: fact.confidence,
       excerpt_or_symbol: fact.excerpt,
       note: fact.reasoning,
@@ -295,7 +290,7 @@ export const projectCards: AgentProjectCard[] = [
       {
         key: "approval", name: "Human approval", ontologyId: "capability:human-approval",
         description: "Tool approval is represented before execution.", supportStatus: "statically_confirmed",
-        verificationStatus: "statically_confirmed", evidenceStatus: "confirmed", confidence: "high",
+        verificationStatus: "statically_confirmed", confidence: "high",
         reasoning: "Sensitive customer-account actions require review before tool execution.",
         path: "src/agents/tool.py", section: "approval handling", lineStart: 610, lineEnd: 636,
         excerpt: "if needs_approval:\n    return ToolCallOutputItem(...)",
@@ -303,7 +298,7 @@ export const projectCards: AgentProjectCard[] = [
       {
         key: "state", name: "Durable state", ontologyId: "capability:durable-state",
         description: "Session state exists; durable workflow recovery is application-owned.", supportStatus: "documented",
-        verificationStatus: "documented", evidenceStatus: "documented_only", confidence: "medium",
+        verificationStatus: "documented", confidence: "medium",
         reasoning: "The prepared workflow needs state to survive process boundaries.",
         path: "docs/sessions.md", section: "Sessions", lineStart: 1, lineEnd: 24,
         excerpt: "Sessions provide a persistent memory layer for agent runs.",
@@ -311,7 +306,7 @@ export const projectCards: AgentProjectCard[] = [
       {
         key: "self-hosted", name: "Self-hosted core", ontologyId: "capability:self-hosted-core",
         description: "Core SDK is installable; model-provider dependencies remain.", supportStatus: "statically_confirmed",
-        verificationStatus: "statically_confirmed", evidenceStatus: "confirmed", confidence: "high",
+        verificationStatus: "statically_confirmed", confidence: "high",
         reasoning: "The prototype prefers an application-hosted library boundary.",
         path: "pyproject.toml", section: "project", lineStart: 1, lineEnd: 36,
         excerpt: "[project]\nname = \"openai-agents\"",
@@ -336,7 +331,7 @@ export const projectCards: AgentProjectCard[] = [
       {
         key: "approval", name: "Human approval", ontologyId: "capability:human-approval",
         description: "Execution can interrupt for review and resume.", supportStatus: "statically_confirmed",
-        verificationStatus: "statically_confirmed", evidenceStatus: "confirmed", confidence: "high",
+        verificationStatus: "statically_confirmed", confidence: "high",
         reasoning: "Approval must survive a process boundary in the prepared support workflow.",
         path: "libs/langgraph/langgraph/types.py", section: "interrupt", lineStart: 420, lineEnd: 461,
         excerpt: "def interrupt(value: Any) -> Any:\n    raise GraphInterrupt(...)",
@@ -344,7 +339,7 @@ export const projectCards: AgentProjectCard[] = [
       {
         key: "state", name: "Durable state", ontologyId: "capability:durable-state",
         description: "Checkpointing is central to the graph execution model.", supportStatus: "statically_confirmed",
-        verificationStatus: "statically_confirmed", evidenceStatus: "confirmed", confidence: "high",
+        verificationStatus: "statically_confirmed", confidence: "high",
         reasoning: "The support workflow should recover pending work without application reconstruction.",
         path: "libs/checkpoint/langgraph/checkpoint/base/__init__.py", section: "BaseCheckpointSaver", lineStart: 120, lineEnd: 170,
         excerpt: "class BaseCheckpointSaver(Generic[V]):\n    \"\"\"Base class for creating a graph checkpointer.\"\"\"",
@@ -352,7 +347,7 @@ export const projectCards: AgentProjectCard[] = [
       {
         key: "self-hosted", name: "Self-hosted core", ontologyId: "capability:self-hosted-core",
         description: "Open-source runtime; hosted platform is optional.", supportStatus: "documented",
-        verificationStatus: "documented", evidenceStatus: "documented_only", confidence: "medium",
+        verificationStatus: "documented", confidence: "medium",
         reasoning: "The assessment avoids a mandatory hosted control plane.",
         path: "README.md", section: "LangGraph Platform", lineStart: 1, lineEnd: 30,
         excerpt: "LangGraph is a low-level orchestration framework and runtime.",
@@ -381,7 +376,7 @@ export const projectCards: AgentProjectCard[] = [
     facts: [{
       key: "approval", name: "Human approval", ontologyId: "capability:human-approval",
       description: "Human review is documented; durable approval needs validation.", supportStatus: "documented",
-      verificationStatus: "documented", evidenceStatus: "documented_only", confidence: "medium",
+      verificationStatus: "documented", confidence: "medium",
       reasoning: "A documented prompt is not yet evidence of a durable approval boundary.",
       path: "docs/concepts/tasks.mdx", section: "Human input", lineStart: 1, lineEnd: 1,
       excerpt: "human_input: Whether the task should have a human review the final answer.",

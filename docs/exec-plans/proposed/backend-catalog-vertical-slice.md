@@ -44,8 +44,8 @@ The implemented slice now contains:
   dependency release cooldown.
 * A FastAPI application factory, typed settings, CORS configuration, router
   groups, typed error envelopes, catalog services, and passing backend tests.
-* The repository-local Agent Project Card skill, v0.2 executable schema,
-  migration script, deterministic validator, and focused validator tests.
+* The repository-local Agent Project Card skill, v0.3 executable schema,
+  deterministic validator, and focused validator tests.
 * Three structurally and semantically validated real cards under
   `project-cards/`, published byte-for-byte to the accepted versioned layout at
   `catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml`.
@@ -66,12 +66,11 @@ Selecting a prepared production comparison cohort remains a product/data gate.
 
 The bundled `project-card.schema.json` and deterministic semantic validator are
 the executable acceptance gate for cards in this slice. The backend must not
-reinterpret schema v0.2 or create a second canonical card definition.
+reinterpret schema v0.3 or create a second canonical card definition.
 
 Strict Pydantic application models may mirror the accepted card and define API
 projections, but contract tests must prove that they preserve the same values
-and reject drift. Schema changes remain governed by the recorded v0.1
-reconciliation decisions.
+and reject drift. Schema changes follow the current pre-release schema policy.
 
 ### Independent Status Dimensions
 
@@ -79,7 +78,6 @@ The API must keep these concepts separate:
 
 * Capability support status
 * Claim verification status
-* Evidence status
 * Confidence
 * Field state: `unknown`, `not_applicable`, `not_analyzed`, or
   `no_evidence_found`

@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-eigent-ai-eigent"
 card_version: 1
 
@@ -202,7 +202,6 @@ capabilities:
       browser, document, and multimodal agents; users can also add configured
       workers.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Brain workforce session mode"
     interfaces:
       - "Brain /chat SSE execution path"
@@ -237,7 +236,6 @@ capabilities:
       web-fetch, screenshot, planning, MCP, skill, and depth-limited agent tools
       selected by configuration and deployment capabilities.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Brain session_mode=single-agent"
     interfaces:
       - "Brain /chat SSE execution path"
@@ -272,7 +270,6 @@ capabilities:
       presentations, document conversion, video download, audio analysis, and
       image generation where the selected model and deployment allow them.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Built-in workforce workers and the configurable single-agent tool surface"
     interfaces:
       - "Model-callable CAMEL FunctionTools"
@@ -309,7 +306,6 @@ capabilities:
       APIs, connects configured servers through CAMEL MCPToolkit, and makes their
       tools available to agents after capability filtering.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Brain-managed MCP client integrations and application-server MCP catalog/configuration paths"
     interfaces:
       - "Brain /mcp/list and /mcp/install APIs"
@@ -343,7 +339,6 @@ capabilities:
       then exposes eligible repo-, user-, and system-scoped skills to agents
       through a CAMEL SkillToolkit extension.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Brain skill APIs and skill-enabled agents"
     interfaces:
       - "Brain /skills APIs"
@@ -377,7 +372,6 @@ capabilities:
       Bedrock, Azure, OpenRouter, other providers, OpenAI-compatible endpoints,
       and documented local endpoints.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Brain agent construction and frontend model configuration"
     interfaces:
       - "Provider configuration UI"
@@ -410,7 +404,6 @@ capabilities:
       progress notices and attachments while task and tool events stream to the
       client.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Workforce and single-agent execution paths"
     interfaces:
       - "HumanToolkit model tools"
@@ -438,7 +431,6 @@ capabilities:
       a local filesystem store, rebuilds bounded context for single-agent and
       workforce runs, and complements server-side project and chat persistence.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Brain local memory and application-server project/chat state"
     interfaces:
       - "Local ~/.eigent/memory tree"
@@ -471,7 +463,6 @@ capabilities:
       PostgreSQL, Redis, Celery worker, and scheduler for local account,
       provider, configuration, MCP, and chat data.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Electron deployment and server/ Docker Compose deployment"
     interfaces:
       - "Electron IPC and localhost Brain HTTP/SSE"
@@ -510,7 +501,6 @@ capabilities:
       provider sessions and timeouts, and limits local file selection to the
       working directory with denylisted secret-like paths.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Configured worker-agent paths using RemoteSubAgentToolkit"
     interfaces:
       - "run_remote_sub_agent model tool"
@@ -1404,7 +1394,6 @@ evidence:
       symbol_or_section: "Product description and feature summary"
       line_start: 31
       line_end: 43
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "open source Cowork desktop application; Multi-Agent Workforce"
     note: "First-party description of the product, local deployment, custom models, and MCP integration."
@@ -1416,7 +1405,6 @@ evidence:
       symbol_or_section: "Local Deployment and Comprehensive Model Support"
       line_start: 88
       line_end: 118
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Local model integration (vLLM, Ollama, LM Studio, etc.)"
     note: "Documents standalone and cloud-connected modes; the zero-external-dependency claim was not runtime verified."
@@ -1428,7 +1416,6 @@ evidence:
       symbol_or_section: "Workforce, MCP Tools Integration, and Human-in-the-Loop"
       line_start: 159
       line_end: 198
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "specialized AI agents; work in parallel; automatically request human input"
     note: "Documents intended workforce, MCP, and human-interaction features."
@@ -1440,7 +1427,6 @@ evidence:
       symbol_or_section: "Open Source License"
       line_start: 350
       line_end: 352
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "licensed under the Apache License 2.0"
     note: "Consistent with the root LICENSE text but conflicts with package.json license metadata."
@@ -1452,7 +1438,6 @@ evidence:
       symbol_or_section: "Package identity, scripts, dependencies, and engines"
       line_start: 1
       line_end: 188
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "eigent 1.0.1; Electron, React, Vite, Zustand; Node >=18 <23"
     note: "Also declares license MIT, which conflicts with the root Apache-2.0 LICENSE and README."
@@ -1464,7 +1449,6 @@ evidence:
       symbol_or_section: "Brain project and direct dependencies"
       line_start: 1
       line_end: 37
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Python >=3.11,<3.12; camel-ai[eigent]==0.2.91a5; FastAPI; OpenTelemetry; Qdrant"
     note: "Confirms direct Brain technology constraints."
@@ -1476,7 +1460,6 @@ evidence:
       symbol_or_section: "register_routers"
       line_start: 42
       line_end: 129
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Health, Files, MCP, Skills, chat, model, remote-sub-agent, task, tool, workspace"
     note: "Shows the Brain API surface and authentication dependency on non-health routers."
@@ -1488,7 +1471,6 @@ evidence:
       symbol_or_section: "step_solve session-mode branch"
       line_start: 443
       line_end: 521
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "if options.session_mode == single-agent: single_agent_solve"
     note: "Confirms the single-agent path is separate from the workforce loop."
@@ -1500,7 +1482,6 @@ evidence:
       symbol_or_section: "Complexity decision and workforce creation"
       line_start: 688
       line_end: 859
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "question_confirm; construct_workforce; eigent_make_sub_tasks"
     note: "Shows attachment-forced complexity, direct simple answers, workforce construction, custom workers, and decomposition setup."
@@ -1512,7 +1493,6 @@ evidence:
       symbol_or_section: "construct_workforce"
       line_start: 2535
       line_end: 2768
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "coordinator_agent, task_agent, new_worker_agent, Developer, Browser, Document, Multi-Modal"
     note: "Confirms parallel agent construction and the specialized workers added to CAMEL Workforce."
@@ -1524,7 +1504,6 @@ evidence:
       symbol_or_section: "Workforce.__init__, eigent_make_sub_tasks, and eigent_start"
       line_start: 64
       line_end: 300
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "FailureHandlingConfig retry/replan; task decomposition; pending tasks; await self.start()"
     note: "Static orchestration evidence only; no workforce was run."
@@ -1536,7 +1515,6 @@ evidence:
       symbol_or_section: "DEFAULT_SINGLE_AGENT_TOOLKIT_CONFIG and assemble_single_agent_toolkits"
       line_start: 52
       line_end: 440
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "human, file, web_deploy, screenshot, skill, todo, search, browser, terminal, web_fetch, planning_worktree, mcp, agent"
     note: "Confirms configurable assembly, Hands filtering, MCP connection, and depth-limited delegation."
@@ -1548,7 +1526,6 @@ evidence:
       symbol_or_section: "document_agent toolkit construction"
       line_start: 45
       line_end: 180
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "FileToolkit, PPTXToolkit, MarkItDownToolkit, ExcelToolkit, TerminalToolkit, GoogleDriveMCPToolkit, SkillToolkit"
     note: "Confirms the document worker's broad static tool surface."
@@ -1560,7 +1537,6 @@ evidence:
       symbol_or_section: "multi_modal_agent toolkit construction"
       line_start: 46
       line_end: 218
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "VideoDownloaderToolkit, AudioAnalysisToolkit, OpenAIImageToolkit, ScreenshotToolkit, TerminalToolkit"
     note: "Several media tools are conditional on provider and authentication configuration."
@@ -1572,7 +1548,6 @@ evidence:
       symbol_or_section: "TerminalToolkit.__init__"
       line_start: 57
       line_end: 113
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "safe_mode=True; allowed_commands; working_directory; cloned environment"
     note: "Confirms a model-callable shell toolkit exists; this is not evidence of complete isolation or command safety."
@@ -1584,7 +1559,6 @@ evidence:
       symbol_or_section: "ask_human_via_gui"
       line_start: 35
       line_end: 105
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "ActionAskData; await task_lock.get_human_input"
     note: "Confirms task-scoped question and progress-message tool paths."
@@ -1596,7 +1570,6 @@ evidence:
       symbol_or_section: "MCP configuration routes"
       line_start: 30
       line_end: 63
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "GET /mcp/list; POST /mcp/install; DELETE/PUT /mcp/{name}"
     note: "Confirms Brain MCP configuration management."
@@ -1608,7 +1581,6 @@ evidence:
       symbol_or_section: "get_mcp_tools"
       line_start: 130
       line_end: 187
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "hands.can_use_mcp; MCPToolkit.connect; get_tools"
     note: "Confirms client-side server filtering, connection, and tool extraction."
@@ -1620,7 +1592,6 @@ evidence:
       symbol_or_section: "Skill configuration, import, and CRUD routes"
       line_start: 44
       line_end: 225
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "/skills/config; /skills/import; /skills; /skills/{skill_dir_name}"
     note: "Confirms user configuration and management APIs."
@@ -1632,7 +1603,6 @@ evidence:
       symbol_or_section: "Skill roots, path checks, scanning, and CRUD"
       line_start: 23
       line_end: 354
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "SKILLS_ROOT; _assert_under_skills_root; skills_scan; skill_write; skill_read"
     note: "Shows managed skill-root containment for CRUD and bundled-example synchronization."
@@ -1644,7 +1614,6 @@ evidence:
       symbol_or_section: "SkillToolkit initialization and roots"
       line_start: 244
       line_end: 329
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "repo, user, and system skill roots; allowed_skills"
     note: "Confirms per-agent filtering and discovery priority."
@@ -1656,7 +1625,6 @@ evidence:
       symbol_or_section: "agent_model and build_model"
       line_start: 56
       line_end: 314
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "ModelFactory.create(model_platform, model_type, api_key, url, model_config_dict)"
     note: "Confirms per-agent model configuration, subscription adaptation, and provider-specific parameter handling."
@@ -1668,7 +1636,6 @@ evidence:
       symbol_or_section: "INIT_PROVODERS"
       line_start: 18
       line_end: 256
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Codex Subscription, Gemini, OpenAI, Anthropic, Grok, Qwen, Bedrock, Azure, OpenRouter, OpenAI Compatible"
     note: "Confirms the frontend configuration surface, not successful inference against every provider."
@@ -1680,7 +1647,6 @@ evidence:
       symbol_or_section: "build_durable_context_for_task_lock and MemoryService.on_run_start"
       line_start: 100
       line_end: 300
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "shared by Single Agent and Workforce; ProjectContextBuilder; space/project/run records"
     note: "Confirms best-effort lifecycle writes and bounded context reconstruction."
@@ -1692,7 +1658,6 @@ evidence:
       symbol_or_section: "LocalMemoryStore"
       line_start: 211
       line_end: 300
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "filesystem-backed Project memory store; ~/.eigent/memory; conversation.jsonl"
     note: "Confirms local space, project, run, and conversation persistence paths."
@@ -1704,7 +1669,6 @@ evidence:
       symbol_or_section: "Purpose, services, prerequisites, and Docker quick start"
       line_start: 1
       line_end: 86
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "local backend (FastAPI + PostgreSQL); local DB; MCP Management; Python 3.10.*"
     note: "The Python 3.10 prerequisite conflicts with server/pyproject.toml's Python 3.12 requirement."
@@ -1716,7 +1680,6 @@ evidence:
       symbol_or_section: "Application-server project and dependencies"
       line_start: 1
       line_end: 42
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Python >=3.12,<3.13; FastAPI; SQLModel; PostgreSQL; Celery; Redis"
     note: "Conflicts with the server README's Python 3.10 prerequisite and pins a different CAMEL alpha version than the Brain."
@@ -1728,7 +1691,6 @@ evidence:
       symbol_or_section: "Router composition, health, middleware, and logging"
       line_start: 35
       line_end: 152
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "auto_include_routers; /v1; /health; CORS; TraceID; Loguru"
     note: "Confirms application-server API composition and operational middleware."
@@ -1740,7 +1702,6 @@ evidence:
       symbol_or_section: "Self-hosted services"
       line_start: 1
       line_end: 152
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "postgres:15, redis:7-alpine, API, Celery worker, Celery beat"
     note: "Confirms the declared container topology and health checks; it was not deployed."
@@ -1752,7 +1713,6 @@ evidence:
       symbol_or_section: "startBackend"
       line_start: 191
       line_end: 346
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "findAvailablePort(5001); SERVER_URL; EIGENT_RUNTIME=electron"
     note: "Confirms local Brain startup preparation and application-server routing configuration."
@@ -1764,7 +1724,6 @@ evidence:
       symbol_or_section: "getBaseURL and sseTransport"
       line_start: 33
       line_end: 111
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "get-backend-port; VITE_BRAIN_ENDPOINT; localhost Brain"
     note: "Confirms desktop and web Brain endpoint selection; SSE is implemented later in the same file."
@@ -1776,7 +1735,6 @@ evidence:
       symbol_or_section: "BrainCapabilities and detect_capabilities"
       line_start: 15
       line_end: 262
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "filesystem, terminal, browser, mcp; local/cloud_vm full; sandbox/Docker limited"
     note: "Confirms a deployment-derived capability layer and environment/config overrides."
@@ -1788,7 +1746,6 @@ evidence:
       symbol_or_section: "SandboxHands"
       line_start: 20
       line_end: 79
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "workspace_only; terminal enabled; browser false; MCP all or allowlist"
     note: "The class name does not by itself establish process isolation; it expresses capability filtering."
@@ -1800,7 +1757,6 @@ evidence:
       symbol_or_section: "attach_remote_sub_agent_if_enabled"
       line_start: 24
       line_end: 63
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "RemoteSubAgentToolkit; is_enabled; tools.extend"
     note: "Confirms opt-in attachment to agent tool surfaces."
@@ -1812,7 +1768,6 @@ evidence:
       symbol_or_section: "RemoteSubAgentPolicy"
       line_start: 59
       line_end: 180
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "enabled; allowed_providers; max_wall_time_seconds; ensure_file_in_scope; deny_path_globs"
     note: "Confirms local policy defaults and configured policy construction."
@@ -1824,7 +1779,6 @@ evidence:
       symbol_or_section: "RemoteSubAgentRuntime.run"
       line_start: 38
       line_end: 124
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "ensure_enabled; ensure_provider_allowed; session reuse; asyncio.timeout; provider.run"
     note: "Confirms local orchestration around a provider interface, not the remote environment's behavior."
@@ -1836,7 +1790,6 @@ evidence:
       symbol_or_section: "Smoke, frontend quality, and Python test jobs"
       line_start: 14
       line_end: 97
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "web-local-smoke; type-check; design tokens; pytest tests/app"
     note: "Confirms configured checks, not their historical results."
@@ -1848,7 +1801,6 @@ evidence:
       symbol_or_section: "Tagged multi-platform release build"
       line_start: 1
       line_end: 195
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "macOS ARM64/x64, Windows x64, Linux x64; npm run build"
     note: "Confirms release automation targets; release artifacts were not inspected."
@@ -1860,7 +1812,6 @@ evidence:
       symbol_or_section: "CodeQL language matrix"
       line_start: 12
       line_end: 103
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "actions, javascript-typescript, python"
     note: "A configured static-analysis workflow is a process signal, not a security certification."
@@ -1872,7 +1823,6 @@ evidence:
       symbol_or_section: "Supported Versions and Reporting a Vulnerability"
       line_start: 1
       line_end: 33
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "security updates; responsible disclosure; private security advisory"
     note: "Documents a vulnerability-reporting process; the version table appears older than the v1.0.1 package tag."

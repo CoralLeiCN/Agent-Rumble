@@ -31,7 +31,7 @@ intelligence.
 
 ## Delivery Progress
 
-The implementation now consumes schema-valid, illustrative draft-v0.2 Agent
+The implementation now consumes schema-valid, illustrative pre-release v0.3 Agent
 Project Card fixtures through a versioned canonical-card adapter. UI projections
 remain derived views rather than a second card source of truth. The adapter
 preserves card and schema versions, exact field states, Assessment Context, and
@@ -157,7 +157,7 @@ Implement a small system with five layers:
    Project Card/JSON view if the primary path is already complete.
 
 Reusable components must receive typed data rather than infer project fit,
-confidence, or evidence status. Repository evidence must render as inert text.
+or confidence. Repository evidence must render as inert text.
 All controls must remain keyboard operable, status cannot rely on color alone,
 motion must respect reduced-motion preferences, and touch targets must be at
 least 44 by 44 CSS pixels.
@@ -261,7 +261,7 @@ and formatting workflow.
 Current recorded result:
 
 * Packaged structural and semantic validation passes for every illustrative
-  draft-v0.2 Agent Project Card fixture.
+  pre-release v0.3 Agent Project Card fixture.
 * Frontend type checking, 21 behavior tests, and production build pass.
 * Development-mode loading of the packaged schema through Vite passes.
 * Contract-derived field inventory and complete-field presentation coverage

@@ -11,7 +11,6 @@ import { catalogGateway } from "./data/catalogGateway";
 import { isPreparedRumblePair } from "./data/rumbleGateway";
 import {
   confidencePresentation,
-  evidenceStatusPresentation,
   requirementPresentation,
   verificationPresentation,
 } from "./status/statusPresentation";
@@ -25,7 +24,6 @@ import type {
   SearchResponse,
   VerificationStatus,
 } from "./types/catalog";
-import type { EvidenceStatus } from "./types/projectCard";
 
 type View = "explore" | "results" | "comparison" | "arena";
 type PendingAction = "search" | "comparison" | "evidence" | null;
@@ -34,16 +32,6 @@ const DEFAULT_SEARCH_QUERY = "A biomedical research agent with domain tools";
 
 function StatusBadge({ status }: { status: VerificationStatus }) {
   const presentation = verificationPresentation[status];
-  return (
-    <span className={`status-badge status-badge--${presentation.tone}`}>
-      <span aria-hidden="true">{presentation.symbol}</span>
-      {presentation.label}
-    </span>
-  );
-}
-
-function EvidenceStatusBadge({ status }: { status: EvidenceStatus }) {
-  const presentation = evidenceStatusPresentation[status];
   return (
     <span className={`status-badge status-badge--${presentation.tone}`}>
       <span aria-hidden="true">{presentation.symbol}</span>
@@ -327,9 +315,6 @@ function projectArenaEvidence(record: EvidenceRecord): ClaimEvidenceRecord {
   const resolvedEvidence = {
     id: record.id,
     relationship,
-    evidenceStatus: record.verificationStatus === "documented"
-      ? "documented_only" as const
-      : "confirmed" as const,
     confidence: record.confidence,
     sourceType: "repository_file",
     provenance: "first_party",
@@ -433,10 +418,6 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
                 <div className="evidence-record" key={record.id}>
                   <div className="evidence-record__heading">
                     <div>
-                      <span>Source status</span>
-                      <EvidenceStatusBadge status={record.evidenceStatus} />
-                    </div>
-                    <div>
                       <span>Confidence</span>
                       <strong>{confidencePresentation[record.confidence]}</strong>
                     </div>
@@ -469,30 +450,26 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
                     <div className="evidence-record evidence-record--conflict" key={record.id}>
                       <div className="evidence-record__heading">
                         <div>
-                            <span>Source status</span>
-                          <EvidenceStatusBadge status={record.evidenceStatus} />
+                          <span>Confidence</span>
+                          <strong>{confidencePresentation[record.confidence]}</strong>
                         </div>
-                        <div>
-                            <span>Confidence</span>
-                            <strong>{confidencePresentation[record.confidence]}</strong>
-                          </div>
-                        </div>
-                        <dl className="evidence-ledger">
-                          <div><dt>Source</dt><dd>{record.repository}</dd></div>
-                          <div><dt>Source type</dt><dd>{readableSourceValue(record.sourceType)}</dd></div>
-                          <div><dt>Publisher</dt><dd>{sourcePublisherLabel(record.provenance)}</dd></div>
-                          <div><dt>Availability</dt><dd>{readableSourceValue(record.accessScope)}</dd></div>
-                          <div><dt>Checked</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
-                          <div><dt>Version reviewed</dt><dd><code>{record.revision}</code></dd></div>
-                          <div><dt>Location in source</dt><dd>{record.locator}</dd></div>
-                        </dl>
-                        <pre aria-label="Conflicting source excerpt"><code>{record.excerpt}</code></pre>
-                        {record.sourceUrl ? (
-                          <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
-                            View source ↗
-                          </a>
-                        ) : (
-                          <p className="source-unavailable">No public source link is available.</p>
+                      </div>
+                      <dl className="evidence-ledger">
+                        <div><dt>Source</dt><dd>{record.repository}</dd></div>
+                        <div><dt>Source type</dt><dd>{readableSourceValue(record.sourceType)}</dd></div>
+                        <div><dt>Publisher</dt><dd>{sourcePublisherLabel(record.provenance)}</dd></div>
+                        <div><dt>Availability</dt><dd>{readableSourceValue(record.accessScope)}</dd></div>
+                        <div><dt>Checked</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
+                        <div><dt>Version reviewed</dt><dd><code>{record.revision}</code></dd></div>
+                        <div><dt>Location in source</dt><dd>{record.locator}</dd></div>
+                      </dl>
+                      <pre aria-label="Conflicting source excerpt"><code>{record.excerpt}</code></pre>
+                      {record.sourceUrl ? (
+                        <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
+                          View source ↗
+                        </a>
+                      ) : (
+                        <p className="source-unavailable">No public source link is available.</p>
                       )}
                     </div>
                   ))}

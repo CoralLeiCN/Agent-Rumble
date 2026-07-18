@@ -34,7 +34,7 @@ def test_skill_validator_accepts_card_without_transforming_it() -> None:
     assert validated.card_id == "card-bio-xyz-bioagents"
     assert validated.card_version == 1
     assert validated.project_id == "project-bio-xyz-bioagents"
-    assert validated.schema_version == "0.2"
+    assert validated.schema_version == "0.3"
 
 
 def test_skill_validator_reports_schema_and_semantic_findings() -> None:

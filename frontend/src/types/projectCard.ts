@@ -1,5 +1,5 @@
 /**
- * TypeScript representation of Agent Project Card schema v0.2.
+ * TypeScript representation of Agent Project Card schema v0.3.
  *
  * These types model the canonical machine-readable artifact. UI-specific search,
  * comparison, and evidence projections live in catalog.ts and are produced only
@@ -7,7 +7,6 @@
  */
 export type NullableString = string | null;
 export type Confidence = "high" | "medium" | "low" | "unknown";
-export type EvidenceStatus = "confirmed" | "documented_only" | "inferred" | "not_found";
 export type SupportStatus =
   | "claimed"
   | "documented"
@@ -48,7 +47,6 @@ export interface Capability {
   name: string;
   description: NullableString;
   support_status: SupportStatus | null;
-  evidence_status: EvidenceStatus;
   scope: NullableString;
   interfaces: string[];
   prerequisites: string[];
@@ -129,14 +127,13 @@ export interface Evidence {
   evidence_id: string;
   source_id: string;
   locator: EvidenceLocator;
-  evidence_status: EvidenceStatus;
   confidence: Confidence;
   excerpt_or_symbol: NullableString;
   note: NullableString;
 }
 
 export interface AgentProjectCard {
-  schema_version: "0.2";
+  schema_version: "0.3";
   card_id: string;
   card_version: number;
   field_states: Record<string, FieldState>;

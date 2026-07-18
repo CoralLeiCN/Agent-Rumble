@@ -27,7 +27,7 @@ comparison, and evidence viewing do not invoke an AI model.
   choices rather than accepted production architecture.
 * FastAPI exposes catalog context, deterministic search, current and versioned
   cards, evidence, and contextual comparison under `/api/v1`.
-* Three real schema-v0.2 cards validate and are published through the accepted
+* Three real schema-v0.3 cards validate and are published through the accepted
   YAML-first catalog. Typed backend projections preserve the canonical status
   and field-state dimensions.
 * `HttpCatalogGateway` maps the FastAPI contract into frontend types. A static

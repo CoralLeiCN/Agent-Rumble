@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-openai-openai-agents-python"
 card_version: 1
 
@@ -196,7 +196,6 @@ capabilities:
       Defines typed agents and runs a turn loop that handles final outputs,
       model calls, tools, handoffs, guardrails, context, hooks, and turn limits.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Agent, Runner, AgentRunner, RunConfig, and run-internal orchestration"
     interfaces:
       - "Runner.run"
@@ -229,7 +228,6 @@ capabilities:
       harnesses, and MCP tools to models, while supporting manager-style agents
       as tools and conversation handoffs to specialists.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Agent tools, Agent.as_tool, handoffs, and Runner tool execution"
     interfaces:
       - "function_tool decorator"
@@ -265,7 +263,6 @@ capabilities:
       tool approval, serialize RunState, record a decision, and resume the
       original workflow.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Runner, agent guardrails, function-tool guardrails, approval-capable tools, and RunState"
     interfaces:
       - "input_guardrail and output_guardrail decorators"
@@ -296,7 +293,6 @@ capabilities:
       HTTP with SSE, and Streamable HTTP, with filtering, caching, metadata,
       failure formatting, and approval controls.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "HostedMCPTool and agents.mcp client implementations"
     interfaces:
       - "HostedMCPTool"
@@ -331,7 +327,6 @@ capabilities:
       optional Redis, SQLAlchemy, MongoDB, Dapr, encryption, and compaction
       implementations.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Runner session integration, agents.memory, and extensions.memory"
     interfaces:
       - "Session protocol"
@@ -363,7 +358,6 @@ capabilities:
       tools, guardrails, handoffs, and audio, exporting by default to OpenAI or
       through replaceable custom trace processors.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "agents.tracing and automatic Runner instrumentation"
     interfaces:
       - "trace and span context managers"
@@ -391,7 +385,6 @@ capabilities:
       Maintains a persistent server-side WebSocket model session with local
       history, tools, guardrails, handoffs, and bidirectional event streaming.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "agents.realtime and OpenAI realtime model adapter"
     interfaces:
       - "RealtimeAgent"
@@ -421,7 +414,6 @@ capabilities:
       shell, skills, memory, and compaction capabilities, plus local, Docker,
       and optional hosted sandbox clients and resumable sandbox state.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "agents.sandbox and agents.extensions.sandbox"
     interfaces:
       - "SandboxAgent"
@@ -454,7 +446,6 @@ capabilities:
       Completions support, configurable OpenAI-compatible endpoints, custom
       prefix mappings, and optional LiteLLM and AnyLLM adapters.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "agents.models and agents.extensions.models"
     interfaces:
       - "Model and ModelProvider interfaces"
@@ -1149,7 +1140,6 @@ evidence:
       symbol_or_section: "Project introduction and Core concepts"
       line_start: 1
       line_end: 22
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "OpenAI Agents SDK; framework for building multi-agent workflows"
     note: "First-party overview enumerates agents, delegation, tools, guardrails, HITL, sessions, tracing, and realtime agents."
@@ -1161,7 +1151,6 @@ evidence:
       symbol_or_section: "[project] and [project.optional-dependencies]"
       line_start: 1
       line_end: 59
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "openai-agents 0.18.3; Python >=3.10; MIT; direct and optional dependencies"
     note: "Defines package version, runtime floor, license, core dependencies, and optional model, state, realtime, and sandbox integrations."
@@ -1173,7 +1162,6 @@ evidence:
       symbol_or_section: "Agent"
       line_start: 269
       line_end: 350
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Agent"
     note: "Defines instructions, prompt, handoffs, model, model settings, input/output guardrails, output type, hooks, and tool behavior."
@@ -1185,7 +1173,6 @@ evidence:
       symbol_or_section: "Runner.run, Runner.run_sync, and Runner.run_streamed"
       line_start: 201
       line_end: 430
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Runner"
     note: "Defines async, sync, and streaming public entry points and documents the final-output, handoff, and tool-call control loop."
@@ -1197,7 +1184,6 @@ evidence:
       symbol_or_section: "Tools; Hosted tools; Local runtime tools"
       line_start: 1
       line_end: 33
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Hosted, local/runtime, function, agent-as-tool, and experimental tool categories"
     note: "The same page later distinguishes application-provided local execution from hosted execution."
@@ -1209,7 +1195,6 @@ evidence:
       symbol_or_section: "Workflow boundaries; Execution modes; Tool guardrails"
       line_start: 3
       line_end: 67
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Input, output, and function-tool guardrails with tripwires"
     note: "Documents execution timing, parallel-mode side-effect caveat, and tool types outside the function-tool guardrail pipeline."
@@ -1221,7 +1206,6 @@ evidence:
       symbol_or_section: "Human-in-the-loop; Marking tools; How approval works"
       line_start: 1
       line_end: 52
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "interruptions, RunState approve/reject, and resume"
     note: "Documents approval scope across top-level, handoff, and nested agents and enumerates approval-capable tool types."
@@ -1233,7 +1217,6 @@ evidence:
       symbol_or_section: "Choosing an MCP integration; Agent-level MCP configuration"
       line_start: 10
       line_end: 68
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "HostedMCPTool, MCPServerStreamableHttp, MCPServerSse, MCPServerStdio"
     note: "Enumerates hosted and client-managed transports plus filters, prompts, caching, tracing, approvals, and metadata."
@@ -1245,7 +1228,6 @@ evidence:
       symbol_or_section: "Sessions; Core session behavior; Built-in session implementations"
       line_start: 1
       line_end: 214
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Session history loading and persistence; built-in backend table"
     note: "Documents the session lifecycle, continuation incompatibilities, and bundled or optional implementations."
@@ -1257,7 +1239,6 @@ evidence:
       symbol_or_section: "Tracing; Default tracing; Sensitive data; Custom tracing processors"
       line_start: 1
       line_end: 163
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Automatic agent-workflow traces and configurable processors"
     note: "Documents default enablement, automatic spans, sensitive-data capture, ZDR limitation, and processor replacement."
@@ -1269,7 +1250,6 @@ evidence:
       symbol_or_section: "RealtimeRunner"
       line_start: 18
       line_end: 79
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "RealtimeRunner"
     note: "Defines the persistent model connection, local session behavior, default OpenAI WebSocket model, and returned RealtimeSession."
@@ -1281,7 +1261,6 @@ evidence:
       symbol_or_section: "Quickstart; Prerequisites; Key choices"
       line_start: 1
       line_end: 113
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Beta Sandbox Agents with manifests, capabilities, clients, sessions, and snapshots"
     note: "The first-party guide explicitly labels the feature beta and describes workspace, execution, and resume abstractions."
@@ -1293,7 +1272,6 @@ evidence:
       symbol_or_section: "MultiProviderMap and MultiProvider"
       line_start: 17
       line_end: 196
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "MultiProvider"
     note: "Implements custom prefix mappings, OpenAI defaults, and optional LiteLLM or AnyLLM fallbacks."

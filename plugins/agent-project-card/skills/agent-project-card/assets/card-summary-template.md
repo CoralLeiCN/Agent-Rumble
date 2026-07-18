@@ -60,12 +60,12 @@ Never shorten these states to "not found" or treat them as proof of absence.
 
 ## Core Capabilities
 
-| Capability | Support status | Verification | Evidence status | Confidence | Claims | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| {{ capability.name }} | `{{ capability.support_status or rendered field state }}` | `{{ verification status from referenced claims }}` | `{{ capability.evidence_status }}` | `{{ capability.confidence }}` | {{ capability.claim_ids }} | {{ capability.evidence_refs }} |
+| Capability | Support status | Verification | Confidence | Claims | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| {{ capability.name }} | `{{ capability.support_status or rendered field state }}` | `{{ verification status from referenced claims }}` | `{{ capability.confidence }}` | {{ capability.claim_ids }} | {{ capability.evidence_refs }} |
 
 <!--
-Keep support status, claim verification, evidence status, and confidence
+Keep support status, claim verification, and confidence
 independent. Never render statically_confirmed as runtime_verified.
 -->
 
@@ -170,9 +170,9 @@ independent. Never render statically_confirmed as runtime_verified.
 
 ## Evidence Index
 
-| Evidence ID | Source ID | Precise locator | Evidence status | Confidence | Note |
-| --- | --- | --- | --- | --- | --- |
-| `{{ evidence.evidence_id }}` | `{{ evidence.source_id }}` | `{{ evidence.locator.path or rendered field state }}`; `{{ evidence.locator.symbol_or_section or rendered field state }}`; lines {{ evidence.locator.line_start or rendered field state }}–{{ evidence.locator.line_end or rendered field state }} | `{{ evidence.evidence_status }}` | `{{ evidence.confidence }}` | {{ evidence.note or rendered field state }} |
+| Evidence ID | Source ID | Precise locator | Confidence | Note |
+| --- | --- | --- | --- | --- |
+| `{{ evidence.evidence_id }}` | `{{ evidence.source_id }}` | `{{ evidence.locator.path or rendered field state }}`; `{{ evidence.locator.symbol_or_section or rendered field state }}`; lines {{ evidence.locator.line_start or rendered field state }}–{{ evidence.locator.line_end or rendered field state }} | `{{ evidence.confidence }}` | {{ evidence.note or rendered field state }} |
 
 ## Source Index
 

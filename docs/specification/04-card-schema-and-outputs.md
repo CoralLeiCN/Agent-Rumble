@@ -7,17 +7,17 @@ Part of the [Agent Rumble product specification](README.md).
 The card is the canonical, machine-readable record. Human-readable views are
 generated from it. The stakeholder-provided **Agent Project Card Schema v0.1**
 is the normative starting point for the card's field groups, initial controlled
-values, and `project-card.yaml` output. Schema evolution must retain a documented
-migration path from that baseline.
+values, and `project-card.yaml` output. Schema v0.3 is the current pre-release
+working contract.
 
 The v0.1 baseline predates requirements that a project may span multiple
 repositories, claims and sources must be first-class, confidence and
 verification must remain independent, assessments must declare their context,
 and unavailable values must distinguish `unknown`, `not_applicable`,
 `not_analyzed`, and `no_evidence_found`. The evolved schema therefore preserves
-the v0.1 concepts while adding the structures needed to satisfy those active
-requirements. The remaining compatibility choices are recorded under
-[Schema v0.1 Reconciliation](../open-decisions.md#schema-v01-reconciliation).
+the useful v0.1 concepts while adding the structures needed to satisfy those
+active requirements. Because Agent Rumble has not been released, the current
+product does not require v0.1 import, export, or compatibility projections.
 
 ### 12.1 Identity and Source Snapshot
 
@@ -431,8 +431,8 @@ The repository-local Agent Project Card skill provides the reusable
 
 The summary identifies the source card ID, card version, schema version, project
 boundary, source snapshot, analysis date and depth, and canonical artifact. It
-must preserve capability support, claim verification, evidence status, and
-confidence as independent concepts; render unavailable values as `unknown`,
+must preserve capability support, claim verification, and confidence as
+independent concepts; render unavailable values as `unknown`,
 `not_applicable`, `not_analyzed`, or `no_evidence_found`; state the applicable
 Assessment Context; and retain claim, evidence, and source identifiers.
 
@@ -461,7 +461,7 @@ A traceable list of claims and their supporting sources.
 
 ---
 
-## 14. Schema Baseline and Proposed Machine-Readable Structure
+## 14. Schema Baseline and Current Pre-Release Structure
 
 ### 14.1 v0.1 Baseline
 
@@ -493,31 +493,28 @@ The v0.1 controlled values are:
 * `architecture.tools_and_mcp.mcp_role`: `none`, `client`, `server`, `both`, or
   `unclear`
 
-### 14.2 Reconciliation Rules
+### 14.2 Pre-Release Evolution Rules
 
-Schema v0.2 evolves the baseline according to these rules:
+Schema v0.3 evolves the baseline according to these rules:
 
-1. Preserve the v0.1 top-level groups so a reader or skill can recognize the
-   same card organization.
+1. Use the v0.1 top-level groups as the design starting point without requiring
+   an exact v0.1-compatible representation.
 2. Expand `project` and add `source_snapshot` so a card describes an explicit
    project boundary across one or more sources rather than assuming that one
    repository is the project.
-3. Preserve the five v0.1 primary types as the initial core vocabulary. Later
-   schema versions must support the existing supporting-project requirement and
-   namespaced ontology extensions without changing the meaning of those five
-   values in place.
-4. Preserve v0.1 `evidence_status` only as a compatibility projection. The
-   canonical record keeps capability support status, claim verification status,
-   and confidence independent. In particular, `confirmed` must not erase the
-   distinction between static confirmation and runtime verification, and
-   `not_found` must not be interpreted as proof of absence.
+3. Use the five v0.1 primary types as the initial core vocabulary while the
+   current schema evolves to support the existing supporting-project requirement
+   and namespaced ontology extensions.
+4. Omit the v0.1 `evidence_status` compatibility projection. The canonical record
+   keeps capability support status, claim verification status, and confidence
+   independent.
 5. Separate claims, sources, and evidence. Capabilities and assessments refer to
    claims; claims refer to supporting or conflicting evidence; evidence refers
    to a precisely versioned source and locator.
 6. Add assessment contexts and reasoning. Maturity, strengths, limitations,
    risks, fit, and gaps are not context-free project properties.
 7. Treat empty strings in the v0.1 example as authoring placeholders, not as the
-   canonical representation of unavailable data. A v0.2 card uses `null` plus a
+   canonical representation of unavailable data. A v0.3 card uses `null` plus a
    JSON Pointer entry in `field_states` to record `unknown`, `not_applicable`,
    `not_analyzed`, or `no_evidence_found`. An empty collection means the
    collection was analyzed and is known to contain no items; otherwise its path
@@ -527,24 +524,22 @@ Schema v0.2 evolves the baseline according to these rules:
    the card instance revision separately in `card_version`, following
    [Card Identity and Versioning](#card-identity-and-versioning).
 
-Because a v0.1 empty value does not identify why the value is unavailable, a
-v0.1-to-v0.2 migration records it as `unknown` and emits a migration warning.
-The migration must not invent a more specific state.
+### 14.3 Current Pre-Release v0.3 Structure
 
-### 14.3 Proposed v0.2 Structure
-
-The first executable draft is packaged with the repository-local skill at
+The current executable pre-release schema is packaged with the repository-local
+skill at
 [`project-card.schema.json`](../../plugins/agent-project-card/skills/agent-project-card/references/project-card.schema.json).
-It remains a draft while the recorded v0.1 reconciliation decisions are open.
+It is the working canonical contract for pre-release implementation and may
+evolve without providing v0.1 compatibility.
 
-The following YAML is an illustrative v0.2 authoring template. Its empty strings
+The following YAML is an illustrative v0.3 authoring template. Its empty strings
 are values still to be populated; before validation, each must be replaced by a
 known value or by `null` with the corresponding `field_states` entry. The
 implementation schema must define required fields, types, enum values, and
 conditional validation rules explicitly.
 
 ```yaml
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-project-001"
 card_version: 1
 field_states:
@@ -606,7 +601,6 @@ capabilities:
     name: ""
     description: ""
     support_status: "statically_confirmed"
-    evidence_status: "confirmed"
     scope: ""
     interfaces: []
     prerequisites: []
@@ -708,7 +702,6 @@ evidence:
       symbol_or_section: ""
       line_start: null
       line_end: null
-    evidence_status: "confirmed"
     confidence: "high"
     excerpt_or_symbol: ""
     note: ""

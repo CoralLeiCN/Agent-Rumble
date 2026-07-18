@@ -84,7 +84,7 @@ function rowPriority(row: ComparisonRow, originalIndex: number) {
   const repeatsHeader = /^\/(?:card_id|card_version|schema_version)$/.test(pattern)
     || /^\/project\/(?:project_id|name)$/.test(pattern);
   const isAssessmentContext = pattern.startsWith("/assessment/contexts/");
-  const isDecisionDetail = /\/(?:one_line|purpose|primary_type|description|overview|support_status|evidence_status|maturity|statement|limitations|prerequisites|required_services|interfaces|languages|deployment|security_and_permissions|scope)$/.test(
+  const isDecisionDetail = /\/(?:one_line|purpose|primary_type|description|overview|support_status|maturity|statement|limitations|prerequisites|required_services|interfaces|languages|deployment|security_and_permissions|scope)$/.test(
     pattern,
   );
 

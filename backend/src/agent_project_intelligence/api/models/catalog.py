@@ -130,7 +130,6 @@ class MatchReason(APIModel):
     claim_ids: list[CanonicalIdentifier]
     evidence_ids: list[CanonicalIdentifier]
     capability_support_status: str | None = None
-    evidence_status: str | None = None
     confidence: str | None = None
     field_state: Literal[
         "unknown",
@@ -250,7 +249,6 @@ class ComparisonCell(APIModel):
     state: FieldState
     value: Any | None = None
     capability_support_status: str | None = None
-    evidence_status: str | None = None
     claim_verification_status: str | None = None
     confidence: str | None = None
     claim_ids: list[CanonicalIdentifier]

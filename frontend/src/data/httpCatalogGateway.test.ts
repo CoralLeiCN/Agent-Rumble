@@ -22,7 +22,7 @@ describe("HttpCatalogGateway", () => {
         coverage: ["Public GitHub"],
         exclusions: ["Private repositories"],
         card_count: 2,
-        schema_versions: ["0.2"],
+        schema_versions: ["0.3"],
         ontology_versions: ["0.1"],
         oldest_analyzed_at: first.source_snapshot.analyzed_at,
         newest_analyzed_at: second.source_snapshot.analyzed_at,

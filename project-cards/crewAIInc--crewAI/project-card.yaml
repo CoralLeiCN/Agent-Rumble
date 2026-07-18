@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-crewaiinc-crewai"
 card_version: 1
 
@@ -190,7 +190,6 @@ capabilities:
       manager-led hierarchical processes, with delegation and callbacks available
       through the agent and crew APIs.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Crew, Agent, Task, Process, and kickoff APIs in the crewai package"
     interfaces:
       - "Crew(...).kickoff(inputs=...)"
@@ -225,7 +224,6 @@ capabilities:
       executes them synchronously or asynchronously with optional persistence,
       restoration, checkpointing, and streaming.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "crewai.flow DSL, Flow Definition, and runtime"
     interfaces:
       - "Flow subclasses"
@@ -257,7 +255,6 @@ capabilities:
       Gives agents typed tools, iteration and time limits, optional delegation,
       provider-specific tool calling, and Pydantic or JSON-oriented output paths.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "BaseAgent and Agent execution surfaces plus optional crewai-tools package"
     interfaces:
       - "Agent(tools=[...], allow_delegation=...)"
@@ -292,7 +289,6 @@ capabilities:
       resolves remote tool schemas into CrewAI tools, filters tool lists, and
       manages client cleanup.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "crewai.mcp configuration, transports, client, and tool resolver"
     interfaces:
       - "Agent(mcps=[...])"
@@ -325,7 +321,6 @@ capabilities:
       discovered from Agent Cards and participate in synchronous or asynchronous
       delegation.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Optional a2a extra and crewai.a2a package"
     interfaces:
       - "Agent a2a configuration"
@@ -356,7 +351,6 @@ capabilities:
       and pluggable storage, plus vector-backed knowledge sources for strings,
       text, PDF, CSV, Excel, JSON, and Docling content.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "crewai.memory, crewai.knowledge, and crewai.rag packages"
     interfaces:
       - "Crew(memory=True or Memory(...))"
@@ -389,7 +383,6 @@ capabilities:
       references, progressively loads instructions and resources, and formats
       selected skills into agent context.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "crewai.skills and Agent or Crew skills configuration"
     interfaces:
       - "Agent(skills=[...])"
@@ -416,7 +409,6 @@ capabilities:
       Emits runtime events, can restore Crew and Flow executions from checkpoints,
       and instruments execution through OpenTelemetry-based tracing hooks.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Crew and Flow checkpoint APIs, event bus, and tracing listeners"
     interfaces:
       - "Crew.from_checkpoint(...)"
@@ -1302,7 +1294,6 @@ evidence:
       symbol_or_section: "Fast and Flexible Multi-Agent Automation Framework"
       line_start: 56
       line_end: 63
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Open-source Python framework with Crews and Flows"
     note: "First-party positioning and top-level abstraction summary."
@@ -1313,7 +1304,6 @@ evidence:
       symbol_or_section: "CrewAI AMP Suite"
       line_start: 67
       line_end: 84
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Commercial control plane around CrewAI"
     note: "Separates hosted commercial capabilities from the open-source framework."
@@ -1324,7 +1314,6 @@ evidence:
       symbol_or_section: "Understanding Flows and Crews"
       line_start: 163
       line_end: 186
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Crews coordinate agents; Flows provide event-driven control and state"
     note: "Documents intended roles of the two primary orchestration surfaces."
@@ -1335,7 +1324,6 @@ evidence:
       symbol_or_section: "project and optional-dependencies"
       line_start: 1
       line_end: 118
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Python range, versioned workspace packages, direct dependencies, and optional extras"
     note: "Manifest evidence supports declared packaging and dependency relationships only."
@@ -1346,7 +1334,6 @@ evidence:
       symbol_or_section: "MIT License grant"
       line_start: 1
       line_end: 18
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "MIT permission grant and warranty disclaimer"
     note: "Supports project license field."
@@ -1357,7 +1344,6 @@ evidence:
       symbol_or_section: "Crew"
       line_start: 159
       line_end: 199
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Crew represents agents, tasks, collaboration process, memory, callbacks, planning, and security configuration"
     note: "Static public-model evidence."
@@ -1368,7 +1354,6 @@ evidence:
       symbol_or_section: "Crew checkpoint and tracing fields plus from_checkpoint"
       line_start: 374
       line_end: 429
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "skills, checkpoint, tracing, and restore configuration"
     note: "Supports bundled runtime surfaces, not recovery guarantees."
@@ -1379,7 +1364,6 @@ evidence:
       symbol_or_section: "Crew.kickoff"
       line_start: 978
       line_end: 1068
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "kickoff restores checkpoints, supports streaming, and dispatches sequential or hierarchical processes"
     note: "Static control-flow evidence; no Crew was executed."
@@ -1390,7 +1374,6 @@ evidence:
       symbol_or_section: "BaseAgent"
       line_start: 200
       line_end: 307
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Role, goal, tools, delegation, iteration limit, model, and abstract execution interfaces"
     note: "Supports the agent extension contract."
@@ -1401,7 +1384,6 @@ evidence:
       symbol_or_section: "Agent fields and get_code_execution_tools"
       line_start: 171
       line_end: 275
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Agent model includes tools, MCP, model, execution limits, and deprecated code-execution fields"
     note: "Lines 238-268 mark the former CodeInterpreterTool settings deprecated."
@@ -1412,7 +1394,6 @@ evidence:
       symbol_or_section: "Agent.get_code_execution_tools"
       line_start: 1186
       line_end: 1194
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "The deprecated method returns no tools and directs users to dedicated sandbox services"
     note: "Supports the limitation that CrewAI no longer supplies the former built-in CodeInterpreterTool at this snapshot."
@@ -1423,7 +1404,6 @@ evidence:
       symbol_or_section: "Flow and Flow.kickoff"
       line_start: 428
       line_end: 555
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Flow definitions, start/listen/router metadata, state, tracing, streaming, and memory"
     note: "Kickoff and restore behavior is additionally implemented at lines 1933-2035."
@@ -1434,7 +1414,6 @@ evidence:
       symbol_or_section: "start, listen, and router decorators"
       line_start: 18
       line_end: 70
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Decorators build start, listener, and router method definitions"
     note: "Locator line range applies to _start.py; _listen.py lines 18-57 and _router.py lines 97-150 were also inspected."
@@ -1445,7 +1424,6 @@ evidence:
       symbol_or_section: "Memory"
       line_start: 76
       line_end: 159
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "LLM-analyzed scoped memory with pluggable storage and weighted recall"
     note: "Default model, LanceDB storage, and OpenAI embedder behavior are statically visible."
@@ -1456,7 +1434,6 @@ evidence:
       symbol_or_section: "Knowledge source registry and Knowledge.query"
       line_start: 23
       line_end: 152
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Typed document sources, vector storage, and query API"
     note: "Supports supported source types and retrieval surface, not retrieval quality."
@@ -1467,7 +1444,6 @@ evidence:
       symbol_or_section: "MCPServerStdio, MCPServerHTTP, MCPServerSSE"
       line_start: 12
       line_end: 123
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "stdio command, HTTP/Streamable HTTP URL, SSE URL, headers, filters, and caching"
     note: "Stdio configuration can launch a local command and therefore crosses an execution boundary."
@@ -1478,7 +1454,6 @@ evidence:
       symbol_or_section: "MCPToolResolver.resolve"
       line_start: 45
       line_end: 95
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Converts external, native, and AMP MCP references to tools and owns client cleanup"
     note: "AMP resolution is present in code but hosted AMP behavior remains outside the project boundary."
@@ -1489,7 +1464,6 @@ evidence:
       symbol_or_section: "discover_skills, load_skill, and format_skill_context"
       line_start: 38
       line_end: 211
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Discovers SKILL.md directories and accepts Skill objects, paths, inline content, and registry references"
     note: "Formatting into model context is implemented at lines 226-256."
@@ -1500,7 +1474,6 @@ evidence:
       symbol_or_section: "wrap_agent_with_a2a_instance"
       line_start: 97
       line_end: 237
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Wraps sync and async task execution and kickoff for configured A2A delegation"
     note: "Static protocol integration evidence; no remote agent was contacted."
@@ -1511,7 +1484,6 @@ evidence:
       symbol_or_section: "tests-matrix"
       line_start: 24
       line_end: 137
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Pull-request matrix across Python 3.10-3.13 with split crewai and crewai-tools tests"
     note: "Workflow existence was inspected; run status was not."
@@ -1522,7 +1494,6 @@ evidence:
       symbol_or_section: "pip-audit"
       line_start: 1
       line_end: 98
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Pull-request, main-branch, and weekly pip-audit workflow"
     note: "The scan continues after the pip-audit command and later evaluates its JSON; current scan results were not retrieved."
@@ -1533,7 +1504,6 @@ evidence:
       symbol_or_section: "prompt_user_for_trace_viewing"
       line_start: 467
       line_end: 530
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Trace viewing describes agent decisions, task flow, timing, and tool usage details"
     note: "Supports trace-data governance risk; no trace was emitted."
@@ -1544,7 +1514,6 @@ evidence:
       symbol_or_section: "SecurityConfig"
       line_start: 20
       line_end: 58
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Authentication, scoping, and delegation tokens are TODO; fingerprint is the implemented field"
     note: "Supports a gap only for the declared open-source framework assessment context."

@@ -196,7 +196,6 @@ function semanticKind(pointer: string): ComparisonSemanticKind {
   const property = pointer.slice(pointer.lastIndexOf("/") + 1).replace(/~1/g, "/").replace(/~0/g, "~");
   if (pointer.startsWith("/field_states/")) return "field_state";
   if (property === "support_status") return "support_status";
-  if (property === "evidence_status") return "evidence_status";
   if (property === "verification_status") return "verification_status";
   if (property === "confidence") return "confidence";
   if (property === "claim_id" || property === "claim_ids" || property.endsWith("_claim_ids")) {
@@ -540,7 +539,6 @@ function resolveEvidence(
   return {
     id: evidence.evidence_id,
     relationship,
-    evidenceStatus: evidence.evidence_status,
     confidence: evidence.confidence,
     sourceType: source.source_type,
     provenance: source.provenance,

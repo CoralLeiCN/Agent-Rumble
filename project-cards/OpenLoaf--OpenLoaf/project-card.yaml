@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-openloaf-openloaf"
 card_version: 1
 
@@ -188,7 +188,6 @@ capabilities:
       instances, and lets an agent launch synchronous or background subagents
       under configured depth and concurrency limits.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Server-side Vercel AI SDK agent factory, delegation tool, and AgentManager"
     interfaces:
       - "Agent tool for synchronous or background delegation"
@@ -220,7 +219,6 @@ capabilities:
       project-scoped web route with file, agent, board, canvas, and related
       workspace experiences backed by a bundled local server.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Electron project-window management and bundled production server"
     interfaces:
       - "Electron main and project windows"
@@ -250,7 +248,6 @@ capabilities:
       and specialist-agent scopes and assembles bounded memory blocks for agent
       context.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Server memory loader and local filesystem paths"
     interfaces:
       - "MEMORY.md files"
@@ -280,7 +277,6 @@ capabilities:
       ancestor-project, and current-project scopes, with deterministic override
       precedence and optional tool dependency metadata.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Server-side skills loader and agent prompt/tool assembly"
     interfaces:
       - "SKILL.md"
@@ -308,7 +304,6 @@ capabilities:
       SSE, discovers tools, and registers them in the agent tool catalog with
       connection pooling and idle cleanup.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "MCP configuration service and MCPClientManager"
     interfaces:
       - "Model Context Protocol client"
@@ -338,7 +333,6 @@ capabilities:
       adapters, multiple AI SDK provider adapters, custom OpenAI-compatible
       endpoints, or an authenticated OpenLoaf SaaS route.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Server-side provider adapters and chat-model resolver"
     interfaces:
       - "Vercel AI SDK LanguageModel interface"
@@ -370,7 +364,6 @@ capabilities:
       scheduling, cloud, and agent collaboration tools, using deferred
       ToolSearch activation for many entries.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Server tool registry and agent tool assembly"
     interfaces:
       - "Vercel AI SDK tools"
@@ -402,7 +395,6 @@ capabilities:
       user-facing data under OpenLoafData, stores project metadata under each
       project, and runs SQLite through Prisma and libSQL in the local server.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Default filesystem and database paths in the local server"
     interfaces:
       - "Local filesystem"
@@ -432,7 +424,6 @@ capabilities:
       targeted runtime inspection found context assembly for project ancestors
       but did not find a ProjectLink-consuming path.
     support_status: partially_implemented
-    evidence_status: inferred
     scope: "Documented project-link experience, Prisma schema, and inspected memory/skills context resolution"
     interfaces:
       - "ProjectLink database relation"
@@ -1328,7 +1319,6 @@ evidence:
       symbol_or_section: "Title and About"
       line_start: 1
       line_end: 33
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Open-source AI productivity desktop positioned as project-centric, multi-agent, and local-first."
     note: "First-party product positioning; runtime behavior was not verified."
@@ -1339,7 +1329,6 @@ evidence:
       symbol_or_section: "Active development warning"
       line_start: 23
       line_end: 23
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Features and APIs may change; use in production with caution."
     note: "Maintainer-provided maturity caution."
@@ -1350,7 +1339,6 @@ evidence:
       symbol_or_section: "Project Linking and Memory & Skills System"
       line_start: 88
       line_end: 109
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Linked projects are said to inject memory and skills; global and project skills and MCP configuration are described."
     note: "The linked-project injection claim conflicts with the targeted runtime evidence recorded elsewhere in this card."
@@ -1361,7 +1349,6 @@ evidence:
       symbol_or_section: "Built-in Productivity Tools"
       line_start: 119
       line_end: 136
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Canvas, terminal, email, calendar, file manager, task board, and rich-text editor features."
     note: "First-party feature documentation supplemented by static dependencies and tool assembly."
@@ -1372,7 +1359,6 @@ evidence:
       symbol_or_section: "Privacy & Security"
       line_start: 174
       line_end: 180
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Claims 100% local storage, nothing uploaded, direct BYOK provider calls, offline operation, and no telemetry."
     note: "The unqualified no-upload wording conflicts with optional SaaS, remote provider, MCP, and cloud paths found in source."
@@ -1383,7 +1369,6 @@ evidence:
       symbol_or_section: "Architecture and Tech Stack"
       line_start: 212
       line_end: 266
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Main/project windows, local data paths, Next.js frontend, Hono/tRPC server, Electron desktop, Prisma/SQLite, and Vercel AI SDK."
     note: "Repository-hosted architecture description."
@@ -1394,7 +1379,6 @@ evidence:
       symbol_or_section: "version, scripts, dependencies"
       line_start: 1
       line_end: 180
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "server 0.2.9 with agent, async, tool, browser, and red-team scripts plus AI SDK, MCP, provider, mail, document, media, browser, and persistence dependencies."
     note: "Static manifest only; no scripts were run and package installation or publication was not checked."
@@ -1405,7 +1389,6 @@ evidence:
       symbol_or_section: "version, platform targets, resources, scripts, and Electron dependency"
       line_start: 1
       line_end: 152
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "desktop 0.2.9 packages macOS, Windows, and Linux resources with Electron 40.1.0."
     note: "Static packaging definition; artifacts and signatures were not inspected."
@@ -1416,7 +1399,6 @@ evidence:
       symbol_or_section: "AgentManager.spawn"
       line_start: 95
       line_end: 190
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "MAX_DEPTH=2, MAX_CONCURRENT=4, managed lifecycle state, and fire-and-forget scheduled execution."
     note: "Direct source implementation; not executed."
@@ -1427,7 +1409,6 @@ evidence:
       symbol_or_section: "agentTool"
       line_start: 56
       line_end: 202
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Delegates to a selected subagent synchronously by default or registers a background task; prevents master and same-type recursion."
     note: "Direct source implementation; runtime propagation and quality were not evaluated."
@@ -1438,7 +1419,6 @@ evidence:
       symbol_or_section: "BuiltinSubAgentType, createMasterAgent, and createSubAgent"
       line_start: 91
       line_end: 115
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Builtin general, explore, plan, document, browser, data, extraction, canvas, and coding specialist types."
     note: "Master construction and subagent dispatch are additionally implemented at lines 478-580 and 819-915."
@@ -1449,7 +1429,6 @@ evidence:
       symbol_or_section: "resolveMemoryBlocks"
       line_start: 22
       line_end: 186
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "User, parent-project, project, and agent MEMORY.md paths, read/write functions, 200-line truncation, and ordered context blocks."
     note: "The parent-project input is ancestry-oriented and does not itself query ProjectLink."
@@ -1460,7 +1439,6 @@ evidence:
       symbol_or_section: "loadSkillSummaries and resolveSkillSources"
       line_start: 64
       line_end: 146
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Loads built-in, global, parent-project, and project skills with built-in protection and project-over-parent-over-global precedence."
     note: "The loader takes parentProjectRootPaths rather than querying arbitrary ProjectLink records."
@@ -1471,7 +1449,6 @@ evidence:
       symbol_or_section: "MCPClientManagerImpl connection and transport logic"
       line_start: 11
       line_end: 66
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "AI SDK MCP client manager with lazy/shared connections, idle timeout, PID tracking, dynamic tool registration, and ten-connection maximum."
     note: "Connection/discovery is implemented at lines 287-364 and stdio/http/sse transports at lines 426-493."
@@ -1482,7 +1459,6 @@ evidence:
       symbol_or_section: "Scoped MCP configuration and trust"
       line_start: 11
       line_end: 75
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Global and project mcp-servers.json paths, atomic writes, and content hashing."
     note: "Scope merging is at lines 100-132; trust revocation and verification are at lines 166-194 and 231-265."
@@ -1493,7 +1469,6 @@ evidence:
       symbol_or_section: "PROVIDER_ADAPTERS"
       line_start: 345
       line_end: 400
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "OpenAI/custom, Anthropic, Moonshot, Vercel, Bedrock, Google, DeepSeek, xAI, OpenLoaf SaaS, CLI, Claude Code, Codex, Qwen, Dashscope, and compatible adapters."
     note: "Direct provider registry; provider services were not called."
@@ -1504,7 +1479,6 @@ evidence:
       symbol_or_section: "resolveLocalChatModel, resolveCloudChatModel, and resolveChatModel"
       line_start: 186
       line_end: 245
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Local profiles merge optional CLI providers; cloud source requires a server access token, fetches models, and routes to an OpenLoaf SaaS API URL."
     note: "Confirms that some model routes intentionally cross the local boundary."
@@ -1515,7 +1489,6 @@ evidence:
       symbol_or_section: "OpenLoaf root, data, project, scoped, and database paths"
       line_start: 27
       line_end: 84
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Defaults to ~/.openloaf, ~/OpenLoafData, project .openloaf paths, and file:~/.openloaf/openloaf.db with environment override."
     note: "Static default path resolution."
@@ -1526,7 +1499,6 @@ evidence:
       symbol_or_section: "PrismaLibSql adapter and initDatabase"
       line_start: 12
       line_end: 32
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "PrismaClient uses PrismaLibSql and initializes SQLite WAL mode and a five-second busy timeout."
     note: "Database behavior was not executed."
@@ -1537,7 +1509,6 @@ evidence:
       symbol_or_section: "Project and ProjectLink"
       line_start: 1
       line_end: 43
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Projects have parent/children relations and a many-to-many ProjectLink model with source and target."
     note: "Persistence schema confirms representability, not runtime context injection."
@@ -1548,7 +1519,6 @@ evidence:
       symbol_or_section: "resolveParentProjectRootPaths"
       line_start: 351
       line_end: 369
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Resolves project ancestor root URIs and converts them to local paths."
     note: "Targeted context-resolution evidence uses ancestry; no ProjectLink query appears in this function."
@@ -1559,7 +1529,6 @@ evidence:
       symbol_or_section: "buildProjectWindowUrl and createProjectWindow"
       line_start: 79
       line_end: 160
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Builds a project-scoped URL, reuses one window per project, and creates a sandboxed, context-isolated renderer."
     note: "The renderer sandbox does not cover the local server shell tool."
@@ -1570,7 +1539,6 @@ evidence:
       symbol_or_section: "Production server environment and spawnOne"
       line_start: 265
       line_end: 328
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Builds the production local-server environment and marks the child as the desktop runtime."
     note: "The server child is spawned and supervised at lines 372-418."
@@ -1581,7 +1549,6 @@ evidence:
       symbol_or_section: "Server startup and optional integration bootstrap"
       line_start: 53
       line_end: 159
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Initializes local paths and SQLite, starts the server, auto-connects MCP, and starts OpenLoaf cloud skill, tool, and pending-task loops."
     note: "Confirms local core startup plus optional hosted-capability paths; nothing was started."
@@ -1592,7 +1559,6 @@ evidence:
       symbol_or_section: "SAFE_COMMANDS_UNIX and needsApprovalForCommand"
       line_start: 20
       line_end: 66
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "No-approval allowlist includes curl, wget, git, interpreters, package managers, build tools, and file-copy utilities."
     note: "Decision logic at lines 315-386 approves allowlisted commands without flagged operators or redirection."
@@ -1603,7 +1569,6 @@ evidence:
       symbol_or_section: "bashTool"
       line_start: 32
       line_end: 119
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Builds PowerShell or the user's shell, applies the approval hook, then spawns it in a resolved working directory with timeout and background support."
     note: "Static risk characterization only; no commands were executed and this is not a security audit."
@@ -1614,7 +1579,6 @@ evidence:
       symbol_or_section: "CodeQL workflow"
       line_start: 1
       line_end: 40
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "JavaScript/TypeScript CodeQL is configured for main pushes, pull requests, manual dispatch, and a weekly schedule."
     note: "Workflow definition inspected; run status and findings were not checked."
@@ -1625,7 +1589,6 @@ evidence:
       symbol_or_section: "Publish Server workflow"
       line_start: 1
       line_end: 81
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "server-v tags trigger a Node 20 build and R2 publication flow with stable/beta channel detection."
     note: "Workflow definition inspected; current releases and execution outcomes were not checked."

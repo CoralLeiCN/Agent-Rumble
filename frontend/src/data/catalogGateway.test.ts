@@ -54,9 +54,9 @@ describe("StaticCatalogGateway", () => {
       projectId: "openai-agents-sdk",
       cardId: "card-openai-agents-sdk",
       cardVersion: 1,
-      schemaVersion: "0.2",
+      schemaVersion: "0.3",
     });
-    expect(comparison.schemaVersions).toEqual(["0.2"]);
+    expect(comparison.schemaVersions).toEqual(["0.3"]);
     expect(comparisonRows(comparison).some((row) => row.cells.crewai?.state === "not_analyzed")).toBe(true);
     expect(comparisonRows(comparison).some((row) => row.cells.crewai?.state === "unknown")).toBe(true);
     expect(record.supportingEvidence[0].revision).toBe("a94d3f2");
@@ -74,9 +74,9 @@ describe("StaticCatalogGateway", () => {
     expect(record.conflictingEvidence).toEqual([]);
   });
 
-  it("keeps every draft v0.2 fixture structurally and referentially coherent", () => {
+  it("keeps every pre-release v0.3 fixture structurally and referentially coherent", () => {
     expect(projectCards.map(validateProjectCardFixture)).toEqual([[], [], []]);
-    expect(projectCards.every((card) => card.schema_version === "0.2")).toBe(true);
+    expect(projectCards.every((card) => card.schema_version === "0.3")).toBe(true);
     expect(projectCards.map((card) => JSON.parse(JSON.stringify(card)))).toEqual(projectCards);
     expect(Object.keys(projectCards[2].field_states)).toEqual([
       "/capabilities/1/support_status",
@@ -141,7 +141,7 @@ describe("StaticCatalogGateway", () => {
       && !contractOnlyFields.some(({ fieldPattern }) => fieldPattern === definition.fieldPattern)
     ));
 
-    expect(projectCardContract.schemaVersion).toBe("0.2");
+    expect(projectCardContract.schemaVersion).toBe("0.3");
     expect(uncovered).toEqual([]);
     expect(comparison.contractOnlyAttributeCount).toBe(contractOnlyFields.length);
     expect(comparison.contractOnlyAttributeCount).toBeGreaterThan(0);
@@ -150,7 +150,7 @@ describe("StaticCatalogGateway", () => {
   it("derives newly defined fields from schema structure without a presentation whitelist", () => {
     const evolvingContract = readProjectCardContract({
       properties: {
-        schema_version: { const: "0.2" },
+        schema_version: { const: "0.3" },
         future_contract: {
           type: "object",
           properties: {
@@ -204,7 +204,7 @@ describe("StaticCatalogGateway", () => {
     const schemaRow = rows.find(({ logicalPath }) => logicalPath === "/schema_version");
 
     expect(schemaRow).toMatchObject({ isDifferent: false, semanticKind: "value" });
-    expect(Object.values(schemaRow?.cells ?? {}).map(({ value }) => value)).toEqual(["0.2", "0.2", "0.2"]);
+    expect(Object.values(schemaRow?.cells ?? {}).map(({ value }) => value)).toEqual(["0.3", "0.3", "0.3"]);
     expect(comparison.totalAttributeCount).toBe(rows.length + comparison.contractOnlyAttributeCount);
     expect(comparison.differentAttributeCount).toBe(rows.filter(({ isDifferent }) => isDifferent).length);
     expect(comparison.sharedAttributeCount).toBe(rows.filter(({ isDifferent }) => !isDifferent).length);
@@ -324,14 +324,12 @@ describe("StaticCatalogGateway", () => {
   it("rejects high-risk semantic contract violations", () => {
     const invalid = structuredClone(projectCards[0]);
     invalid.project.repositories[0].source_id = "missing-source";
-    invalid.capabilities[0].evidence_refs = [];
     invalid.claims[0].verification_status = "runtime_verified";
     invalid.source_snapshot.analysis_configuration = {};
     invalid.field_states["/source_snapshot/analysis_configuration"] = "not_analyzed";
 
     expect(validateProjectCardFixture(invalid)).toEqual(expect.arrayContaining([
       "repository references missing source missing-source",
-      expect.stringContaining("status without evidence_refs"),
       "runtime verification requires analysis_configuration.dynamic_analysis=true",
       "field_state pointer /source_snapshot/analysis_configuration does not target null or []",
     ]));

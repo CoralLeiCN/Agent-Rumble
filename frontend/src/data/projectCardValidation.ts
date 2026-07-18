@@ -90,9 +90,6 @@ export function validateProjectCardFixture(card: AgentProjectCard): string[] {
     for (const evidenceId of capability.evidence_refs) {
       if (!evidenceIds.includes(evidenceId)) errors.push(`${capability.capability_id} references missing evidence ${evidenceId}`);
     }
-    if (capability.evidence_status !== "not_found" && capability.evidence_refs.length === 0) {
-      errors.push(`${capability.capability_id} has ${capability.evidence_status} status without evidence_refs`);
-    }
   }
 
   const hasRuntimeVerification = card.claims.some(

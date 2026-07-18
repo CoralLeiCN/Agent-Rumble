@@ -47,7 +47,7 @@ def card_document(
     card_version: int = 1,
 ) -> dict[str, Any]:
     return {
-        "schema_version": "0.2",
+        "schema_version": "0.3",
         "card_id": card_id,
         "card_version": card_version,
         "project": {"project_id": project_id},

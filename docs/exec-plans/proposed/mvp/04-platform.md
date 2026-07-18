@@ -139,8 +139,8 @@ unknown states are preserved, and no output declares a universal winner.
 **Owns:** U-01 through U-03 only for catalog access selected for the release
 
 Align the frontend gateway with the OpenAPI contract. Capability support, Claim
-verification, Evidence status, confidence, and field state remain independent
-types. Add catalog context and current-card operations, pass an explicit
+verification, confidence, and field state remain independent types. Add catalog
+context and current-card operations, pass an explicit
 Assessment Context and pinned card versions to comparison, and retain a visibly
 labeled static fallback.
 

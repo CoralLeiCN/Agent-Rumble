@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-snap-stanford-biomni"
 card_version: 1
 
@@ -191,7 +191,6 @@ capabilities:
       iterates between model generation and execution, and returns a solution and
       execution trace.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "The A1 agent's go, go_stream, and configured LangGraph workflow"
     interfaces:
       - "A1.go(prompt)"
@@ -227,7 +226,6 @@ capabilities:
       and know-how summaries to an LLM and injects selected resources into the
       agent context.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "A1 resource preparation, ToolRetriever, ToolRegistry, and bundled catalogs"
     interfaces:
       - "Automatic retrieval during A1.go and A1.go_stream"
@@ -261,7 +259,6 @@ capabilities:
       persistent Python exec namespace or to R and shell subprocess helpers with
       a configurable timeout.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "The A1 execute node and local execution helpers"
     interfaces:
       - "Model-generated <execute> blocks"
@@ -295,7 +292,6 @@ capabilities:
       Anthropic, Gemini's OpenAI-compatible endpoint, Groq, Ollama, AWS Bedrock,
       and custom OpenAI-compatible endpoints.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "The biomni.llm.get_llm model factory"
     interfaces:
       - "A1 constructor parameters"
@@ -324,7 +320,6 @@ capabilities:
       Discovers and wraps tools from configured stdio MCP servers and can expose
       selected internal Biomni tool modules through a FastMCP stdio server.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "A1.add_mcp, A1.create_mcp_server, and repository examples"
     interfaces:
       - "YAML-configured stdio MCP client"
@@ -354,7 +349,6 @@ capabilities:
       data or software resources, while the know-how loader supports additional
       documents.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "A1 extension APIs, tool registry, and KnowHowLoader"
     interfaces:
       - "A1.add_tool"
@@ -384,7 +378,6 @@ capabilities:
       conversation trace export, and a separate BiomniEval1 adapter that loads a
       hosted dataset and applies task-specific scoring rules.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "A1 interface methods and biomni.eval.BiomniEval1"
     interfaces:
       - "A1.go_stream"
@@ -1098,7 +1091,6 @@ evidence:
       symbol_or_section: "Overview and Basic Usage"
       line_start: 25
       line_end: 149
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Biomni overview; A1 initialization and agent.go examples"
     note: "First-party documentation defines the biomedical-agent purpose and primary Python task interface."
@@ -1110,7 +1102,6 @@ evidence:
       symbol_or_section: "Gradio Interface, PDF Generation, MCP Support, and Biomni-Eval1"
       line_start: 166
       line_end: 332
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "launch_gradio_demo, save_conversation_history, add_mcp, and BiomniEval1 examples"
     note: "Documents the optional UI, trace export, MCP, and benchmark adapter interfaces."
@@ -1122,7 +1113,6 @@ evidence:
       symbol_or_section: "Important Note"
       line_start: 404
       line_end: 407
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Security warning and frozen-release note"
     note: >-
@@ -1137,7 +1127,6 @@ evidence:
       symbol_or_section: "Contributing and Biomni-E2"
       line_start: 358
       line_end: 388
-    evidence_status: documented_only
     confidence: medium
     excerpt_or_symbol: "Open contribution invitation and call to build Biomni-E2"
     note: "Supports the active-status projection but does not establish release cadence or maintenance guarantees."
@@ -1149,7 +1138,6 @@ evidence:
       symbol_or_section: "A1.__init__"
       line_start: 149
       line_end: 223
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Data and benchmark directory creation, hosted S3 downloads, registries, and configure()"
     note: "Statically confirms default download behavior and initialization of core agent resources."
@@ -1161,7 +1149,6 @@ evidence:
       symbol_or_section: "A1.configure generate/execute workflow"
       line_start: 1380
       line_end: 1643
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "generate, execute, execute_self_critic, StateGraph, and MemorySaver"
     note: >-
@@ -1175,7 +1162,6 @@ evidence:
       symbol_or_section: "A1._prepare_resources_for_retrieval"
       line_start: 1646
       line_end: 1757
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Tool, data-lake, library, and know-how resource preparation and selection"
     note: "Shows all resource categories sent to ToolRetriever and normalized for later prompt injection."
@@ -1187,7 +1173,6 @@ evidence:
       symbol_or_section: "run_python_repl"
       line_start: 13
       line_end: 44
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "exec(command, _persistent_namespace)"
     note: "Directly establishes persistent in-process execution of supplied Python code."
@@ -1199,7 +1184,6 @@ evidence:
       symbol_or_section: "SourceType and get_llm"
       line_start: 9
       line_end: 275
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Provider source enumeration, auto-detection, and adapter branches"
     note: "Statically confirms provider support paths; it does not verify credentials, endpoints, or provider behavior."
@@ -1211,7 +1195,6 @@ evidence:
       symbol_or_section: "description registry"
       line_start: 1
       line_end: 220
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Representative UniProt, AlphaFold, InterPro, PDB, KEGG, STRING, and other database tool schemas"
     note: "Representative evidence for the broader domain-organized tool and schema catalog."
@@ -1223,7 +1206,6 @@ evidence:
       symbol_or_section: "data_lake_dict and library_content_dict"
       line_start: 1
       line_end: 150
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Biomedical data-lake and scientific software descriptions"
     note: "Confirms catalog metadata, not availability, licensing, installation, or scientific correctness of each resource."
@@ -1235,7 +1217,6 @@ evidence:
       symbol_or_section: "A1.add_mcp"
       line_start: 350
       line_end: 587
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "MCP stdio discovery, wrappers, tool schemas, and registry integration"
     note: "Statically confirms MCP client behavior and its subprocess-oriented trust boundary."
@@ -1247,7 +1228,6 @@ evidence:
       symbol_or_section: "A1.create_mcp_server"
       line_start: 1995
       line_end: 2059
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "FastMCP server construction and internal tool registration"
     note: "Statically confirms generation of a server object; no server was started."
@@ -1259,7 +1239,6 @@ evidence:
       symbol_or_section: "A1.add_tool, A1.add_data, and A1.add_software"
       line_start: 225
       line_end: 820
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Custom tool registration and data/software catalog mutation"
     note: "Confirms runtime extension paths; the broad locator spans the three related methods."
@@ -1271,7 +1250,6 @@ evidence:
       symbol_or_section: "KnowHowLoader document loading and custom document API"
       line_start: 8
       line_end: 279
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Markdown loading, metadata extraction, summaries, and add_custom_document"
     note: "Establishes the repository-hosted and in-process know-how extension surface."
@@ -1283,7 +1261,6 @@ evidence:
       symbol_or_section: "A1.launch_gradio_demo"
       line_start: 2627
       line_end: 2736
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Gradio imports, access-code gate, uploads, retrieval, and streaming"
     note: "Confirms implementation of the optional web interface and its initial control flow."
@@ -1295,7 +1272,6 @@ evidence:
       symbol_or_section: "BiomniEval1.__init__, evaluate, and _compute_reward"
       line_start: 14
       line_end: 158
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Hosted parquet load and task-specific scoring rules"
     note: "Confirms the adapter only; the external dataset and claimed benchmark composition were not independently inspected."
@@ -1307,7 +1283,6 @@ evidence:
       symbol_or_section: "project and optional dependencies"
       line_start: 5
       line_end: 29
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "biomni package, Apache-2.0, Python >=3.11, direct dependencies, and optional Gradio"
     note: "Package version resolves through biomni/version.py to 0.0.8 at this snapshot."
@@ -1319,7 +1294,6 @@ evidence:
       symbol_or_section: "Full E1 setup requirements and known package conflicts"
       line_start: 11
       line_end: 74
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Full setup duration/disk requirements, minimal adapters, and separate/manual environments"
     note: "The locator combines first-party setup and conflict documents covering the same installation claim."
@@ -1331,7 +1305,6 @@ evidence:
       symbol_or_section: "All tracked paths at commit 400c1f366b96a35ca253e13c9b06c5076af41d65"
       line_start: 1
       line_end: 1
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "No .github workflow paths; one tutorial MCP test script; no dedicated test directory"
     note: >-
@@ -1346,7 +1319,6 @@ evidence:
       symbol_or_section: "HEAD commit"
       line_start: 1
       line_end: 1
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "400c1f366b96a35ca253e13c9b06c5076af41d65 authored 2026-01-14T20:23:42-08:00"
     note: "Supports recency at the exact snapshot but does not alone prove current maintenance status."

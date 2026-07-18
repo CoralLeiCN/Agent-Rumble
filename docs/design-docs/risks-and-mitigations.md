@@ -27,8 +27,7 @@ different versions or interpretations of the Agent Project Card schema.
 
 **Proposed mitigation:** Package the same versioned schema with the skill and API,
 verify its digest during packaging, validate every generated card
-deterministically, test v0.1 migrations, and generate all human-readable views
-from the canonical card.
+deterministically, and generate all human-readable views from the canonical card.
 
 ## False Precision
 

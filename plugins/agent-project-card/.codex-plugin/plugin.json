@@ -1,6 +1,6 @@
 {
   "name": "agent-project-card",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260718151447",
   "description": "Generate versioned, evidence-backed Agent Project Cards for agent-related software projects.",
   "author": {
     "name": "CoralLeiCN",
@@ -29,7 +29,7 @@
     "defaultPrompt": [
       "Analyze this repository and create an Agent Project Card.",
       "Refresh this project's Agent Project Card for the current revision.",
-      "Validate or migrate an existing Agent Project Card."
+      "Validate an existing Agent Project Card."
     ]
   }
 }

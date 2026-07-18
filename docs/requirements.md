@@ -98,9 +98,17 @@ unavailable identity values; the v0.1 baseline directs the author to represent
 them as empty strings. In v0.1, `project.primary_type` describes the repository
 itself, while supporting services used by it belong under `architecture` or
 `relationships`. Capture user-meaningful capabilities rather than implementation
-trivia, connect capabilities to evidence unless their evidence status is
-`not_found`, and record only direct, architecturally meaningful technologies.
+trivia, connect capabilities to available claims and evidence, and record only
+direct, architecturally meaningful technologies.
 Base maturity on repository evidence rather than popularity.
+
+### Pre-Release Schema Compatibility
+
+Agent Rumble has not been released. Before the first release, backward
+compatibility among pre-release Agent Project Card schemas is not an
+implementation or release requirement. Do not include migration, import/export
+compatibility, or compatibility-only fields or projections solely to support
+older pre-release schemas.
 
 ### Card Versioning
 
@@ -370,6 +378,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-18 | Agent Project Card | Removed backward compatibility among pre-release card schemas from implementation and release scope, including migration paths and compatibility-only fields or projections. |
 | 2026-07-18 | Catalog-first discovery and comparison | Required basic search to return meaningful query-related results from backend data and remain usable within the limited hackathon timeframe. |
 | 2026-07-18 | Core tool and access | Required the Codex-powered Agent Project Card tool to be available both as a published skill packaged as a Codex plugin for users' coding-agent workflows and as a hosted service that generates a card from a public GitHub repository link; on-demand generation is no longer deferred. |
 | 2026-07-18 | Rumble Arena | Requested human-looking fighters with visible body movement, reuse of an existing or open-source character design where available, and a fullscreen option. |

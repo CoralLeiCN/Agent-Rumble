@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-langchain-ai-langgraph"
 card_version: 1
 
@@ -201,7 +201,6 @@ capabilities:
       conditional routes, sequences, and subgraphs, then exposes synchronous and
       asynchronous invoke and stream interfaces.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "langgraph core StateGraph and compiled Pregel runtime"
     interfaces:
       - "Python StateGraph builder API"
@@ -233,7 +232,6 @@ capabilities:
       entrypoints and tasks with futures, retries, caching, timeouts, context,
       and persistent previous results.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "langgraph.func task and entrypoint APIs"
     interfaces:
       - "Python decorators"
@@ -260,7 +258,6 @@ capabilities:
       supports pause, resume, replay, state history, and memory across invocations
       through an interface with in-memory, SQLite, and PostgreSQL implementations.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "compiled graphs and repository-maintained checkpoint packages"
     interfaces:
       - "BaseCheckpointSaver sync and async protocol"
@@ -296,7 +293,6 @@ capabilities:
       Pauses execution from within a node, surfaces context to a client, and
       resumes with a Command value while preserving graph state in a checkpointer.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "compiled graph nodes and functional entrypoints"
     interfaces:
       - "interrupt(value)"
@@ -324,7 +320,6 @@ capabilities:
       checkpoints, task lifecycle events, debug data, and optionally nested
       subgraph namespaces.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Pregel stream and astream execution"
     interfaces:
       - "Compiled graph stream and astream"
@@ -352,7 +347,6 @@ capabilities:
       executes tool calls, injects state and stores, handles errors, and loops
       until the model emits no further tool calls.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "langgraph-prebuilt"
     interfaces:
       - "create_react_agent"
@@ -381,7 +375,6 @@ capabilities:
       builds images or Dockerfiles, and exposes a Python client for assistants,
       threads, runs, state, and streaming against a LangGraph API server.
     support_status: documented
-    evidence_status: documented_only
     scope: "langgraph-cli and langgraph-sdk packages"
     interfaces:
       - "langgraph command-line program"
@@ -1134,7 +1127,6 @@ evidence:
       symbol_or_section: "Project description, Why use LangGraph?, and ecosystem"
       line_start: 11
       line_end: 57
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Low-level orchestration framework for building stateful agents; durable execution, human-in-the-loop, memory, and linked LangSmith services."
     note: "First-party positioning and ecosystem boundary; linked external documentation and services were not analyzed."
@@ -1145,7 +1137,6 @@ evidence:
       symbol_or_section: "[project]"
       line_start: 5
       line_end: 40
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "langgraph 1.2.9, Python >=3.10, Production/Stable classifier, and direct dependency constraints."
     note: "Static package metadata at the analyzed commit; registry publication was not checked."
@@ -1156,7 +1147,6 @@ evidence:
       symbol_or_section: "StateGraph"
       line_start: 130
       line_end: 198
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "StateGraph nodes read and write shared state, reducers merge values, and compile creates invoke and stream interfaces."
     note: "Direct source-level API and example; not executed."
@@ -1167,7 +1157,6 @@ evidence:
       symbol_or_section: "StateGraph.add_edge and StateGraph.add_conditional_edges"
       line_start: 915
       line_end: 1017
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Static edges wait for one or all source nodes; conditional paths select one or more destinations."
     note: "Direct implementation and contract for graph routing."
@@ -1178,7 +1167,6 @@ evidence:
       symbol_or_section: "StateGraph.compile"
       line_start: 1164
       line_end: 1218
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "compile accepts checkpointer, cache, store, interrupt controls, and produces a runnable that supports sync, async, batch, and stream operations."
     note: "The contract identifies thread_id as the persisted run key and describes pause, resume, and replay support."
@@ -1189,7 +1177,6 @@ evidence:
       symbol_or_section: "task"
       line_start: 109
       line_end: 193
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "task wraps sync or async functions with retry, cache, timeout, serialization, and future-based parallelism semantics."
     note: "Static implementation contract; no decorated task was run."
@@ -1200,7 +1187,6 @@ evidence:
       symbol_or_section: "entrypoint"
       line_start: 262
       line_end: 312
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "entrypoint injects config, previous state, and runtime and accepts checkpointer, store, cache, context, retry, and timeout configuration."
     note: "Static implementation contract; workflow behavior was not executed."
@@ -1211,7 +1197,6 @@ evidence:
       symbol_or_section: "Send"
       line_start: 664
       line_end: 703
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Send dynamically invokes a node with custom state and documents parallel map-reduce fan-out."
     note: "Direct control-flow primitive and example."
@@ -1222,7 +1207,6 @@ evidence:
       symbol_or_section: "Command and interrupt"
       line_start: 759
       line_end: 831
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Command carries resume values; interrupt pauses, surfaces context, requires a checkpointer, and restarts the node when resumed."
     note: "Direct source-level human-in-the-loop contract and replay caveat."
@@ -1233,7 +1217,6 @@ evidence:
       symbol_or_section: "Pregel.stream"
       line_start: 2616
       line_end: 2724
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "stream supports values, updates, custom, messages, checkpoints, tasks, debug, multiple modes, durability options, and subgraph namespaces."
     note: "Direct execution interface; runtime ordering and performance were not tested."
@@ -1244,7 +1227,6 @@ evidence:
       symbol_or_section: "create_react_agent model and tool loop"
       line_start: 480
       line_end: 590
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "The prebuilt graph alternates model and tool nodes until no tool calls remain and binds supplied tool classes to the model."
     note: "The provider:model string path imports optional langchain; user-supplied compatible model objects can be used directly."
@@ -1255,7 +1237,6 @@ evidence:
       symbol_or_section: "Module contract and ToolCallRequest"
       line_start: 1
       line_end: 149
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "ToolNode supports parallel calls, customizable error handling, state/store injection, command-based updates, and request interception."
     note: "Static module and request contracts; tool side effects were not executed."
@@ -1266,7 +1247,6 @@ evidence:
       symbol_or_section: "What is this?, Key concepts, and Interface"
       line_start: 17
       line_end: 67
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Checkpointers persist graph state each superstep, separate runs by thread, preserve pending writes, and define sync and async saver methods."
     note: "First-party package documentation; the saver behavior was not executed."
@@ -1277,7 +1257,6 @@ evidence:
       symbol_or_section: "Serde security notice"
       line_start: 45
       line_end: 54
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Default checkpoint deserialization may allow Python types; strict MessagePack or an explicit allowed-module list is recommended."
     note: "This is a documented configuration risk, not a vulnerability finding or security audit."
@@ -1288,7 +1267,6 @@ evidence:
       symbol_or_section: "What is this? and Security"
       line_start: 17
       line_end: 28
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "The repository provides sync and async SQLite checkpoint persistence and repeats the strict deserialization guidance."
     note: "The PostgreSQL package separately documents an analogous durable adapter at libs/checkpoint-postgres/README.md:17-38."
@@ -1299,7 +1277,6 @@ evidence:
       symbol_or_section: "Commands and Configuration"
       line_start: 17
       line_end: 104
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "The CLI creates projects, runs a hot-reloading server, launches Docker, builds images or Dockerfiles, and reads graph registration from langgraph.json."
     note: "Commands were not run and the optional API server implementation is outside this repository."
@@ -1310,7 +1287,6 @@ evidence:
       symbol_or_section: "What is this?, Quick Start, and Known Limitations"
       line_start: 17
       line_end: 60
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "The Python SDK manages assistants, threads, and streamed runs against a running API server and documents SSE/WebSocket and reconnect limitations."
     note: "No API server or transport was exercised."
@@ -1321,7 +1297,6 @@ evidence:
       symbol_or_section: "jobs"
       line_start: 25
       line_end: 184
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "CI statically defines package lint and test matrices, core tests, schema checks, CLI integration, SDK integration, and an aggregate success job."
     note: "The workflow definition was inspected; current or historical workflow outcomes were not queried."

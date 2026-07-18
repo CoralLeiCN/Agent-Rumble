@@ -29,15 +29,11 @@ validator = load_module(
     "agent_project_card_validator",
     SKILL / "scripts" / "validate_project_card.py",
 )
-migrator = load_module(
-    "agent_project_card_migrator",
-    SKILL / "scripts" / "migrate_v01_card.py",
-)
 
 
 def valid_card() -> dict:
     return {
-        "schema_version": "0.2",
+        "schema_version": "0.3",
         "card_id": "card-example",
         "card_version": 1,
         "field_states": {},
@@ -105,7 +101,6 @@ def valid_card() -> dict:
                 "name": "Tool calling",
                 "description": "Registers and invokes typed tools.",
                 "support_status": "statically_confirmed",
-                "evidence_status": "confirmed",
                 "scope": "Python SDK",
                 "interfaces": ["Python API"],
                 "prerequisites": [],
@@ -216,115 +211,12 @@ def valid_card() -> dict:
                     "line_start": 10,
                     "line_end": 20,
                 },
-                "evidence_status": "confirmed",
                 "confidence": "high",
                 "excerpt_or_symbol": "register_tool",
                 "note": "The function registers typed tools.",
             }
         ],
         "open_questions": [],
-    }
-
-
-def v01_card() -> dict:
-    return {
-        "schema_version": "0.1",
-        "project": {
-            "name": "Example",
-            "primary_type": "agent_framework_sdk",
-            "type_rationale": "Provides an SDK for agent applications.",
-            "repository_url": "https://github.com/example/example",
-            "repository_owner": "example",
-            "analyzed_revision": {
-                "branch": "main",
-                "tag": "v1.0.0",
-                "commit": "0123456789abcdef",
-            },
-            "analyzed_at": "2026-07-18T12:00:00Z",
-            "license": "Apache-2.0",
-            "status": "active",
-        },
-        "summary": {
-            "one_line": "An example SDK for building agents.",
-            "purpose": "Demonstrate migration.",
-            "target_users": ["Agent developers"],
-            "primary_use_cases": ["Build an agent application"],
-        },
-        "classification": {
-            "secondary_characteristics": ["library"],
-            "domains": ["general purpose"],
-            "delivery_forms": ["open-source library"],
-            "agent_patterns": ["tool use"],
-        },
-        "capabilities": [
-            {
-                "name": "Tool calling",
-                "description": "Registers and invokes typed tools.",
-                "evidence_status": "confirmed",
-                "confidence": "high",
-                "evidence_refs": ["E1"],
-            }
-        ],
-        "architecture": {
-            "overview": "A Python package exposing an agent SDK.",
-            "languages": ["Python"],
-            "frameworks_and_sdks": [],
-            "model_providers": [],
-            "runtime_and_orchestration": [],
-            "tools_and_mcp": {"tools": [], "mcp_role": "none", "mcp_details": []},
-            "skills": [],
-            "memory_and_state": [],
-            "retrieval_and_knowledge": [],
-            "document_processing": [],
-            "execution_and_sandbox": [],
-            "gateways_and_routing": [],
-            "storage_and_databases": [],
-            "interfaces": ["Python API"],
-            "deployment": [],
-            "observability_and_evaluation": [],
-            "security_and_permissions": [],
-        },
-        "components": [
-            {
-                "name": "Runtime",
-                "path": "src/example/runtime.py",
-                "project_type": "agent_harness_runtime",
-                "purpose": "Run an agent loop.",
-            }
-        ],
-        "usage": {
-            "installation": "Install the example package.",
-            "minimal_start": "Create an agent and run it.",
-            "configuration": [],
-            "required_services": [],
-            "extension_points": ["Registered tools"],
-        },
-        "assessment": {
-            "maturity": "early",
-            "maturity_signals": ["The project publishes releases."],
-            "strengths": [],
-            "limitations": [],
-            "risks": [],
-            "best_fit": [],
-            "poor_fit": [],
-        },
-        "relationships": {
-            "depends_on": [],
-            "integrates_with": [],
-            "comparable_projects": [],
-        },
-        "open_questions": [],
-        "evidence": [
-            {
-                "id": "E1",
-                "claim": "The SDK supports typed tool calling.",
-                "source_path": "src/example/tools.py",
-                "symbol_or_section": "register_tool",
-                "evidence_status": "confirmed",
-                "confidence": "high",
-                "note": "The public registration API is present.",
-            }
-        ],
     }
 
 
@@ -473,7 +365,7 @@ def test_marketplace_plugin_packages_the_repository_skill() -> None:
     assert SKILL.is_symlink()
     assert SKILL.resolve() == (PLUGIN / "skills" / "agent-project-card").resolve()
     assert manifest["name"] == "agent-project-card"
-    assert manifest["version"] == "0.1.0"
+    assert manifest["version"].startswith("0.1.0+codex.")
     assert manifest["skills"] == "./skills/"
     assert "Local developer" not in json.dumps(manifest)
     assert entry["source"]["path"] == "./plugins/agent-project-card"
@@ -501,15 +393,11 @@ def test_skill_script_commands_are_plugin_portable() -> None:
     validator_script = (SKILL / "scripts" / "validate_project_card.py").read_text(
         encoding="utf-8"
     )
-    migrator_script = (SKILL / "scripts" / "migrate_v01_card.py").read_text(
-        encoding="utf-8"
-    )
 
     assert "uv run --script <skill-directory>" in skill
     assert ".agents/skills/agent-project-card/scripts" not in skill
     assert "jsonschema==4.26.0" in validator_script
     assert "pyyaml==6.0.3" in validator_script
-    assert "pyyaml==6.0.3" in migrator_script
 
 
 def test_semantic_validation_rejects_dangling_capability_evidence() -> None:
@@ -517,51 +405,6 @@ def test_semantic_validation_rejects_dangling_capability_evidence() -> None:
     card["capabilities"][0]["evidence_refs"] = ["missing-evidence"]
 
     assert any("unknown evidence identifier" in error for error in validator.semantic_errors(card))
-
-
-def test_v01_migration_produces_a_valid_v02_card() -> None:
-    card, warnings = migrator.migrate(v01_card())
-    schema = json.loads(
-        (SKILL / "references" / "project-card.schema.json").read_text(encoding="utf-8")
-    )
-
-    assert warnings
-    assert card["schema_version"] == "0.2"
-    assert card["claims"][0]["verification_status"] == "statically_confirmed"
-    assert validator.schema_errors(card, schema) == []
-    assert validator.semantic_errors(card) == []
-
-
-def test_migration_and_validation_cli(tmp_path: Path) -> None:
-    source = tmp_path / "v01-card.yaml"
-    output = tmp_path / "project-card.yaml"
-    source.write_text(yaml.safe_dump(v01_card(), sort_keys=False), encoding="utf-8")
-
-    migration = subprocess.run(
-        [
-            sys.executable,
-            str(SKILL / "scripts" / "migrate_v01_card.py"),
-            str(source),
-            "--output",
-            str(output),
-        ],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    validation = subprocess.run(
-        [
-            sys.executable,
-            str(SKILL / "scripts" / "validate_project_card.py"),
-            str(output),
-        ],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-
-    assert migration.returncode == 0, migration.stderr
-    assert validation.returncode == 0, validation.stderr
 
 
 def test_validation_cli_accepts_pair_escape_and_rejects_lone_surrogate(
@@ -619,7 +462,6 @@ def test_card_summary_template_preserves_canonical_semantics() -> None:
         "Analysis depth",
         "Support status",
         "Verification",
-        "Evidence status",
         "Assessment Context",
         "Limitations",
         "Risks",

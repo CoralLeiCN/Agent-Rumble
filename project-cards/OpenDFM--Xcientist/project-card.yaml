@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-opendfm-xcientist"
 card_version: 1
 
@@ -262,7 +262,6 @@ capabilities:
       quotes, and typed method-evolution relations for downstream retrieval and
       validation planning.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented Paper Graph Infrastructure in arXiv:2606.18874v2"
     interfaces:
       - "Topic and seed-paper retrieval"
@@ -297,7 +296,6 @@ capabilities:
       cluster papers, model relations, analyze code repositories, draft surveys,
       enforce citations, and refine outputs at multiple granularities.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented literature review stage"
     interfaces:
       - "Research topic or seed papers"
@@ -328,7 +326,6 @@ capabilities:
       memory-guided MCTS, component-level edit operators, multidimensional
       evaluation, constrained cross-mode fusion, referee review, and local repair.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented idea-generation stage"
     interfaces:
       - "Topic, prepared root context, prior idea, and validation memory"
@@ -360,7 +357,6 @@ capabilities:
       component-wise ablation, repair, and convergence on independent validator
       reports and real execution artifacts.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented experiment-validation stage"
     interfaces:
       - "Prepared repository, dataset, model, and environment inventory"
@@ -395,7 +391,6 @@ capabilities:
       diagnostic evidence, and final claim text, then bounds or revises claims
       when evidence cannot attribute outcomes to the claimed mechanism.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented cross-stage research-audit behavior"
     interfaces:
       - "Idea contracts"
@@ -425,7 +420,6 @@ capabilities:
       into a report, scores source fidelity and research integrity, repairs
       verified issues, and checkpoints progress for resumability.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented report-writing stage"
     interfaces:
       - "blog_idea.md composition contract"
@@ -457,7 +451,6 @@ capabilities:
       with topic creation, launch, trace and artifact browsing, message views,
       approval interaction, failure visibility, and snapshot-plus-WebSocket updates.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented frontend and backend interface"
     interfaces:
       - "Web frontend"
@@ -485,7 +478,6 @@ capabilities:
       artifacts, persists scheduler and workflow state, exposes failures, and
       resumes long-running stages from checkpoints.
     support_status: documented
-    evidence_status: documented_only
     scope: "Documented backend, stage scheduler, and reporting workflow"
     interfaces:
       - "Run-local directories and configuration"
@@ -1225,7 +1217,6 @@ evidence:
       symbol_or_section: "Entire file"
       line_start: 1
       line_end: 10
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Release notice, research-harness description, preparation status, project page, and paper link"
     note: "Directly supports repository state and intended project identity."
@@ -1236,7 +1227,6 @@ evidence:
       symbol_or_section: "git ls-tree -r --long HEAD"
       line_start: null
       line_end: null
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "One regular blob: README.md"
     note: "Static Git tree inspection; absence is limited to this exact public snapshot."
@@ -1247,7 +1237,6 @@ evidence:
       symbol_or_section: "Abstract, PDF page 1"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Persistent literature evidence, idea states, implementation plans, ablations, and repair traces in a contract-governed research harness"
     note: "First-party paper claim; not implementation confirmation."
@@ -1258,7 +1247,6 @@ evidence:
       symbol_or_section: "Section 2, Xcientist Architecture Overview, PDF pages 5-6"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Paper Graph Infrastructure, Research Harness, and System User Interface layers"
     note: "Documents intended three-layer architecture and artifact flow."
@@ -1269,7 +1257,6 @@ evidence:
       symbol_or_section: "Section 5 and Appendix A.1, PDF pages 17-26"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "MinerU parsing, three-pass extraction, Semantic Scholar grounding, heterogeneous graph construction, and reported graph counts"
     note: "No corpus, graph, schema, or extraction implementation was inspected."
@@ -1280,7 +1267,6 @@ evidence:
       symbol_or_section: "Section 5 and Appendix A.2, PDF pages 18 and 26-28"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "DeepSurvey graph retrieval, full-text keynotes, clustering, relation analysis, code analysis, citation enforcement, and refinement"
     note: "Supports documented capability, not runtime quality."
@@ -1291,7 +1277,6 @@ evidence:
       symbol_or_section: "Section 5 and Appendix A.3, PDF pages 18 and 28-31"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Idea Taste Modes, structured MCTS, vector and symbolic memory, scoring, constrained fusion, and referee repair"
     note: "No prompts, models, search trees, or evaluations were statically inspected."
@@ -1302,7 +1287,6 @@ evidence:
       symbol_or_section: "Section 5 and Appendix A.4, PDF pages 18-19 and 31-34"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Validator supremacy, worker-validator separation, scoped workspaces, preparation, implementation, smoke tests, standard science, ablations, repair, and convergence"
     note: "Documents high-authority execution as well as intended controls; no runtime was exercised."
@@ -1313,7 +1297,6 @@ evidence:
       symbol_or_section: "Section 5 and Appendix A.5, PDF pages 19 and 34-37"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Composition contract, source fidelity, citation checks, scored audit, repair loop, figures, and workflow checkpoint"
     note: "Supports documented reporting and the boundary that audits are not independent scientific proof."
@@ -1324,7 +1307,6 @@ evidence:
       symbol_or_section: "Appendix A.6, PDF pages 37-39"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Topic-centric frontend, backend orchestration, REST, WebSocket snapshot-stream state, run workspaces, artifacts, events, traces, messages, and approvals"
     note: "No interface source, schema, authentication, or deployed service was inspected."
@@ -1335,7 +1317,6 @@ evidence:
       symbol_or_section: "Appendix A.6.1 and A.6.7-A.6.8, PDF pages 38-40"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Single-host internal scope, relational persistence, local artifact storage, optional containerized stages, and no production distributed-scheduling claim"
     note: "The paper also states that this stack does not solve scientific validity or agent reliability."
@@ -1346,7 +1327,6 @@ evidence:
       symbol_or_section: "Section 3.1, PDF pages 7-8"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Runnable artifacts may fail to preserve enough evidence for the originally claimed mechanism"
     note: "Paper-motivated failure-mode analysis, not independently reproduced."
@@ -1357,7 +1337,6 @@ evidence:
       symbol_or_section: "Sections 3.2-3.4, PDF pages 9-15"
       line_start: null
       line_end: null
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Training-free memory, graph forecasting, and multi-scale PINN case studies with iterative diagnosis, repair, and reported results"
     note: "First-party reported evaluation; experiment workspaces and results were unavailable."

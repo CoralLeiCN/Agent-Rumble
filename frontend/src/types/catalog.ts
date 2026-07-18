@@ -3,7 +3,6 @@ export type RequirementKind = "must" | "prefer" | "avoid";
 import type {
   AgentProjectCard,
   Confidence,
-  EvidenceStatus,
   FieldState,
   VerificationStatus,
 } from "./projectCard";
@@ -23,7 +22,6 @@ export type ComparisonState = "value" | FieldState | "not_present";
 export type ComparisonSemanticKind =
   | "value"
   | "support_status"
-  | "evidence_status"
   | "verification_status"
   | "confidence"
   | "field_state"
@@ -91,7 +89,6 @@ export interface SearchResponse {
 export interface ResolvedEvidence {
   id: string;
   relationship: "supporting" | "conflicting";
-  evidenceStatus: EvidenceStatus;
   confidence: Confidence;
   sourceType: string;
   provenance: string;

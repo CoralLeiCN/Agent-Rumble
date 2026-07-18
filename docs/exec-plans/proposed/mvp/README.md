@@ -127,8 +127,7 @@ The following work already exists:
 * Specified card semantics, exploration workflow, safety boundaries, and MVP
   acceptance criteria.
 * A repository-local Agent Project Card skill packaged as a plugin, an
-  executable v0.2 JSON Schema, migration and validation scripts, and focused
-  tests.
+  executable v0.3 JSON Schema, a validation script, and focused tests.
 * Three validated and published cards—BioAgents, Biomni, and Eigent—with pinned
   Source Snapshots, Claims, Evidence, assessments, relationships, and explicit
   unavailable-value states.

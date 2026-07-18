@@ -93,7 +93,7 @@ canonical Agent Project Card and follow the same analysis and validation rules.
 
 The Agent Project Card skill is versioned in this repository. Direct-plugin and
 hosted-service adapters must select the same released skill version, including
-its packaged analysis contract, schema, migration behavior, and deterministic
+its packaged analysis contract, schema, and deterministic
 validation.
 
 For public marketplace distribution, the same released skill must be packaged

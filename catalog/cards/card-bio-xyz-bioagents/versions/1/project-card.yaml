@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-bio-xyz-bioagents"
 card_version: 1
 
@@ -180,7 +180,6 @@ capabilities:
       bounded conversation history, and invoke a literature-search tool selected
       by the model.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "The /api/chat route and web chat experience"
     interfaces:
       - "HTTP /api/chat"
@@ -217,7 +216,6 @@ capabilities:
       updates hypotheses and research state, reflects on results, proposes next
       steps, and can continue automatically before generating an iteration reply.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "The /api/deep-research route family"
     interfaces:
       - "HTTP /api/deep-research/start"
@@ -256,7 +254,6 @@ capabilities:
       local knowledge-search implementation and returns synthesized text to chat
       or deep-research workflows.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Chat literature tool and deep-research literature tasks"
     interfaces:
       - "Internal literatureAgent TypeScript function"
@@ -290,7 +287,6 @@ capabilities:
       Bio Data Analysis integration and returns textual results, job identifiers,
       reasoning traces, and optional artifacts.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Deep-research ANALYSIS tasks"
     interfaces:
       - "Internal analysisAgent TypeScript function"
@@ -320,7 +316,6 @@ capabilities:
       chunks new documents, stores chunks through Supabase, and searches them
       through the project's vector-search and optional reranking path.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "KNOWLEDGE literature tasks and literature_search source=knowledge"
     interfaces:
       - "Filesystem document directory"
@@ -354,7 +349,6 @@ capabilities:
       contains processing paths for spreadsheets, CSV, Markdown, JSON, text,
       PDF, and common image formats, including PDF text extraction and image OCR.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Direct file APIs, background file processing, and research dataset context"
     interfaces:
       - "HTTP /api/files routes"
@@ -387,7 +381,6 @@ capabilities:
       Provides adapters for OpenAI, Google, Anthropic, and OpenRouter with retry,
       fallback, and token-usage tracking for orchestration-agent calls.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Planning, hypothesis, reflection, reply, and other calls using the shared LLM provider layer"
     interfaces:
       - "Internal LLM TypeScript class"
@@ -416,7 +409,6 @@ capabilities:
       research, file processing, paper generation, and message sweeping, with
       authenticated WebSocket subscriptions for conversation updates.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Production-style queue mode when USE_JOB_QUEUE=true"
     interfaces:
       - "BullMQ and Redis"
@@ -1171,7 +1163,6 @@ evidence:
       symbol_or_section: "BioAgents (Archived) notice"
       line_start: 1
       line_end: 8
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "This repository is archived and no longer maintained."
     note: "First-party lifecycle notice; also redirects users to the separately maintained BIOS product."
@@ -1183,7 +1174,6 @@ evidence:
       symbol_or_section: "Agent Backend / Routes and Agents"
       line_start: 50
       line_end: 119
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Routes, specialized agents, and agent extension instructions"
     note: "Documents the product routes and application-specific agent roles."
@@ -1195,7 +1185,6 @@ evidence:
       symbol_or_section: "State Management and LLM Library"
       line_start: 121
       line_end: 154
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Conversation State is persistent across the entire conversation."
     note: "Documents persistent plans, insights, hypotheses, methodology, and objectives."
@@ -1207,7 +1196,6 @@ evidence:
       symbol_or_section: "System Components"
       line_start: 7
       line_end: 44
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Client, Elysia/Bun API, Redis, Supabase, and worker process"
     note: "First-party architecture description consistent with inspected manifests and source entry points."
@@ -1219,7 +1207,6 @@ evidence:
       symbol_or_section: "Agent Architecture / Deep Research Flow"
       line_start: 46
       line_end: 80
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Planning, literature/analysis, hypothesis, reflection, and reply flow"
     note: "Documents the intended multi-agent control flow."
@@ -1231,7 +1218,6 @@ evidence:
       symbol_or_section: "dependencies, package identity, and scripts"
       line_start: 1
       line_end: 77
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "bioagents-openai-agentkit; Elysia, Preact, Supabase, BullMQ, provider SDKs, and Bun scripts"
     note: "Confirms direct dependency constraints and that the root package is private."
@@ -1243,7 +1229,6 @@ evidence:
       symbol_or_section: "runChatAgent"
       line_start: 78
       line_end: 178
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "runChatAgent"
     note: "Registers the literature tool, requires Anthropic, caps history/context, and invokes the loop."
@@ -1255,7 +1240,6 @@ evidence:
       symbol_or_section: "runAgentLoop"
       line_start: 25
       line_end: 174
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "runAgentLoop"
     note: "Shows streaming and non-streaming model calls, tool_use execution, result reinsertion, token accounting, and the soft cap."
@@ -1267,7 +1251,6 @@ evidence:
       symbol_or_section: "literature_search registration"
       line_start: 21
       line_end: 107
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "registerTool({ name: literature_search, ... })"
     note: "Defines model-facing schema and dispatch to OpenScholar, BioLiterature, or local knowledge."
@@ -1279,7 +1262,6 @@ evidence:
       symbol_or_section: "Planning and concurrent literature task execution"
       line_start: 1192
       line_end: 1397
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "planningAgent; literatureAgent; Promise.all(literaturePromises)"
     note: "Shows planning, plan-state persistence, configured literature sources, and concurrent execution."
@@ -1291,7 +1273,6 @@ evidence:
       symbol_or_section: "Analysis, hypothesis, reflection, and discovery"
       line_start: 1509
       line_end: 1620
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "analysisAgent; hypothesisAgent; Promise.all([reflectionAgent, discoveryAgent])"
     note: "Shows external analysis dispatch, hypothesis updates, and parallel reflection/discovery."
@@ -1303,7 +1284,6 @@ evidence:
       symbol_or_section: "Next planning, continuation decision, and reply"
       line_start: 1671
       line_end: 1802
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "planningAgent(mode=next); continueResearchAgent; replyAgent"
     note: "Shows suggestion persistence, bounded autonomous continuation, and per-iteration reply generation."
@@ -1315,7 +1295,6 @@ evidence:
       symbol_or_section: "literatureAgent"
       line_start: 22
       line_end: 89
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "OPENSCHOLAR, KNOWLEDGE, BIOLIT, BIOLITDEEP, EDISON"
     note: "Confirms supported dispatch values and the direct backend functions called for each."
@@ -1327,7 +1306,6 @@ evidence:
       symbol_or_section: "analysisAgent"
       line_start: 26
       line_end: 101
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "analyzeWithEdison; analyzeWithBio"
     note: "Confirms the two external analysis dispatch paths and returned artifact/reasoning fields."
@@ -1339,7 +1317,6 @@ evidence:
       symbol_or_section: "initKnowledgeBase and searchKnowledge"
       line_start: 12
       line_end: 64
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "VectorSearchWithDocuments"
     note: "Loads documents from KNOWLEDGE_DOCS_PATH and exposes vector-search results as literature output."
@@ -1351,7 +1328,6 @@ evidence:
       symbol_or_section: "VectorSearchWithDocuments.loadDocsOnStartup"
       line_start: 11
       line_end: 126
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "processDirectory; chunkDocument; addDocuments"
     note: "Shows existing-document checks, extraction, chunking, and batched persistence."
@@ -1363,7 +1339,6 @@ evidence:
       symbol_or_section: "DocumentProcessor"
       line_start: 20
       line_end: 106
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Markdown, DOCX, and PDF document extraction"
     note: "Confirms recursive local document processing and format-specific extraction for the knowledge path."
@@ -1375,7 +1350,6 @@ evidence:
       symbol_or_section: "FILE_TYPES"
       line_start: 12
       line_end: 62
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Excel, CSV, Markdown, JSON, text, PDF, and image types"
     note: "Confirms one upload path's supported formats and static limits."
@@ -1387,7 +1361,6 @@ evidence:
       symbol_or_section: "requestUploadUrl"
       line_start: 69
       line_end: 95
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "MAX_UPLOAD_SIZE_BYTES; getStorageProvider"
     note: "Shows server-side size checks and the required S3-compatible storage provider for direct uploads."
@@ -1399,7 +1372,6 @@ evidence:
       symbol_or_section: "parseFilePreview, extractPDFText, and extractImageContent"
       line_start: 110
       line_end: 208
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "PDFParse; Tesseract.createWorker"
     note: "Confirms PDF text extraction and image OCR in the direct file-processing path."
@@ -1411,7 +1383,6 @@ evidence:
       symbol_or_section: "provider adapter imports"
       line_start: 1
       line_end: 9
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "AnthropicAdapter, GoogleAdapter, OpenAIAdapter, OpenRouterAdapter"
     note: "Identifies the direct provider adapter set."
@@ -1423,7 +1394,6 @@ evidence:
       symbol_or_section: "LLM.createAdapter"
       line_start: 237
       line_end: 250
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "openai, google, anthropic, openrouter"
     note: "Confirms runtime dispatch among the four shared LLM adapters."
@@ -1435,7 +1405,6 @@ evidence:
       symbol_or_section: "BullMQ queue definitions"
       line_start: 24
       line_end: 154
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "chat, deep-research, and file-process queues"
     note: "Shows lazy queue creation, Redis connections, retry/backoff, and retention policies."
@@ -1447,7 +1416,6 @@ evidence:
       symbol_or_section: "websocketHandler"
       line_start: 103
       line_end: 245
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "/api/ws authentication and conversation subscription"
     note: "Shows first-message authentication, JWT verification, conversation ownership lookup, and subscription state."
@@ -1459,7 +1427,6 @@ evidence:
       symbol_or_section: "app startup and Redis subscription"
       line_start: 350
       line_end: 408
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "startRedisSubscription when job queue is enabled"
     note: "Confirms queue-mode WebSocket bridge startup and in-process fallback behavior."
@@ -1471,7 +1438,6 @@ evidence:
       symbol_or_section: "Elysia middleware and security headers"
       line_start: 70
       line_end: 129
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "CORS origin validation and response security headers"
     note: "Static controls only; this evidence is not a security audit or runtime verification."
@@ -1483,7 +1449,6 @@ evidence:
       symbol_or_section: "API and Redis services"
       line_start: 19
       line_end: 171
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "bioagents API, migrations, environment, health check, and Redis"
     note: "Confirms production-oriented Compose configuration; it was not deployed."
@@ -1495,7 +1460,6 @@ evidence:
       symbol_or_section: "test and integration jobs"
       line_start: 34
       line_end: 112
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "bun run typecheck; bun test; Supabase and Redis integration"
     note: "Confirms CI configuration, not historical pass status."
@@ -1507,7 +1471,6 @@ evidence:
       symbol_or_section: "callAnthropicWithSkills"
       line_start: 43
       line_end: 50
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "allowedTools: [Skill, Read, Grep, Bash]"
     note: "The helper's explicit permission surface is confirmed; reachability, isolation, and production use were not."

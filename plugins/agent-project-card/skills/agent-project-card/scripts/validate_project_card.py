@@ -313,9 +313,6 @@ def semantic_errors(card: dict[str, Any]) -> list[str]:
             "evidence",
             errors,
         )
-        if capability.get("evidence_status") != "not_found" and not capability.get("evidence_refs"):
-            errors.append(f"{base}/evidence_refs: capability requires evidence unless status is not_found")
-
     for index, component in enumerate(components):
         check_references(
             component.get("claim_ids"),

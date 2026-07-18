@@ -223,7 +223,6 @@ class _IndexField:
     claim_ids: tuple[str, ...] = ()
     evidence_ids: tuple[str, ...] = ()
     capability_support_status: str | None = None
-    evidence_status: str | None = None
     confidence: str | None = None
     field_state: str | None = None
 
@@ -279,7 +278,7 @@ class CatalogService:
                 "projects available in this deployment."
             ),
             coverage=[
-                "Validated canonical Agent Project Card schema v0.2 artifacts",
+                "Validated canonical Agent Project Card schema v0.3 artifacts",
                 "Static analysis at pinned public source snapshots",
                 "Python and TypeScript agent projects and supporting components",
             ],
@@ -619,11 +618,6 @@ class CatalogService:
                         evidence_ids,
                         str(support_status) if support_status is not None else None,
                         (
-                            str(capability.get("evidence_status"))
-                            if capability.get("evidence_status") is not None
-                            else None
-                        ),
-                        (
                             str(capability.get("confidence"))
                             if capability.get("confidence") is not None
                             else None
@@ -669,7 +663,6 @@ class CatalogService:
                 field.claim_ids,
                 tuple(_dedupe((*field.evidence_ids, *self._evidence_for_claims(document, field.claim_ids)))),
                 field.capability_support_status,
-                field.evidence_status,
                 field.confidence,
                 field.field_state,
             )
@@ -768,7 +761,6 @@ class CatalogService:
                         claim_ids=list(field.claim_ids),
                         evidence_ids=list(field.evidence_ids),
                         capability_support_status=field.capability_support_status,
-                        evidence_status=field.evidence_status,
                         confidence=field.confidence,
                         field_state=field.field_state,
                     ),
@@ -850,7 +842,6 @@ class CatalogService:
             claim_ids = list(default_claims)
             evidence_ids: list[str] = []
             capability_support_status: str | None = None
-            evidence_status: str | None = None
             confidence: str | None = None
             field_state: str | None = None
             if dimension == "capabilities":
@@ -873,8 +864,6 @@ class CatalogService:
                     evidence_ids = _string_list(capability.get("evidence_refs"))
                     if capability.get("support_status") is not None:
                         capability_support_status = str(capability.get("support_status"))
-                    if capability.get("evidence_status") is not None:
-                        evidence_status = str(capability.get("evidence_status"))
                     if capability.get("confidence") is not None:
                         confidence = str(capability.get("confidence"))
                     candidate_state = _mapping(document.get("field_states")).get(
@@ -894,7 +883,6 @@ class CatalogService:
                     claim_ids=claim_ids,
                     evidence_ids=evidence_ids,
                     capability_support_status=capability_support_status,
-                    evidence_status=evidence_status,
                     confidence=confidence,
                     field_state=field_state,
                 )
@@ -1263,7 +1251,6 @@ class CatalogService:
         claim_ids: Sequence[str],
         *,
         capability_support_status: str | None = None,
-        evidence_status: str | None = None,
         confidence: str | None = None,
     ) -> ComparisonCell:
         field_state = _mapping(document.get("field_states")).get(pointer)
@@ -1272,7 +1259,6 @@ class CatalogService:
             return ComparisonCell(
                 state=field_state,
                 capability_support_status=capability_support_status,
-                evidence_status=evidence_status,
                 claim_verification_status=(
                     str(first_claim.get("verification_status")) if first_claim else None
                 ),
@@ -1296,7 +1282,6 @@ class CatalogService:
             state="value",
             value=value,
             capability_support_status=capability_support_status,
-            evidence_status=evidence_status,
             claim_verification_status=(
                 str(first_claim.get("verification_status")) if first_claim else None
             ),
@@ -1343,7 +1328,6 @@ class CatalogService:
                 if capability.get("support_status") is not None
                 else None
             ),
-            evidence_status=str(capability.get("evidence_status")),
             confidence=str(capability.get("confidence")),
         )
         return cell.model_copy(

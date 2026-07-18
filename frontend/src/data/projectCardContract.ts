@@ -1,7 +1,7 @@
 import projectCardSchemaJson from "../../../plugins/agent-project-card/skills/agent-project-card/references/project-card.schema.json";
 import type { ComparisonValueKind } from "../types/catalog";
 
-export const SUPPORTED_PROJECT_CARD_SCHEMA_VERSION = "0.2" as const;
+export const SUPPORTED_PROJECT_CARD_SCHEMA_VERSION = "0.3" as const;
 
 interface JsonSchemaNode {
   $ref?: string;

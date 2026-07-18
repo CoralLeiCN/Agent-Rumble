@@ -67,7 +67,6 @@ plugins/agent-project-card/
         │   ├── analysis-contract.md
         │   └── project-card.schema.json
         └── scripts/
-            ├── migrate_v01_card.py
             └── validate_project_card.py
 ```
 
@@ -97,8 +96,6 @@ Responsibilities:
   used by both access modes. It should be generated or copied during packaging
   from the product's canonical schema artifact and checked by digest so it is
   not a separately maintained source of truth.
-* `scripts/migrate_v01_card.py` upgrades a stakeholder-schema v0.1 card without
-  guessing information lost through empty values or compact evidence statuses.
 * `scripts/validate_project_card.py` performs deterministic structural and
   semantic validation before Codex returns a card.
 
@@ -126,7 +123,7 @@ The skill should guide Codex through the following stages:
 4. Collect user-meaningful capabilities, direct architectural technologies,
    components, usage information, relationships, and assessment signals.
 5. Create stable claims, sources, and precise evidence records; keep confidence,
-   verification, capability support, and v0.1 compatibility status distinct.
+   verification, and capability support distinct.
 6. Synthesize `project-card.yaml` using the current schema, record card and
    schema versions independently, and populate explicit field states rather
    than leaving unavailable values ambiguous.
@@ -136,7 +133,7 @@ The skill should guide Codex through the following stages:
 8. Generate the human-readable Card Summary and evidence view only from the
    validated canonical card.
 
-### Schema Validation and Migration
+### Schema Validation
 
 Validation should have two layers:
 
@@ -147,13 +144,6 @@ Validation should have two layers:
   dangling, assessments identify a context, static analysis is not labeled
   runtime verification, direct technologies are distinguished from transitive
   dependencies, and unavailable fields have an explicit state.
-
-The v0.1 migration path should preserve every supplied field that has a direct
-v0.2 representation. It should map the v0.1 top-level groups to their v0.2
-counterparts, split inline evidence claims into claim and evidence records, and
-emit warnings for lossy conversions. In particular, it should map empty values
-to `unknown`, retain `evidence_status` as a compatibility projection, and never
-infer runtime verification from `confirmed`.
 
 ### Intake
 

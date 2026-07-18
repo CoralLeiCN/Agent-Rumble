@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import {
   comparisonStatePresentation,
   confidencePresentation,
-  evidenceStatusPresentation,
   supportStatusPresentation,
   verificationPresentation,
 } from "../status/statusPresentation";
@@ -15,7 +14,6 @@ import type {
 } from "../types/catalog";
 import type {
   Confidence,
-  EvidenceStatus,
   FieldState,
   SupportStatus,
   VerificationStatus,
@@ -66,9 +64,6 @@ function semanticValue(row: ComparisonRow, value: ComparisonJsonValue) {
   if (row.semanticKind === "support_status" && isKeyOf(value, supportStatusPresentation)) {
     return <SemanticBadge {...supportStatusPresentation[value as SupportStatus]} />;
   }
-  if (row.semanticKind === "evidence_status" && isKeyOf(value, evidenceStatusPresentation)) {
-    return <SemanticBadge {...evidenceStatusPresentation[value as EvidenceStatus]} />;
-  }
   if (row.semanticKind === "verification_status" && isKeyOf(value, verificationPresentation)) {
     return <SemanticBadge {...verificationPresentation[value as VerificationStatus]} />;
   }
@@ -109,7 +104,6 @@ function ContractValue({
   );
   const exposesClaimLink = cell.claimIds.length > 0 && (
     row.semanticKind === "support_status"
-    || row.semanticKind === "evidence_status"
     || row.semanticKind === "verification_status"
     || row.semanticKind === "claim_reference"
     || /\/(?:statement|name|description|maturity)$/.test(row.fieldPattern)

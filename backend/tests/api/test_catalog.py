@@ -145,7 +145,7 @@ def test_catalog_context_exposes_declared_scope_and_freshness(client: TestClient
     body = response.json()
     assert body["catalog_id"] == "agent-rumble-public-catalog"
     assert body["card_count"] == 3
-    assert body["schema_versions"] == ["0.2"]
+    assert body["schema_versions"] == ["0.3"]
     assert body["oldest_analyzed_at"] <= body["newest_analyzed_at"]
     assert any("Universal project quality scoring" in value for value in body["exclusions"])
 
@@ -366,7 +366,7 @@ def test_evidence_resolves_claim_source_revision_locator_and_pinned_url(
 
 def test_unsafe_evidence_locator_never_becomes_a_source_url() -> None:
     document = {
-        "schema_version": "0.2",
+        "schema_version": "0.3",
         "card_id": "card-test",
         "card_version": 1,
         "field_states": {},
@@ -415,7 +415,7 @@ def test_unsafe_evidence_locator_never_becomes_a_source_url() -> None:
         card_id="card-test",
         card_version=1,
         project_id="project-test",
-        schema_version="0.2",
+        schema_version="0.3",
         document=freeze_value(document),
         source_path=Path("project-card.yaml"),
         content_sha256="0" * 64,
@@ -641,7 +641,7 @@ def test_search_uses_context_for_relevance_and_context_bounds_assessments(
     )
 
 
-def test_capability_match_preserves_independent_statuses_and_claimless_match_stays_null(
+def test_capability_match_preserves_support_confidence_and_claimless_match_stays_null(
     catalog_snapshot: CatalogSnapshot,
 ) -> None:
     document = _eigent_clone(
@@ -651,7 +651,6 @@ def test_capability_match_preserves_independent_statuses_and_claimless_match_sta
     )
     capability = document["capabilities"][0]  # type: ignore[index]
     capability["support_status"] = None
-    capability["evidence_status"] = "documented_only"
     capability["confidence"] = "low"
     document["field_states"]["/capabilities/0/support_status"] = "unknown"  # type: ignore[index]
     app = create_app(catalog_snapshot=CatalogSnapshot((_card_from_document(document),)))
@@ -669,7 +668,6 @@ def test_capability_match_preserves_independent_statuses_and_claimless_match_sta
     assert capability_match.status_code == 200
     reason = capability_match.json()["projects"][0]["match_reasons"][0]
     assert reason["capability_support_status"] is None
-    assert reason["evidence_status"] == "documented_only"
     assert reason["confidence"] == "low"
     assert reason["field_state"] == "unknown"
     assert reason["claim_ids"] == capability["claim_ids"]
@@ -706,7 +704,6 @@ def test_capability_match_preserves_independent_statuses_and_claimless_match_sta
         and row["cells"]["project-status-test"]["state"] == "unknown"
     )
     assert capability_cell.get("capability_support_status") is None
-    assert capability_cell["evidence_status"] == "documented_only"
     assert capability_cell["confidence"] == "low"
     assert capability_cell["claim_verification_status"] == "statically_confirmed"
     assert capability_cell["claim_ids"] == capability["claim_ids"]

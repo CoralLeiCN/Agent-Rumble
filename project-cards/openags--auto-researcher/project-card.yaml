@@ -1,4 +1,4 @@
-schema_version: "0.2"
+schema_version: "0.3"
 card_id: "card-openags-auto-researcher"
 card_version: 1
 
@@ -184,7 +184,6 @@ capabilities:
       modules through DIRECTIVE.md and STATUS.md files, timeouts, session reuse,
       provider dispatch, pause/resume, intervention, and completion handling.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "CLI-provider workflow path in the Node.js orchestrator"
     interfaces:
       - "Workflow WebSocket"
@@ -219,7 +218,6 @@ capabilities:
       skills, manuscript editors, PDF views, and workflow state through Electron
       or a browser connected to a local server.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Electron/React frontend and Node.js application server"
     interfaces:
       - "Electron desktop window"
@@ -248,7 +246,6 @@ capabilities:
       shared WebSocket writer with session creation, resume, tool events, token
       reporting, completion, and abort operations.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Node.js provider adapters and chat WebSocket"
     interfaces:
       - "Claude Agent SDK"
@@ -278,7 +275,6 @@ capabilities:
       Provides REST routes for arXiv and Semantic Scholar search, paper metadata,
       citation and reference retrieval, BibTeX parsing, and citation verification.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Node.js research routes and tools"
     interfaces:
       - "REST API"
@@ -304,7 +300,6 @@ capabilities:
       memory, CPU, timeout, network, and workspace settings, and also provides an
       SSH execution adapter for remote compute.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "ExperimentEngine and SSH adapter"
     interfaces:
       - "Docker daemon through dockerode"
@@ -332,7 +327,6 @@ capabilities:
       Discovers and edits SKILL.md and SOUL.md files, scaffolds skills, and uses
       project folders plus role and status files as the research-agent boundary.
     support_status: statically_confirmed
-    evidence_status: confirmed
     scope: "Skills routes, bundled skills, and project templates"
     interfaces:
       - "REST skill and file-management routes"
@@ -1188,7 +1182,6 @@ evidence:
       symbol_or_section: "OpenAGS introduction"
       line_start: 3
       line_end: 26
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Describes autonomous scientific research from literature review through manuscript writing and a multi-agent desktop workspace."
     note: "First-party product description; autonomy and quality were not runtime verified."
@@ -1199,7 +1192,6 @@ evidence:
       symbol_or_section: "Quick Start, Architecture, and Project Structure"
       line_start: 39
       line_end: 158
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Documents Electron/browser launch, React UI, Node.js server, provider chat, terminal, workflow, APIs, research services, and monorepo layout."
     note: "Documentation is consistent with representative implementation files."
@@ -1210,7 +1202,6 @@ evidence:
       symbol_or_section: "package manifest"
       line_start: 1
       line_end: 56
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "@openags/app 0.0.6 with Claude and Codex SDKs, Express, Dockerode, node-pty, SSH2, WebSocket, and Zod dependencies."
     note: "Direct application-server manifest evidence."
@@ -1221,7 +1212,6 @@ evidence:
       symbol_or_section: "root workspace manifest"
       line_start: 1
       line_end: 26
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "openags 0.0.4 private workspace with TypeScript ^5.6.0, pnpm 9.15.0, and Node.js >=20.0.0."
     note: "Direct root manifest evidence."
@@ -1232,7 +1222,6 @@ evidence:
       symbol_or_section: "desktop package manifest"
       line_start: 1
       line_end: 73
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "@openags/desktop 0.0.6 with React ^19.0.0, Electron 33.4.11, provider SDKs, terminal, and desktop packaging dependencies."
     note: "Direct desktop manifest evidence."
@@ -1243,7 +1232,6 @@ evidence:
       symbol_or_section: "createServer and WebSocket registration"
       line_start: 436
       line_end: 528
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Registers wildcard CORS, REST routers, static files, and unauthenticated Shell, Chat, and Workflow WebSocket upgrades."
     note: "The standard entry point binds this server to 127.0.0.1."
@@ -1254,7 +1242,6 @@ evidence:
       symbol_or_section: "handleChatConnection"
       line_start: 223
       line_end: 321
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Routes chat, abort, provider-config, and sync messages to Claude, Codex, or Gemini adapters."
     note: "Static routing evidence."
@@ -1265,7 +1252,6 @@ evidence:
       symbol_or_section: "createProjectRoutes"
       line_start: 23
       line_end: 147
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Implements project list, get, create from template, stage update, delete, module discovery, and template list endpoints."
     note: "Static implementation evidence."
@@ -1276,7 +1262,6 @@ evidence:
       symbol_or_section: "WorkflowOrchestrator lifecycle and file watchers"
       line_start: 1
       line_end: 185
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Initializes fixed research roles, recovers stale state, watches status/directive files, applies dispatch locks, and handles timeouts."
     note: "Static implementation; no workflow was run."
@@ -1287,7 +1272,6 @@ evidence:
       symbol_or_section: "dispatchViaChat and dispatchCli"
       line_start: 267
       line_end: 356
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Routes builtin or CLI dispatch, reuses per-module sessions, sets cwd, requests bypassPermissions, and selects Claude, Codex, or Gemini."
     note: "Broad permission mapping is confirmed further in provider sources."
@@ -1298,7 +1282,6 @@ evidence:
       symbol_or_section: "parseStatusMd and parseDirectiveMd"
       line_start: 86
       line_end: 249
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Parses terminal status, failure, task, acceptance, context, upstream data, dependencies, decisions, and atomically writes state files."
     note: "The parser includes layered fallbacks for malformed status content."
@@ -1309,7 +1292,6 @@ evidence:
       symbol_or_section: "dispatchBuiltin"
       line_start: 293
       line_end: 320
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Calls POST http://127.0.0.1:19836/api/agents/{projectId}/chat for builtin execution."
     note: "Confirms that the builtin workflow branch depends on a separate agent chat route."
@@ -1320,7 +1302,6 @@ evidence:
       symbol_or_section: "createServer REST route registration"
       line_start: 470
       line_end: 487
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Registers auth, project, research, config, skill, workflow, reference, version, and manuscript routers, but no /api/agents router."
     note: "Supports the bounded conclusion that the analyzed TypeScript server does not implement the route used by dispatchBuiltin."
@@ -1331,7 +1312,6 @@ evidence:
       symbol_or_section: "queryClaudeSDK"
       line_start: 76
       line_end: 166
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Creates a Claude Agent SDK query with Claude Code tools, session resume, optional bypassPermissions, streamed tool events, usage, and abort tracking."
     note: "Provider runtime was not executed."
@@ -1342,7 +1322,6 @@ evidence:
       symbol_or_section: "queryCodex"
       line_start: 17
       line_end: 105
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Starts or resumes Codex threads, maps bypassPermissions to danger-full-access with never approvals, streams agent, command, MCP, and usage events."
     note: "Provider runtime was not executed."
@@ -1353,7 +1332,6 @@ evidence:
       symbol_or_section: "spawnGemini and abortGeminiSession"
       line_start: 32
       line_end: 258
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Builds Gemini CLI stream-json arguments, maps resume and approval modes, parses text/tool/result events, enforces an inactivity timeout, cleans temporary images, and exposes abort."
     note: "Static adapter evidence; the Gemini CLI was not executed."
@@ -1364,7 +1342,6 @@ evidence:
       symbol_or_section: "createResearchRoutes"
       line_start: 16
       line_end: 164
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Registers arXiv, Semantic Scholar, citation verification, batch verification, and BibTeX parsing endpoints."
     note: "External service responses were not queried."
@@ -1375,7 +1352,6 @@ evidence:
       symbol_or_section: "ExperimentEngine"
       line_start: 12
       line_end: 249
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Configures Docker image, command, memory, CPU, timeout, network, read-write workspace bind, no-new-privileges, image pull, cleanup, and Python/shell helpers."
     note: "Static configuration evidence; the Docker daemon was not contacted."
@@ -1386,7 +1362,6 @@ evidence:
       symbol_or_section: "SSHExecutor and sshExec"
       line_start: 9
       line_end: 220
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Implements password or key SSH connection, command execution with timeout, upload, download, script execution, filesystem helpers, and one-shot cleanup."
     note: "Static adapter evidence; no remote host was contacted."
@@ -1397,7 +1372,6 @@ evidence:
       symbol_or_section: "Skills routes and discovery"
       line_start: 41
       line_end: 406
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Implements SKILL.md list/read/scaffold/file operations and recursive SKILL.md and SOUL.md discovery with YAML frontmatter parsing."
     note: "Source skill content was not executed or treated as instruction."
@@ -1408,7 +1382,6 @@ evidence:
       symbol_or_section: "createAuthRoutes"
       line_start: 76
       line_end: 192
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "Implements register/login token issuance and validates bearer tokens only in /auth/me; logout conditionally invalidates them."
     note: "No general authentication middleware is exported or registered in server.ts."
@@ -1419,7 +1392,6 @@ evidence:
       symbol_or_section: "main"
       line_start: 23
       line_end: 35
-    evidence_status: confirmed
     confidence: high
     excerpt_or_symbol: "The standard application-server entry point listens on 127.0.0.1 at the configured port."
     note: "Confirms the default loopback boundary; imported createServer callers may choose a different bind."
@@ -1430,7 +1402,6 @@ evidence:
       symbol_or_section: "CI jobs"
       line_start: 1
       line_end: 72
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "Defines lint/typecheck, test, and dependent build jobs with Node.js 20 and frozen pnpm lockfile installation."
     note: "Workflow definition only; historical run status was not inspected."
@@ -1441,7 +1412,6 @@ evidence:
       symbol_or_section: "MIT License"
       line_start: 1
       line_end: 20
-    evidence_status: documented_only
     confidence: high
     excerpt_or_symbol: "MIT License for the repository source."
     note: "First-party license text; no legal interpretation is made."
