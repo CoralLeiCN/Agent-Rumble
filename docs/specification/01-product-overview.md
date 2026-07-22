@@ -143,8 +143,12 @@ Each documentation area has one responsibility:
 * The deferred backlog records requested capabilities and implementation work
   that stakeholders have deliberately postponed, without replacing their source
   requirements or decisions.
-* The roadmap records broader possible future directions that are not active
-  requirements or explicitly deferred commitments.
+
+The repository does not maintain a standalone product roadmap. Useful
+future-facing information is retained in the existing documentation area that
+matches its purpose and authority. Its placement does not make a proposal an
+active requirement, normative product behavior, deferred commitment, or
+accepted architecture decision.
 
 When a requirement mandates a technology, the requirement remains the source of
 that constraint. An architecture decision may reference the mandate as context

@@ -1,15 +1,16 @@
 # Backend Catalog Vertical Slice Plan
 
 **Status:** Active — catalog API and frontend HTTP integration implemented;
-comparison-corpus and release gates remain
+shared-context comparison corpus and release gates remain
 
 **Date:** 2026-07-18
 
 This plan delivers the Agent Rumble backend's first-release catalog experience.
-It publishes the validated BioAgents, Biomni, and Eigent cards to the accepted
-YAML-first service catalog under `catalog/cards/`. Agent Project Card as a
-Service is an active product path, but its repository-submission and on-demand
-generation work is outside this catalog-specific slice.
+It publishes every validated preprocessed card to the accepted YAML-first
+service catalog under `catalog/cards/`; the current catalog contains eleven
+cards. Agent Project Card as a Service is an active product path, but its
+repository-submission and on-demand generation work is outside this
+catalog-specific slice.
 
 The plan implements the catalog access required by the
 [requirements](../../requirements.md#catalog-first-discovery-and-comparison),

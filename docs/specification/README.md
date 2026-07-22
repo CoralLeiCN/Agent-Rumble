@@ -11,9 +11,9 @@ This folder contains the normative product specification and this file is its
 navigable entry point. The specification defines the product behavior that
 satisfies the recorded requirements and traces that behavior back to requirement
 topics. It does not originate stakeholder requirements or make proposed designs
-and delivery plans binding. Technical approaches, delivery plans, roadmap
-proposals, deferred backlog entries, and unresolved decisions are maintained
-separately so they do not silently become product requirements.
+and delivery plans binding. Technical approaches, delivery plans, deferred
+backlog entries, and unresolved decisions are maintained separately so they do
+not silently become product requirements.
 
 ## Specification Files
 
@@ -32,7 +32,6 @@ separately so they do not silently become product requirements.
 * [`Technical Risks and Mitigations`](../design-docs/risks-and-mitigations.md) records design risks and proposed responses.
 * [`Parallel MVP Execution Plan`](../exec-plans/proposed/mvp/README.md) is a proposed plan rather than an active product commitment.
 * [`Deferred Backlog`](../backlog.md) records requested work that has been explicitly postponed.
-* [`Product Roadmap`](../roadmap.md) contains possible post-MVP capabilities.
 * [`Open Decisions`](../open-decisions.md) records choices that remain unresolved.
 
 ## Requirement Traceability

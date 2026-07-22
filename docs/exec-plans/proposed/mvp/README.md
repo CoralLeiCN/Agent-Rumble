@@ -24,13 +24,12 @@ start only after the responsible decision is accepted and recorded.
    runs the cohort checks, and publishes the next checkpoint.
 5. Do not dispatch the next cohort until its entry condition is satisfied.
 
-## Immediate Dispatch
+## Current Focused Slice
 
-The first backend implementation should follow the proposed
-[Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md).
-It can publish the validated BioAgents example into the accepted YAML-first
-`catalog/cards/` layout without waiting for the repository-analysis pipeline or
-the hosted-service packet.
+The [Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md)
+has delivered the initial YAML-first catalog, catalog API, and frontend HTTP
+integration. Eleven validated cards are published under `catalog/cards/`
+without depending on the repository-analysis pipeline or hosted-service packet.
 
 The DEC, FND, CORE, and ANA cohorts below remain the broader plan for completing
 operator-managed preprocessing and the shared card-generation capability. The
@@ -155,6 +154,11 @@ multi-project architecture generation, automated commercial conclusions, full
 knowledge-graph implementation, and organization-wide access control.
 
 ## Critical Path
+
+Steps 1 through 3, deterministic search and the backend comparison operation in
+step 5, and the HTTP integration foundation in step 6 are implemented. The
+shared-context comparison-data gate in step 4 and the remaining frontend
+alignment described below are not complete.
 
 1. Align the executable card contract with typed backend settings and models.
 2. Publish the validated BioAgents example and load the accepted versioned

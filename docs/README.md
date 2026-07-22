@@ -40,8 +40,6 @@ The central distinction is:
   implementation work that stakeholders have explicitly postponed. It records
   delivery status without replacing requirements or decisions and does not
   authorize implementation.
-* [Product roadmap](roadmap.md) records broader possible future directions that
-  are not active requirements or explicitly deferred commitments.
 * [Open decisions](open-decisions.md) records unresolved product choices without
   silently deciding them.
 * [Writing guidelines](writing_guidelines.md) define how requirements and chat
@@ -50,5 +48,7 @@ The central distinction is:
   building stories and how we build.
 
 No project story, backlog entry, design document, architecture decision,
-execution plan, roadmap item, or open decision may override an active
-requirement or silently expand the product specification.
+execution plan, or open decision may override an active requirement or silently
+expand the product specification. The repository does not maintain a standalone
+product roadmap; useful future-facing information belongs in the existing area
+appropriate to its purpose and authority.

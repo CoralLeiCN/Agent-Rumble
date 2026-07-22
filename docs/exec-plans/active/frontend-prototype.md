@@ -54,7 +54,7 @@ standalone primary sections.
 
 The packaged Agent Project Card structural and semantic validation passes for
 all prototype fixtures. Frontend type checking, behavior tests, and the
-production build also pass. Twenty-one behavior tests verify every reachable
+production build also pass. The behavior tests verify every reachable
 scalar, explicit null, primitive collection, and known-empty container; shared
 fields; all four formal non-value states; and runtime discovery of an added
 property without a presentation whitelist. They also verify schema-derived

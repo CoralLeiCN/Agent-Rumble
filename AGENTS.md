@@ -119,9 +119,10 @@ Place information according to the responsibility defined in
   explicitly defer in `docs/backlog.md`. A backlog entry records delivery status
   without replacing its source requirement or accepted decision and does not
   authorize implementation.
-* Put unresolved product choices in `docs/open-decisions.md` and possible future
-  directions that are neither active requirements nor explicitly deferred
-  commitments in `docs/roadmap.md`.
+* Put unresolved product choices in `docs/open-decisions.md`.
+* Do not maintain a standalone product roadmap. Preserve useful future-facing
+  information in the existing documentation area appropriate to its purpose and
+  authority.
 
 Use links instead of copying normative content between documentation areas. A
 short contextual restatement is allowed only when its source remains explicit.

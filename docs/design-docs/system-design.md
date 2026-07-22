@@ -281,6 +281,31 @@ The YAML-derived search path supports:
 Embedding generation, vector storage, and semantic ranking are deferred to the
 [backlog](../backlog.md#semantic-and-vector-search).
 
+### Possible Post-MVP Projections
+
+The following projections are possible extensions to the canonical card and
+catalog design. They are proposals only and do not expand the active product
+scope.
+
+A **project relationship graph** could project the typed,
+Source-Snapshot-scoped relationships already defined by the
+[Agent Project Card specification](../specification/04-card-schema-and-outputs.md#1218-comparable-projects).
+If later requirements call for it, the relationship vocabulary could be
+extended to represent forks and ecosystem relationships that cannot be
+expressed as dependencies, integrations, or comparable projects.
+
+A **change-intelligence projection** could classify the differences already
+produced by the
+[refresh and change-tracking behavior](../specification/05-system-behavior-and-quality.md#refresh-and-change-tracking),
+including new capabilities, breaking changes, removed features, dependency and
+license changes, maintenance decline, and security-relevant changes.
+
+A **landscape and GTM projection** could support cross-project analysis of
+category position, differentiation, competitive strengths, adoption barriers,
+ecosystem opportunities, and potential partnerships. Any such assessment would
+remain contextual and evidence-backed rather than becoming a universal score or
+definitive commercial recommendation.
+
 ### Initial Agent Technology Stack
 
 The [Core Tool and Access](../requirements.md#core-tool-and-access) and
@@ -392,5 +417,8 @@ Purpose:
 * Validate API claims
 * Capture errors
 * Measure basic operational characteristics
+
+A later extension could also run project test suites and benchmarks within the
+authorized isolated environment.
 
 Dynamic analysis should not be part of the first MVP.

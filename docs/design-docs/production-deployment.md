@@ -200,6 +200,16 @@ Controls include:
 * Store secrets through provider secret management rather than source control or
   image build arguments.
 
+### Possible Organization-Specific Projections
+
+A later private deployment could derive organization-specific card extensions
+or projections containing internal approval status and ownership,
+security-review status, existing deployments, internal expertise, procurement
+status, and preferred alternatives. This is a proposal, not active product
+scope. Organization-specific information must remain isolated from public cards
+and shared indexes in accordance with the [privacy
+specification](../specification/05-system-behavior-and-quality.md#privacy).
+
 Supabase Auth supports social authentication and Postgres row-level security:
 [Supabase Auth](https://supabase.com/docs/guides/auth). Render supports secret
 environment variables and environment groups:

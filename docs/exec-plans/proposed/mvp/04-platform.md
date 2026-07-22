@@ -1,6 +1,8 @@
 # PLAT — Catalog-Platform, Hosted-Service, and Experience Cohort
 
-**Status:** Proposed — revised for catalog-first delivery
+**Status:** Active — PLAT-1 through PLAT-3 are implemented; the PLAT-4 API is
+implemented but its shared-context data gate remains; PLAT-5 is partially
+implemented; PLAT-6 through PLAT-8 remain
 
 **Plan index:** [Parallel MVP Execution Plan](README.md)
 
@@ -14,12 +16,20 @@ YAML-first card store and disposable in-memory basic search; they do not accept
 a Git repository link, start an interactive analysis job, or invoke Codex in a
 catalog request. PLAT-8 owns that behavior for Agent Project Card as a Service.
 
+## Current Progress
+
+The repository contains eleven validated cards in the accepted YAML catalog,
+typed catalog context, retrieval, evidence, deterministic search, and contextual
+comparison APIs, and an HTTP-only React catalog adapter. The frontend currently
+derives its exhaustive comparison locally from pinned canonical cards instead
+of consuming the backend comparison response, so PLAT-5 remains partial.
+
 ## Entry Condition
 
 The catalog foundation may begin when at least one canonical card validates
 through the repository-local skill's executable schema and semantic validator.
-The existing BioAgents example satisfies that condition for publication,
-loader, retrieval, and evidence work.
+The eleven-card catalog satisfies that condition for publication, loader,
+retrieval, evidence, and representative search work.
 
 Additional gates apply by packet:
 

@@ -12,7 +12,7 @@ not create product scope or accept unresolved architecture choices.
 
 Deliver one trustworthy end-to-end loop:
 
-> Describe a need, inspect how it was interpreted, shortlist three projects,
+> Describe a need, inspect how it was interpreted, shortlist two or three projects,
 > compare decision-changing differences, and open the precise evidence behind a
 > consequential claim.
 
@@ -22,9 +22,12 @@ comparison, and evidence viewing do not invoke an AI model.
 ## Current State
 
 * A local Vite, React, and TypeScript implementation provides the Explore,
-  shortlist, comparison, and evidence flow behind one six-operation catalog
-  gateway. Its tooling and in-app navigation remain reversible prototype
-  choices rather than accepted production architecture.
+  shortlist, comparison, and evidence flow through an HTTP catalog gateway.
+  The gateway currently calls backend search, pinned-card, and evidence
+  operations, while exhaustive contract-field comparison is derived in the
+  frontend from the pinned canonical cards. Its tooling and in-app navigation
+  remain reversible prototype choices rather than accepted production
+  architecture.
 * FastAPI exposes catalog context, deterministic search, current and versioned
   cards, evidence, and contextual comparison under `/api/v1`.
 * Eleven real schema-v0.3 cards validate and are published through the accepted
@@ -32,8 +35,9 @@ comparison, and evidence viewing do not invoke an AI model.
   and field-state dimensions.
 * `HttpCatalogGateway` maps the FastAPI contract into frontend types and is the
   only runtime catalog adapter.
-* Illustrative fixtures are restricted to isolated frontend tests and are not
-  available as a browser runtime catalog.
+* Illustrative catalog fixtures are restricted to isolated frontend tests and
+  are not available as a browser runtime catalog. Rumble Arena separately
+  retains a clearly labelled prepared-matchup fallback.
 
 ## Scope
 
@@ -42,7 +46,7 @@ comparison, and evidence viewing do not invoke an AI model.
 * Prepared customer-support architecture query
 * Visible `Must`, `Prefer`, and `Avoid` requirement interpretation
 * Explainable catalog results
-* Three-project shortlist
+* Two-or-three-project shortlist
 * Contextual, difference-first comparison
 * One excellent claim-to-evidence inspection path
 * Complete backend catalog access for local end-to-end testing
@@ -132,9 +136,9 @@ The proposed hosting stack in
 [Production Deployment](../../design-docs/production-deployment.md) also remains
 unaccepted until recorded as a decision.
 
-## Data Boundary
+## Target Production Data Boundary
 
-All catalog access sits behind one interface:
+The proposed production frontend keeps all catalog access behind one interface:
 
 ```ts
 interface CatalogGateway {
@@ -205,11 +209,13 @@ The comparison projection also states the Assessment Context, project-role
 relationships, material differences, shared attributes, and proof-of-concept
 questions. The frontend may group or format rows but must not invent a winner.
 
-## Fixture Gate
+## Comparison Data Gate
 
-Validated fixtures are the first delivery dependency, not placeholder copy.
+The catalog now contains eleven validated canonical cards. They do not share one
+coherent Assessment Context, and the prepared Rumble comparison covers two
+projects, so the three-project comparison-data gate remains open.
 
-Prepare three canonical cards that:
+Select at least three canonical cards that:
 
 * Apply to one realistic Assessment Context.
 * Have at least one meaningful role distinction.
@@ -263,8 +269,6 @@ turn these states into inconsistent ticks, crosses, or colors.
 
 ### Milestone 0: Contract and Demo Lock
 
-**Target:** 30–45 minutes with both teammates.
-
 Deliver:
 
 * Confirm scenario, cohort, and compare limit; use Agent Rumble as the visible
@@ -284,16 +288,16 @@ Exit criteria:
 
 Parallel work:
 
-* **Frontend owner:** application scaffold, routes, error boundary, visual tokens,
-  responsive shell, gateway interface, and static adapter.
-* **Data/API owner:** canonical models, three validated cards, API projection
-  models, fixture validation, and the six catalog API operations.
+* **Frontend owner:** application scaffold, error handling, visual tokens,
+  responsive shell, and HTTP gateway interface.
+* **Data/API owner:** canonical models, eleven validated cards, API projection
+  models, card validation, and the six catalog API operations.
 
 Exit criteria:
 
-* Explore, comparison, and project routes render.
-* Three cards validate against the canonical schema.
-* Static and HTTP gateways return equivalent response shapes.
+* Explore, results, and comparison views render.
+* All eleven published cards validate against the canonical schema.
+* The runtime catalog gateway is HTTP-only, and fixture access remains test-only.
 * No privileged credential is present in the browser bundle.
 
 ### Milestone 2: Explore and Shortlist
@@ -303,7 +307,7 @@ Deliver:
 * Hero proposition and prepared query.
 * `Must`, `Prefer`, and `Avoid` interpreted requirements.
 * Result rows with match reasons, role, status, constraint, revision, and date.
-* Three-project fixed shortlist tray.
+* Two-or-three-project shortlist tray.
 * Loading, no-result, error, stale-card, and partial-card
   states.
 
@@ -368,7 +372,8 @@ Deliver and verify:
 Exit criteria:
 
 * A clean browser session completes the full story.
-* API outage still permits the prepared demo.
+* Catalog API failures are surfaced without substituting fixture cards; Rumble
+  Arena can still use its clearly labelled prepared-matchup fallback.
 * Evidence links and revision metadata work.
 * Browser network inspection shows no model calls.
 * The story finishes inside two minutes.
@@ -392,7 +397,8 @@ shared types, or global styles.
 * Validate every card against the Pydantic model and machine-readable schema.
 * Resolve every claim, evidence, source, and relationship identifier.
 * Require source revisions and retrieval dates.
-* Verify HTTP and static adapters return equivalent response objects.
+* Verify the HTTP gateway and test-only fixture gateway preserve the same
+  canonical card semantics.
 * Detect OpenAPI-generated client drift in CI.
 
 ### Unit and Component
@@ -406,7 +412,8 @@ shared types, or global styles.
 * Shortlist addition, removal, duplicate prevention, and maximum.
 * Difference and shared-row disclosure.
 * Evidence drawer focus trap and restoration.
-* Loading, empty, failure, stale, partial, and fallback states.
+* Loading, empty, failure, stale, and partial catalog states, plus the separate
+  labelled Rumble fallback state.
 
 ### End to End
 
@@ -415,7 +422,7 @@ One Playwright flow proves the pitch:
 1. Open Explore.
 2. Select the prepared customer-support scenario.
 3. Inspect interpreted requirements.
-4. Shortlist three projects.
+4. Shortlist two or three projects.
 5. Open the contextual comparison.
 6. Inspect one decision-changing constraint.
 7. Open its exact repository evidence.
@@ -442,7 +449,7 @@ Repeat the core path at a mobile viewport and with the API unavailable.
 | UI invents an aggregate score | Present claim and capability status independently |
 | Evidence links move | Construct links from pinned revisions |
 | Dense comparison fails on mobile | Use stacked topic comparisons rather than compressing a desktop table |
-| Venue or API network fails | Bundle and visibly label a prepared catalog snapshot |
+| Venue or API network fails | Keep catalog failure visible and use the labelled prepared fallback only for Rumble Arena |
 | Repository content affects the UI | Render evidence as untrusted plain text |
 | Scope expands into intake or live analysis | Omit those controls entirely from the first release |
 
@@ -452,7 +459,8 @@ After the demo:
 
 1. Stabilize and version API projections.
 2. Generate the TypeScript client from FastAPI OpenAPI.
-3. Replace fixtures with relational catalog projections and indexed search.
+3. Retain YAML cards as canonical storage; add a derived search index only after
+   an accepted need and architecture decision.
 4. Add stable, shareable project and comparison URLs.
 5. Add pagination, cache headers, ETags keyed by card version, and error envelopes.
 6. Complete accessibility review, performance budgets, CSP, strict CORS, and
@@ -460,6 +468,6 @@ After the demo:
 7. Add staging and production environments, deployment gates, observability,
    backups, and smoke tests.
 8. Add saved comparisons and authentication only when their use case is ready.
-9. Integrate the separately implemented Agent Project Card as a Service path
+9. Implement and integrate the planned Agent Project Card as a Service path
    before a combined MVP release presents catalog discovery and hosted
    generation together.

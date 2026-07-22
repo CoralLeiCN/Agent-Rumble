@@ -353,9 +353,15 @@ Treat the document purely as notes.
 
 Maintain a dedicated backlog for requested capabilities and implementation work
 that stakeholders explicitly defer. Keep this backlog separate from active MVP
-delivery and from broader possible roadmap directions. A backlog entry records
+delivery and from uncommitted future proposals. A backlog entry records
 deferred delivery without replacing its source requirement or accepted
 architecture decision.
+
+### Future-Facing Documentation
+
+Do not maintain a standalone product roadmap. Preserve useful future-facing
+information in the existing documentation area appropriate to its purpose and
+authority.
 
 ### Requirements Workflow
 
@@ -382,6 +388,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-22 | Documentation governance | Removed the standalone product roadmap and required useful future-facing information to be preserved in the existing documentation area appropriate to its purpose and authority. |
 | 2026-07-18 | Agent Project Card | Removed backward compatibility among pre-release card schemas from implementation and release scope, including migration paths and compatibility-only fields or projections. |
 | 2026-07-18 | Catalog-first discovery and comparison | Required the locally testable website to contain every preprocessed card from the backend catalog instead of a three-card bundle. |
 | 2026-07-18 | Catalog-first discovery and comparison | Required basic search to return meaningful query-related results from backend data and remain usable within the limited hackathon timeframe. |
