@@ -7,11 +7,11 @@ responsibilities and authority of each documentation area, see the
 
 ## Project Status
 
-This repository is currently specification-first. Initial agent, backend, and
-frontend technology decisions have been recorded, while the remaining product
-requirements, card semantics, analysis workflow, safety boundaries, and MVP
-plan are being defined before detailed user-interface and deployment
-architecture are selected.
+This repository contains an implemented end-to-end catalog slice: validated
+Agent Project Cards, a versioned YAML catalog, a FastAPI API, and a React
+discovery, comparison, evidence, and Rumble Arena experience. Hosted on-demand
+card generation, production deployment choices, shared-context comparison
+data, and release validation remain active or proposed work.
 
 ## Current Implementation Baseline
 

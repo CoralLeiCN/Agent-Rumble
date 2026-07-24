@@ -6,8 +6,9 @@ This document turns the [Frontend Experience](frontend-experience.md) into a
 page-level design. It remains a proposal and does not select frontend build
 tooling, routing, styling libraries, or a component library.
 
-The accompanying [interactive prototype](frontend-prototype.html) uses prepared
-fixture data and is not a live repository analysis.
+The implemented React experience is maintained under
+[`frontend/`](../../frontend/) and remains governed by the requirements,
+specification, and accepted architecture decisions.
 
 ## Experience Principle
 

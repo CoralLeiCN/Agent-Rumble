@@ -1,7 +1,7 @@
 # Proposed Parallel MVP Execution Plan
 
-**Status:** Proposed
-**Last updated:** 2026-07-18
+**Status:** Proposed overall; selected catalog-platform work is active
+**Last updated:** 2026-07-24
 
 This folder translates the [requirements](../../../requirements.md),
 [product specification](../../../specification/README.md),
@@ -26,7 +26,7 @@ start only after the responsible decision is accepted and recorded.
 
 ## Current Focused Slice
 
-The [Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md)
+The [Backend Catalog Vertical Slice Plan](../../active/backend-catalog-vertical-slice.md)
 has delivered the initial YAML-first catalog, catalog API, and frontend HTTP
 integration. Eleven validated cards are published under `catalog/cards/`
 without depending on the repository-analysis pipeline or hosted-service packet.
@@ -177,7 +177,8 @@ alignment described below are not complete.
 10. Resolve G-03 and complete release evaluation for the catalog, direct
     plugin, and hosted-service modes.
 
-The focused [backend plan](../backend-catalog-vertical-slice.md) owns steps 1
+The focused
+[backend plan](../../active/backend-catalog-vertical-slice.md) owns steps 1
 through 6. ANA-4 owns direct use of the skill packaged as a Codex plugin, and
 PLAT-8 owns hosted generation from a public GitHub repository link.
 

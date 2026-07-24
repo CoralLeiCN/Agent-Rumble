@@ -15,8 +15,7 @@ must first be recorded in the responsible documentation area.
 ## Active
 
 * [Frontend Prototype Execution Plan](active/frontend-prototype.md)
-* [Backend Catalog Vertical Slice Plan](proposed/backend-catalog-vertical-slice.md)
-* [Frontend Catalog Experience Plan](proposed/frontend-catalog-experience.md)
+* [Backend Catalog Vertical Slice Plan](active/backend-catalog-vertical-slice.md)
 
 ## Completed
 

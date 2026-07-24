@@ -1,13 +1,13 @@
 # PLAT — Catalog-Platform, Hosted-Service, and Experience Cohort
 
-**Status:** Active — PLAT-1 through PLAT-3 are implemented; the PLAT-4 API is
-implemented but its shared-context data gate remains; PLAT-5 is partially
-implemented; PLAT-6 through PLAT-8 remain
+**Status:** Proposed cohort with partial delivery — PLAT-1 through PLAT-3 are
+implemented; the PLAT-4 API is implemented but its shared-context data gate
+remains; PLAT-5 is partially implemented; PLAT-6 through PLAT-8 remain
 
 **Plan index:** [Parallel MVP Execution Plan](README.md)
 
 **Detailed first slice:**
-[Backend Catalog Vertical Slice Plan](../backend-catalog-vertical-slice.md)
+[Backend Catalog Vertical Slice Plan](../../active/backend-catalog-vertical-slice.md)
 
 This cohort exposes validated, preprocessed Agent Project Cards through FastAPI,
 connects the selected React catalog experience, and provides a separate hosted
