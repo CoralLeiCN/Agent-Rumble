@@ -156,9 +156,16 @@ establish these constraints:
 * Separate application code into top-level `backend/` and `frontend/` project areas.
 * Use FastAPI as the backend framework and establish its initial Python project layout under `backend/src/`.
 * Use React as the frontend framework, with frontend code contained under `frontend/`.
+* Use Vitest as the frontend test framework.
 * Use Pydantic with Python type annotations to define typed application data models.
 * Use `BaseSettings` from Pydantic Settings for typed application settings.
 * Use `load_dotenv()` from `python-dotenv` to load environment variables from `.env` files.
+
+Frontend unit and component-behavior tests must run through Vitest. Playwright
+must not be added to the current frontend test toolchain. Real-browser and
+end-to-end testing with Playwright remains deferred while the project evaluates
+whether Codex browser capabilities satisfy the intended browser-validation
+need.
 
 ### Dependency Release Cooldown
 

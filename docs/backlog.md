@@ -41,3 +41,23 @@ evaluate hybrid keyword and vector ranking against a representative query set.
 **Sources:**
 [Agent Project Card Service and Storage requirement](requirements.md#agent-project-card-service-and-storage)
 and [YAML-First Card Catalog decision](decisions.md#yaml-first-card-catalog)
+
+## Frontend Validation
+
+### Playwright-Based Browser Testing
+
+**Delivery:** Later stage
+
+Evaluate the intended real-browser and end-to-end validation scenarios after
+the Vitest frontend suite is established. First determine whether Codex's
+bundled Browser plugin or an optionally configured Playwright MCP server
+provides the required development-time browser validation.
+
+If repeatable repository-owned or continuous-integration browser regressions
+are required, evaluate adding Playwright Test as a separate frontend test layer.
+Keep Codex browser tooling distinct from committed automated tests and
+dependencies.
+
+**Sources:**
+[Frontend Test Framework requirement](requirements.md#frontend-test-framework)
+and [Vitest Frontend Testing decision](decisions.md#vitest-frontend-testing)

@@ -351,10 +351,59 @@ frontend project under `frontend/`.
 * This decision does not select routing, build tooling, client-side or
   server-side rendering, component libraries, or frontend hosting.
 
+### Vitest Frontend Testing
+
+**Status:** Accepted
+
+**Date:** 2026-07-25
+
+**Related requirement:**
+[Frontend Test Framework](requirements.md#frontend-test-framework)
+
+#### Context
+
+The React frontend needs a test framework for its TypeScript, application
+logic, and component-behavior tests. The frontend already uses Vite and has an
+implemented Vitest test suite. Jest would require a separate transformation
+pipeline, while browser-focused frameworks address a different validation
+layer.
+
+Codex desktop provides a bundled Browser plugin that can inspect and interact
+with local web applications. Codex can also connect to an optional Playwright
+MCP server. Those development-time browser tools are distinct from a
+repository-owned automated test framework and do not by themselves establish a
+repeatable continuous-integration suite.
+
+#### Decision
+
+* Use Vitest as the frontend test framework.
+* Keep Vitest configuration, dependencies, and test commands within the
+  `frontend/` project area.
+* Do not add Playwright to the repository at this stage.
+* Evaluate Codex browser capabilities before making a later decision about
+  Playwright-based real-browser or end-to-end testing.
+
+#### Consequences
+
+* Frontend unit and component-behavior tests run through Vitest.
+* The existing colocated frontend tests and shared test support remain
+  compatible with the selected framework.
+* Codex browser use may support interactive development-time validation but
+  does not replace committed automated regression tests.
+* Real-browser, cross-browser, and full end-to-end regression coverage remains
+  deferred.
+
+#### References
+
+* [Vitest](https://vitest.dev/)
+* [Codex built-in browser](https://learn.chatgpt.com/docs/browser)
+* [Codex Model Context Protocol configuration](https://learn.chatgpt.com/docs/extend/mcp)
+
 ## Change Log
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-25 | Frontend | Selected Vitest for frontend tests and deferred repository-owned Playwright testing pending evaluation of Codex browser capabilities. |
 | 2026-07-18 | Agent workflow and runtime | Made direct use of the published skill packaged as a Codex plugin and hosted generation from a public GitHub repository link active delivery forms of the shared Agent Project Card capability, superseding their earlier P2 sequence. |
 | 2026-07-18 | Backend | Established Unicode scalar-value semantics for canonical card strings, with surrogate-pair normalization, residual-surrogate rejection, and no other text normalization. |
 | 2026-07-18 | Persistence and search | Selected a YAML-first card catalog with disposable in-memory keyword and filter state; deferred embeddings and vector search to the backlog. |

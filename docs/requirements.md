@@ -300,6 +300,14 @@ project areas.
 
 Use React as the frontend framework for Agent Project Intelligence.
 
+### Frontend Test Framework
+
+Use Vitest as the test framework for the Agent Rumble frontend.
+
+Defer Playwright-based frontend testing to a later stage. Before adding
+Playwright to the repository, evaluate whether browser capabilities available
+through Codex satisfy the intended browser-validation need.
+
 ### Python Data Modeling and Configuration
 
 * Use Pydantic with Python type annotations to define typed application data
@@ -388,6 +396,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-25 | Implementation technology | Selected Vitest as the frontend test framework and deferred Playwright-based frontend testing pending later evaluation of Codex browser capabilities. |
 | 2026-07-22 | Documentation governance | Removed the standalone product roadmap and required useful future-facing information to be preserved in the existing documentation area appropriate to its purpose and authority. |
 | 2026-07-18 | Agent Project Card | Removed backward compatibility among pre-release card schemas from implementation and release scope, including migration paths and compatibility-only fields or projections. |
 | 2026-07-18 | Catalog-first discovery and comparison | Required the locally testable website to contain every preprocessed card from the backend catalog instead of a three-card bundle. |
