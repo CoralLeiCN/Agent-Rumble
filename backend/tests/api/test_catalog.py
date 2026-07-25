@@ -179,8 +179,9 @@ def test_current_and_versioned_routes_return_exact_canonical_document(
     expected = catalog_snapshot.get(EIGENT, 1)
     assert expected is not None
 
-    current = client.get(f"/api/v1/projects/{EIGENT}/cards/current")
-    pinned = client.get(f"/api/v1/projects/{EIGENT}/cards/1")
+    project_ref = encode_identifier_reference(EIGENT)
+    current = client.get(f"/api/v1/projects/{project_ref}/cards/current")
+    pinned = client.get(f"/api/v1/projects/{project_ref}/cards/1")
 
     assert current.status_code == pinned.status_code == 200
     assert current.json() == expected.to_document()
@@ -188,15 +189,18 @@ def test_current_and_versioned_routes_return_exact_canonical_document(
 
 
 def test_missing_and_invalid_identifiers_use_typed_errors(client: TestClient) -> None:
-    missing = client.get("/api/v1/projects/project-does-not-exist/cards/1")
-    invalid = client.get("/api/v1/projects/~/cards/1")
+    missing_id = "project-does-not-exist"
+    missing = client.get(
+        f"/api/v1/projects/{encode_identifier_reference(missing_id)}/cards/1"
+    )
+    invalid = client.get("/api/v1/projects/non-opaque-project-id/cards/1")
 
     assert missing.status_code == 404
     assert missing.json() == {
         "error": {
             "code": "card_not_found",
             "message": "The requested Agent Project Card was not found.",
-            "details": {"project_id": "project-does-not-exist", "card_version": 1},
+            "details": {"project_id": missing_id, "card_version": 1},
         }
     }
     assert invalid.status_code == 400
@@ -377,8 +381,10 @@ def test_unknown_license_is_not_indexed_as_a_negative_match(client: TestClient) 
 def test_evidence_resolves_claim_source_revision_locator_and_pinned_url(
     client: TestClient,
 ) -> None:
+    project_ref = encode_identifier_reference(EIGENT)
+    evidence_ref = encode_identifier_reference("evidence-readme-product")
     response = client.get(
-        f"/api/v1/projects/{EIGENT}/cards/1/evidence/evidence-readme-product"
+        f"/api/v1/projects/{project_ref}/cards/1/evidence/{evidence_ref}"
     )
 
     assert response.status_code == 200
@@ -449,8 +455,10 @@ def test_unsafe_evidence_locator_never_becomes_a_source_url() -> None:
         content_sha256="0" * 64,
     )
     with TestClient(create_app(catalog_snapshot=CatalogSnapshot((card,)))) as unsafe_client:
+        project_ref = encode_identifier_reference("project-test")
+        evidence_ref = encode_identifier_reference("evidence-test")
         response = unsafe_client.get(
-            "/api/v1/projects/project-test/cards/1/evidence/evidence-test"
+            f"/api/v1/projects/{project_ref}/cards/1/evidence/{evidence_ref}"
         )
 
     assert response.status_code == 200

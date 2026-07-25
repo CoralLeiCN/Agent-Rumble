@@ -50,8 +50,7 @@ ProjectReference = Annotated[
     Path(
         description=(
             "Opaque project reference: '~' plus unpadded base64url of the UTF-8 "
-            "JSON string representation. Non-prefixed simple IDs are accepted for "
-            "legacy compatibility."
+            "JSON string representation."
         )
     ),
 ]
@@ -60,8 +59,7 @@ EvidenceReference = Annotated[
     Path(
         description=(
             "Opaque evidence reference: '~' plus unpadded base64url of the UTF-8 "
-            "JSON string representation. Non-prefixed simple IDs are accepted for "
-            "legacy compatibility."
+            "JSON string representation."
         )
     ),
 ]

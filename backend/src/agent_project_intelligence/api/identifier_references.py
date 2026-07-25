@@ -9,7 +9,6 @@ followed by unpadded RFC 4648 base64url of the UTF-8 JSON string representation
 normalized to their scalar value. Residual lone surrogates are rejected because
 they do not have a reversible Unicode-scalar identity across JSON runtimes.
 
-Non-prefixed, single-segment identifiers remain accepted for compatibility.
 """
 
 from __future__ import annotations
@@ -41,12 +40,11 @@ def encode_identifier_reference(identifier: str) -> str:
 
 
 def decode_identifier_reference(reference: str, *, field: str) -> str:
-    """Decode a canonical opaque reference or pass through a legacy segment."""
-    if not reference.startswith(OPAQUE_IDENTIFIER_PREFIX):
-        return reference
-
-    payload = reference[len(OPAQUE_IDENTIFIER_PREFIX) :]
+    """Decode one canonical opaque identifier reference."""
     try:
+        if not reference.startswith(OPAQUE_IDENTIFIER_PREFIX):
+            raise ValueError("missing opaque identifier prefix")
+        payload = reference[len(OPAQUE_IDENTIFIER_PREFIX) :]
         if not payload or not _BASE64URL_PAYLOAD.fullmatch(payload):
             raise ValueError("invalid base64url payload")
         padding = "=" * (-len(payload) % 4)
