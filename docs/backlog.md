@@ -11,6 +11,17 @@ When an entry is prioritized, update its source requirement, the product
 specification, any required architecture decision, and the applicable execution
 plan before implementation begins.
 
+## Agent Project Card Authoring
+
+### Schema-Driven Agent Project Card Editor
+
+**Delivery:** Future
+
+Provide a schema-driven editor for Agent Project Cards after the metadata,
+fields, filters, and file behavior have been discussed and specified.
+
+**Source:** [Deferred Card Authoring requirement](requirements.md#deferred-card-authoring)
+
 ## Public Card Pages
 
 ### Public Page Discoverability

@@ -399,7 +399,9 @@ Questions the system could not answer, such as:
 
 ### Human-Readable Card
 
-A concise but detailed document intended for technical and product users.
+A generated human-readable card is optional. It is not a required output of the
+current Agent Project Card library or Agent Project Card as a Service
+implementation.
 
 ### Canonical Machine-Readable Card
 
@@ -425,14 +427,15 @@ whitespace, or compatibility normalization.
 
 ### Summary View
 
-A compact human-readable projection generated from a validated canonical card.
+A compact human-readable projection may be generated from a validated canonical
+card, but is not required by the current delivery scope.
 The repository-local Agent Project Card skill provides the reusable
 [`card-summary-template.md`](../../plugins/agent-project-card/skills/agent-project-card/assets/card-summary-template.md).
 
-The summary identifies the source card ID, card version, schema version, project
-boundary, source snapshot, analysis date and depth, and canonical artifact. It
-must preserve capability support, claim verification, and confidence as
-independent concepts; render unavailable values as `unknown`,
+When a summary is generated, it identifies the source card ID, card version,
+schema version, project boundary, source snapshot, analysis date and depth, and
+canonical artifact. It must preserve capability support, claim verification,
+and confidence as independent concepts; render unavailable values as `unknown`,
 `not_applicable`, `not_analyzed`, or `no_evidence_found`; state the applicable
 Assessment Context; and retain claim, evidence, and source identifiers.
 

@@ -121,13 +121,21 @@ its evolution can be tracked. Versions of the same card must remain
 distinguishable, and the card version must remain separate from both the card
 schema version and the analyzed project's release or package version.
 
-### Card Summary Template
+### Card Library and Publication Validation
 
-Include a repository-local template for a human-readable Card Summary generated
-only from a validated canonical Agent Project Card. The summary should identify
-its source card and source snapshot, keep capability support and verification
-distinct, preserve explicit unavailable-value states, state the Assessment
-Context, and retain traceability to claims, evidence, and sources.
+Provide a reusable library abstraction for working with Agent Project Cards.
+
+Validate an Agent Project Card before publishing it.
+
+### Human-Readable Card Generation
+
+A generated human-readable card is not required for the current Agent Project
+Card library or Agent Project Card as a Service implementation.
+
+### Metadata-Driven Product Behavior
+
+Use Agent Project Card metadata to drive product behavior. Decide the detailed
+metadata, fields, filters, and file behavior later.
 
 ### Downstream Uses
 
@@ -194,6 +202,17 @@ The API and frontend experience should allow users and agents to search,
 retrieve, and compare preprocessed cards. Agent Project Card as a Service should
 also accept a public GitHub repository link and generate an Agent Project Card
 for that repository.
+
+Use an API-based approach for Agent Project Card generation through Agent
+Project Card as a Service.
+
+The current service implementation does not require optimistic publishing, a
+derived card API projection, or background preprocessing.
+
+### Deferred Card Authoring
+
+A schema-driven Agent Project Card editor is desired in the future but is
+deferred from the current implementation.
 
 ### Agent Project Card Service and Storage
 
@@ -396,6 +415,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-25 | Agent Project Card and core tool access | Required a reusable card library, validation before publication, metadata-driven product behavior, and API-based card generation; removed generated human-readable cards, optimistic publishing, derived card API projections, and background preprocessing from the current implementation requirements; deferred a schema-driven editor. |
 | 2026-07-25 | Implementation technology | Selected Vitest as the frontend test framework and deferred Playwright-based frontend testing pending later evaluation of Codex browser capabilities. |
 | 2026-07-22 | Documentation governance | Removed the standalone product roadmap and required useful future-facing information to be preserved in the existing documentation area appropriate to its purpose and authority. |
 | 2026-07-18 | Agent Project Card | Removed backward compatibility among pre-release card schemas from implementation and release scope, including migration paths and compatibility-only fields or projections. |

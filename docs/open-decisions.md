@@ -18,6 +18,11 @@ These product choices remain unresolved. Recording them here prevents a design d
 1. Whether preprocessing accepts multiple repositories per project or only
    represents that relationship in the schema.
 
+## Agent Project Card Metadata Behavior
+
+1. Which metadata, fields, filters, and file behavior should drive Agent Rumble
+   product behavior.
+
 ## Marketplace Publication Inputs
 
 Public marketplace release remains blocked until the stakeholder supplies the

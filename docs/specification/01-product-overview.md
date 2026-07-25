@@ -106,7 +106,7 @@ Over time, the platform should become a trusted system for answering questions s
 4. Support projects that are not themselves agents but are important to agent systems.
 5. Normalize information across different languages, frameworks, repository structures, and documentation styles.
 6. Enable project discovery, recommendation, comparison, and gap analysis.
-7. Produce both human-readable and machine-readable outputs.
+7. Produce a canonical machine-readable output that can drive product behavior.
 
 ### 4.2 Secondary Goals
 
@@ -222,7 +222,10 @@ The core tool combines:
 
 * Codex as the heavily used core project-analysis harness
 * An Agent Project Card skill attached to Codex, containing the instructions for generating the card
-* The canonical Agent Project Card and its generated human-readable views as the outputs
+* The canonical Agent Project Card as the required output
+
+Generated human-readable views are optional and are not required for the
+current tool or service implementation.
 
 The tool is provided in two forms. The Agent Project Card skill is published as
 a Codex plugin that users can integrate into their own coding-agent workflow.

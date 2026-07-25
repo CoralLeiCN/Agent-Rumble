@@ -73,7 +73,7 @@ user-provided public GitHub repository link.
 * Maturity indicators
 * Evidence references
 * Canonical `project-card.yaml` files used directly for storage, retrieval, and
-  basic search, plus generated human-readable views
+  basic search
 * Claim and evidence records with source snapshots
 * Capability support-status distinctions
 * Basic keyword search over card text and structured card attributes

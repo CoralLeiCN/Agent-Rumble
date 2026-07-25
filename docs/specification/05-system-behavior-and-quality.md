@@ -37,7 +37,7 @@ The system must:
 The system must:
 
 * Produce one canonical, structured Agent Project Card
-* Generate concise and detailed human-readable views from the canonical card
+* Provide a reusable library abstraction for working with Agent Project Cards
 * Produce schema-valid JSON or YAML
 * Support card and schema versioning
 * Distinguish factual, interpretive, and assessment claims
@@ -45,14 +45,22 @@ The system must:
 * Identify missing information
 * Link material claims to supporting and conflicting evidence
 * Preserve `unknown`, `not_applicable`, `not_analyzed`, and `no_evidence_found` as distinct states
+* Validate each card before publishing it
+
+Generated human-readable cards are optional and are not required for the
+current Agent Project Card library or service implementation.
 
 ### Agent Project Card Service and Storage
 
 To provide Agent Project Cards as a service, the system must:
 
+* Use the Agent Project Card library abstraction when working with canonical
+  cards
 * Persist each successfully validated canonical card produced for service use as
   a versioned `project-card.yaml` file, independently of the generation session
   or workspace
+* Reject publication of a card that does not pass the current structural and
+  semantic validation contract
 * Read the stored YAML files directly for API retrieval, basic search, and
   structured filtering
 * Associate every stored card with its card ID, card version, schema version,
@@ -61,16 +69,27 @@ To provide Agent Project Cards as a service, the system must:
   silently overwriting historical canonical cards
 * Rebuild any temporary in-memory search state from the canonical YAML files
   rather than persisting a separate card index as a source of truth
-* Keep human-readable views traceable to the canonical stored card
+* Keep any optional human-readable views traceable to the canonical stored card
 * Exclude embeddings, vector storage, and vector-based semantic ranking from the
   first implementation
+
+The current Agent Project Card as a Service implementation does not require
+optimistic publishing, a derived card API projection, or background
+preprocessing.
+
+### Metadata-Driven Product Behavior
+
+Agent Rumble must use canonical Agent Project Card metadata to drive product
+behavior. The detailed metadata, fields, filters, and file behavior remain open
+for later product discussion.
 
 ### Access and Invocation
 
 Provide the Agent Project Card tool as a published skill packaged as a Codex
 plugin for a user's own coding-agent workflow and as Agent Project Card as a
 Service. The hosted service accepts a public GitHub repository link and
-generates a card. Both forms use Codex as the core harness.
+generates a card through an API-based workflow. Both forms use Codex as the core
+harness.
 
 The first product experience must:
 
@@ -105,6 +124,10 @@ package and must not replace the card, schema, ontology, or analyzer versions.
 Repository-local, API, and plugin-installed invocation must use identical skill
 content and validation behavior for the same release. Marketplace publication
 must not create a separately maintained copy of the skill.
+
+A schema-driven Agent Project Card editor is deferred from the current
+implementation and recorded in the
+[Deferred Backlog](../backlog.md#schema-driven-agent-project-card-editor).
 
 ### Frontend Presentation
 
@@ -195,9 +218,13 @@ For the preprocessed catalog, the system must:
   matches project identity, purpose, use cases, capabilities, technologies, and
   architecture, while keeping the ranking deterministic and explainable
 * Explain each result in customer-facing language using the matched card data
-* Filter by category, capability, language, license, maturity, and architecture layer
 * Retrieve projects relevant to a use case or requirements
 * Return the card source snapshot and analysis age with results
+
+The metadata fields and filter dimensions that drive product behavior are not
+specified yet and remain subject to the
+[Agent Project Card Metadata Behavior](../open-decisions.md#agent-project-card-metadata-behavior)
+product decision.
 
 ### Comparison
 

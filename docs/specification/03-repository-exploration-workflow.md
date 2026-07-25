@@ -112,9 +112,8 @@ Claims link to supporting or conflicting evidence such as:
 
 The system generates:
 
-* A concise overview
+* A concise overview within the canonical card
 * A complete canonical Agent Project Card
-* Human-readable summary and detailed views generated from the card
 * Claim-level verification status and confidence
 * Evidence references and provenance
 * Unresolved questions
