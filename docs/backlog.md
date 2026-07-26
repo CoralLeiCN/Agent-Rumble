@@ -2,14 +2,8 @@
 
 **Status:** Deferred
 
-This file records capabilities and implementation work that stakeholders want
-but have deliberately postponed. A backlog entry records deferred delivery; it
-does not replace its source requirement or accepted architecture decision, does
-not expand the MVP, and does not authorize implementation.
-
-When an entry is prioritized, update its source requirement, the product
-specification, any required architecture decision, and the applicable execution
-plan before implementation begins.
+This file contains capabilities and implementation work that stakeholders have
+explicitly deferred.
 
 ## Agent Project Card Authoring
 

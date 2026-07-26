@@ -1,6 +1,6 @@
 # Open Decisions
 
-These product choices remain unresolved. Recording them here prevents a design document or execution plan from silently deciding them.
+These product choices remain unresolved.
 
 ## Product and Source Scope
 

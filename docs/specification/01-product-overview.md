@@ -123,42 +123,20 @@ Over time, the platform should become a trusted system for answering questions s
 Requirements are organized by topic in that single file, and this specification
 describes the product response to them.
 
-Before user input is recorded, it must be rephrased into a clearer, more structured form. The rephrased version must preserve what the user specified without adding new requirements, constraints, assumptions, or details.
+The [`Documentation and Writing
+Guidelines`](../documentation_guidelines.md) are the single operational guide
+for documentation processes and writing style. The guide defines document
+responsibilities and authority, when and how durable session information is
+captured, requirements and architecture-decision workflows, writing rules,
+maintenance, and documentation quality checks.
 
-Chat must use the same structured writing approach. The shared [`Writing Guidelines`](../writing_guidelines.md) must not introduce writing rules that the user did not specifically request.
-Written content must not go beyond what the user asked to write.
+Repository agent instructions direct agents to the guide instead of duplicating
+those workflows and rules. Documentation indexes provide navigation without
+becoming competing sources of documentation policy.
 
-Each documentation area has one responsibility:
-
-* The topic-organized requirements record preserves requested outcomes and
-  constraints.
-* The product specification defines the normative behavior that satisfies those
-  requirements.
-* Design documents describe proposed implementation approaches.
-* The topic-organized architecture decisions record documents accepted
-  architectural choices, their context, and their consequences.
-* Execution plans organize delivery work.
-* The repository-local project stories and build notes document explains the
-  project's building stories and how the project is built. It is notes only.
-* The deferred backlog records requested capabilities and implementation work
-  that stakeholders have deliberately postponed, without replacing their source
-  requirements or decisions.
-
-The repository does not maintain a standalone product roadmap. Useful
-future-facing information is retained in the existing documentation area that
-matches its purpose and authority. Its placement does not make a proposal an
-active requirement, normative product behavior, deferred commitment, or
-accepted architecture decision.
-
-When a requirement mandates a technology, the requirement remains the source of
-that constraint. An architecture decision may reference the mandate as context
-and focus on its architectural consequences and related choices; it must not
-present the mandate as independently created product scope.
-
-The requirements record and the specification must be updated together when
-scope or intent changes. Requirements and architecture decisions use stable
-topic headings instead of sequence numbers. Each of those two records maintains
-one change log for its updates.
+The guide preserves the authority of the requirements record, product
+specification, and architecture decisions record while implementing the
+documentation-governance requirements in one operational location.
 
 ---
 

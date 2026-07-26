@@ -1,8 +1,7 @@
 # Our Build Stories
 
 These notes describe how Agent Rumble and Agent Project Intelligence are being
-built. They are not a source of product requirements, specifications, or
-architecture decisions.
+built.
 
 ## Start With the Canonical Artifact
 

@@ -1,14 +1,6 @@
 # Design Documents
 
-This folder contains proposed technical approaches for implementing the
-[product specification](../specification/README.md). Design documents may explain
-architecture, components, control flow, alternatives, risks, and trade-offs.
-
-Design documents may change as the approach is explored. They are not sources of
-product requirements, do not make proposals binding, and must not silently change
-the specification. Accepted architecturally significant implementation choices
-are recorded separately as
-the [architecture decisions record](../decisions.md).
+This folder indexes the project's current design documents.
 
 ## Current Design Documents
 

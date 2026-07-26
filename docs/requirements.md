@@ -397,6 +397,15 @@ Update the relevant topic in this file and the corresponding product
 specification in the same change. Record the update in the single change log
 below instead of creating a separate ticket.
 
+### Canonical Documentation and Writing Guide
+
+Maintain one repository document as the single guide for all documentation
+processes and writing styles, including when and how durable information from
+user sessions is recorded.
+
+The repository agent instructions should mention and link to this guide instead
+of duplicating its documentation workflow and writing rules.
+
 ### Writing
 
 Rephrase user requirements into a clearer, more structured form before
@@ -405,9 +414,9 @@ recording them.
 The rephrased requirement should preserve what the user specified without
 adding new requirements, constraints, assumptions, or details.
 
-Use the same clear, structured writing approach in chat. The writing guideline
-should contain only the points the user specifically requested and should not
-add extra writing rules.
+Use the same clear, structured writing approach in chat. The documentation and
+writing guide should contain only the points the user specifically requested
+and should not add extra writing rules.
 
 Do not add content beyond what the user asked to write.
 
@@ -415,6 +424,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-25 | Documentation governance | Required one canonical guide for documentation processes, session-information capture, and writing styles, with repository agent instructions linking to the guide instead of duplicating its rules. |
 | 2026-07-25 | Agent Project Card and core tool access | Required a reusable card library, validation before publication, metadata-driven product behavior, and API-based card generation; removed generated human-readable cards, optimistic publishing, derived card API projections, and background preprocessing from the current implementation requirements; deferred a schema-driven editor. |
 | 2026-07-25 | Implementation technology | Selected Vitest as the frontend test framework and deferred Playwright-based frontend testing pending later evaluation of Codex browser capabilities. |
 | 2026-07-22 | Documentation governance | Removed the standalone product roadmap and required useful future-facing information to be preserved in the existing documentation area appropriate to its purpose and authority. |

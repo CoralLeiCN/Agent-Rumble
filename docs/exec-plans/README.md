@@ -1,12 +1,6 @@
 # Execution Plans
 
-This folder organizes proposed, active, and completed delivery work. Execution
-plans translate accepted requirements, specifications, designs, and architecture
-decisions into sequenced implementation work.
-
-A plan does not create a requirement, accept an architectural decision, or
-authorize changes to its inputs. Any necessary product or architecture change
-must first be recorded in the responsible documentation area.
+This folder indexes proposed, active, and completed execution plans.
 
 ## Proposed
 
