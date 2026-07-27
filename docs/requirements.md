@@ -106,6 +106,24 @@ trivia, connect capabilities to available claims and evidence, and record only
 direct, architecturally meaningful technologies.
 Base maturity on repository evidence rather than popularity.
 
+Project classification must distinguish taxonomy fit from evidentiary
+certainty. Keep the five initial primary types as the stable core vocabulary.
+When none accurately describes a project, use a specific lowercase namespaced
+`x-...` extension with an evidence-backed rationale instead of forcing the
+project into an inaccurate core type.
+
+Recurring extensions may be promoted into the controlled vocabulary only
+through a new classification-ontology version with defined semantics. Existing
+card versions retain the classification and ontology version originally
+recorded; a refreshed card may adopt a promoted type only as a new
+`card_version`.
+
+A later executable schema revision must add a classification status that
+distinguishes `classified`, `provisional`, and `insufficient_evidence`.
+Classification status describes the certainty of the classification rather
+than introducing another project type. Insufficient evidence must not be
+encoded as an `x-unclassified` project type.
+
 ### Pre-Release Schema Compatibility
 
 Agent Rumble has not been released. Before the first release, backward
@@ -424,6 +442,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-27 | Agent Project Card | Required a stable five-type core classification, evidence-backed namespaced extensions for projects outside that core, versioned promotion of recurring extensions, preservation of historical classifications, and a later classification status that distinguishes classified, provisional, and insufficient-evidence results. |
 | 2026-07-25 | Documentation governance | Required one canonical guide for documentation processes, session-information capture, and writing styles, with repository agent instructions linking to the guide instead of duplicating its rules. |
 | 2026-07-25 | Agent Project Card and core tool access | Required a reusable card library, validation before publication, metadata-driven product behavior, and API-based card generation; removed generated human-readable cards, optimistic publishing, derived card API projections, and background preprocessing from the current implementation requirements; deferred a schema-driven editor. |
 | 2026-07-25 | Implementation technology | Selected Vitest as the frontend test framework and deferred Playwright-based frontend testing pending later evaluation of Codex browser capabilities. |

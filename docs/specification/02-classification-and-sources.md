@@ -4,9 +4,38 @@ Part of the [Agent Rumble product specification](README.md).
 
 ## 9. Project Classification System
 
-The classification system must be versioned, extensible, and support multiple labels because many projects span several categories. Every card records the classification-ontology version it uses. Namespaced extensions may be added without invalidating older cards.
+The classification system must be versioned, extensible, and support multiple
+labels because many projects span several categories. Every card records the
+classification-ontology version it uses. Namespaced extensions may be added
+without invalidating older cards.
 
 ### 9.1 Primary Project Type
+
+When the available evidence supports classification, each Project has one
+primary type representing its dominant role. The five stable core values are:
+
+* `agent_application`
+* `agent_framework_sdk`
+* `agent_harness_runtime`
+* `agent_tool_mcp`
+* `agent_skill`
+
+Domain-specific, multi-agent, delivery, and architecture characteristics do not
+automatically require a separate primary type. They may be represented through
+the card's secondary characteristics, domains, delivery forms, agent patterns,
+and architecture layers.
+
+#### 9.1.1 Namespaced Extensions
+
+If none of the five core types accurately describes the Project, the primary
+type uses a specific lowercase namespaced extension beginning with `x-`, such
+as `x-document-parser`, `x-evaluation-framework`, or `x-model-gateway`. The
+card's `type_rationale` and classification claims must explain and support the
+extension. Authors must not force a supporting project into an inaccurate core
+type.
+
+Representative concepts that may inform secondary labels or namespaced
+extensions include:
 
 * Agent application
 * Domain-specific agent
@@ -36,6 +65,37 @@ The classification system must be versioned, extensible, and support multiple la
 * Example or reference application
 * Benchmark or dataset
 * Supporting library
+
+#### 9.1.2 Classification Status
+
+A later executable schema revision will record `classification_status`
+independently from `project.primary_type`:
+
+* `classified`: the evidence supports the recorded primary type.
+* `provisional`: the recorded primary type is the best-supported interpretation,
+  but material classification uncertainty remains.
+* `insufficient_evidence`: the available evidence does not support selecting or
+  defining a responsible primary type.
+
+A project that clearly falls outside the core vocabulary receives a specific
+`x-...` extension; it is not thereby uncertain or unclassified. Conversely,
+insufficient evidence must not be represented as `x-unclassified`.
+
+Until that later schema revision is implemented, v0.3 cards continue to use the
+required `project.primary_type` contract and express material uncertainty in
+`type_rationale`, classification claims and confidence, and `open_questions`.
+
+#### 9.1.3 Extension Promotion and Card History
+
+A recurring extension may become a controlled type only through a new
+classification-ontology version that defines its meaning, inclusion criteria,
+exclusions, and relationship to existing types. Promotion does not invalidate
+or silently rewrite historical cards.
+
+An existing card version retains its recorded primary type and ontology
+version. When a card is refreshed against the newer ontology, it may adopt the
+promoted type only in a new `card_version`, preserving the previous version for
+traceability.
 
 ### 9.2 Agent Architecture Layer
 

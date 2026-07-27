@@ -535,6 +535,14 @@ skill at
 It is the working canonical contract for pre-release implementation and may
 evolve without providing v0.1 compatibility.
 
+Schema v0.3 does not yet contain the accepted `classification_status` field.
+Until a later executable schema revision adds the
+[`classified`, `provisional`, and `insufficient_evidence` behavior](02-classification-and-sources.md#912-classification-status),
+v0.3 authors preserve classification uncertainty through `type_rationale`,
+classification claims and confidence, and `open_questions`. The later schema
+revision must keep classification status independent from the primary-type
+vocabulary and must not use `x-unclassified` as an uncertainty marker.
+
 The following YAML is an illustrative v0.3 authoring template. Its empty strings
 are values still to be populated; before validation, each must be replaced by a
 known value or by `null` with the corresponding `field_states` entry. The

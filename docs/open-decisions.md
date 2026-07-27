@@ -22,6 +22,12 @@ These product choices remain unresolved.
 
 1. Which metadata, fields, filters, and file behavior should drive Agent Rumble
    product behavior.
+2. What recurrence, semantic-stability, review, and approval criteria govern
+   promotion of a namespaced project type into the controlled classification
+   vocabulary.
+3. Which executable schema revision adds `classification_status`, where the
+   field is placed, and how `project.primary_type` is represented when the
+   status is `insufficient_evidence`.
 
 ## Marketplace Publication Inputs
 
