@@ -21,7 +21,9 @@ the agent workflow, and Codex as the project-analysis harness that produces
 Agent Project Cards. It uses Pydantic models with Python type annotations for
 typed application data, Pydantic Settings for typed configuration, and
 `python-dotenv` to load environment variables from `.env` files. The initial
-Codex integration uses its MCP server interface.
+generation design invokes Codex directly through the Python Codex SDK rather
+than through its MCP server. That hosted generation integration is not yet
+implemented.
 
 See the [requirements](requirements.md#implementation-technology),
 [product specification](specification/05-system-behavior-and-quality.md#implementation-technology),

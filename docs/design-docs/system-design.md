@@ -315,16 +315,20 @@ requirements establish the following implementation constraints:
 * `uv` manages the Python portion of Agent Project Intelligence.
 * The OpenAI Agents SDK implements and orchestrates the agent workflow.
 * Codex provides the project-analysis harness used to analyze projects and produce Agent Project Cards.
+* The Python application invokes Codex directly through the Codex SDK rather
+  than exposing Codex through its MCP server.
 * An Agent Project Card skill attached to Codex provides the shared
   card-generation instructions for catalog preprocessing, direct use, and
   hosted on-demand generation.
 
-For catalog preprocessing, the initial integration runs Codex through its MCP
-server interface and orchestrates it with the OpenAI Agents SDK. The agent
-workflow supplies the declared project boundary and analysis configuration and
-invokes Codex with the Agent Project Card skill available. Codex output then
-passes through the claim, evidence, card-schema, and validation controls defined
-in the product specification before it enters the catalog.
+For catalog preprocessing, an application-level adapter creates and continues
+Codex threads directly through the Python Codex SDK. The OpenAI Agents SDK may
+orchestrate the surrounding analyzer workflow, but it does not treat Codex as
+an MCP tool. The adapter supplies the declared project boundary, analysis
+configuration, scoped workspace, and shared Agent Project Card skill to Codex.
+It converts the result into a typed draft-card or failure outcome. Codex output
+then passes through the claim, evidence, card-schema, and validation controls
+defined in the product specification before it enters the catalog.
 
 Direct skill use and Agent Project Card as a Service use the same skill and
 remain subject to the same output and validation contract.

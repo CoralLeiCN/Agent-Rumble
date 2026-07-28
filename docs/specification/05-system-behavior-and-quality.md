@@ -175,6 +175,8 @@ establish these constraints:
 * Use `uv` to manage the Python portion of Agent Project Intelligence.
 * Use the OpenAI Agents SDK to build the agent workflow.
 * Use Codex as the project-analysis harness.
+* Invoke Codex directly from the Python application through the Codex SDK
+  rather than through the Codex MCP server.
 * Provide the card-generation instructions through an Agent Project Card skill attached to Codex.
 * Separate application code into top-level `backend/` and `frontend/` project areas.
 * Use FastAPI as the backend framework and establish its initial Python project layout under `backend/src/`.

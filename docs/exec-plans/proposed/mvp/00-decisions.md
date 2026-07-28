@@ -49,8 +49,9 @@ Prepare options, consequences, and a recommendation for:
 
 * **G-05:** frontend build tooling, routing/rendering approach, and required UI
   foundation if the frontend is selected for release.
-* **G-06:** configurable model/runtime choices for the Agents SDK and Codex MCP
-  integration and their representation in analysis configuration.
+* **G-06:** configurable model/runtime choices for the Agents SDK workflow and
+  direct Python Codex SDK integration, including their representation in
+  analysis configuration.
 * **G-07:** the production deployment, request-processing, and generated-card
   storage architecture needed to make Agent Project Card as a Service publicly
   reachable without separating the canonical card, skill, or validation
@@ -80,7 +81,7 @@ governing records are consistent; do not wait for all gates.
 | G-03 | Final E-01 approval and REL evaluation/release |
 | G-04 (accepted) | PLAT-1 YAML persistence, PLAT-3 YAML-derived search, and PLAT-6 refresh |
 | G-05 | PLAT-5 frontend integration and the frontend portions of PLAT-7 |
-| G-06 | ANA-5 Agents SDK and Codex MCP orchestration |
+| G-06 | ANA-5 agent orchestration and direct Codex SDK integration |
 | G-07 | PLAT-8 hosted processing, generated-card storage, and production deployment |
 
 ## Cohort Exit Evidence

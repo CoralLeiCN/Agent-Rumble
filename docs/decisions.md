@@ -19,7 +19,7 @@ unresolved choices remain in [`open-decisions.md`](open-decisions.md).
 
 **Status:** Accepted
 
-**Date:** 2026-07-18
+**Date:** 2026-07-18; revised 2026-07-28
 
 **Related requirements:**
 [Agent Project Card](requirements.md#agent-project-card),
@@ -38,6 +38,14 @@ of repository content as untrusted data.
 
 The same core card-generation capability must support direct use in a user's
 coding-agent workflow and use through a hosted web service.
+
+The current Codex SDK provides a direct Python interface to Codex threads
+through the local Codex app-server and includes a pinned Codex CLI runtime.
+Running Codex as an MCP server remains useful when a generic MCP client should
+select Codex as a tool inside a broader agent workflow. Agent Project
+Intelligence instead needs a narrow application-controlled analysis adapter
+that always invokes Codex for the declared project-analysis step and returns a
+typed result to the surrounding workflow.
 
 #### Decision
 
@@ -58,8 +66,11 @@ coding-agent workflow and use through a hosted web service.
   their own coding-agent workflow.
 * Provide Agent Project Card as a Service so a user can submit a public GitHub
   repository link for on-demand generation through a hosted web service.
-* For Codex integration, run Codex through its MCP server interface and
-  orchestrate it with the OpenAI Agents SDK.
+* For application integration, invoke Codex directly through the Python Codex
+  SDK (`openai-codex`).
+* Keep the Agents SDK workflow boundary separate from the Codex transport:
+  Agents SDK orchestration may call an application-level Codex adapter, but the
+  application must not expose Codex to that workflow as an MCP server.
 
 Codex must operate within the declared project boundary and analysis
 configuration. Its output must pass through the claim, evidence, card-schema,
@@ -69,6 +80,11 @@ and validation controls defined by the product specification.
 
 * Python environment and dependency-management workflows will use `uv`.
 * Agent orchestration, handoffs, and traces will use the OpenAI Agents SDK.
+* The Codex adapter will create and continue Codex threads through the Python
+  Codex SDK and return a typed draft-card or failure result to the surrounding
+  workflow.
+* The Python Codex SDK is currently beta. Its version and pinned Codex runtime
+  will be reviewed and locked through the repository's `uv` dependency policy.
 * Catalog preprocessing, direct skill use, and hosted on-demand generation will
   share the Agent Project Card skill and canonical output contract.
 * Marketplace users will receive the same skill content through a versioned
@@ -87,6 +103,7 @@ and validation controls defined by the product specification.
 
 #### References
 
+* [Codex SDK](https://learn.chatgpt.com/docs/codex-sdk)
 * [Use Codex with the Agents SDK](https://learn.chatgpt.com/docs/mcp-server)
 * [Build plugins](https://learn.chatgpt.com/docs/build-plugins)
 * [Submit plugins](https://learn.chatgpt.com/docs/submit-plugins)
@@ -403,6 +420,7 @@ repeatable continuous-integration suite.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-28 | Agent workflow and runtime | Replaced the Codex MCP server integration with direct Python Codex SDK invocation while retaining the Agents SDK as the surrounding workflow orchestrator. |
 | 2026-07-25 | Frontend | Selected Vitest for frontend tests and deferred repository-owned Playwright testing pending evaluation of Codex browser capabilities. |
 | 2026-07-18 | Agent workflow and runtime | Made direct use of the published skill packaged as a Codex plugin and hosted generation from a public GitHub repository link active delivery forms of the shared Agent Project Card capability, superseding their earlier P2 sequence. |
 | 2026-07-18 | Backend | Established Unicode scalar-value semantics for canonical card strings, with surrogate-pair normalization, residual-surrogate rejection, and no other text normalization. |

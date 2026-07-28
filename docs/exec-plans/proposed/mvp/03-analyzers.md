@@ -65,15 +65,16 @@ canonical output and generated views.
 coding-agent workflow and obtain a validated canonical card plus generated
 views for a supported fixture.
 
-### ANA-5 — Agents SDK and Codex MCP Orchestration
+### ANA-5 — Agent Orchestration and Direct Codex SDK Integration
 
 **Task:** K-03
 **Gate:** G-06
 
-Implement the Agents SDK workflow that invokes Codex through MCP with the shared
-skill, explicit analysis request, allowed tools, budgets, and traceable
-configuration. Parse raw output into the canonical contract before it can be
-accepted.
+Implement the Agents SDK workflow and an application-level adapter that invokes
+Codex directly through the Python Codex SDK with the shared skill, explicit
+analysis request, allowed tools, budgets, scoped workspace, and traceable
+configuration. The Agents SDK must not invoke Codex through an MCP server.
+Parse raw output into the canonical contract before it can be accepted.
 
 **Must not:** Implement FastAPI routes or persistence, accept raw model output
 as canonical, or expand authority from source content.

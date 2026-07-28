@@ -322,6 +322,11 @@ Use the OpenAI Agents SDK to build the agent.
 Use Codex as the harness for analyzing projects and producing Agent Project
 Cards.
 
+### Codex Integration
+
+Invoke Codex directly from the Python application through the Codex SDK. Do not
+use the Codex MCP server as the application integration path.
+
 ### Backend Framework and Layout
 
 Use FastAPI as the backend framework for Agent Project Intelligence and
@@ -442,6 +447,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-28 | Implementation technology | Required the Python application to invoke Codex directly through the Codex SDK instead of using the Codex MCP server as its application integration path. |
 | 2026-07-27 | Agent Project Card | Required a stable five-type core classification, evidence-backed namespaced extensions for projects outside that core, versioned promotion of recurring extensions, preservation of historical classifications, and a later classification status that distinguishes classified, provisional, and insufficient-evidence results. |
 | 2026-07-25 | Documentation governance | Required one canonical guide for documentation processes, session-information capture, and writing styles, with repository agent instructions linking to the guide instead of duplicating its rules. |
 | 2026-07-25 | Agent Project Card and core tool access | Required a reusable card library, validation before publication, metadata-driven product behavior, and API-based card generation; removed generated human-readable cards, optimistic publishing, derived card API projections, and background preprocessing from the current implementation requirements; deferred a schema-driven editor. |

@@ -58,7 +58,7 @@ Supabase PGMQ
 Render background worker
 ├── ephemeral repository clone
 ├── static evidence extraction
-├── Agents SDK and Codex analysis
+├── Agents SDK orchestration and direct Codex SDK analysis
 ├── card-schema validation
 ├── immutable artifact persistence
 └── relational projection update
@@ -156,7 +156,8 @@ The worker should:
 2. Clone pinned repository revisions into an ephemeral workspace.
 3. Extract repository metadata and static evidence without executing repository
    code.
-4. Run the Agents SDK and Codex analysis under the declared project boundary.
+4. Run the surrounding Agents SDK workflow and invoke Codex directly through
+   the Python Codex SDK under the declared project boundary.
 5. Validate the result against the versioned Agent Project Card schema.
 6. Write the immutable YAML card artifact atomically.
 7. Trigger a catalog reload after successful publication.
