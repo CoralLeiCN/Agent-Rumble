@@ -173,11 +173,14 @@ The [Implementation Technology requirements](../requirements.md#implementation-t
 establish these constraints:
 
 * Use `uv` to manage the Python portion of Agent Project Intelligence.
-* Use the OpenAI Agents SDK to build the agent workflow.
+* Use Codex directly as the Agent Project Card generation runtime without a
+  separate model-driven orchestration call.
 * Use Codex as the project-analysis harness.
 * Invoke Codex directly from the Python application through the Codex SDK
   rather than through the Codex MCP server.
 * Provide the card-generation instructions through an Agent Project Card skill attached to Codex.
+* Let operators configure the Codex model and provider through one settings
+  group, including localhost endpoints.
 * Separate application code into top-level `backend/` and `frontend/` project areas.
 * Use FastAPI as the backend framework and establish its initial Python project layout under `backend/src/`.
 * Use React as the frontend framework, with frontend code contained under `frontend/`.
@@ -185,6 +188,18 @@ establish these constraints:
 * Use Pydantic with Python type annotations to define typed application data models.
 * Use `BaseSettings` from Pydantic Settings for typed application settings.
 * Use `load_dotenv()` from `python-dotenv` to load environment variables from `.env` files.
+
+The application must invoke the direct Codex adapter without first asking a
+second model to select a predetermined tool. Provider selection is operator
+configuration and must not be influenced by analyzed repository content. The
+Source Snapshot analysis configuration must record the non-secret model,
+provider, wire API, and base URL used for generation.
+
+A localhost endpoint must implement the configured Codex wire API and be
+registered through Codex's model-provider boundary. Provider switching does not
+relax the static-analysis, project-boundary, skill, output-validation, or
+publication requirements, and raw Codex output is never accepted as a canonical
+card without structural and semantic validation.
 
 Frontend unit and component-behavior tests must run through Vitest. Playwright
 must not be added to the current frontend test toolchain. Real-browser and

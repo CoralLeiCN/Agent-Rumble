@@ -313,22 +313,29 @@ The [Core Tool and Access](../requirements.md#core-tool-and-access) and
 requirements establish the following implementation constraints:
 
 * `uv` manages the Python portion of Agent Project Intelligence.
-* The OpenAI Agents SDK implements and orchestrates the agent workflow.
-* Codex provides the project-analysis harness used to analyze projects and produce Agent Project Cards.
+* Codex provides the project-analysis and generation runtime used to produce
+  Agent Project Cards.
 * The Python application invokes Codex directly through the Codex SDK rather
   than exposing Codex through its MCP server.
+* The Codex model and provider are configurable through one settings group,
+  including localhost endpoints.
 * An Agent Project Card skill attached to Codex provides the shared
   card-generation instructions for catalog preprocessing, direct use, and
   hosted on-demand generation.
 
-For catalog preprocessing, an application-level adapter creates and continues
-Codex threads directly through the Python Codex SDK. The OpenAI Agents SDK may
-orchestrate the surrounding analyzer workflow, but it does not treat Codex as
-an MCP tool. The adapter supplies the declared project boundary, analysis
-configuration, scoped workspace, and shared Agent Project Card skill to Codex.
-It converts the result into a typed draft-card or failure outcome. Codex output
-then passes through the claim, evidence, card-schema, and validation controls
-defined in the product specification before it enters the catalog.
+For catalog preprocessing, an application-level adapter creates Codex threads
+directly through the Python Codex SDK. The adapter supplies the authoritative
+project boundary, analysis configuration, scoped workspace, and shared Agent
+Project Card skill to Codex. It converts the result into a typed draft-card or
+failure outcome. Codex output then passes through request binding, claim,
+evidence, card-schema, and validation controls before it enters the catalog.
+
+The adapter passes its configured model and provider when it starts a scoped
+thread; a configured base URL is registered as a Codex custom provider for the
+SDK process. The application records the non-secret request and runtime
+configuration in the card Source Snapshot. Provider credentials remain
+environment references and are not included in prompts, canonical cards, or
+recorded analysis configuration.
 
 Direct skill use and Agent Project Card as a Service use the same skill and
 remain subject to the same output and validation contract.
@@ -338,8 +345,8 @@ records this choice and its consequences. The
 [YAML-First Card Catalog decision](../decisions.md#yaml-first-card-catalog)
 selects direct YAML storage and basic YAML-derived search for the first
 implementation. Database-backed capabilities, advanced search,
-deployment-platform, model-selection, and service-decomposition choices remain
-open. The backend and frontend framework choices are recorded below.
+deployment-platform and service-decomposition choices remain open. The backend
+and frontend framework choices are recorded below.
 
 ### Backend Application Framework
 

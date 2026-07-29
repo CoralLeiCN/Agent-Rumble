@@ -34,8 +34,8 @@ Deliver a tested FastAPI vertical slice that:
    distinctions.
 5. Provides a stable HTTP contract that the React catalog gateway can consume.
 
-No interactive endpoint invokes Codex, the OpenAI Agents SDK, an embedding
-model, or analyzed repository code.
+No interactive endpoint invokes Codex, an embedding model, or analyzed
+repository code.
 
 ## Current Baseline
 
@@ -288,8 +288,8 @@ The following are outside this slice or require a recorded decision:
   delivered by Agent Project Card as a Service.
 * Direct user generation: delivered through the Agent Project Card skill
   packaged as a Codex plugin rather than this catalog API slice.
-* Operator-managed Codex and Agents SDK preprocessing: later backend cohort;
-  it must produce the same validated card contract.
+* Operator-managed direct Codex preprocessing: later backend cohort; it must
+  produce the same validated card contract.
 * Manual refresh and publication request state: source-retention and delivery
   decisions; canonical card versions still use the accepted YAML layout.
 * Database-backed capabilities, embeddings, vector storage, and semantic

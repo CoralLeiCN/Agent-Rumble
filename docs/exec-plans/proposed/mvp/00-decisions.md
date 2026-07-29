@@ -17,6 +17,9 @@ which include direct use of the published plugin and hosted generation from a
 public GitHub repository link in the MVP. G-04 is already resolved by the
 accepted
 [YAML-First Card Catalog decision](../../../decisions.md#yaml-first-card-catalog).
+G-06 is resolved by the accepted
+[Initial Agent Technology Stack decision](../../../decisions.md#initial-agent-technology-stack),
+which selects the provider-configurable direct Codex SDK runtime.
 
 ## Parallel Packets
 
@@ -43,15 +46,12 @@ explicitly open with its blocked task IDs listed.
 
 ### DEC-2 — Architecture Decisions
 
-**Owns:** G-05, G-06, G-07
+**Owns:** G-05, G-07
 
 Prepare options, consequences, and a recommendation for:
 
 * **G-05:** frontend build tooling, routing/rendering approach, and required UI
   foundation if the frontend is selected for release.
-* **G-06:** configurable model/runtime choices for the Agents SDK workflow and
-  direct Python Codex SDK integration, including their representation in
-  analysis configuration.
 * **G-07:** the production deployment, request-processing, and generated-card
   storage architecture needed to make Agent Project Card as a Service publicly
   reachable without separating the canonical card, skill, or validation
@@ -81,7 +81,7 @@ governing records are consistent; do not wait for all gates.
 | G-03 | Final E-01 approval and REL evaluation/release |
 | G-04 (accepted) | PLAT-1 YAML persistence, PLAT-3 YAML-derived search, and PLAT-6 refresh |
 | G-05 | PLAT-5 frontend integration and the frontend portions of PLAT-7 |
-| G-06 | ANA-5 agent orchestration and direct Codex SDK integration |
+| G-06 (accepted) | ANA-5 direct Codex SDK integration |
 | G-07 | PLAT-8 hosted processing, generated-card storage, and production deployment |
 
 ## Cohort Exit Evidence

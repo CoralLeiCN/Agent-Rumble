@@ -15,8 +15,8 @@ Interactive catalog use should not invoke an AI model.
 
 Search, filtering, card viewing, and comparison operate on preprocessed,
 versioned Agent Project Cards loaded directly from canonical YAML files. Codex
-and the OpenAI Agents SDK run outside interactive catalog requests to manufacture
-and refresh the intelligence layer.
+runs outside interactive catalog requests to manufacture and refresh the
+intelligence layer.
 
 This boundary provides:
 
@@ -58,13 +58,13 @@ Supabase PGMQ
 Render background worker
 ├── ephemeral repository clone
 ├── static evidence extraction
-├── Agents SDK orchestration and direct Codex SDK analysis
+├── direct Codex SDK analysis
 ├── card-schema validation
 ├── immutable artifact persistence
 └── relational projection update
           │
           ├── Supabase Storage
-          ├── OpenAI Agents traces
+          ├── generation telemetry
           └── Sentry and structured logs
 
 Render Cron Job ──► enqueue new or stale catalog projects
@@ -83,7 +83,7 @@ Render Cron Job ──► enqueue new or stale catalog projects
 | Immutable artifacts | Supabase Storage | Canonical card files and retained analysis artifacts |
 | Authentication | Supabase Auth | Public anonymous browsing plus protected administration and saved work |
 | Application observability | Sentry and structured logs | Frontend and backend errors, performance, and correlated requests |
-| Agent observability | OpenAI Agents SDK tracing | Generations, tool calls, handoffs, guardrails, duration, and usage |
+| Generation observability | Structured Codex and application telemetry | Generation duration, usage, failures, retries, and request correlation |
 | DNS and TLS | Cloudflare DNS with provider-managed certificates | Low certificate-management overhead |
 | CI/CD | GitHub Actions plus provider Git integration | Test and validation gates before automatic deployment |
 
@@ -156,8 +156,8 @@ The worker should:
 2. Clone pinned repository revisions into an ephemeral workspace.
 3. Extract repository metadata and static evidence without executing repository
    code.
-4. Run the surrounding Agents SDK workflow and invoke Codex directly through
-   the Python Codex SDK under the declared project boundary.
+4. Invoke Codex directly through the Python Codex SDK under the declared
+   project boundary and analysis configuration.
 5. Validate the result against the versioned Agent Project Card schema.
 6. Write the immutable YAML card artifact atomically.
 7. Trigger a catalog reload after successful publication.
@@ -231,11 +231,10 @@ Monitor:
 * Unexpected catalog changes after analyzer upgrades
 * Daily model spend
 
-The OpenAI Agents SDK traces generations, tool calls, handoffs, guardrails, and
-custom events. Long-running workers can explicitly flush traces. Because traces
-may contain model or tool inputs and outputs, production should disable sensitive
-trace data unless it is explicitly required:
-[Agents SDK tracing](https://openai.github.io/openai-agents-python/tracing/).
+Generation telemetry may contain model or tool inputs and outputs. Production
+logging must omit sensitive payloads by default and retain only the identifiers,
+timing, usage, failure classification, and non-secret configuration needed for
+operations and reproducibility.
 
 Cost controls include:
 

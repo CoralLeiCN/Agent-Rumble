@@ -11,19 +11,21 @@ This repository contains an implemented end-to-end catalog slice: validated
 Agent Project Cards, a versioned YAML catalog, a FastAPI API, and a React
 discovery, comparison, evidence, and Rumble Arena experience. Hosted on-demand
 card generation, production deployment choices, shared-context comparison
-data, and release validation remain active or proposed work.
+data, and release validation remain active or proposed work. The internal direct
+Codex SDK generation adapter is implemented; public repository acquisition,
+publication, and the hosted API route are not.
 
 ## Current Implementation Baseline
 
 The initial implementation uses `uv` to manage its Python components, FastAPI
-for the backend, React for the frontend, the OpenAI Agents SDK to orchestrate
-the agent workflow, and Codex as the project-analysis harness that produces
-Agent Project Cards. It uses Pydantic models with Python type annotations for
-typed application data, Pydantic Settings for typed configuration, and
-`python-dotenv` to load environment variables from `.env` files. The initial
-generation design invokes Codex directly through the Python Codex SDK rather
-than through its MCP server. That hosted generation integration is not yet
-implemented.
+for the backend, React for the frontend, and Codex as the project-analysis and
+card-generation runtime. It uses Pydantic models with Python type annotations
+for typed application data, Pydantic Settings for typed configuration, and
+`python-dotenv` to load environment variables from `.env` files. The generation
+adapter invokes Codex directly through the Python Codex SDK rather than through
+its MCP server or a separate model-driven orchestration call. Its Codex model
+and provider are configurable through one settings group, including localhost
+endpoints.
 
 See the [requirements](requirements.md#implementation-technology),
 [product specification](specification/05-system-behavior-and-quality.md#implementation-technology),

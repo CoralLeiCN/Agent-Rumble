@@ -19,7 +19,7 @@ unresolved choices remain in [`open-decisions.md`](open-decisions.md).
 
 **Status:** Accepted
 
-**Date:** 2026-07-18; revised 2026-07-28
+**Date:** 2026-07-18; revised 2026-07-28 and 2026-07-29
 
 **Related requirements:**
 [Agent Project Card](requirements.md#agent-project-card),
@@ -28,9 +28,9 @@ unresolved choices remain in [`open-decisions.md`](open-decisions.md).
 
 #### Context
 
-Agent Project Intelligence needs a managed Python environment, an agent
-framework, and a project-analysis harness that can inspect repository content
-and produce Agent Project Cards.
+Agent Project Intelligence needs a managed Python environment and a
+project-analysis harness that can inspect repository content and produce Agent
+Project Cards.
 
 The selected technologies must preserve the declared project boundary,
 static-analysis-only MVP scope, claim-level evidence model, and safety treatment
@@ -45,14 +45,21 @@ Running Codex as an MCP server remains useful when a generic MCP client should
 select Codex as a tool inside a broader agent workflow. Agent Project
 Intelligence instead needs a narrow application-controlled analysis adapter
 that always invokes Codex for the declared project-analysis step and returns a
-typed result to the surrounding workflow.
+typed result to the application.
+
+A surrounding Agents SDK model was initially selected to invoke the Codex
+adapter as a forced function tool. Because that model had no routing choice and
+was required to make exactly one predetermined tool call, it added latency,
+cost, configuration, and another failure boundary without contributing analysis
+or orchestration. The Codex SDK already accepts a model and `model_provider`
+when starting a thread, while the Codex runtime supports built-in local
+providers and custom provider base URLs.
 
 #### Decision
 
 * Use `uv` to manage the Python portion of Agent Project Intelligence.
-* Use the OpenAI Agents SDK to implement and orchestrate the agent workflow.
-* Use Codex as the repository-analysis harness invoked by that workflow to
-  analyze projects and produce Agent Project Cards.
+* Use Codex directly as the repository-analysis and generation runtime for
+  Agent Project Cards.
 * Provide the card-generation instructions through an Agent Project Card skill
   attached to Codex.
 * Package that same skill as a skills-only Codex plugin for public marketplace
@@ -68,9 +75,14 @@ typed result to the surrounding workflow.
   repository link for on-demand generation through a hosted web service.
 * For application integration, invoke Codex directly through the Python Codex
   SDK (`openai-codex`).
-* Keep the Agents SDK workflow boundary separate from the Codex transport:
-  Agents SDK orchestration may call an application-level Codex adapter, but the
-  application must not expose Codex to that workflow as an MCP server.
+* Do not add a separate model-driven Agents SDK call around the direct Codex
+  adapter when the application has no routing or orchestration decision.
+* Configure the Codex model, provider, wire API, base URL, credential reference,
+  and timeout through one application settings group.
+* Support a localhost custom provider or a named Codex provider. Keep the Codex
+  runtime default when no override is configured.
+* Record the non-secret model name, provider, wire API, and base URL in the
+  analysis configuration.
 
 Codex must operate within the declared project boundary and analysis
 configuration. Its output must pass through the claim, evidence, card-schema,
@@ -79,10 +91,15 @@ and validation controls defined by the product specification.
 #### Consequences
 
 * Python environment and dependency-management workflows will use `uv`.
-* Agent orchestration, handoffs, and traces will use the OpenAI Agents SDK.
-* The Codex adapter will create and continue Codex threads through the Python
-  Codex SDK and return a typed draft-card or failure result to the surrounding
-  workflow.
+* The Codex adapter creates Codex threads through the Python Codex SDK and
+  returns a typed draft-card or failure result directly to the application.
+* Generation makes one model call path instead of using a model call to dispatch
+  another model call.
+* Local models must implement the behavior expected by the configured Codex
+  provider and wire API. Provider compatibility is an operator responsibility,
+  and failures remain typed generation failures.
+* Provider credentials remain runtime secrets and are not written to analysis
+  configuration, canonical cards, prompts, or traces.
 * The Python Codex SDK is currently beta. Its version and pinned Codex runtime
   will be reviewed and locked through the repository's `uv` dependency policy.
 * Catalog preprocessing, direct skill use, and hosted on-demand generation will
@@ -104,7 +121,7 @@ and validation controls defined by the product specification.
 #### References
 
 * [Codex SDK](https://learn.chatgpt.com/docs/codex-sdk)
-* [Use Codex with the Agents SDK](https://learn.chatgpt.com/docs/mcp-server)
+* [Codex custom model providers](https://learn.chatgpt.com/docs/config-file/config-advanced#custom-model-providers)
 * [Build plugins](https://learn.chatgpt.com/docs/build-plugins)
 * [Submit plugins](https://learn.chatgpt.com/docs/submit-plugins)
 
@@ -420,6 +437,7 @@ repeatable continuous-integration suite.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-29 | Agent workflow and runtime | Removed the redundant Agents SDK orchestration model and selected the direct Codex SDK adapter as the sole generation runtime with one model-provider settings group. |
 | 2026-07-28 | Agent workflow and runtime | Replaced the Codex MCP server integration with direct Python Codex SDK invocation while retaining the Agents SDK as the surrounding workflow orchestrator. |
 | 2026-07-25 | Frontend | Selected Vitest for frontend tests and deferred repository-owned Playwright testing pending evaluation of Codex browser capabilities. |
 | 2026-07-18 | Agent workflow and runtime | Made direct use of the published skill packaged as a Codex plugin and hosted generation from a public GitHub repository link active delivery forms of the shared Agent Project Card capability, superseding their earlier P2 sequence. |

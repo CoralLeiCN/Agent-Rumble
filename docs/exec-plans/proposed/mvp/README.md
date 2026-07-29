@@ -120,8 +120,8 @@ The following work already exists:
   retrieval/search/evidence/comparison routes, typed errors, and API tests.
 * A local Vite, React, and TypeScript implementation with an API-only HTTP
   catalog gateway. Its broader production architecture remains a decision gate.
-* Accepted React, FastAPI, Pydantic, OpenAI Agents SDK, direct Python Codex SDK,
-  Codex, direct-plugin, hosted-service, and catalog-API constraints.
+* Accepted React, FastAPI, Pydantic, direct Python Codex SDK, Codex,
+  direct-plugin, hosted-service, and catalog-API constraints.
 * Specified card semantics, exploration workflow, safety boundaries, and MVP
   acceptance criteria.
 * A repository-local Agent Project Card skill packaged as a plugin, an

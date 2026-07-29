@@ -313,9 +313,10 @@ relaxed character spacing.
 
 Use `uv` to manage the Python part of Agent Project Intelligence.
 
-### Agent Framework
+### Agent Runtime
 
-Use the OpenAI Agents SDK to build the agent.
+Use Codex directly as the generation runtime. Do not add a separate
+model-driven orchestration call around the Codex project-analysis harness.
 
 ### Project Analysis Harness
 
@@ -326,6 +327,12 @@ Cards.
 
 Invoke Codex directly from the Python application through the Codex SDK. Do not
 use the Codex MCP server as the application integration path.
+
+### Configurable Model Providers
+
+Allow the model provider used by the Codex project-analysis harness to be
+selected through one configuration group, including models served from
+localhost.
 
 ### Backend Framework and Layout
 
@@ -447,6 +454,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-07-29 | Implementation technology | Simplified Agent Project Card generation to invoke Codex directly with one configurable model-provider group, superseding the separate Agents SDK orchestration model. |
 | 2026-07-28 | Implementation technology | Required the Python application to invoke Codex directly through the Codex SDK instead of using the Codex MCP server as its application integration path. |
 | 2026-07-27 | Agent Project Card | Required a stable five-type core classification, evidence-backed namespaced extensions for projects outside that core, versioned promotion of recurring extensions, preservation of historical classifications, and a later classification status that distinguishes classified, provisional, and insufficient-evidence results. |
 | 2026-07-25 | Documentation governance | Required one canonical guide for documentation processes, session-information capture, and writing styles, with repository agent instructions linking to the guide instead of duplicating its rules. |
