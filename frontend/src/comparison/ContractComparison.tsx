@@ -7,6 +7,7 @@ import {
 } from "../status/statusPresentation";
 import type {
   ComparisonCell,
+  ClaimReference,
   ComparisonJsonValue,
   ComparisonResponse,
   ComparisonRow,
@@ -27,10 +28,16 @@ import {
 interface ContractComparisonProps {
   comparison: ComparisonResponse;
   projects: ProjectSummary[];
-  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
+  onOpenEvidence: (
+    reference: ClaimReference,
+    trigger: HTMLButtonElement,
+  ) => void;
 }
 
-function isKeyOf<T extends object>(value: PropertyKey, record: T): value is keyof T {
+function isKeyOf<T extends object>(
+  value: PropertyKey,
+  record: T,
+): value is keyof T {
   return value in record;
 }
 
@@ -61,17 +68,41 @@ function primitiveLabel(value: ComparisonJsonValue | undefined) {
 function semanticValue(row: ComparisonRow, value: ComparisonJsonValue) {
   if (typeof value !== "string") return null;
 
-  if (row.semanticKind === "support_status" && isKeyOf(value, supportStatusPresentation)) {
-    return <SemanticBadge {...supportStatusPresentation[value as SupportStatus]} />;
+  if (
+    row.semanticKind === "support_status" &&
+    isKeyOf(value, supportStatusPresentation)
+  ) {
+    return (
+      <SemanticBadge {...supportStatusPresentation[value as SupportStatus]} />
+    );
   }
-  if (row.semanticKind === "verification_status" && isKeyOf(value, verificationPresentation)) {
-    return <SemanticBadge {...verificationPresentation[value as VerificationStatus]} />;
+  if (
+    row.semanticKind === "verification_status" &&
+    isKeyOf(value, verificationPresentation)
+  ) {
+    return (
+      <SemanticBadge
+        {...verificationPresentation[value as VerificationStatus]}
+      />
+    );
   }
-  if (row.semanticKind === "confidence" && isKeyOf(value, confidencePresentation)) {
-    return <strong className="contract-confidence">{confidencePresentation[value as Confidence]}</strong>;
+  if (
+    row.semanticKind === "confidence" &&
+    isKeyOf(value, confidencePresentation)
+  ) {
+    return (
+      <strong className="contract-confidence">
+        {confidencePresentation[value as Confidence]}
+      </strong>
+    );
   }
-  if (row.semanticKind === "field_state" && isKeyOf(value, comparisonStatePresentation)) {
-    return <SemanticBadge {...comparisonStatePresentation[value as FieldState]} />;
+  if (
+    row.semanticKind === "field_state" &&
+    isKeyOf(value, comparisonStatePresentation)
+  ) {
+    return (
+      <SemanticBadge {...comparisonStatePresentation[value as FieldState]} />
+    );
   }
   return null;
 }
@@ -83,7 +114,7 @@ function ContractValue({
 }: {
   row: ComparisonRow;
   cell: ComparisonCell;
-  onOpenEvidence: ContractComparisonProps["onOpenEvidence"];
+  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
 }) {
   if (cell.state !== "value") {
     const state = comparisonStatePresentation[cell.state];
@@ -97,27 +128,33 @@ function ContractValue({
     );
   }
 
-  const renderedSemanticValue = cell.value === undefined ? null : semanticValue(row, cell.value);
+  const renderedSemanticValue =
+    cell.value === undefined ? null : semanticValue(row, cell.value);
   const values = Array.isArray(cell.value) ? cell.value : null;
-  const isIdentifier = /(?:^|\/)(?:.*_id|.*_ids|schema_version|card_version|revision_or_version|commit|content_digest|url|uri|path)$/.test(
-    row.fieldPattern,
-  );
-  const exposesClaimLink = cell.claimIds.length > 0 && (
-    row.semanticKind === "support_status"
-    || row.semanticKind === "verification_status"
-    || row.semanticKind === "claim_reference"
-    || /\/(?:statement|name|description|maturity)$/.test(row.fieldPattern)
-  );
+  const isIdentifier =
+    /(?:^|\/)(?:.*_id|.*_ids|schema_version|card_version|revision_or_version|commit|content_digest|url|uri|path)$/.test(
+      row.fieldPattern,
+    );
+  const exposesClaimLink =
+    cell.claimIds.length > 0 &&
+    (row.semanticKind === "support_status" ||
+      row.semanticKind === "verification_status" ||
+      row.semanticKind === "claim_reference" ||
+      /\/(?:statement|name|description|maturity)$/.test(row.fieldPattern));
 
   return (
     <div className="contract-cell">
-      {renderedSemanticValue ?? (
-        values ? (
+      {renderedSemanticValue ??
+        (values ? (
           values.length > 0 ? (
             <ul className="contract-value-list">
               {values.map((value, index) => (
                 <li key={`${primitiveLabel(value)}-${index}`}>
-                  {isIdentifier ? <code>{primitiveLabel(value)}</code> : primitiveLabel(value)}
+                  {isIdentifier ? (
+                    <code>{primitiveLabel(value)}</code>
+                  ) : (
+                    primitiveLabel(value)
+                  )}
                 </li>
               ))}
             </ul>
@@ -127,11 +164,12 @@ function ContractValue({
         ) : row.valueKind === "empty_object" ? (
           <span className="known-empty">None recorded</span>
         ) : isIdentifier ? (
-          <code className="contract-scalar contract-scalar--code">{primitiveLabel(cell.value)}</code>
+          <code className="contract-scalar contract-scalar--code">
+            {primitiveLabel(cell.value)}
+          </code>
         ) : (
           <p className="contract-scalar">{primitiveLabel(cell.value)}</p>
-        )
-      )}
+        ))}
 
       {exposesClaimLink && (
         <div className="contract-cell__claims" aria-label="Supporting sources">
@@ -159,13 +197,17 @@ function rowMatches(row: ComparisonRow, query: string) {
     row.logicalPath,
     row.fieldPattern,
     ...Object.values(row.cells).map(({ value }) => JSON.stringify(value) ?? ""),
-  ].join(" ").toLocaleLowerCase();
+  ]
+    .join(" ")
+    .toLocaleLowerCase();
   return searchable.includes(query);
 }
 
 function contractFieldMatches(field: PresentedContractField, query: string) {
   if (!query) return true;
-  return `${field.label} ${field.fieldPattern}`.toLocaleLowerCase().includes(query);
+  return `${field.label} ${field.fieldPattern}`
+    .toLocaleLowerCase()
+    .includes(query);
 }
 
 function customerLabel(value: string) {
@@ -187,30 +229,56 @@ function ComparisonTable({
 }) {
   if (rows.length === 0) return null;
   return (
-    <div className="comparison-scroll contract-group__table" tabIndex={0} aria-label={`${label} comparison`}>
+    <div
+      className="comparison-scroll contract-group__table"
+      tabIndex={0}
+      aria-label={`${label} comparison`}
+    >
       <table className="comparison-table comparison-table--contract">
         <thead>
           <tr>
             <th scope="col">Detail</th>
             {projects.map((project) => (
-              <th scope="col" key={project.id}>{project.name}</th>
+              <th scope="col" key={project.id}>
+                {project.name}
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.id} className={row.isDifferent ? "contract-row--different" : "contract-row--shared"}>
-              <th scope="row"><span>{row.label}</span></th>
+            <tr
+              key={row.id}
+              className={
+                row.isDifferent
+                  ? "contract-row--different"
+                  : "contract-row--shared"
+              }
+            >
+              <th scope="row">
+                <span>{row.label}</span>
+              </th>
               {projects.map((project) => (
                 <td key={project.id} data-project={project.name}>
                   <ContractValue
                     row={row}
-                    cell={row.cells[project.id] ?? {
-                      pointer: null,
-                      state: "not_present",
-                      claimIds: [],
-                    }}
-                    onOpenEvidence={onOpenEvidence}
+                    cell={
+                      row.cells[project.id] ?? {
+                        pointer: null,
+                        state: "not_present",
+                        claimIds: [],
+                      }
+                    }
+                    onOpenEvidence={(claimId, trigger) =>
+                      onOpenEvidence(
+                        {
+                          projectId: project.id,
+                          cardVersion: project.cardVersion,
+                          claimId,
+                        },
+                        trigger,
+                      )
+                    }
                   />
                 </td>
               ))}
@@ -222,11 +290,17 @@ function ComparisonTable({
   );
 }
 
-function UnusedContractFields({ fields }: { fields: PresentedContractField[] }) {
+function UnusedContractFields({
+  fields,
+}: {
+  fields: PresentedContractField[];
+}) {
   if (fields.length === 0) return null;
   return (
     <div className="contract-unused-fields">
-      <p>No selected project has a matching entry for these additional details.</p>
+      <p>
+        No selected project has a matching entry for these additional details.
+      </p>
       <ul>
         {fields.map((field) => (
           <li key={`${field.sourceGroupId}:${field.fieldPattern}`}>
@@ -239,7 +313,11 @@ function UnusedContractFields({ fields }: { fields: PresentedContractField[] }) 
   );
 }
 
-export function ContractComparison({ comparison, projects, onOpenEvidence }: ContractComparisonProps) {
+export function ContractComparison({
+  comparison,
+  projects,
+  onOpenEvidence,
+}: ContractComparisonProps) {
   const selectedProjects = comparison.projectIds
     .map((id) => projects.find((project) => project.id === id))
     .filter((project): project is ProjectSummary => Boolean(project));
@@ -248,15 +326,24 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
     .join("|");
   const sections = useMemo(
     () => buildComparisonPresentation(comparison.groups),
-    [comparisonKey, comparison.groups],
+    [comparison.groups],
   );
-  const initialExpanded = useMemo(() => new Set(
-    sections.filter(({ priority }) => priority === "primary").map(({ id }) => id),
-  ), [sections]);
+  const initialExpanded = useMemo(
+    () =>
+      new Set(
+        sections
+          .filter(({ priority }) => priority === "primary")
+          .map(({ id }) => id),
+      ),
+    [sections],
+  );
   const [showAll, setShowAll] = useState(false);
   const [fieldQuery, setFieldQuery] = useState("");
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(initialExpanded);
-  const [expandedDetails, setExpandedDetails] = useState<Set<string>>(new Set());
+  const [expandedSections, setExpandedSections] =
+    useState<Set<string>>(initialExpanded);
+  const [expandedDetails, setExpandedDetails] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
     setShowAll(false);
@@ -269,22 +356,40 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
   const visibleSections = sections
     .map((section) => ({
       ...section,
-      highlights: section.highlights.filter((row) => rowMatches(row, normalizedQuery)),
-      details: section.details.filter((row) => rowMatches(row, normalizedQuery)),
-      contractOnlyFields: section.contractOnlyFields.filter(
-        (field) => contractFieldMatches(field, normalizedQuery),
+      highlights: section.highlights.filter((row) =>
+        rowMatches(row, normalizedQuery),
+      ),
+      details: section.details.filter((row) =>
+        rowMatches(row, normalizedQuery),
+      ),
+      contractOnlyFields: section.contractOnlyFields.filter((field) =>
+        contractFieldMatches(field, normalizedQuery),
       ),
     }))
-    .filter(({ highlights, details, contractOnlyFields }) => (
-      highlights.length > 0 || details.length > 0 || contractOnlyFields.length > 0
-    ));
-  const highlightCount = sections.reduce((count, section) => count + section.highlights.length, 0);
-  const highlightDifferenceCount = sections.reduce((count, section) => (
-    count + section.highlights.filter(({ isDifferent }) => isDifferent).length
-  ), 0);
-  const visibleDetailCount = visibleSections.reduce((count, section) => (
-    count + section.highlights.length + section.details.length + section.contractOnlyFields.length
-  ), 0);
+    .filter(
+      ({ highlights, details, contractOnlyFields }) =>
+        highlights.length > 0 ||
+        details.length > 0 ||
+        contractOnlyFields.length > 0,
+    );
+  const highlightCount = sections.reduce(
+    (count, section) => count + section.highlights.length,
+    0,
+  );
+  const highlightDifferenceCount = sections.reduce(
+    (count, section) =>
+      count +
+      section.highlights.filter(({ isDifferent }) => isDifferent).length,
+    0,
+  );
+  const visibleDetailCount = visibleSections.reduce(
+    (count, section) =>
+      count +
+      section.highlights.length +
+      section.details.length +
+      section.contractOnlyFields.length,
+    0,
+  );
 
   const showHighlights = () => {
     setShowAll(false);
@@ -298,21 +403,48 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
   };
 
   return (
-    <section className="contract-coverage" aria-labelledby="contract-coverage-title">
+    <section
+      className="contract-coverage"
+      aria-labelledby="contract-coverage-title"
+    >
       <div className="contract-coverage__intro">
         <div>
           <h2 id="contract-coverage-title">Project details</h2>
-          <p>Key differences are shown first. Open a section for more detail.</p>
+          <p>
+            Key differences are shown first. Open a section for more detail.
+          </p>
         </div>
         <dl className="contract-coverage__metrics">
-          <div><dt>Key differences</dt><dd>{highlightDifferenceCount}</dd></div>
+          <div>
+            <dt>Key differences</dt>
+            <dd>{highlightDifferenceCount}</dd>
+          </div>
         </dl>
       </div>
 
-      <div className="contract-controls" aria-label="Comparison detail controls">
-        <div className="contract-controls__scope" role="group" aria-label="Detail scope">
-          <button type="button" aria-pressed={!showAll} onClick={showHighlights}>Highlights</button>
-          <button type="button" aria-pressed={showAll} onClick={showEveryDetail}>All details</button>
+      <div
+        className="contract-controls"
+        aria-label="Comparison detail controls"
+      >
+        <div
+          className="contract-controls__scope"
+          role="group"
+          aria-label="Detail scope"
+        >
+          <button
+            type="button"
+            aria-pressed={!showAll}
+            onClick={showHighlights}
+          >
+            Highlights
+          </button>
+          <button
+            type="button"
+            aria-pressed={showAll}
+            onClick={showEveryDetail}
+          >
+            All details
+          </button>
         </div>
         <label className="contract-field-search">
           <span>Find a detail</span>
@@ -333,13 +465,22 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
 
       <div className="contract-groups">
         {visibleSections.map((section) => {
-          const sectionDifferences = [...section.highlights, ...section.details]
-            .filter(({ isDifferent }) => isDifferent).length;
-          const isExpanded = expandedSections.has(section.id) || showAll || Boolean(normalizedQuery);
-          const secondaryContent = section.priority === "secondary"
-            ? [...section.highlights, ...section.details]
-            : section.details;
-          const detailIsExpanded = expandedDetails.has(section.id) || showAll || Boolean(normalizedQuery);
+          const sectionDifferences = [
+            ...section.highlights,
+            ...section.details,
+          ].filter(({ isDifferent }) => isDifferent).length;
+          const isExpanded =
+            expandedSections.has(section.id) ||
+            showAll ||
+            Boolean(normalizedQuery);
+          const secondaryContent =
+            section.priority === "secondary"
+              ? [...section.highlights, ...section.details]
+              : section.details;
+          const detailIsExpanded =
+            expandedDetails.has(section.id) ||
+            showAll ||
+            Boolean(normalizedQuery);
           return (
             <details
               className="contract-group"
@@ -354,10 +495,14 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
               }}
             >
               <summary>
-                <span><strong>{section.label}</strong></span>
+                <span>
+                  <strong>{section.label}</strong>
+                </span>
                 <small>
                   {section.highlights.length + section.details.length} details
-                  {sectionDifferences > 0 ? ` · ${sectionDifferences} different` : ""}
+                  {sectionDifferences > 0
+                    ? ` · ${sectionDifferences} different`
+                    : ""}
                 </small>
               </summary>
               {section.priority === "primary" && (
@@ -368,8 +513,9 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
                   onOpenEvidence={onOpenEvidence}
                 />
               )}
-              {(secondaryContent.length > 0 || section.contractOnlyFields.length > 0) && (
-                section.priority === "primary" ? (
+              {(secondaryContent.length > 0 ||
+                section.contractOnlyFields.length > 0) &&
+                (section.priority === "primary" ? (
                   <details
                     className="contract-more"
                     open={detailIsExpanded}
@@ -382,7 +528,10 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
                     }}
                   >
                     <summary>
-                      More details ({secondaryContent.length + section.contractOnlyFields.length})
+                      More details (
+                      {secondaryContent.length +
+                        section.contractOnlyFields.length}
+                      )
                     </summary>
                     <ComparisonTable
                       label={`${section.label} more details`}
@@ -402,13 +551,14 @@ export function ContractComparison({ comparison, projects, onOpenEvidence }: Con
                     />
                     <UnusedContractFields fields={section.contractOnlyFields} />
                   </div>
-                )
-              )}
+                ))}
             </details>
           );
         })}
         {visibleSections.length === 0 && (
-          <div className="contract-empty" role="status">No details match this search.</div>
+          <div className="contract-empty" role="status">
+            No details match this search.
+          </div>
         )}
       </div>
     </section>

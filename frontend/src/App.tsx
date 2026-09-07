@@ -17,6 +17,7 @@ import {
 import type {
   CatalogGateway,
   ClaimEvidenceRecord,
+  ClaimReference,
   ComparisonResponse,
   EvidenceRecord,
   ProjectSummary,
@@ -43,13 +44,19 @@ function AppHeader({ onExplore }: { onExplore: () => void }) {
   return (
     <header className="site-header">
       <button className="wordmark" type="button" onClick={onExplore}>
-        <span className="wordmark__mark" aria-hidden="true">AR</span>
+        <span className="wordmark__mark" aria-hidden="true">
+          AR
+        </span>
         <span>
           <strong>Agent Rumble</strong>
         </span>
       </button>
       <nav aria-label="Primary navigation">
-        <button className="nav-link nav-link--active" type="button" onClick={onExplore}>
+        <button
+          className="nav-link nav-link--active"
+          type="button"
+          onClick={onExplore}
+        >
           Explore
         </button>
       </nav>
@@ -61,7 +68,8 @@ function CatalogNotice() {
   return (
     <div className="prototype-notice" role="note">
       <span>Validated catalog</span>
-      Project details are loaded from the backend's complete pinned, statically analyzed catalog.
+      Project details are loaded from the backend's complete pinned, statically
+      analyzed catalog.
     </div>
   );
 }
@@ -74,7 +82,13 @@ interface ExploreProps {
   onBrowseAll: () => void;
 }
 
-function Explore({ query, pending, onQueryChange, onSubmit, onBrowseAll }: ExploreProps) {
+function Explore({
+  query,
+  pending,
+  onQueryChange,
+  onSubmit,
+  onBrowseAll,
+}: ExploreProps) {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     onSubmit();
@@ -82,11 +96,15 @@ function Explore({ query, pending, onQueryChange, onSubmit, onBrowseAll }: Explo
 
   return (
     <section className="explore" aria-labelledby="explore-title">
-      <div className="eyebrow"><span>Find your fit</span> Evidence-backed project discovery</div>
-      <h1 id="explore-title">Find the right building block for your agent system.</h1>
+      <div className="eyebrow">
+        <span>Find your fit</span> Evidence-backed project discovery
+      </div>
+      <h1 id="explore-title">
+        Find the right building block for your agent system.
+      </h1>
       <p className="explore__intro">
-        Describe what you are building. Compare relevant projects, trade-offs, and supporting
-        sources side by side.
+        Describe what you are building. Compare relevant projects, trade-offs,
+        and supporting sources side by side.
       </p>
       <form className="search-panel" onSubmit={handleSubmit}>
         <label htmlFor="project-need">Describe what you need</label>
@@ -98,13 +116,20 @@ function Explore({ query, pending, onQueryChange, onSubmit, onBrowseAll }: Explo
             rows={3}
             placeholder="For example: a self-hosted multi-agent app with MCP tools"
           />
-          <button className="button button--primary" type="submit" disabled={pending || !query.trim()}>
+          <button
+            className="button button--primary"
+            type="submit"
+            disabled={pending || !query.trim()}
+          >
             {pending ? "Finding projects…" : "Find projects"}
           </button>
         </div>
         <div className="example-line">
           <span>Try an example</span>
-          <button type="button" onClick={() => onQueryChange(DEFAULT_SEARCH_QUERY)}>
+          <button
+            type="button"
+            onClick={() => onQueryChange(DEFAULT_SEARCH_QUERY)}
+          >
             Biomedical research agent ↗
           </button>
           <button type="button" disabled={pending} onClick={onBrowseAll}>
@@ -121,15 +146,26 @@ interface ResultsProps {
   shortlist: string[];
   onToggle: (projectId: string) => void;
   onEdit: () => void;
+  onLoadMore: () => void;
+  loadingMore: boolean;
 }
 
-function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
-  const resultCount = response.projects.length;
+function Results({
+  response,
+  shortlist,
+  onToggle,
+  onEdit,
+  onLoadMore,
+  loadingMore,
+}: ResultsProps) {
+  const resultCount = response.total;
   return (
     <section className="results" aria-labelledby="results-title">
       <div className="results__heading">
         <div>
-          <div className="eyebrow"><span>Matches</span> Based on your request</div>
+          <div className="eyebrow">
+            <span>Matches</span> Based on your request
+          </div>
           <h1 id="results-title">
             {resultCount === 0
               ? "No matching projects yet"
@@ -140,14 +176,20 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
           ← Edit request
         </button>
       </div>
-      <section className="interpretation" aria-labelledby="interpretation-title">
+      <section
+        className="interpretation"
+        aria-labelledby="interpretation-title"
+      >
         <div className="section-heading">
           <h2 id="interpretation-title">What matters for your search</h2>
           <span>Edit your request if this does not look right</span>
         </div>
         <div className="requirement-list">
           {response.requirements.map((requirement) => (
-            <span className={`requirement requirement--${requirement.kind}`} key={requirement.id}>
+            <span
+              className={`requirement requirement--${requirement.kind}`}
+              key={requirement.id}
+            >
               <strong>{requirementPresentation[requirement.kind]}</strong>
               <span className="requirement__label">{requirement.label}</span>
             </span>
@@ -165,7 +207,9 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
         <div className="project-list">
           {resultCount > 0 && (
             <div className="list-caption">
-              <span>{resultCount} {resultCount === 1 ? "match" : "matches"}</span>
+              <span>
+                {resultCount} {resultCount === 1 ? "match" : "matches"}
+              </span>
               <span>Choose up to 3</span>
             </div>
           )}
@@ -173,10 +217,14 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
             <div className="search-empty" role="status">
               <h2>Try a broader search</h2>
               <p>
-                Search by a project name, purpose, capability, language, technology, or
-                architecture term available in the catalog.
+                Search by a project name, purpose, capability, language,
+                technology, or architecture term available in the catalog.
               </p>
-              <button className="button button--primary" type="button" onClick={onEdit}>
+              <button
+                className="button button--primary"
+                type="button"
+                onClick={onEdit}
+              >
                 Update search
               </button>
             </div>
@@ -187,10 +235,24 @@ function Results({ response, shortlist, onToggle, onEdit }: ResultsProps) {
               project={project}
               index={index + 1}
               selected={shortlist.includes(project.id)}
-              disabled={!shortlist.includes(project.id) && shortlist.length === 3}
+              disabled={
+                !shortlist.includes(project.id) && shortlist.length === 3
+              }
               onToggle={() => onToggle(project.id)}
             />
           ))}
+          {response.projects.length < response.total && (
+            <button
+              type="button"
+              className="button button--primary"
+              onClick={onLoadMore}
+              disabled={loadingMore}
+            >
+              {loadingMore
+                ? "Loading…"
+                : `Load more projects (${response.projects.length} of ${response.total})`}
+            </button>
+          )}
         </div>
       </div>
     </section>
@@ -205,10 +267,20 @@ interface ProjectRowProps {
   onToggle: () => void;
 }
 
-function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRowProps) {
+function ProjectRow({
+  project,
+  index,
+  selected,
+  disabled,
+  onToggle,
+}: ProjectRowProps) {
   return (
-    <article className={`project-row${selected ? " project-row--selected" : ""}`}>
-      <div className="project-row__index" aria-hidden="true">{String(index).padStart(2, "0")}</div>
+    <article
+      className={`project-row${selected ? " project-row--selected" : ""}`}
+    >
+      <div className="project-row__index" aria-hidden="true">
+        {String(index).padStart(2, "0")}
+      </div>
       <div className="project-row__main">
         <div className="project-row__heading">
           <div>
@@ -226,8 +298,11 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
           </button>
         </div>
         <div className="project-row__taxonomy">
-          <span>{project.projectType}</span><span>{project.role}</span>
-          {project.languages.map((language) => <span key={language}>{language}</span>)}
+          <span>{project.projectType}</span>
+          <span>{project.role}</span>
+          {project.languages.map((language) => (
+            <span key={language}>{language}</span>
+          ))}
         </div>
         <p className="project-row__summary">{project.summary}</p>
         <div className="project-row__boundary">
@@ -236,17 +311,31 @@ function ProjectRow({ project, index, selected, disabled, onToggle }: ProjectRow
         </div>
         <div className="project-row__match">
           <span aria-hidden="true">↳</span>
-          <p><strong>Why it matches</strong>{project.matchReason}</p>
+          <p>
+            <strong>Why it matches</strong>
+            {project.matchReason}
+          </p>
         </div>
         <div className="project-row__constraint">
-          <strong>Watch out for</strong><span>{project.constraint}</span>
+          <strong>Watch out for</strong>
+          <span>{project.constraint}</span>
         </div>
         <div className="snapshot-strip">
           <div className="snapshot-strip__primary">
             <span className="snapshot-strip__label">Match confidence</span>
-            <StatusBadge status={project.matchClaim.verificationStatus} />
-            <span>{confidencePresentation[project.matchClaim.confidence]}</span>
-            <time dateTime={project.analyzedAt}>Reviewed {project.analyzedAt}</time>
+            {project.matchClaim ? (
+              <>
+                <StatusBadge status={project.matchClaim.verificationStatus} />
+                <span>
+                  {confidencePresentation[project.matchClaim.confidence]}
+                </span>
+              </>
+            ) : (
+              <span>No supporting match claim</span>
+            )}
+            <time dateTime={project.analyzedAt}>
+              Reviewed {project.analyzedAt}
+            </time>
           </div>
         </div>
       </div>
@@ -258,23 +347,37 @@ interface ComparisonProps {
   comparison: ComparisonResponse;
   projects: ProjectSummary[];
   onBack: () => void;
-  onOpenEvidence: (claimId: string, trigger: HTMLButtonElement) => void;
+  onOpenEvidence: (
+    reference: ClaimReference,
+    trigger: HTMLButtonElement,
+  ) => void;
 }
 
-function Comparison({ comparison, projects, onBack, onOpenEvidence }: ComparisonProps) {
+function Comparison({
+  comparison,
+  projects,
+  onBack,
+  onOpenEvidence,
+}: ComparisonProps) {
   const selectedProjects = comparison.projectIds
     .map((id) => projects.find((project) => project.id === id))
     .filter((project): project is ProjectSummary => Boolean(project));
 
   return (
     <section className="comparison" aria-labelledby="comparison-title">
-      <button className="back-link" type="button" onClick={onBack}>← Back to search results</button>
+      <button className="back-link" type="button" onClick={onBack}>
+        ← Back to search results
+      </button>
       <div className="comparison__heading">
         <div>
-          <h1 id="comparison-title" tabIndex={-1}>Compare {selectedProjects.length} projects</h1>
+          <h1 id="comparison-title" tabIndex={-1}>
+            Compare {selectedProjects.length} projects
+          </h1>
           <p>
-            See how your shortlist lines up for {comparison.assessmentContexts[0]?.useCase
-              ?? "the needs in your search"}.
+            See how your shortlist lines up for{" "}
+            {comparison.assessmentContexts[0]?.useCase ??
+              "the needs in your search"}
+            .
           </p>
         </div>
       </div>
@@ -302,7 +405,9 @@ function sourcePublisherLabel(value: string) {
 }
 
 function readableSourceValue(value: string) {
-  return value.replace(/_/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
+  return value
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
 function projectArenaEvidence(record: EvidenceRecord): ClaimEvidenceRecord {
@@ -332,11 +437,18 @@ function projectArenaEvidence(record: EvidenceRecord): ClaimEvidenceRecord {
     verificationStatus: record.verificationStatus,
     confidence: record.confidence,
     supportingEvidence: relationship === "supporting" ? [resolvedEvidence] : [],
-    conflictingEvidence: relationship === "conflicting" ? [resolvedEvidence] : [],
+    conflictingEvidence:
+      relationship === "conflicting" ? [resolvedEvidence] : [],
   };
 }
 
-function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: EvidenceDrawerProps) {
+function EvidenceDrawer({
+  evidence,
+  pending,
+  error,
+  isIllustrative,
+  onClose,
+}: EvidenceDrawerProps) {
   const drawerRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -347,7 +459,9 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
   const handleKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
     if (event.key !== "Tab" || !drawerRef.current) return;
     const focusable = Array.from(
-      drawerRef.current.querySelectorAll<HTMLElement>("button:not([disabled]), a[href]"),
+      drawerRef.current.querySelectorAll<HTMLElement>(
+        "button:not([disabled]), a[href]",
+      ),
     );
     if (focusable.length === 0) return;
     const first = focusable[0];
@@ -362,7 +476,10 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
   };
 
   return (
-    <div className="drawer-layer" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div
+      className="drawer-layer"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+    >
       <aside
         className="evidence-drawer"
         ref={drawerRef}
@@ -372,18 +489,31 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
         onKeyDown={handleKeyDown}
       >
         <div className="drawer-header">
-          <div><span>Source details</span></div>
-          <button ref={closeRef} type="button" onClick={onClose} aria-label="Close source details">×</button>
+          <div>
+            <span>Source details</span>
+          </div>
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={onClose}
+            aria-label="Close source details"
+          >
+            ×
+          </button>
         </div>
         {pending && (
           <div className="drawer-state" role="status">
-            <h2 className="visually-hidden" id="evidence-title">Source details</h2>
+            <h2 className="visually-hidden" id="evidence-title">
+              Source details
+            </h2>
             <p>Loading source details…</p>
           </div>
         )}
         {error && (
           <div className="drawer-state drawer-state--error" role="alert">
-            <h2 className="visually-hidden" id="evidence-title">Source details error</h2>
+            <h2 className="visually-hidden" id="evidence-title">
+              Source details error
+            </h2>
             <p>{error}</p>
           </div>
         )}
@@ -414,25 +544,63 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
                   <div className="evidence-record__heading">
                     <div>
                       <span>Confidence</span>
-                      <strong>{confidencePresentation[record.confidence]}</strong>
+                      <strong>
+                        {confidencePresentation[record.confidence]}
+                      </strong>
                     </div>
                   </div>
                   <dl className="evidence-ledger">
-                    <div><dt>Source</dt><dd>{record.repository}</dd></div>
-                    <div><dt>Source type</dt><dd>{readableSourceValue(record.sourceType)}</dd></div>
-                    <div><dt>Publisher</dt><dd>{sourcePublisherLabel(record.provenance)}</dd></div>
-                    <div><dt>Availability</dt><dd>{readableSourceValue(record.accessScope)}</dd></div>
-                    <div><dt>Checked</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
-                    <div><dt>Version reviewed</dt><dd><code>{record.revision}</code></dd></div>
-                    <div><dt>Location in source</dt><dd>{record.locator}</dd></div>
+                    <div>
+                      <dt>Source</dt>
+                      <dd>{record.repository}</dd>
+                    </div>
+                    <div>
+                      <dt>Source type</dt>
+                      <dd>{readableSourceValue(record.sourceType)}</dd>
+                    </div>
+                    <div>
+                      <dt>Publisher</dt>
+                      <dd>{sourcePublisherLabel(record.provenance)}</dd>
+                    </div>
+                    <div>
+                      <dt>Availability</dt>
+                      <dd>{readableSourceValue(record.accessScope)}</dd>
+                    </div>
+                    <div>
+                      <dt>Checked</dt>
+                      <dd>
+                        <time dateTime={record.retrievedAt}>
+                          {record.retrievedAt}
+                        </time>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Version reviewed</dt>
+                      <dd>
+                        <code>{record.revision}</code>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Location in source</dt>
+                      <dd>{record.locator}</dd>
+                    </div>
                   </dl>
-                  <pre aria-label="Source excerpt"><code>{record.excerpt}</code></pre>
+                  <pre aria-label="Source excerpt">
+                    <code>{record.excerpt}</code>
+                  </pre>
                   {record.sourceUrl ? (
-                    <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
+                    <a
+                      className="button button--source"
+                      href={record.sourceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       View source ↗
                     </a>
                   ) : (
-                    <p className="source-unavailable">No public source link is available.</p>
+                    <p className="source-unavailable">
+                      No public source link is available.
+                    </p>
                   )}
                 </div>
               ))}
@@ -442,29 +610,70 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
                     Conflicting evidence / {evidence.conflictingEvidence.length}
                   </h3>
                   {evidence.conflictingEvidence.map((record) => (
-                    <div className="evidence-record evidence-record--conflict" key={record.id}>
+                    <div
+                      className="evidence-record evidence-record--conflict"
+                      key={record.id}
+                    >
                       <div className="evidence-record__heading">
                         <div>
                           <span>Confidence</span>
-                          <strong>{confidencePresentation[record.confidence]}</strong>
+                          <strong>
+                            {confidencePresentation[record.confidence]}
+                          </strong>
                         </div>
                       </div>
                       <dl className="evidence-ledger">
-                        <div><dt>Source</dt><dd>{record.repository}</dd></div>
-                        <div><dt>Source type</dt><dd>{readableSourceValue(record.sourceType)}</dd></div>
-                        <div><dt>Publisher</dt><dd>{sourcePublisherLabel(record.provenance)}</dd></div>
-                        <div><dt>Availability</dt><dd>{readableSourceValue(record.accessScope)}</dd></div>
-                        <div><dt>Checked</dt><dd><time dateTime={record.retrievedAt}>{record.retrievedAt}</time></dd></div>
-                        <div><dt>Version reviewed</dt><dd><code>{record.revision}</code></dd></div>
-                        <div><dt>Location in source</dt><dd>{record.locator}</dd></div>
+                        <div>
+                          <dt>Source</dt>
+                          <dd>{record.repository}</dd>
+                        </div>
+                        <div>
+                          <dt>Source type</dt>
+                          <dd>{readableSourceValue(record.sourceType)}</dd>
+                        </div>
+                        <div>
+                          <dt>Publisher</dt>
+                          <dd>{sourcePublisherLabel(record.provenance)}</dd>
+                        </div>
+                        <div>
+                          <dt>Availability</dt>
+                          <dd>{readableSourceValue(record.accessScope)}</dd>
+                        </div>
+                        <div>
+                          <dt>Checked</dt>
+                          <dd>
+                            <time dateTime={record.retrievedAt}>
+                              {record.retrievedAt}
+                            </time>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Version reviewed</dt>
+                          <dd>
+                            <code>{record.revision}</code>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Location in source</dt>
+                          <dd>{record.locator}</dd>
+                        </div>
                       </dl>
-                      <pre aria-label="Conflicting source excerpt"><code>{record.excerpt}</code></pre>
+                      <pre aria-label="Conflicting source excerpt">
+                        <code>{record.excerpt}</code>
+                      </pre>
                       {record.sourceUrl ? (
-                        <a className="button button--source" href={record.sourceUrl} target="_blank" rel="noreferrer">
+                        <a
+                          className="button button--source"
+                          href={record.sourceUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           View source ↗
                         </a>
                       ) : (
-                        <p className="source-unavailable">No public source link is available.</p>
+                        <p className="source-unavailable">
+                          No public source link is available.
+                        </p>
                       )}
                     </div>
                   ))}
@@ -473,8 +682,8 @@ function EvidenceDrawer({ evidence, pending, error, isIllustrative, onClose }: E
             </div>
             {isIllustrative && (
               <div className="drawer-warning">
-                <strong>Sample data.</strong> This source excerpt and location are illustrative and
-                should be independently verified.
+                <strong>Sample data.</strong> This source excerpt and location
+                are illustrative and should be independently verified.
               </div>
             )}
           </div>
@@ -524,17 +733,42 @@ export function App({ gateway = catalogGateway }: AppProps) {
     window.requestAnimationFrame(() => mainRef.current?.focus());
   };
 
-  const search = async (searchQuery = query) => {
+  const search = async (searchQuery = query, page = 1) => {
     setPending("search");
     setError(null);
     try {
-      const result = await gateway.searchProjects(searchQuery);
-      setResponse(result);
-      setShortlist([]);
-      setComparison(null);
-      announceView("results");
+      const result = await gateway.searchProjects(searchQuery, page);
+      if (page === 1) {
+        setResponse(result);
+        setShortlist([]);
+        setComparison(null);
+      } else {
+        setResponse((previous) =>
+          previous && previous.query === result.query
+            ? {
+                ...result,
+                projects: [
+                  ...new Map(
+                    [...previous.projects, ...result.projects].map(
+                      (project) => [project.id, project],
+                    ),
+                  ).values(),
+                ],
+                assessmentContexts: [
+                  ...previous.assessmentContexts,
+                  ...result.assessmentContexts,
+                ],
+              }
+            : previous,
+        );
+      }
+      if (page === 1) announceView("results");
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Projects could not be loaded right now.");
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Projects could not be loaded right now.",
+      );
     } finally {
       setPending(null);
     }
@@ -555,32 +789,53 @@ export function App({ gateway = catalogGateway }: AppProps) {
     setPending("comparison");
     setError(null);
     try {
-      const result = await gateway.compareProjects(shortlist);
+      const result = await gateway.compareProjects(
+        shortlist.map((projectId) => {
+          const project = response!.projects.find(
+            ({ id }) => id === projectId,
+          )!;
+          return { projectId, cardVersion: project.cardVersion };
+        }),
+      );
       setComparison(result);
       announceView("comparison");
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "The comparison could not be prepared.");
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "The comparison could not be prepared.",
+      );
     } finally {
       setPending(null);
     }
   };
 
-  const openEvidence = async (claimId: string, trigger: HTMLButtonElement) => {
+  const openEvidence = async (
+    reference: ClaimReference,
+    trigger: HTMLButtonElement,
+  ) => {
     evidenceTriggerRef.current = trigger;
     setEvidence(null);
     setError(null);
     setDrawerOpen(true);
     setPending("evidence");
     try {
-      setEvidence(await gateway.getClaimEvidence(claimId));
+      setEvidence(await gateway.getClaimEvidence(reference));
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Source details could not be loaded.");
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Source details could not be loaded.",
+      );
     } finally {
       setPending(null);
     }
   };
 
-  const openArenaEvidence = (record: EvidenceRecord, trigger: HTMLButtonElement) => {
+  const openArenaEvidence = (
+    record: EvidenceRecord,
+    trigger: HTMLButtonElement,
+  ) => {
     evidenceTriggerRef.current = trigger;
     setEvidence(projectArenaEvidence(record));
     setError(null);
@@ -607,7 +862,9 @@ export function App({ gateway = catalogGateway }: AppProps) {
   return (
     <>
       <div className="app-shell" inert={drawerOpen ? true : undefined}>
-        <a className="skip-link" href="#main-content">Skip to content</a>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
         <CatalogNotice />
         <AppHeader onExplore={reset} />
         <main id="main-content" ref={mainRef} tabIndex={-1}>
@@ -621,7 +878,14 @@ export function App({ gateway = catalogGateway }: AppProps) {
             />
           )}
           {view === "results" && response && (
-            <Results response={response} shortlist={shortlist} onToggle={toggleProject} onEdit={() => announceView("explore")} />
+            <Results
+              response={response}
+              shortlist={shortlist}
+              onToggle={toggleProject}
+              onEdit={() => announceView("explore")}
+              onLoadMore={() => void search(response.query, response.page + 1)}
+              loadingMore={pending === "search"}
+            />
           )}
           {view === "comparison" && comparison && (
             <Comparison
@@ -634,21 +898,35 @@ export function App({ gateway = catalogGateway }: AppProps) {
           {view === "arena" && (
             <ArenaScreen
               projectIds={shortlist}
-              projectNames={shortlist.map((id) =>
-                response?.projects.find((project) => project.id === id)?.name ?? id
+              projectNames={shortlist.map(
+                (id) =>
+                  response?.projects.find((project) => project.id === id)
+                    ?.name ?? id,
               )}
               onExit={() => announceView("results")}
               onOpenEvidence={openArenaEvidence}
             />
           )}
-          {error && !drawerOpen && <p className="page-error" role="alert">{error}</p>}
+          {error && !drawerOpen && (
+            <p className="page-error" role="alert">
+              {error}
+            </p>
+          )}
         </main>
         {view === "results" && shortlist.length > 0 && (
           <div className="compare-tray" aria-live="polite">
             <div>
               <span>Shortlist</span>
               <strong>{shortlist.length} / 3 projects</strong>
-              <p>{shortlist.map((id) => response?.projects.find((project) => project.id === id)?.name).join(" · ")}</p>
+              <p>
+                {shortlist
+                  .map(
+                    (id) =>
+                      response?.projects.find((project) => project.id === id)
+                        ?.name,
+                  )
+                  .join(" · ")}
+              </p>
             </div>
             <div className="compare-tray__actions">
               <button
@@ -657,7 +935,11 @@ export function App({ gateway = catalogGateway }: AppProps) {
                 disabled={shortlist.length < 2 || pending === "comparison"}
                 onClick={() => void openComparison()}
               >
-                {pending === "comparison" ? "Preparing…" : shortlist.length < 2 ? "Select one more" : "Compare projects →"}
+                {pending === "comparison"
+                  ? "Preparing…"
+                  : shortlist.length < 2
+                    ? "Select one more"
+                    : "Compare projects →"}
               </button>
               {canEnterRumble && (
                 <button

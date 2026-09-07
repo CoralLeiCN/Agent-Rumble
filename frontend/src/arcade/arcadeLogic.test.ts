@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { RumbleEntrant, RumbleRound, RumbleRoundVerdict } from "../types/rumble";
+import type {
+  RumbleEntrant,
+  RumbleRound,
+  RumbleRoundVerdict,
+} from "../types/rumble";
 import {
   ARCADE_LIGHT_ATTACK,
   ARCADE_MAX_HEALTH,
@@ -44,10 +48,10 @@ function round(
   };
 }
 
-const entrants: [Pick<RumbleEntrant, "project_name">, Pick<RumbleEntrant, "project_name">] = [
-  { project_name: "Project Alpha" },
-  { project_name: "Project Beta" },
-];
+const entrants: [
+  Pick<RumbleEntrant, "project_name">,
+  Pick<RumbleEntrant, "project_name">,
+] = [{ project_name: "Project Alpha" }, { project_name: "Project Beta" }];
 
 describe("fighter signature derivation", () => {
   it("uses each project's contextual-advantage row before a neutral row", () => {
@@ -99,8 +103,12 @@ describe("fighter signature derivation", () => {
 
 describe("health combat rules", () => {
   it("applies chip damage while blocking and clamps health at zero", () => {
-    expect(damageAfterHit(ARCADE_MAX_HEALTH, ARCADE_LIGHT_ATTACK, false)).toBe(93);
-    expect(damageAfterHit(ARCADE_MAX_HEALTH, ARCADE_LIGHT_ATTACK, true)).toBe(98);
+    expect(damageAfterHit(ARCADE_MAX_HEALTH, ARCADE_LIGHT_ATTACK, false)).toBe(
+      93,
+    );
+    expect(damageAfterHit(ARCADE_MAX_HEALTH, ARCADE_LIGHT_ATTACK, true)).toBe(
+      98,
+    );
     expect(damageAfterHit(3, ARCADE_SIGNATURE_ATTACK, false)).toBe(0);
   });
 

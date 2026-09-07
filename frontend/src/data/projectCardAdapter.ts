@@ -1,6 +1,7 @@
 import type {
   AssessmentContextView,
   ClaimEvidenceRecord,
+  ClaimReference,
   ComparisonCell,
   ComparisonContractField,
   ComparisonGroup,
@@ -56,11 +57,14 @@ const primaryTypeLabels: Record<string, string> = {
 };
 
 function primaryRevision(card: AgentProjectCard) {
-  const repository = card.project.repositories.find(({ role }) => role === "primary")
-    ?? card.project.repositories[0];
-  return card.source_snapshot.source_revisions.find(
-    ({ source_id }) => source_id === repository?.source_id,
-  ) ?? card.source_snapshot.source_revisions[0];
+  const repository =
+    card.project.repositories.find(({ role }) => role === "primary") ??
+    card.project.repositories[0];
+  return (
+    card.source_snapshot.source_revisions.find(
+      ({ source_id }) => source_id === repository?.source_id,
+    ) ?? card.source_snapshot.source_revisions[0]
+  );
 }
 
 function assertSupportedCard(card: AgentProjectCard) {
@@ -73,29 +77,38 @@ function assertSupportedCard(card: AgentProjectCard) {
 }
 
 function projectType(card: AgentProjectCard) {
-  return card.classification.secondary_characteristics[0]
-    ?? primaryTypeLabels[card.project.primary_type]
-    ?? card.project.primary_type;
+  return (
+    card.classification.secondary_characteristics[0] ??
+    primaryTypeLabels[card.project.primary_type] ??
+    card.project.primary_type
+  );
 }
 
 function projectRole(card: AgentProjectCard) {
-  return card.classification.architecture_layers[0]
-    ?? card.project.type_rationale
-    ?? "Role not analyzed";
+  return (
+    card.classification.architecture_layers[0] ??
+    card.project.type_rationale ??
+    "Role not analyzed"
+  );
 }
 
 export function projectCardToSummary(card: AgentProjectCard): ProjectSummary {
   assertSupportedCard(card);
-  const repository = card.project.repositories.find(({ role }) => role === "primary")
-    ?? card.project.repositories[0];
+  const repository =
+    card.project.repositories.find(({ role }) => role === "primary") ??
+    card.project.repositories[0];
   const revision = primaryRevision(card);
   const matchAssessment = card.assessment.best_fit[0];
-  const matchClaim = matchAssessment?.claim_ids
-    .map((claimId) => card.claims.find(({ claim_id }) => claim_id === claimId))
-    .find((claim): claim is Claim => Boolean(claim))
-    ?? card.claims[0];
+  const matchClaim =
+    matchAssessment?.claim_ids
+      .map((claimId) =>
+        card.claims.find(({ claim_id }) => claim_id === claimId),
+      )
+      .find((claim): claim is Claim => Boolean(claim)) ?? card.claims[0];
   if (!matchClaim) {
-    throw new Error(`Card ${card.card_id} has no claim for its catalog match projection.`);
+    throw new Error(
+      `Card ${card.card_id} has no claim for its catalog match projection.`,
+    );
   }
   return {
     id: card.project.project_id,
@@ -103,9 +116,14 @@ export function projectCardToSummary(card: AgentProjectCard): ProjectSummary {
     owner: repository?.owner ?? "Unknown owner",
     projectType: projectType(card),
     role: projectRole(card),
-    summary: card.summary.one_line ?? card.summary.purpose ?? "Summary not analyzed.",
-    matchReason: matchAssessment?.statement ?? "Fit has not been assessed in this context.",
-    constraint: card.assessment.limitations[0]?.statement ?? "No contextual limitation was recorded.",
+    summary:
+      card.summary.one_line ?? card.summary.purpose ?? "Summary not analyzed.",
+    matchReason:
+      matchAssessment?.statement ??
+      "Fit has not been assessed in this context.",
+    constraint:
+      card.assessment.limitations[0]?.statement ??
+      "No contextual limitation was recorded.",
     languages: card.architecture.languages,
     cardId: card.card_id,
     schemaVersion: card.schema_version,
@@ -130,6 +148,9 @@ export function projectCardsToSearchResponse(
   context: SearchProjectionContext,
 ): SearchResponse {
   return {
+    page: 1,
+    pageSize: cards.length,
+    total: cards.length,
     query,
     assessmentContexts: cards.flatMap(assessmentContexts),
     requirements: context.requirements,
@@ -186,37 +207,58 @@ function unique(values: string[]) {
 
 function claimsForObject(value: Record<string, unknown>, inherited: string[]) {
   const direct = Array.isArray(value.claim_ids)
-    ? value.claim_ids.filter((claimId): claimId is string => typeof claimId === "string")
+    ? value.claim_ids.filter(
+        (claimId): claimId is string => typeof claimId === "string",
+      )
     : [];
   const ownClaim = typeof value.claim_id === "string" ? [value.claim_id] : [];
   return unique([...inherited, ...direct, ...ownClaim]);
 }
 
 function semanticKind(pointer: string): ComparisonSemanticKind {
-  const property = pointer.slice(pointer.lastIndexOf("/") + 1).replace(/~1/g, "/").replace(/~0/g, "~");
+  const property = pointer
+    .slice(pointer.lastIndexOf("/") + 1)
+    .replace(/~1/g, "/")
+    .replace(/~0/g, "~");
   if (pointer.startsWith("/field_states/")) return "field_state";
   if (property === "support_status") return "support_status";
   if (property === "verification_status") return "verification_status";
   if (property === "confidence") return "confidence";
-  if (property === "claim_id" || property === "claim_ids" || property.endsWith("_claim_ids")) {
+  if (
+    property === "claim_id" ||
+    property === "claim_ids" ||
+    property.endsWith("_claim_ids")
+  ) {
     return "claim_reference";
   }
   return "value";
 }
 
 function comparisonValue(value: unknown, pointer: string): ComparisonJsonValue {
-  if (value === null || typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+  if (
+    value === null ||
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
     return value;
   }
   if (Array.isArray(value)) {
-    return value.map((item, index) => comparisonValue(item, `${pointer}/${index}`));
+    return value.map((item, index) =>
+      comparisonValue(item, `${pointer}/${index}`),
+    );
   }
   if (isObject(value)) {
     return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [key, comparisonValue(item, `${pointer}/${pointerSegment(key)}`)]),
+      Object.entries(value).map(([key, item]) => [
+        key,
+        comparisonValue(item, `${pointer}/${pointerSegment(key)}`),
+      ]),
     );
   }
-  throw new Error(`Canonical comparison value at ${pointer} is not JSON serializable.`);
+  throw new Error(
+    `Canonical comparison value at ${pointer} is not JSON serializable.`,
+  );
 }
 
 function valueKind(value: ComparisonJsonValue): ComparisonValueKind {
@@ -224,7 +266,8 @@ function valueKind(value: ComparisonJsonValue): ComparisonValueKind {
   if (typeof value === "string") return "string";
   if (typeof value === "number") return "number";
   if (typeof value === "boolean") return "boolean";
-  if (Array.isArray(value)) return value.length === 0 ? "empty_array" : "primitive_array";
+  if (Array.isArray(value))
+    return value.length === 0 ? "empty_array" : "primitive_array";
   return "empty_object";
 }
 
@@ -234,9 +277,10 @@ function addEntry(value: unknown, context: InventoryContext) {
     pointer: context.pointer,
     logicalPath: context.logicalPath,
     fieldPattern: context.fieldPattern,
-    label: context.entityLabels.length > 0
-      ? `${context.label} · ${context.entityLabels.join(" · ")}`
-      : context.label,
+    label:
+      context.entityLabels.length > 0
+        ? `${context.label} · ${context.entityLabels.join(" · ")}`
+        : context.label,
     value: jsonValue,
     state: context.card.field_states[context.pointer] ?? "value",
     claimIds: context.claimIds,
@@ -256,12 +300,17 @@ function stableArrayIdentity(
       const duplicateCount = siblings.filter(
         (item) => isObject(item) && item.ontology_id === value.ontology_id,
       ).length;
-      if (duplicateCount === 1) return ["ontology_id", value.ontology_id] as const;
+      if (duplicateCount === 1)
+        return ["ontology_id", value.ontology_id] as const;
       if (typeof value.capability_id === "string") {
-        return ["ontology_id+capability_id", `${value.ontology_id}|${value.capability_id}`] as const;
+        return [
+          "ontology_id+capability_id",
+          `${value.ontology_id}|${value.capability_id}`,
+        ] as const;
       }
     }
-    if (typeof value.capability_id === "string") return ["capability_id", value.capability_id] as const;
+    if (typeof value.capability_id === "string")
+      return ["capability_id", value.capability_id] as const;
   }
 
   const stableKeyByPattern: Record<string, string> = {
@@ -284,13 +333,21 @@ function stableArrayIdentity(
 }
 
 function inventoryValue(value: unknown, context: InventoryContext): void {
-  if (value === null || typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+  if (
+    value === null ||
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
     addEntry(value, context);
     return;
   }
 
   if (Array.isArray(value)) {
-    if (value.length === 0 || value.every((item) => !isObject(item) && !Array.isArray(item))) {
+    if (
+      value.length === 0 ||
+      value.every((item) => !isObject(item) && !Array.isArray(item))
+    ) {
       addEntry(value, context);
       return;
     }
@@ -316,7 +373,10 @@ function inventoryValue(value: unknown, context: InventoryContext): void {
         pointer: `${context.pointer}/${index}`,
         logicalPath: `${context.logicalPath}/@${identityKey}=${logicalIdentity(identityValue)}`,
         fieldPattern: `${context.fieldPattern}/*`,
-        entityLabels: [...context.entityLabels, `${humanLabel(identityKey)}: ${identityValue}`],
+        entityLabels: [
+          ...context.entityLabels,
+          `${humanLabel(identityKey)}: ${identityValue}`,
+        ],
         claimIds: claimsForObject(item, context.claimIds),
       });
     });
@@ -348,7 +408,11 @@ function inventoryValue(value: unknown, context: InventoryContext): void {
 }
 
 function rowValueKind(entries: InventoryEntry[]): ComparisonValueKind {
-  const concreteKinds = unique(entries.map(({ valueKind: kind }) => kind).filter((kind) => kind !== "null"));
+  const concreteKinds = unique(
+    entries
+      .map(({ valueKind: kind }) => kind)
+      .filter((kind) => kind !== "null"),
+  );
   if (concreteKinds.includes("primitive_array")) return "primitive_array";
   if (concreteKinds.length > 0) return concreteKinds[0] as ComparisonValueKind;
   return "null";
@@ -358,7 +422,10 @@ function stableValue(value: ComparisonJsonValue | undefined): string {
   if (value === undefined) return "undefined";
   if (value === null || typeof value !== "object") return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map(stableValue).join(",")}]`;
-  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableValue(value[key])}`).join(",")}}`;
+  return `{${Object.keys(value)
+    .sort()
+    .map((key) => `${JSON.stringify(key)}:${stableValue(value[key])}`)
+    .join(",")}}`;
 }
 
 function cellSignature(cell: ComparisonCell) {
@@ -388,8 +455,11 @@ function contractFieldIsCovered(
   fieldPatterns: Set<string>,
 ) {
   if (fieldPatterns.has(definition.fieldPattern)) return true;
-  return definition.coveredByDescendants && [...fieldPatterns].some(
-    (fieldPattern) => fieldPattern.startsWith(`${definition.fieldPattern}/`),
+  return (
+    definition.coveredByDescendants &&
+    [...fieldPatterns].some((fieldPattern) =>
+      fieldPattern.startsWith(`${definition.fieldPattern}/`),
+    )
   );
 }
 
@@ -398,36 +468,48 @@ function buildComparisonGroup(
   key: string,
   contractFields: ContractFieldDefinition[],
 ): ComparisonGroup {
-  const inventories = new Map(cards.map((card) => [
-    card.project.project_id,
-    inventoryGroup(card, key),
-  ]));
-  const logicalPaths = unique(cards.flatMap((card) => (
-    inventories.get(card.project.project_id) ?? []
-  ).map(({ logicalPath }) => logicalPath)));
+  const inventories = new Map(
+    cards.map((card) => [card.project.project_id, inventoryGroup(card, key)]),
+  );
+  const logicalPaths = unique(
+    cards.flatMap((card) =>
+      (inventories.get(card.project.project_id) ?? []).map(
+        ({ logicalPath }) => logicalPath,
+      ),
+    ),
+  );
   const rows: ComparisonRow[] = logicalPaths.map((logicalPath) => {
-    const presentEntries = cards.flatMap((card) => (
-      inventories.get(card.project.project_id)?.find((entry) => entry.logicalPath === logicalPath) ?? []
-    ));
+    const presentEntries = cards.flatMap(
+      (card) =>
+        inventories
+          .get(card.project.project_id)
+          ?.find((entry) => entry.logicalPath === logicalPath) ?? [],
+    );
     const first = presentEntries[0];
-    const cells = Object.fromEntries(cards.map((card) => {
-      const entry = inventories.get(card.project.project_id)?.find(
-        (candidate) => candidate.logicalPath === logicalPath,
-      );
-      return [card.project.project_id, entry
-        ? {
-            pointer: entry.pointer,
-            state: entry.state,
-            value: entry.value,
-            claimIds: entry.claimIds,
-          }
-        : {
-            pointer: null,
-            state: "not_present" as const,
-            claimIds: [],
-          }];
-    }));
-    const isDifferent = unique(Object.values(cells).map(cellSignature)).length > 1;
+    const cells = Object.fromEntries(
+      cards.map((card) => {
+        const entry = inventories
+          .get(card.project.project_id)
+          ?.find((candidate) => candidate.logicalPath === logicalPath);
+        return [
+          card.project.project_id,
+          entry
+            ? {
+                pointer: entry.pointer,
+                state: entry.state,
+                value: entry.value,
+                claimIds: entry.claimIds,
+              }
+            : {
+                pointer: null,
+                state: "not_present" as const,
+                claimIds: [],
+              },
+        ];
+      }),
+    );
+    const isDifferent =
+      unique(Object.values(cells).map(cellSignature)).length > 1;
     return {
       id: logicalPath,
       label: first.label,
@@ -472,15 +554,24 @@ export function projectCardsToComparison(
     .filter((key) => !knownGroupSet.has(key))
     .sort();
   const groups = [...knownGroups, ...unknownGroups]
-    .map((key) => buildComparisonGroup(
-      selected,
-      key,
-      projectCardContract.fields.filter(({ group }) => group === key),
-    ))
-    .filter(({ rows, contractOnlyFields }) => rows.length > 0 || contractOnlyFields.length > 0);
+    .map((key) =>
+      buildComparisonGroup(
+        selected,
+        key,
+        projectCardContract.fields.filter(({ group }) => group === key),
+      ),
+    )
+    .filter(
+      ({ rows, contractOnlyFields }) =>
+        rows.length > 0 || contractOnlyFields.length > 0,
+    );
   const allRows = groups.flatMap(({ rows }) => rows);
-  const allContractOnlyFields = groups.flatMap(({ contractOnlyFields }) => contractOnlyFields);
-  const differentAttributeCount = allRows.filter(({ isDifferent }) => isDifferent).length;
+  const allContractOnlyFields = groups.flatMap(
+    ({ contractOnlyFields }) => contractOnlyFields,
+  );
+  const differentAttributeCount = allRows.filter(
+    ({ isDifferent }) => isDifferent,
+  ).length;
   const contractOnlyAttributeCount = allContractOnlyFields.length;
   const sharedAttributeCount = allRows.filter((row) => !row.isDifferent).length;
 
@@ -494,7 +585,9 @@ export function projectCardsToComparison(
       cardVersion: card.card_version,
       schemaVersion: card.schema_version,
     })),
-    schemaVersions: unique(selected.map(({ schema_version: version }) => version)),
+    schemaVersions: unique(
+      selected.map(({ schema_version: version }) => version),
+    ),
     provenance,
     groups,
     totalAttributeCount: allRows.length + contractOnlyAttributeCount,
@@ -504,12 +597,17 @@ export function projectCardsToComparison(
   };
 }
 
-function sourceLocator(source: Source, path: string | null, start: number | null, end: number | null) {
+function sourceLocator(
+  source: Source,
+  path: string | null,
+  start: number | null,
+  end: number | null,
+) {
   if (
-    source.access_scope !== "public"
-    || source.source_type !== "repository"
-    || !source.revision_or_version
-    || !path
+    source.access_scope !== "public" ||
+    source.source_type !== "repository" ||
+    !source.revision_or_version ||
+    !path
   ) {
     return null;
   }
@@ -519,10 +617,17 @@ function sourceLocator(source: Source, path: string | null, start: number | null
   return `${source.uri.replace(/\/$/, "")}/blob/${source.revision_or_version}/${path}${lineFragment}`;
 }
 
-function locatorLabel(path: string | null, section: string | null, start: number | null, end: number | null) {
+function locatorLabel(
+  path: string | null,
+  section: string | null,
+  start: number | null,
+  end: number | null,
+) {
   const location = path ?? section ?? "Source location unavailable";
   const sectionLabel = path && section ? ` · ${section}` : "";
-  const lines = start ? ` · line${end && end !== start ? "s" : ""} ${start}${end && end !== start ? `–${end}` : ""}` : "";
+  const lines = start
+    ? ` · line${end && end !== start ? "s" : ""} ${start}${end && end !== start ? `–${end}` : ""}`
+    : "";
   return `${location}${sectionLabel}${lines}`;
 }
 
@@ -531,10 +636,16 @@ function resolveEvidence(
   evidenceId: string,
   relationship: ResolvedEvidence["relationship"],
 ): ResolvedEvidence {
-  const evidence = card.evidence.find(({ evidence_id }) => evidence_id === evidenceId);
-  const source = evidence && card.sources.find(({ source_id }) => source_id === evidence.source_id);
+  const evidence = card.evidence.find(
+    ({ evidence_id }) => evidence_id === evidenceId,
+  );
+  const source =
+    evidence &&
+    card.sources.find(({ source_id }) => source_id === evidence.source_id);
   if (!evidence || !source) {
-    throw new Error(`Canonical ${relationship} evidence reference ${evidenceId} does not resolve.`);
+    throw new Error(
+      `Canonical ${relationship} evidence reference ${evidenceId} does not resolve.`,
+    );
   }
   return {
     id: evidence.evidence_id,
@@ -552,7 +663,8 @@ function resolveEvidence(
       evidence.locator.line_start,
       evidence.locator.line_end,
     ),
-    excerpt: evidence.excerpt_or_symbol ?? evidence.note ?? "No excerpt was recorded.",
+    excerpt:
+      evidence.excerpt_or_symbol ?? evidence.note ?? "No excerpt was recorded.",
     sourceUrl: sourceLocator(
       source,
       evidence.locator.path,
@@ -564,9 +676,13 @@ function resolveEvidence(
 
 export function projectCardsToClaimEvidence(
   cards: AgentProjectCard[],
-  claimId: string,
+  reference: ClaimReference,
 ): ClaimEvidenceRecord {
-  const card = cards.find(({ claims }) => claims.some(({ claim_id }) => claim_id === claimId));
+  const { claimId, projectId, cardVersion } = reference;
+  const card = cards.find(
+    ({ project, card_version }) =>
+      project.project_id === projectId && card_version === cardVersion,
+  );
   const claim = card?.claims.find(({ claim_id }) => claim_id === claimId);
   if (!card || !claim) {
     throw new Error(`No illustrative claim exists for ${claimId}.`);
@@ -582,11 +698,18 @@ export function projectCardsToClaimEvidence(
     whyItMatters: claim.reasoning ?? "No contextual reasoning was recorded.",
     verificationStatus: claim.verification_status,
     confidence: claim.confidence,
-    supportingEvidence: claim.supporting_evidence_ids.map((id) => resolveEvidence(card, id, "supporting")),
-    conflictingEvidence: claim.conflicting_evidence_ids.map((id) => resolveEvidence(card, id, "conflicting")),
+    supportingEvidence: claim.supporting_evidence_ids.map((id) =>
+      resolveEvidence(card, id, "supporting"),
+    ),
+    conflictingEvidence: claim.conflicting_evidence_ids.map((id) =>
+      resolveEvidence(card, id, "conflicting"),
+    ),
   };
 }
 
-export function fieldStateAt(card: AgentProjectCard, path: string): FieldState | undefined {
+export function fieldStateAt(
+  card: AgentProjectCard,
+  path: string,
+): FieldState | undefined {
   return card.field_states[path];
 }

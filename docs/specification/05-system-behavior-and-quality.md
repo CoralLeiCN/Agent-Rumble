@@ -207,6 +207,22 @@ end-to-end testing with Playwright remains deferred while the project evaluates
 whether Codex browser capabilities satisfy the intended browser-validation
 need.
 
+### Development Quality
+
+Traceability: [Development Quality](../requirements.md#development-quality).
+
+* Identify evidence by project, card version, and claim ID throughout the UI.
+* Serve search summaries in accessible pages and load full pinned cards when
+  needed for comparison or evidence.
+* Bind each analyzed commit to the requested repository's source identity.
+* Enforce the static-analysis policy in the application and tool permissions;
+  reject generated requests for dynamic analysis and runtime-verification labels.
+* Parse canonical output with bounded size, depth, and node counts, reject
+  ambiguous duplicate keys and aliases, and clean temporary data on all exits.
+* Check lint, formatting, Python and TypeScript types, canonical cards,
+  regressions, builds, and dependency advisories in CI using locked dependencies
+  and recorded runtime versions.
+
 ### Dependency Release Cooldown
 
 The [Dependency Release Cooldown requirement](../requirements.md#dependency-release-cooldown)

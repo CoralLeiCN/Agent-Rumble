@@ -2,10 +2,9 @@
 
 from pathlib import Path
 
+import agent_project_intelligence.config as config
 import pytest
 from pydantic import ValidationError
-
-import agent_project_intelligence.config as config
 
 
 def test_settings_have_repository_catalog_defaults() -> None:
@@ -75,10 +74,7 @@ def test_settings_load_one_direct_codex_model_group(
     settings = config.Settings()
 
     assert settings.model == "qwen-coder"
-    assert (
-        str(settings.model_provider_base_url).rstrip("/")
-        == "http://localhost:30000/v1"
-    )
+    assert str(settings.model_provider_base_url).rstrip("/") == "http://localhost:30000/v1"
     assert settings.model_provider_wire_api == "responses"
     assert settings.model_provider_env_key == "SGLANG_API_KEY"
 

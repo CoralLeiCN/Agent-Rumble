@@ -13,7 +13,6 @@ from agent_project_intelligence.models.rumble import (
     RumbleRound,
 )
 
-
 _ALIGNMENT_RANK = {
     RequirementAlignment.DOES_NOT_SATISFY: 1,
     RequirementAlignment.PARTIALLY_SATISFIES: 2,
@@ -66,13 +65,11 @@ def _callout(
     """Explain a round result without presenting it as a universal judgment."""
     if verdict is RoundVerdict.ENTRANT_A_ADVANTAGE:
         return (
-            f"Contextual edge: {entrant_a_name} aligns more closely with this "
-            "round's requirement."
+            f"Contextual edge: {entrant_a_name} aligns more closely with this round's requirement."
         )
     if verdict is RoundVerdict.ENTRANT_B_ADVANTAGE:
         return (
-            f"Contextual edge: {entrant_b_name} aligns more closely with this "
-            "round's requirement."
+            f"Contextual edge: {entrant_b_name} aligns more closely with this round's requirement."
         )
     if verdict is RoundVerdict.TRADE_OFF:
         return "Trade-off round: both projects have the same stated level of contextual fit."

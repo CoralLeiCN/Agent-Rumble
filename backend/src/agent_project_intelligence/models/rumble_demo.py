@@ -73,9 +73,7 @@ class RumbleDemoMatchup(DemoModel):
             raise ValueError("claim_ids must be unique within a demo matchup")
 
         entrants = self.request.entrants
-        snapshots_by_project = {
-            entrant.project_id: entrant.source_snapshot for entrant in entrants
-        }
+        snapshots_by_project = {entrant.project_id: entrant.source_snapshot for entrant in entrants}
         evidence_ids: set[str] = set()
 
         for claim in self.claims:
@@ -110,28 +108,21 @@ class RumbleDemoMatchup(DemoModel):
             )
             for side, project_id, cell in cells:
                 if cell.verification_status is VerificationStatus.RUNTIME_VERIFIED:
-                    raise ValueError(
-                        f"demo row '{row.label}' {side} cannot be runtime_verified"
-                    )
+                    raise ValueError(f"demo row '{row.label}' {side} cannot be runtime_verified")
                 for claim_id in cell.claim_ids:
-                    claim = claims_by_id.get(claim_id)
-                    if claim is None:
+                    referenced_claim = claims_by_id.get(claim_id)
+                    if referenced_claim is None:
                         raise ValueError(
                             f"claim reference '{claim_id}' in row '{row.label}' "
                             "does not resolve in the matchup claim registry"
                         )
-                    if claim.project_id != project_id:
+                    if referenced_claim.project_id != project_id:
                         raise ValueError(
                             f"claim reference '{claim_id}' in row '{row.label}' "
                             f"must belong to project '{project_id}'"
                         )
-                    if (
-                        cell.alignment in material_alignments
-                        and not claim.evidence
-                    ):
-                        raise ValueError(
-                            f"material claim '{claim_id}' must have evidence"
-                        )
+                    if cell.alignment in material_alignments and not referenced_claim.evidence:
+                        raise ValueError(f"material claim '{claim_id}' must have evidence")
         return self
 
 

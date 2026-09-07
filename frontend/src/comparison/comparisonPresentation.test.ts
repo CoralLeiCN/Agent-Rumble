@@ -18,33 +18,54 @@ describe("buildComparisonPresentation", () => {
   it("partitions every dynamic row and schema-only field exactly once", () => {
     const comparison = comparisonForFixtures();
     const presentation = buildComparisonPresentation(comparison.groups);
-    const sourceRows = comparison.groups.flatMap(({ rows }) => rows).map(({ id }) => id).sort();
-    const presentedRows = presentation.flatMap(({ highlights, details }) => (
-      [...highlights, ...details].map(({ id }) => id)
-    )).sort();
-    const sourceContractFields = comparison.groups.flatMap(({ id, contractOnlyFields }) => (
-      contractOnlyFields.map(({ fieldPattern }) => `${id}:${fieldPattern}`)
-    )).sort();
-    const presentedContractFields = presentation.flatMap(({ contractOnlyFields }) => (
-      contractOnlyFields.map(({ sourceGroupId, fieldPattern }) => `${sourceGroupId}:${fieldPattern}`)
-    )).sort();
+    const sourceRows = comparison.groups
+      .flatMap(({ rows }) => rows)
+      .map(({ id }) => id)
+      .sort();
+    const presentedRows = presentation
+      .flatMap(({ highlights, details }) =>
+        [...highlights, ...details].map(({ id }) => id),
+      )
+      .sort();
+    const sourceContractFields = comparison.groups
+      .flatMap(({ id, contractOnlyFields }) =>
+        contractOnlyFields.map(({ fieldPattern }) => `${id}:${fieldPattern}`),
+      )
+      .sort();
+    const presentedContractFields = presentation
+      .flatMap(({ contractOnlyFields }) =>
+        contractOnlyFields.map(
+          ({ sourceGroupId, fieldPattern }) =>
+            `${sourceGroupId}:${fieldPattern}`,
+        ),
+      )
+      .sort();
 
     expect(presentedRows).toEqual(sourceRows);
     expect(new Set(presentedRows).size).toBe(presentedRows.length);
     expect(presentedContractFields).toEqual(sourceContractFields);
-    expect(new Set(presentedContractFields).size).toBe(presentedContractFields.length);
+    expect(new Set(presentedContractFields).size).toBe(
+      presentedContractFields.length,
+    );
   });
 
   it("caps primary highlights and keeps metadata in collapsed technical details", () => {
-    const presentation = buildComparisonPresentation(comparisonForFixtures().groups);
+    const presentation = buildComparisonPresentation(
+      comparisonForFixtures().groups,
+    );
     const technical = presentation.find(({ id }) => id === "technical-details");
 
-    expect(presentation.filter(({ priority }) => priority === "primary").every(
-      ({ highlights }) => highlights.length <= HIGHLIGHT_ROW_LIMIT,
-    )).toBe(true);
+    expect(
+      presentation
+        .filter(({ priority }) => priority === "primary")
+        .every(({ highlights }) => highlights.length <= HIGHLIGHT_ROW_LIMIT),
+    ).toBe(true);
     expect(technical?.highlights).toEqual([]);
-    expect(technical?.details.some(({ fieldPattern }) => fieldPattern === "/schema_version"))
-      .toBe(true);
+    expect(
+      technical?.details.some(
+        ({ fieldPattern }) => fieldPattern === "/schema_version",
+      ),
+    ).toBe(true);
     expect(presentation.some(({ id }) => id === "schema_version")).toBe(false);
   });
 
@@ -63,8 +84,11 @@ describe("buildComparisonPresentation", () => {
       ({ id }) => id === "technical-details",
     );
 
-    expect(technical?.details.some(({ fieldPattern }) => (
-      fieldPattern === "/future_contract/policy/enabled"
-    ))).toBe(true);
+    expect(
+      technical?.details.some(
+        ({ fieldPattern }) =>
+          fieldPattern === "/future_contract/policy/enabled",
+      ),
+    ).toBe(true);
   });
 });

@@ -1,9 +1,8 @@
 """Tests for the dependency release cooldown."""
 
-from datetime import datetime, timedelta, timezone
-from pathlib import Path
 import tomllib
-
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE_ROOT = BACKEND_ROOT.parent
@@ -20,7 +19,7 @@ def test_lockfile_respects_dependency_release_cooldown() -> None:
     lockfile = tomllib.loads((WORKSPACE_ROOT / "uv.lock").read_text())
     assert lockfile["options"]["exclude-newer-span"] == "P1W"
 
-    cutoff = datetime.now(timezone.utc) - timedelta(days=7)
+    cutoff = datetime.now(UTC) - timedelta(days=7)
 
     for package in lockfile["package"]:
         artifacts = [package.get("sdist"), *package.get("wheels", [])]

@@ -8,13 +8,19 @@ describe("encodeOpaquePathIdentifier", () => {
     [" ", "~IiAi"],
     [" leading and trailing ", "~IiBsZWFkaW5nIGFuZCB0cmFpbGluZyAi"],
     ["ctl:\u0000\n", "~ImN0bDpcdTAwMDBcbiI"],
-    ["project/cards/2/evidence/value", "~InByb2plY3QvY2FyZHMvMi9ldmlkZW5jZS92YWx1ZSI"],
+    [
+      "project/cards/2/evidence/value",
+      "~InByb2plY3QvY2FyZHMvMi9ldmlkZW5jZS92YWx1ZSI",
+    ],
     ["evidence/cards/2/evidence/", "~ImV2aWRlbmNlL2NhcmRzLzIvZXZpZGVuY2UvIg"],
     ["~InNpbXBsZS1pZCI", "~In5Jbk5wYlhCc1pTMXBaQ0ki"],
     ["\uD83D\uDE00", "~IvCfmIAi"],
-  ])("encodes %j to the canonical opaque path reference", (identifier, expected) => {
-    expect(encodeOpaquePathIdentifier(identifier)).toBe(expected);
-  });
+  ])(
+    "encodes %j to the canonical opaque path reference",
+    (identifier, expected) => {
+      expect(encodeOpaquePathIdentifier(identifier)).toBe(expected);
+    },
+  );
 
   it("does not impose the former 2,048-character identifier ceiling", () => {
     const identifier = "a".repeat(2_050);
@@ -30,7 +36,9 @@ describe("encodeOpaquePathIdentifier", () => {
     ["lone low", "\uDC00"],
   ])("rejects a %s surrogate before UTF-8 encoding", (_label, identifier) => {
     expect(() => encodeOpaquePathIdentifier(identifier)).toThrow(
-      new TypeError("Opaque path identifiers must not contain lone UTF-16 surrogates."),
+      new TypeError(
+        "Opaque path identifiers must not contain lone UTF-16 surrogates.",
+      ),
     );
   });
 });

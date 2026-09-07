@@ -12,7 +12,12 @@ export class CatalogApiError extends Error {
   readonly code: string | null;
   readonly details: unknown;
 
-  constructor(message: string, status: number, code: string | null = null, details?: unknown) {
+  constructor(
+    message: string,
+    status: number,
+    code: string | null = null,
+    details?: unknown,
+  ) {
     super(message);
     this.name = "CatalogApiError";
     this.status = status;
@@ -35,13 +40,15 @@ function normalizeBaseUrl(baseUrl: string | undefined) {
 }
 
 function errorFrom(response: Response, body: unknown) {
-  const envelope = body && typeof body === "object" ? body as ErrorEnvelope : undefined;
+  const envelope =
+    body && typeof body === "object" ? (body as ErrorEnvelope) : undefined;
   const error = envelope?.error;
-  const message = typeof error?.message === "string"
-    ? error.message
-    : typeof envelope?.detail === "string"
-      ? envelope.detail
-      : `Catalog API request failed with HTTP ${response.status}.`;
+  const message =
+    typeof error?.message === "string"
+      ? error.message
+      : typeof envelope?.detail === "string"
+        ? envelope.detail
+        : `Catalog API request failed with HTTP ${response.status}.`;
   return new CatalogApiError(
     message,
     response.status,

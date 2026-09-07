@@ -41,7 +41,7 @@ class CatalogCard:
 
     def to_document(self) -> dict[str, Any]:
         """Copy canonical data into response-ready built-in containers."""
-        return thaw_value(self.document)
+        return {key: thaw_value(value) for key, value in self.document.items()}
 
 
 class CatalogSnapshot:
@@ -64,8 +64,7 @@ class CatalogSnapshot:
         self._project_to_card_id = MappingProxyType(project_to_card_id)
         self._cards = tuple(sorted(cards, key=lambda card: (card.project_id, card.card_version)))
         self._current = tuple(
-            versions[max(versions)]
-            for _, versions in sorted(self._by_project.items())
+            versions[max(versions)] for _, versions in sorted(self._by_project.items())
         )
 
     @property

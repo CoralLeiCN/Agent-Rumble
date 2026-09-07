@@ -7,10 +7,12 @@ from pathlib import Path
 
 import pytest
 import yaml
-from fastapi.testclient import TestClient
-from pydantic import ValidationError
-
 from agent_project_intelligence.api.errors import CatalogAPIError
+from agent_project_intelligence.api.identifier_references import (
+    decode_identifier_reference,
+    encode_identifier_reference,
+)
+from agent_project_intelligence.api.models.catalog import CardReference
 from agent_project_intelligence.catalog import (
     CatalogCard,
     CatalogSnapshot,
@@ -19,13 +21,9 @@ from agent_project_intelligence.catalog import (
 )
 from agent_project_intelligence.catalog.models import freeze_value
 from agent_project_intelligence.config import Settings
-from agent_project_intelligence.api.identifier_references import (
-    decode_identifier_reference,
-    encode_identifier_reference,
-)
-from agent_project_intelligence.api.models.catalog import CardReference
 from agent_project_intelligence.main import create_app
-
+from fastapi.testclient import TestClient
+from pydantic import ValidationError
 
 EIGENT = "project-eigent-ai-eigent"
 BIOMNI = "project-snap-stanford-biomni"
@@ -164,8 +162,7 @@ def test_catalog_publishes_every_preprocessed_card(
         preprocessed[(validated.project_id, validated.card_version)] = validated.document
 
     published = {
-        (card.project_id, card.card_version): card.to_document()
-        for card in catalog_snapshot.cards
+        (card.project_id, card.card_version): card.to_document() for card in catalog_snapshot.cards
     }
 
     assert len(preprocessed) == 11
@@ -190,9 +187,7 @@ def test_current_and_versioned_routes_return_exact_canonical_document(
 
 def test_missing_and_invalid_identifiers_use_typed_errors(client: TestClient) -> None:
     missing_id = "project-does-not-exist"
-    missing = client.get(
-        f"/api/v1/projects/{encode_identifier_reference(missing_id)}/cards/1"
-    )
+    missing = client.get(f"/api/v1/projects/{encode_identifier_reference(missing_id)}/cards/1")
     invalid = client.get("/api/v1/projects/non-opaque-project-id/cards/1")
 
     assert missing.status_code == 404
@@ -383,9 +378,7 @@ def test_evidence_resolves_claim_source_revision_locator_and_pinned_url(
 ) -> None:
     project_ref = encode_identifier_reference(EIGENT)
     evidence_ref = encode_identifier_reference("evidence-readme-product")
-    response = client.get(
-        f"/api/v1/projects/{project_ref}/cards/1/evidence/{evidence_ref}"
-    )
+    response = client.get(f"/api/v1/projects/{project_ref}/cards/1/evidence/{evidence_ref}")
 
     assert response.status_code == 200
     body = response.json()
@@ -608,9 +601,7 @@ def test_comparison_assessments_require_an_exact_context_and_matching_context_id
         assert response.status_code == 200
         rows = {row["id"]: row for row in response.json()["rows"]}
         for row_id in ("maturity", "limitations", "contextual-best-fit"):
-            assert {cell["state"] for cell in rows[row_id]["cells"].values()} == {
-                "not_analyzed"
-            }
+            assert {cell["state"] for cell in rows[row_id]["cells"].values()} == {"not_analyzed"}
 
 
 def test_search_uses_context_for_relevance_and_context_bounds_assessments(
@@ -669,9 +660,10 @@ def test_search_uses_context_for_relevance_and_context_bounds_assessments(
     assert exact_maturity.json()["total"] == 1
     assert missing_context.json()["total"] == 0
     assert wrong_maturity.json()["total"] == 0
-    assert "Contextual limitation not analyzed" not in exact_constraint.json()["projects"][0][
-        "constraint"
-    ]
+    assert (
+        "Contextual limitation not analyzed"
+        not in exact_constraint.json()["projects"][0]["constraint"]
+    )
     assert no_constraint.json()["projects"][0]["constraint"] == (
         "Contextual limitation not analyzed for this Assessment Context."
     )
@@ -707,9 +699,7 @@ def test_capability_match_preserves_support_confidence_and_claimless_match_stays
     assert reason["confidence"] == "low"
     assert reason["field_state"] == "unknown"
     assert reason["claim_ids"] == capability["claim_ids"]
-    assert capability_match.json()["projects"][0]["match_claim"]["claim_id"] in reason[
-        "claim_ids"
-    ]
+    assert capability_match.json()["projects"][0]["match_claim"]["claim_id"] in reason["claim_ids"]
     assert claimless_match.status_code == 200
     assert claimless_match.json()["projects"][0]["match_reasons"][0]["claim_ids"] == []
     assert claimless_match.json()["projects"][0]["match_claim"] is None
@@ -812,12 +802,8 @@ def test_slash_and_unicode_identifiers_round_trip_losslessly(
     encoded_evidence_id = encode_identifier_reference(evidence_id)
 
     with TestClient(app) as unicode_client:
-        current = unicode_client.get(
-            f"/api/v1/projects/{encoded_project_id}/cards/current"
-        )
-        pinned = unicode_client.get(
-            f"/api/v1/projects/{encoded_project_id}/cards/1"
-        )
+        current = unicode_client.get(f"/api/v1/projects/{encoded_project_id}/cards/current")
+        pinned = unicode_client.get(f"/api/v1/projects/{encoded_project_id}/cards/1")
         evidence = unicode_client.get(
             f"/api/v1/projects/{encoded_project_id}/cards/1/evidence/{encoded_evidence_id}"
         )
@@ -853,9 +839,7 @@ def test_paired_surrogate_identifiers_do_not_mislookup_or_fail_json_responses(
     reference = encode_identifier_reference(paired)
 
     with TestClient(app) as surrogate_client:
-        current = surrogate_client.get(
-            f"/api/v1/projects/{reference}/cards/current"
-        )
+        current = surrogate_client.get(f"/api/v1/projects/{reference}/cards/current")
         pinned = surrogate_client.get(f"/api/v1/projects/{reference}/cards/1")
         evidence = surrogate_client.get(
             f"/api/v1/projects/{reference}/cards/1/evidence/{reference}"
@@ -900,9 +884,7 @@ def test_opaque_routes_accept_all_nonempty_json_string_identifier_shapes(
             responses.append(
                 (
                     project_id,
-                    opaque_client.get(
-                        f"/api/v1/projects/{project_ref}/cards/current"
-                    ),
+                    opaque_client.get(f"/api/v1/projects/{project_ref}/cards/current"),
                     opaque_client.get(
                         f"/api/v1/projects/{project_ref}/cards/1/evidence/{evidence_ref}"
                     ),
@@ -968,9 +950,7 @@ def test_openapi_exposes_all_versioned_catalog_operations(client: TestClient) ->
     ]["schema"]["$ref"].endswith("/ErrorEnvelope")
     project_parameter = next(
         parameter
-        for parameter in paths["/api/v1/projects/{project_ref}/cards/current"]["get"][
-            "parameters"
-        ]
+        for parameter in paths["/api/v1/projects/{project_ref}/cards/current"]["get"]["parameters"]
         if parameter["name"] == "project_ref"
     )
     evidence_parameter = next(

@@ -1,13 +1,17 @@
-import { readCatalogGatewayConfig, type CatalogGatewayConfig } from "./catalogConfig";
+import {
+  readCatalogGatewayConfig,
+  type CatalogGatewayConfig,
+} from "./catalogConfig";
 import { FetchJsonTransport, type JsonTransport } from "./httpTransport";
 import { encodeOpaquePathIdentifier } from "./opaquePathIdentifier";
 import {
-  projectCardToSummary,
   projectCardsToClaimEvidence,
   projectCardsToComparison,
 } from "./projectCardAdapter";
 import type {
   AssessmentContextView,
+  CardReference,
+  ClaimReference,
   CatalogGateway,
   ClaimEvidenceRecord,
   ComparisonResponse,
@@ -76,12 +80,17 @@ interface RawProjectSummary {
   analyzed_at: string;
   match_claim: {
     claim_id: string;
-    verification_status: ProjectSummary["matchClaim"]["verificationStatus"];
-    confidence: ProjectSummary["matchClaim"]["confidence"];
+    verification_status: NonNullable<
+      ProjectSummary["matchClaim"]
+    >["verificationStatus"];
+    confidence: NonNullable<ProjectSummary["matchClaim"]>["confidence"];
   } | null;
 }
 
 interface RawSearchResponse {
+  page: number;
+  page_size: number;
+  total: number;
   query: string;
   assessment_contexts: RawAssessmentContextView[];
   requirements: Requirement[];
@@ -108,7 +117,9 @@ function catalogContext(response: RawCatalogContext): CatalogContext {
   };
 }
 
-function assessmentContext(context: RawAssessmentContextView): AssessmentContextView {
+function assessmentContext(
+  context: RawAssessmentContextView,
+): AssessmentContextView {
   return {
     contextId: context.context_id,
     projectId: context.project_id,
@@ -120,10 +131,8 @@ function assessmentContext(context: RawAssessmentContextView): AssessmentContext
   };
 }
 
-function projectSummary(raw: RawProjectSummary, card: AgentProjectCard): ProjectSummary {
-  const canonical = projectCardToSummary(card);
+function projectSummary(raw: RawProjectSummary): ProjectSummary {
   return {
-    ...canonical,
     id: raw.id,
     name: raw.name,
     owner: raw.owner,
@@ -144,22 +153,27 @@ function projectSummary(raw: RawProjectSummary, card: AgentProjectCard): Project
     analyzedAt: raw.analyzed_at.slice(0, 10),
     matchClaim: raw.match_claim
       ? {
-        claimId: raw.match_claim.claim_id,
-        verificationStatus: raw.match_claim.verification_status,
-        confidence: raw.match_claim.confidence,
-      }
-      : canonical.matchClaim,
+          claimId: raw.match_claim.claim_id,
+          verificationStatus: raw.match_claim.verification_status,
+          confidence: raw.match_claim.confidence,
+        }
+      : null,
   };
 }
 
 export class HttpCatalogGateway implements CatalogGateway {
   readonly dataSource = "http" as const;
   private readonly cards = new Map<string, AgentProjectCard>();
+  private readonly pendingCards = new Map<string, Promise<AgentProjectCard>>();
 
-  constructor(private readonly transport: JsonTransport = new FetchJsonTransport()) {}
+  constructor(
+    private readonly transport: JsonTransport = new FetchJsonTransport(),
+  ) {}
 
   async getCatalogContext(): Promise<CatalogContext> {
-    const response = await this.transport.request<RawCatalogContext>(`${API_PREFIX}/catalog`);
+    const response = await this.transport.request<RawCatalogContext>(
+      `${API_PREFIX}/catalog`,
+    );
     return catalogContext(response);
   }
 
@@ -167,19 +181,44 @@ export class HttpCatalogGateway implements CatalogGateway {
     const card = await this.transport.request<AgentProjectCard>(
       `${API_PREFIX}/projects/${encodeOpaquePathIdentifier(projectId)}/cards/current`,
     );
-    this.cards.set(projectId, card);
+    if (card.project.project_id !== projectId) {
+      throw new Error("Catalog returned a card for a different project.");
+    }
+    this.cards.set(JSON.stringify([projectId, card.card_version]), card);
     return card;
   }
 
-  async getCard(projectId: string, cardVersion: number): Promise<AgentProjectCard> {
-    const card = await this.transport.request<AgentProjectCard>(
-      `${API_PREFIX}/projects/${encodeOpaquePathIdentifier(projectId)}/cards/${cardVersion}`,
-    );
-    this.cards.set(projectId, card);
-    return card;
+  async getCard(
+    projectId: string,
+    cardVersion: number,
+  ): Promise<AgentProjectCard> {
+    const key = JSON.stringify([projectId, cardVersion]);
+    const cached = this.cards.get(key);
+    if (cached) return cached;
+    const pending = this.pendingCards.get(key);
+    if (pending) return pending;
+    const request = this.transport
+      .request<AgentProjectCard>(
+        `${API_PREFIX}/projects/${encodeOpaquePathIdentifier(projectId)}/cards/${cardVersion}`,
+      )
+      .then((card) => {
+        if (
+          card.project.project_id !== projectId ||
+          card.card_version !== cardVersion
+        ) {
+          throw new Error(
+            "Catalog returned a card that does not match its pinned reference.",
+          );
+        }
+        this.cards.set(key, card);
+        return card;
+      })
+      .finally(() => this.pendingCards.delete(key));
+    this.pendingCards.set(key, request);
+    return request;
   }
 
-  async searchProjects(query: string): Promise<SearchResponse> {
+  async searchProjects(query: string, page = 1): Promise<SearchResponse> {
     const normalizedQuery = query.trim();
     const response = await this.transport.request<RawSearchResponse>(
       `${API_PREFIX}/catalog/search`,
@@ -187,64 +226,87 @@ export class HttpCatalogGateway implements CatalogGateway {
         method: "POST",
         body: JSON.stringify({
           text: normalizedQuery,
-          page: 1,
-          page_size: 100,
-          ...(normalizedQuery ? {
-            assessment_context: {
-              use_case: normalizedQuery,
-              comparison_cohort: ["Published Agent Project Cards"],
-              requirements: [normalizedQuery],
-              organizational_constraints: ["Static evidence only"],
-            },
-          } : {}),
+          page,
+          page_size: 20,
+          ...(normalizedQuery
+            ? {
+                assessment_context: {
+                  use_case: normalizedQuery,
+                  comparison_cohort: ["Published Agent Project Cards"],
+                  requirements: [normalizedQuery],
+                  organizational_constraints: ["Static evidence only"],
+                },
+              }
+            : {}),
         }),
       },
     );
-    const cards = await Promise.all(response.projects.map(({ id, card_version: version }) => (
-      this.getCard(id, version)
-    )));
     return {
+      page: response.page,
+      pageSize: response.page_size,
+      total: response.total,
       query: response.query,
       assessmentContexts: response.assessment_contexts.map(assessmentContext),
       requirements: response.requirements,
       uninterpretedTerms: response.uninterpreted_terms,
-      projects: response.projects.map((project, index) => projectSummary(project, cards[index])),
+      projects: response.projects.map(projectSummary),
     };
   }
 
-  async compareProjects(projectIds: string[]): Promise<ComparisonResponse> {
-    const cards = await Promise.all(projectIds.map((projectId) => (
-      this.cards.get(projectId) ?? this.getCurrentCard(projectId)
-    )));
-    return projectCardsToComparison(cards, projectIds, "validated_catalog");
+  async compareProjects(
+    references: CardReference[],
+  ): Promise<ComparisonResponse> {
+    const cards = await Promise.all(
+      references.map(({ projectId, cardVersion }) =>
+        this.getCard(projectId, cardVersion),
+      ),
+    );
+    return projectCardsToComparison(
+      cards,
+      references.map(({ projectId }) => projectId),
+      "validated_catalog",
+    );
   }
 
-  async getClaimEvidence(claimId: string): Promise<ClaimEvidenceRecord> {
-    const card = [...this.cards.values()].find(({ claims }) => (
-      claims.some(({ claim_id: candidate }) => candidate === claimId)
-    ));
-    const claim = card?.claims.find(({ claim_id: candidate }) => candidate === claimId);
-    if (!card || !claim) {
-      throw new Error(`Claim ${claimId} is not present in the loaded catalog results.`);
+  async getClaimEvidence(
+    reference: ClaimReference,
+  ): Promise<ClaimEvidenceRecord> {
+    const card = await this.getCard(reference.projectId, reference.cardVersion);
+    const claim = card.claims.find(
+      ({ claim_id }) => claim_id === reference.claimId,
+    );
+    if (!claim) {
+      throw new Error(
+        `Claim ${reference.claimId} is not present in the pinned card.`,
+      );
     }
 
     const evidenceIds = [
       ...claim.supporting_evidence_ids,
       ...claim.conflicting_evidence_ids,
     ];
-    const evidenceResponses = await Promise.all(evidenceIds.map(async (evidenceId) => ({
-      evidenceId,
-      response: await this.transport.request<RawEvidenceResponse>(
-        `${API_PREFIX}/projects/${encodeOpaquePathIdentifier(card.project.project_id)}/cards/${card.card_version}/evidence/${encodeOpaquePathIdentifier(evidenceId)}`,
-      ),
-    })));
-    const sourceUrls = new Map(evidenceResponses.map(({ evidenceId, response }) => (
-      [evidenceId, response.source_url]
-    )));
-    const record = projectCardsToClaimEvidence([card], claimId);
-    const withCanonicalUrl = <T extends { id: string; sourceUrl: string | null }>(item: T): T => ({
+    const evidenceResponses = await Promise.all(
+      evidenceIds.map(async (evidenceId) => ({
+        evidenceId,
+        response: await this.transport.request<RawEvidenceResponse>(
+          `${API_PREFIX}/projects/${encodeOpaquePathIdentifier(card.project.project_id)}/cards/${card.card_version}/evidence/${encodeOpaquePathIdentifier(evidenceId)}`,
+        ),
+      })),
+    );
+    const sourceUrls = new Map(
+      evidenceResponses.map(({ evidenceId, response }) => [
+        evidenceId,
+        response.source_url,
+      ]),
+    );
+    const record = projectCardsToClaimEvidence([card], reference);
+    const withCanonicalUrl = <
+      T extends { id: string; sourceUrl: string | null },
+    >(
+      item: T,
+    ): T => ({
       ...item,
-      sourceUrl: sourceUrls.get(item.id) ?? item.sourceUrl,
+      sourceUrl: sourceUrls.get(item.id) ?? null,
     });
     return {
       ...record,

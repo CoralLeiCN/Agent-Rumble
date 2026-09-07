@@ -6,6 +6,7 @@ from agent_project_intelligence.models.rumble import (
     RumbleProjectionRequest,
 )
 from agent_project_intelligence.services.rumble import project_rumble
+
 from ..rumble_payloads import rumble_payload
 
 

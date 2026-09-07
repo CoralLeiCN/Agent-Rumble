@@ -7,7 +7,6 @@ from typing import Any
 
 import pytest
 import yaml
-
 from agent_project_intelligence.catalog.repository import (
     CatalogConfigurationError,
     CatalogLoadError,
@@ -281,7 +280,7 @@ def test_snapshot_receives_normalized_document_and_card_id(tmp_path: Path) -> No
     publish(
         tmp_path,
         document,
-        encoded_card_id=encode_card_id("card-\U0001F680"),
+        encoded_card_id=encode_card_id("card-\U0001f680"),
     )
 
     snapshot = FilesystemCatalogRepository(
@@ -292,8 +291,8 @@ def test_snapshot_receives_normalized_document_and_card_id(tmp_path: Path) -> No
     card = snapshot.get_current("project-bio-xyz-bioagents")
 
     assert card is not None
-    assert card.card_id == "card-\U0001F680"
-    assert card.to_document()["card_id"] == "card-\U0001F680"
+    assert card.card_id == "card-\U0001f680"
+    assert card.to_document()["card_id"] == "card-\U0001f680"
 
 
 @pytest.mark.parametrize(

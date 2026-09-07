@@ -6,8 +6,8 @@ import re
 import unicodedata
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import Any, Literal
+from datetime import UTC, datetime
+from typing import Any, Literal, cast
 from urllib.parse import quote, urlsplit
 
 from agent_project_intelligence.api.errors import CatalogAPIError
@@ -35,9 +35,9 @@ from agent_project_intelligence.api.models.catalog import (
 )
 from agent_project_intelligence.catalog.models import CatalogCard, CatalogSnapshot, thaw_value
 
-
 _TERM = re.compile(r"[\w+#.-]+", flags=re.UNICODE)
 _GITHUB_COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
+UnavailableState = Literal["unknown", "not_applicable", "not_analyzed", "no_evidence_found"]
 _FIELD_STATES = {
     "unknown",
     "not_applicable",
@@ -224,7 +224,7 @@ class _IndexField:
     evidence_ids: tuple[str, ...] = ()
     capability_support_status: str | None = None
     confidence: str | None = None
-    field_state: str | None = None
+    field_state: UnavailableState | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -246,7 +246,7 @@ class CatalogService:
         catalog_label: str = "Development catalog",
     ) -> None:
         self._snapshot = snapshot
-        self._now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        self._now = (now or datetime.now(UTC)).astimezone(UTC)
         self._catalog_id = catalog_id
         self._catalog_label = catalog_label
         self._index = tuple(self._index_card(card) for card in snapshot.list_current())
@@ -257,12 +257,9 @@ class CatalogService:
         analyzed_at = sorted(
             value
             for document in documents
-            if (value := _at(document, "source_snapshot", "analyzed_at"))
-            and isinstance(value, str)
+            if (value := _at(document, "source_snapshot", "analyzed_at")) and isinstance(value, str)
         )
-        schema_versions = sorted(
-            {str(document.get("schema_version")) for document in documents}
-        )
+        schema_versions = sorted({str(document.get("schema_version")) for document in documents})
         ontology_versions: set[str] = set()
         for document in documents:
             versions = _mapping(_at(document, "source_snapshot", "ontology_versions", default={}))
@@ -385,8 +382,7 @@ class CatalogService:
             for claim in _sequence(document.get("claims"))
             if isinstance(claim, Mapping)
             and any(
-                isinstance(candidate, str)
-                and identifiers_equal(candidate, resolved_evidence_id)
+                isinstance(candidate, str) and identifiers_equal(candidate, resolved_evidence_id)
                 for candidate in (
                     list(_sequence(claim.get("supporting_evidence_ids")))
                     + list(_sequence(claim.get("conflicting_evidence_ids")))
@@ -443,19 +439,13 @@ class CatalogService:
                 None,
             )
             if canonical is not None:
-                interpreted.append(
-                    (raw_term, canonical, raw_term != canonical, is_explicit)
-                )
+                interpreted.append((raw_term, canonical, raw_term != canonical, is_explicit))
             else:
                 uninterpreted.append(raw_term)
-        interpreted_explicit_terms = {
-            raw for raw, _, _, is_explicit in interpreted if is_explicit
-        }
+        interpreted_explicit_terms = {raw for raw, _, _, is_explicit in interpreted if is_explicit}
 
         required_explicit_matches = (
-            (len(interpreted_explicit_terms) + 1) // 2
-            if interpreted_explicit_terms
-            else 0
+            (len(interpreted_explicit_terms) + 1) // 2 if interpreted_explicit_terms else 0
         )
         matched: list[tuple[_IndexedCard, list[MatchReason], int, float]] = []
         for indexed in self._index:
@@ -555,12 +545,15 @@ class CatalogService:
     def _index_card(self, card: CatalogCard) -> _IndexedCard:
         document = card.document
         classification_claims = tuple(
-            str(value)
-            for value in _sequence(_at(document, "classification", "claim_ids"))
+            str(value) for value in _sequence(_at(document, "classification", "claim_ids"))
         )
         fields: list[_IndexField] = [
             _IndexField("/project/name", (str(_at(document, "project", "name", default="")),)),
-            _IndexField("/project/primary_type", (str(_at(document, "project", "primary_type", default="")),), classification_claims),
+            _IndexField(
+                "/project/primary_type",
+                (str(_at(document, "project", "primary_type", default="")),),
+                classification_claims,
+            ),
             _IndexField(
                 "/project/license",
                 tuple(_string_list(_at(document, "project", "license"))),
@@ -622,15 +615,21 @@ class CatalogService:
                             if capability.get("confidence") is not None
                             else None
                         ),
-                        str(field_state) if field_state in _FIELD_STATES else None,
+                        cast(UnavailableState, field_state)
+                        if field_state in _FIELD_STATES
+                        else None,
                     )
                 )
 
         architecture = _mapping(document.get("architecture"))
         fields.extend(
             [
-                _IndexField("/architecture/overview", tuple(_string_list(architecture.get("overview")))),
-                _IndexField("/architecture/languages", tuple(_string_list(architecture.get("languages")))),
+                _IndexField(
+                    "/architecture/overview", tuple(_string_list(architecture.get("overview")))
+                ),
+                _IndexField(
+                    "/architecture/languages", tuple(_string_list(architecture.get("languages")))
+                ),
             ]
         )
         for key, value in architecture.items():
@@ -661,7 +660,11 @@ class CatalogService:
                 field.path,
                 tuple(value for value in field.values if value),
                 field.claim_ids,
-                tuple(_dedupe((*field.evidence_ids, *self._evidence_for_claims(document, field.claim_ids)))),
+                tuple(
+                    _dedupe(
+                        (*field.evidence_ids, *self._evidence_for_claims(document, field.claim_ids))
+                    )
+                ),
                 field.capability_support_status,
                 field.confidence,
                 field.field_state,
@@ -689,8 +692,10 @@ class CatalogService:
                 child_path = f"{path}/{key}"
                 if isinstance(child, (str, int, float)):
                     fields.append(_IndexField(child_path, (str(child),), claims))
-                elif isinstance(child, Sequence) and not isinstance(child, (str, bytes)) and all(
-                    isinstance(item, (str, int, float)) for item in child
+                elif (
+                    isinstance(child, Sequence)
+                    and not isinstance(child, (str, bytes))
+                    and all(isinstance(item, (str, int, float)) for item in child)
                 ):
                     fields.append(
                         _IndexField(child_path, tuple(str(item) for item in child), claims)
@@ -734,8 +739,7 @@ class CatalogService:
         for raw, canonical, is_synonym, is_explicit in terms:
             candidates = [
                 (
-                    _search_field_weight(field.path)
-                    * _term_match_quality(canonical, value)
+                    _search_field_weight(field.path) * _term_match_quality(canonical, value)
                     + (4.0 if field.claim_ids or field.evidence_ids else 0.0),
                     field,
                     value,
@@ -808,20 +812,34 @@ class CatalogService:
                 tuple(_string_list(_at(document, "classification", "claim_ids"))),
             ),
             ("capabilities", request.filters.capabilities, capability_values, "/capabilities", ()),
-            ("languages", request.filters.languages, _string_list(_at(document, "architecture", "languages")), "/architecture/languages", ()),
-            ("licenses", request.filters.licenses, _string_list(_at(document, "project", "license")), "/project/license", tuple(self._claims_matching(document, "license"))),
+            (
+                "languages",
+                request.filters.languages,
+                _string_list(_at(document, "architecture", "languages")),
+                "/architecture/languages",
+                (),
+            ),
+            (
+                "licenses",
+                request.filters.licenses,
+                _string_list(_at(document, "project", "license")),
+                "/project/license",
+                tuple(self._claims_matching(document, "license")),
+            ),
             (
                 "maturities",
                 request.filters.maturities,
-                (
-                    _string_list(_at(document, "assessment", "maturity"))
-                    if maturity_signals
-                    else []
-                ),
+                (_string_list(_at(document, "assessment", "maturity")) if maturity_signals else []),
                 "/assessment/maturity",
                 tuple(maturity_claims),
             ),
-            ("architecture_layers", request.filters.architecture_layers, _string_list(_at(document, "classification", "architecture_layers")), "/classification/architecture_layers", tuple(_string_list(_at(document, "classification", "claim_ids")))),
+            (
+                "architecture_layers",
+                request.filters.architecture_layers,
+                _string_list(_at(document, "classification", "architecture_layers")),
+                "/classification/architecture_layers",
+                tuple(_string_list(_at(document, "classification", "claim_ids"))),
+            ),
         )
         reasons: list[MatchReason] = []
         for dimension, requested, available, path, default_claims in dimensions:
@@ -843,7 +861,7 @@ class CatalogService:
             evidence_ids: list[str] = []
             capability_support_status: str | None = None
             confidence: str | None = None
-            field_state: str | None = None
+            field_state: UnavailableState | None = None
             if dimension == "capabilities":
                 capability_match = next(
                     (
@@ -870,10 +888,8 @@ class CatalogService:
                         f"/capabilities/{capability_index}/support_status"
                     )
                     if candidate_state in _FIELD_STATES:
-                        field_state = str(candidate_state)
-            evidence_ids = _dedupe(
-                (*evidence_ids, *self._evidence_for_claims(document, claim_ids))
-            )
+                        field_state = cast(UnavailableState, candidate_state)
+            evidence_ids = _dedupe((*evidence_ids, *self._evidence_for_claims(document, claim_ids)))
             reasons.append(
                 MatchReason(
                     kind="filter",
@@ -955,7 +971,9 @@ class CatalogService:
             owner=str(repository.get("owner") or "Unknown owner"),
             project_type=primary_type.replace("_", " "),
             role=primary_type.replace("_", " "),
-            summary=str(summary.get("one_line") or summary.get("purpose") or "Summary not analyzed."),
+            summary=str(
+                summary.get("one_line") or summary.get("purpose") or "Summary not analyzed."
+            ),
             match_reason=self._match_reason_summary(first_reason),
             constraint=str(
                 first_limitation.get("statement")
@@ -997,8 +1015,8 @@ class CatalogService:
         label = _search_field_label(reason.path)
         sentence_end = "" if value.endswith((".", "!", "?")) else "."
         if reason.kind == "filter":
-            return f'Matches the “{term}” {label} filter: {value}{sentence_end}'
-        return f'Matches “{term}” in its {label}: {value}{sentence_end}'
+            return f"Matches the “{term}” {label} filter: {value}{sentence_end}"
+        return f"Matches “{term}” in its {label}: {value}{sentence_end}"
 
     def _assessment_contexts(
         self,
@@ -1038,13 +1056,10 @@ class CatalogService:
             == self._normalized_string_collection(requested.comparison_cohort)
             and self._normalized_string_collection(context.get("requirements"))
             == self._normalized_string_collection(requested.requirements)
-            and self._normalized_string_collection(
-                context.get("organizational_constraints")
-            )
+            and self._normalized_string_collection(context.get("organizational_constraints"))
             == self._normalized_string_collection(requested.organizational_constraints)
             and requested_assessed_at is not None
-            and self._normalized_instant(context.get("assessed_at"))
-            == requested_assessed_at
+            and self._normalized_instant(context.get("assessed_at")) == requested_assessed_at
         }
 
     def _assessment_items_for_context(
@@ -1076,8 +1091,8 @@ class CatalogService:
         except (TypeError, ValueError):
             return None
         if instant.tzinfo is None:
-            instant = instant.replace(tzinfo=timezone.utc)
-        return instant.astimezone(timezone.utc).isoformat()
+            instant = instant.replace(tzinfo=UTC)
+        return instant.astimezone(UTC).isoformat()
 
     def _comparison_rows(
         self,
@@ -1157,9 +1172,7 @@ class CatalogService:
             "maturity",
             "Maturity",
             "Material differences",
-            lambda card, document: self._contextual_maturity_cell(
-                card, document, context
-            ),
+            lambda card, document: self._contextual_maturity_cell(card, document, context),
         )
         add_row(
             "interfaces",
@@ -1262,9 +1275,8 @@ class CatalogService:
                 claim_verification_status=(
                     str(first_claim.get("verification_status")) if first_claim else None
                 ),
-                confidence=confidence or (
-                    str(first_claim.get("confidence")) if first_claim else None
-                ),
+                confidence=confidence
+                or (str(first_claim.get("confidence")) if first_claim else None),
                 claim_ids=list(claim_ids),
                 evidence_ids=self._evidence_for_claims(document, claim_ids),
                 project_id=card.project_id,
@@ -1392,9 +1404,7 @@ class CatalogService:
         if not items:
             return self._not_analyzed_cell(card)
         claim_ids = _dedupe(
-            claim_id
-            for item in items
-            for claim_id in _string_list(_mapping(item).get("claim_ids"))
+            claim_id for item in items for claim_id in _string_list(_mapping(item).get("claim_ids"))
         )
         statements = [
             str(item.get("statement"))
@@ -1425,7 +1435,10 @@ class CatalogService:
         )
 
     def _role_analysis(self, documents: Sequence[Mapping[str, Any]]) -> RoleAnalysis:
-        roles = [str(_at(document, "project", "primary_type", default="unknown")) for document in documents]
+        roles = [
+            str(_at(document, "project", "primary_type", default="unknown"))
+            for document in documents
+        ]
         unique = set(roles)
         if len(unique) == 1:
             return RoleAnalysis(
@@ -1537,8 +1550,7 @@ class CatalogService:
         return [
             str(claim.get("claim_id"))
             for claim in _sequence(document.get("claims"))
-            if isinstance(claim, Mapping)
-            and normalized in _normalize(claim.get("statement", ""))
+            if isinstance(claim, Mapping) and normalized in _normalize(claim.get("statement", ""))
         ]
 
     def _claim(
@@ -1620,8 +1632,8 @@ class CatalogService:
         try:
             analyzed_at = datetime.fromisoformat(value.replace("Z", "+00:00"))
             if analyzed_at.tzinfo is None:
-                analyzed_at = analyzed_at.replace(tzinfo=timezone.utc)
-            return max(0, (self._now - analyzed_at.astimezone(timezone.utc)).days)
+                analyzed_at = analyzed_at.replace(tzinfo=UTC)
+            return max(0, (self._now - analyzed_at.astimezone(UTC)).days)
         except ValueError:
             return 0
 
@@ -1660,7 +1672,7 @@ class CatalogService:
                 "invalid_identifier",
                 f"{field} is not a valid catalog identifier.",
                 details={"field": field},
-            )
+            ) from None
 
     def _not_found(
         self,

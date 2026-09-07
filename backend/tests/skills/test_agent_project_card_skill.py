@@ -10,7 +10,6 @@ from types import ModuleType
 import pytest
 import yaml
 
-
 ROOT = Path(__file__).resolve().parents[3]
 SKILL = ROOT / ".agents" / "skills" / "agent-project-card"
 PLUGIN = ROOT / "plugins" / "agent-project-card"
@@ -237,7 +236,7 @@ def test_unicode_scalar_normalization_combines_yaml_surrogate_pair_escape() -> N
     normalized, errors = validator.normalize_unicode_scalars(parsed)
 
     assert errors == []
-    assert normalized == {"value": "\U0001F680"}
+    assert normalized == {"value": "\U0001f680"}
 
 
 @pytest.mark.parametrize(
@@ -252,9 +251,7 @@ def test_unicode_scalar_normalization_rejects_lone_surrogate_values(
     kind: str,
     code_point: str,
 ) -> None:
-    normalized, errors = validator.normalize_unicode_scalars(
-        {"summary": {"one_line": value}}
-    )
+    normalized, errors = validator.normalize_unicode_scalars({"summary": {"one_line": value}})
 
     assert normalized["summary"]["one_line"] == value
     assert errors == [
@@ -285,7 +282,7 @@ def test_unicode_scalar_normalization_rejects_lone_surrogate_object_keys(
 
 def test_unicode_scalar_normalization_rejects_normalized_key_collision() -> None:
     pair_key = "\ud83d\ude80"
-    literal_key = "\U0001F680"
+    literal_key = "\U0001f680"
 
     _, errors = validator.normalize_unicode_scalars(
         {"configuration": {pair_key: "pair", literal_key: "literal"}}
@@ -299,7 +296,7 @@ def test_unicode_scalar_normalization_rejects_normalized_key_collision() -> None
 
 def test_unicode_scalar_normalization_preserves_astral_and_text_forms() -> None:
     document = {
-        "astral": "\U0001F680",
+        "astral": "\U0001f680",
         "nfc": "é",
         "decomposed": "e\u0301",
         "case": "Agent Rumble",
@@ -323,7 +320,7 @@ def test_valid_card_semantics_use_normalized_scalar_values_without_mutation() ->
 
     assert errors == []
     assert card["summary"]["one_line"] == escaped_value
-    assert normalized["summary"]["one_line"] == "Launch \U0001F680"
+    assert normalized["summary"]["one_line"] == "Launch \U0001f680"
 
 
 def test_card_version_is_required_and_positive() -> None:
@@ -341,9 +338,7 @@ def test_card_version_is_required_and_positive() -> None:
 
 def test_skill_defines_tracked_card_version_lineage() -> None:
     skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-    contract = (SKILL / "references" / "analysis-contract.md").read_text(
-        encoding="utf-8"
-    )
+    contract = (SKILL / "references" / "analysis-contract.md").read_text(encoding="utf-8")
 
     for required_text in (
         "`card_version: 1`",
@@ -356,9 +351,7 @@ def test_skill_defines_tracked_card_version_lineage() -> None:
 
 
 def test_marketplace_plugin_packages_the_repository_skill() -> None:
-    manifest = json.loads(
-        (PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
-    )
+    manifest = json.loads((PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
     marketplace = json.loads(MARKETPLACE.read_text(encoding="utf-8"))
     entry = next(item for item in marketplace["plugins"] if item["name"] == manifest["name"])
 
@@ -377,9 +370,7 @@ def test_marketplace_plugin_packages_the_repository_skill() -> None:
 
 def test_skill_symlink_and_plugin_namespace_are_documented() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    design = (ROOT / "docs" / "design-docs" / "system-design.md").read_text(
-        encoding="utf-8"
-    )
+    design = (ROOT / "docs" / "design-docs" / "system-design.md").read_text(encoding="utf-8")
 
     for document in (readme, design):
         assert ".agents/skills/agent-project-card" in document
@@ -390,9 +381,7 @@ def test_skill_symlink_and_plugin_namespace_are_documented() -> None:
 
 def test_skill_script_commands_are_plugin_portable() -> None:
     skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-    validator_script = (SKILL / "scripts" / "validate_project_card.py").read_text(
-        encoding="utf-8"
-    )
+    validator_script = (SKILL / "scripts" / "validate_project_card.py").read_text(encoding="utf-8")
 
     assert "uv run --script <skill-directory>" in skill
     assert ".agents/skills/agent-project-card/scripts" not in skill
@@ -443,8 +432,7 @@ def test_validation_cli_accepts_pair_escape_and_rejects_lone_surrogate(
     assert paired_result.returncode == 0, paired_result.stderr
     assert lone_result.returncode == 1
     assert (
-        "/summary/one_line: string value contains lone high surrogate U+D83D "
-        "at string index 7"
+        "/summary/one_line: string value contains lone high surrogate U+D83D at string index 7"
     ) in lone_result.stderr
 
 

@@ -6,10 +6,10 @@ import importlib.util
 import json
 from collections.abc import Mapping
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from types import ModuleType
 from typing import Any, Protocol
-
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_SKILL_ROOT = (
@@ -46,6 +46,7 @@ class CardValidationError(ValueError):
         super().__init__("; ".join(errors))
 
 
+@lru_cache(maxsize=8)
 def _load_validator_module(path: Path) -> ModuleType:
     """Load the skill's executable rules without maintaining a second copy."""
     spec = importlib.util.spec_from_file_location("_agent_project_card_validator", path)
@@ -54,6 +55,11 @@ def _load_validator_module(path: Path) -> ModuleType:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def parse_card_yaml(text: str) -> Any:
+    """Use the canonical skill's bounded YAML parser at every ingestion boundary."""
+    return _load_validator_module(DEFAULT_VALIDATOR_PATH).load_yaml(text)
 
 
 class SkillCardValidator:
@@ -68,7 +74,9 @@ class SkillCardValidator:
         try:
             schema_document = json.loads(schema_path.read_text(encoding="utf-8"))
         except (OSError, ValueError) as exc:
-            raise RuntimeError(f"Unable to load Agent Project Card schema at {schema_path}") from exc
+            raise RuntimeError(
+                f"Unable to load Agent Project Card schema at {schema_path}"
+            ) from exc
         if not isinstance(schema_document, dict):
             raise RuntimeError(f"Agent Project Card schema is not an object: {schema_path}")
 

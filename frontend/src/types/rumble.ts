@@ -1,11 +1,7 @@
 import type { EvidenceRecord } from "./catalog";
 
 export type RumbleComparisonState =
-  | "value"
-  | "unknown"
-  | "not_applicable"
-  | "not_analyzed"
-  | "no_evidence_found";
+  "value" | "unknown" | "not_applicable" | "not_analyzed" | "no_evidence_found";
 
 export type RumbleRequirementAlignment =
   | "satisfies"
@@ -24,10 +20,7 @@ export type RumbleVerificationStatus =
 export type RumbleConfidence = "high" | "medium" | "low" | "unknown";
 
 export type RumbleRoundVerdict =
-  | "entrant_a_advantage"
-  | "entrant_b_advantage"
-  | "trade_off"
-  | "inconclusive";
+  "entrant_a_advantage" | "entrant_b_advantage" | "trade_off" | "inconclusive";
 
 export interface RumbleSourceSnapshot {
   card_id: string;
@@ -139,7 +132,9 @@ export interface LoadedRumbleData<T> {
 
 export interface RumbleGateway {
   getDemo(): Promise<LoadedRumbleData<RumbleDemoBundle>>;
-  project(matchup: RumbleDemoMatchup): Promise<LoadedRumbleData<RumbleProjectionResponse>>;
+  project(
+    matchup: RumbleDemoMatchup,
+  ): Promise<LoadedRumbleData<RumbleProjectionResponse>>;
 }
 
 export interface ArenaEvidenceSelection {

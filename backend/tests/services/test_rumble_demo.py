@@ -4,14 +4,13 @@ import json
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
-
 from agent_project_intelligence.services.rumble_demo import (
     load_demo_bundle,
     parse_demo_bundle,
 )
-from ..demo_bundle_payloads import demo_bundle_payload
+from pydantic import ValidationError
 
+from ..demo_bundle_payloads import demo_bundle_payload
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 
@@ -32,13 +31,7 @@ def test_frontend_fallback_matches_the_validated_backend_bundle() -> None:
         (REPOSITORY_ROOT / "fixtures" / "rumble" / "demo_bundle.json").read_text()
     )
     frontend_fixture = json.loads(
-        (
-            REPOSITORY_ROOT
-            / "frontend"
-            / "src"
-            / "data"
-            / "rumbleDemoBundle.json"
-        ).read_text()
+        (REPOSITORY_ROOT / "frontend" / "src" / "data" / "rumbleDemoBundle.json").read_text()
     )
 
     assert frontend_fixture == backend_fixture
@@ -54,9 +47,9 @@ def test_rejects_a_matchup_request_that_is_not_a_rumble_projection() -> None:
 
 def test_rejects_an_unresolved_material_claim() -> None:
     payload = demo_bundle_payload()
-    payload["matchups"][0]["request"]["comparison_rows"][0]["entrant_a"][
-        "claim_ids"
-    ] = ["missing-claim"]
+    payload["matchups"][0]["request"]["comparison_rows"][0]["entrant_a"]["claim_ids"] = [
+        "missing-claim"
+    ]
 
     with pytest.raises(ValidationError, match="does not resolve"):
         parse_demo_bundle(payload)
@@ -64,9 +57,9 @@ def test_rejects_an_unresolved_material_claim() -> None:
 
 def test_rejects_an_unresolved_claim_on_an_inconclusive_cell() -> None:
     payload = demo_bundle_payload()
-    payload["matchups"][0]["request"]["comparison_rows"][2]["entrant_a"][
-        "claim_ids"
-    ] = ["missing-claim"]
+    payload["matchups"][0]["request"]["comparison_rows"][2]["entrant_a"]["claim_ids"] = [
+        "missing-claim"
+    ]
 
     with pytest.raises(ValidationError, match="does not resolve"):
         parse_demo_bundle(payload)
@@ -74,9 +67,9 @@ def test_rejects_an_unresolved_claim_on_an_inconclusive_cell() -> None:
 
 def test_rejects_a_material_claim_from_the_other_project() -> None:
     payload = demo_bundle_payload()
-    payload["matchups"][0]["request"]["comparison_rows"][0]["entrant_a"][
-        "claim_ids"
-    ] = ["claim-b-approval"]
+    payload["matchups"][0]["request"]["comparison_rows"][0]["entrant_a"]["claim_ids"] = [
+        "claim-b-approval"
+    ]
 
     with pytest.raises(ValidationError, match="must belong to project 'project-a'"):
         parse_demo_bundle(payload)
@@ -84,9 +77,7 @@ def test_rejects_a_material_claim_from_the_other_project() -> None:
 
 def test_rejects_evidence_from_a_different_revision() -> None:
     payload = demo_bundle_payload()
-    payload["matchups"][0]["claims"][0]["supporting_evidence"][0][
-        "revision"
-    ] = "different-revision"
+    payload["matchups"][0]["claims"][0]["supporting_evidence"][0]["revision"] = "different-revision"
 
     with pytest.raises(ValidationError, match="revision must match"):
         parse_demo_bundle(payload)
@@ -104,9 +95,7 @@ def test_rejects_a_material_claim_without_evidence() -> None:
 def test_rejects_runtime_verified_demo_values(location: str) -> None:
     payload = demo_bundle_payload()
     if location == "claim":
-        payload["matchups"][0]["claims"][0][
-            "verification_status"
-        ] = "runtime_verified"
+        payload["matchups"][0]["claims"][0]["verification_status"] = "runtime_verified"
     else:
         payload["matchups"][0]["request"]["comparison_rows"][0]["entrant_a"][
             "verification_status"

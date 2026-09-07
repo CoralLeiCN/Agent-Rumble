@@ -35,8 +35,12 @@ runtime settings use the `CODEX_` names documented below.
 
 ## Generation model configuration
 
-With no overrides, the Codex SDK uses its configured model and provider
-defaults. To select a named Codex provider:
+With no overrides, the adapter imports the selected model and provider from
+`CODEX_CONFIG_HOME/config.toml` (falling back to `CODEX_HOME`, then `~/.codex`). It imports only the selected
+provider's endpoint, wire API, credential reference, and retry settings.
+User tools, hooks, profiles, and unrelated settings are not copied. With no
+operator model configured, Codex chooses its default model and records the
+unresolved model name as `unknown`. To select a named provider:
 
 ```dotenv
 CODEX_MODEL=qwen-coder
@@ -57,6 +61,24 @@ variable containing it. Custom endpoints use
 `CODEX_TURN_TIMEOUT_SECONDS` controls the complete Codex turn timeout.
 Credential-bearing base URLs are rejected, and secret values are never recorded
 in card analysis configuration.
+
+For OpenAI authentication, use a file-based Codex login (`auth.json` in
+`CODEX_CONFIG_HOME`) or `OPENAI_API_KEY`. Custom providers may reference one
+credential environment variable. Command-based authentication and provider
+headers are unsupported by the isolated adapter. The selected credential is
+available only to the runtime; unrelated host environment variables are removed.
+
+Generation reads committed Git text at the workspace's full HEAD commit. A
+specified `source_revision` must equal that full hash. Working-tree changes,
+symlinks, submodules, binary files, and files larger than 2 MiB are not analyzed.
+Snapshots are limited to 20,000 paths and 32 MiB of text. The source tools report
+omitted paths so the analyzer can record coverage limitations.
+
+Codex returns YAML through its final response; only the application writes and
+validates it. Runtime tool permissions deny direct host reads/writes and shell
+execution. Model-generated dynamic-analysis requests or runtime-verification
+labels fail validation. Temporary snapshots, output, and runtime state are
+removed on success, failure, timeout, and cancellation.
 
 The catalog API is available under `/api/v1`:
 

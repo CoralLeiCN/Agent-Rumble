@@ -131,12 +131,15 @@ class MatchReason(APIModel):
     evidence_ids: list[CanonicalIdentifier]
     capability_support_status: str | None = None
     confidence: str | None = None
-    field_state: Literal[
-        "unknown",
-        "not_applicable",
-        "not_analyzed",
-        "no_evidence_found",
-    ] | None = None
+    field_state: (
+        Literal[
+            "unknown",
+            "not_applicable",
+            "not_analyzed",
+            "no_evidence_found",
+        ]
+        | None
+    ) = None
 
 
 class MatchClaim(APIModel):
@@ -225,10 +228,7 @@ class ComparisonRequest(APIModel):
     @field_validator("cards")
     @classmethod
     def cards_must_be_unique(cls, cards: list[CardReference]) -> list[CardReference]:
-        keys = {
-            (identifier_comparison_key(card.project_id), card.card_version)
-            for card in cards
-        }
+        keys = {(identifier_comparison_key(card.project_id), card.card_version) for card in cards}
         if len(keys) != len(cards):
             raise ValueError("card references must be unique")
         return cards

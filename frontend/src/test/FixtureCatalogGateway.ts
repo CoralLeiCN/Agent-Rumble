@@ -1,4 +1,8 @@
-import { preparedQuery, projectCards, searchProjectionContext } from "../data/fixtures";
+import {
+  preparedQuery,
+  projectCards,
+  searchProjectionContext,
+} from "../data/fixtures";
 import {
   projectCardsToClaimEvidence,
   projectCardsToComparison,
@@ -6,6 +10,8 @@ import {
 } from "../data/projectCardAdapter";
 import type {
   CatalogGateway,
+  CardReference,
+  ClaimReference,
   ClaimEvidenceRecord,
   ComparisonResponse,
   SearchResponse,
@@ -23,11 +29,19 @@ export class FixtureCatalogGateway implements CatalogGateway {
     );
   }
 
-  async compareProjects(projectIds: string[]): Promise<ComparisonResponse> {
-    return projectCardsToComparison(projectCards, projectIds, "fixture");
+  async compareProjects(
+    references: CardReference[],
+  ): Promise<ComparisonResponse> {
+    return projectCardsToComparison(
+      projectCards,
+      references.map(({ projectId }) => projectId),
+      "fixture",
+    );
   }
 
-  async getClaimEvidence(claimId: string): Promise<ClaimEvidenceRecord> {
-    return projectCardsToClaimEvidence(projectCards, claimId);
+  async getClaimEvidence(
+    reference: ClaimReference,
+  ): Promise<ClaimEvidenceRecord> {
+    return projectCardsToClaimEvidence(projectCards, reference);
   }
 }

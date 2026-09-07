@@ -6,7 +6,6 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-
 NonEmptyString = Annotated[str, Field(min_length=1)]
 
 
@@ -185,4 +184,3 @@ class RumbleProjectionResponse(BaseModel):
     rounds: list[RumbleRound]
     overall_result: Literal["no_universal_winner"] = "no_universal_winner"
     ring_call: NonEmptyString
-

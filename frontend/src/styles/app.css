@@ -220,7 +220,9 @@
 
 .search-panel:focus-within {
   border-color: var(--color-focus);
-  box-shadow: 0 0 0 0.1875rem rgb(49 89 220 / 12%), var(--shadow-raised);
+  box-shadow:
+    0 0 0 0.1875rem rgb(49 89 220 / 12%),
+    var(--shadow-raised);
 }
 
 .search-panel > label {
@@ -445,13 +447,31 @@
   white-space: nowrap;
 }
 
-.requirement--must { border-color: var(--color-frame); }
-.requirement--must strong { background: var(--color-frame); color: var(--color-text-inverse); }
-.requirement--prefer { border-color: var(--color-documented); }
-.requirement--prefer strong { background: var(--color-documented-soft); color: var(--color-documented); }
-.requirement--avoid { border-color: var(--color-conflict); }
-.requirement--avoid strong { background: var(--color-conflict-soft); color: var(--color-conflict); }
-.requirement--unread { border-style: dashed; color: var(--color-text-soft); }
+.requirement--must {
+  border-color: var(--color-frame);
+}
+.requirement--must strong {
+  background: var(--color-frame);
+  color: var(--color-text-inverse);
+}
+.requirement--prefer {
+  border-color: var(--color-documented);
+}
+.requirement--prefer strong {
+  background: var(--color-documented-soft);
+  color: var(--color-documented);
+}
+.requirement--avoid {
+  border-color: var(--color-conflict);
+}
+.requirement--avoid strong {
+  background: var(--color-conflict-soft);
+  color: var(--color-conflict);
+}
+.requirement--unread {
+  border-style: dashed;
+  color: var(--color-text-soft);
+}
 
 .results__layout {
   display: grid;
@@ -553,7 +573,9 @@
 
 .project-row--selected {
   border-color: var(--color-frame);
-  box-shadow: inset 4px 0 0 var(--color-action), var(--shadow-raised);
+  box-shadow:
+    inset 4px 0 0 var(--color-action),
+    var(--shadow-raised);
 }
 
 .project-row__index {
@@ -747,10 +769,18 @@
   text-transform: uppercase;
 }
 
-.status-badge--positive { color: var(--color-verified); }
-.status-badge--informational { color: var(--color-documented); }
-.status-badge--warning { color: var(--color-conflict); }
-.status-badge--muted { color: var(--color-text-soft); }
+.status-badge--positive {
+  color: var(--color-verified);
+}
+.status-badge--informational {
+  color: var(--color-documented);
+}
+.status-badge--warning {
+  color: var(--color-conflict);
+}
+.status-badge--muted {
+  color: var(--color-text-soft);
+}
 
 .compare-tray {
   position: fixed;
@@ -971,8 +1001,12 @@
   text-transform: uppercase;
 }
 
-.empty-value--warning { color: var(--color-conflict); }
-.empty-value--muted { color: var(--color-text-soft); }
+.empty-value--warning {
+  color: var(--color-conflict);
+}
+.empty-value--muted {
+  color: var(--color-text-soft);
+}
 
 /* Contract-complete comparison */
 .contract-coverage {

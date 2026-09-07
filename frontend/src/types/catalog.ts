@@ -65,7 +65,7 @@ export interface ProjectSummary {
     claimId: string;
     verificationStatus: VerificationStatus;
     confidence: Confidence;
-  };
+  } | null;
 }
 
 export interface AssessmentContextView {
@@ -79,6 +79,9 @@ export interface AssessmentContextView {
 }
 
 export interface SearchResponse {
+  page: number;
+  pageSize: number;
+  total: number;
   query: string;
   assessmentContexts: AssessmentContextView[];
   requirements: Requirement[];
@@ -189,9 +192,18 @@ export interface ComparisonResponse {
 
 export type CatalogDataSource = "http";
 
+export interface CardReference {
+  projectId: string;
+  cardVersion: number;
+}
+
+export interface ClaimReference extends CardReference {
+  claimId: string;
+}
+
 export interface CatalogGateway {
   readonly dataSource: CatalogDataSource;
-  searchProjects(query: string): Promise<SearchResponse>;
-  compareProjects(projectIds: string[]): Promise<ComparisonResponse>;
-  getClaimEvidence(claimId: string): Promise<ClaimEvidenceRecord>;
+  searchProjects(query: string, page?: number): Promise<SearchResponse>;
+  compareProjects(cards: CardReference[]): Promise<ComparisonResponse>;
+  getClaimEvidence(reference: ClaimReference): Promise<ClaimEvidenceRecord>;
 }

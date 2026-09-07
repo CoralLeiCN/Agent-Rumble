@@ -16,7 +16,10 @@ import type {
 } from "./types";
 import "./arcade.css";
 
-function cellValue(round: RumbleRound, corner: "entrant_a" | "entrant_b"): string {
+function cellValue(
+  round: RumbleRound,
+  corner: "entrant_a" | "entrant_b",
+): string {
   const cell = round[corner];
   if (cell.state !== "value") return cell.state.replaceAll("_", " ");
   return cell.value?.trim() || "No display value";
@@ -28,10 +31,14 @@ function playerResultLabel(result: ArcadeGameResult, solo: boolean): string {
       ? "DOUBLE KO — the exhibition is a draw"
       : "TIME UP — the exhibition is a draw";
   }
-  const winner = result.fighters.find((fighter) => fighter.controller === result.winner);
-  const fighterName = winner?.avatarName ?? (solo ? "CPU fighter" : "Player 2 fighter");
+  const winner = result.fighters.find(
+    (fighter) => fighter.controller === result.winner,
+  );
+  const fighterName =
+    winner?.avatarName ?? (solo ? "CPU fighter" : "Player 2 fighter");
   if (result.reason === "ko") return `${fighterName} wins the exhibition by KO`;
-  if (result.reason === "time") return `${fighterName} wins the exhibition by time decision`;
+  if (result.reason === "time")
+    return `${fighterName} wins the exhibition by time decision`;
   return `${fighterName} wins the exhibition after a double-KO round`;
 }
 
@@ -74,7 +81,8 @@ export function ArcadeGame({
   });
   const entrantA = entrants[0];
   const entrantB = entrants[1];
-  const hasValidMatch = entrants.length === 2 && Boolean(entrantA && entrantB && rounds.length > 0);
+  const hasValidMatch =
+    entrants.length === 2 && Boolean(entrantA && entrantB && rounds.length > 0);
 
   useEffect(() => {
     if (!hasValidMatch || !entrantA || !entrantB || !hostRef.current) return;
@@ -85,7 +93,8 @@ export function ArcadeGame({
     setResult(null);
     setError(null);
 
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const reduceMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     void import("./runtime")
       .then(({ createArcadeRuntime }) => {
         if (disposed) return;
@@ -127,7 +136,11 @@ export function ArcadeGame({
       })
       .catch((caught: unknown) => {
         if (disposed) return;
-        setError(caught instanceof Error ? caught.message : "The arcade engine could not start.");
+        setError(
+          caught instanceof Error
+            ? caught.message
+            : "The arcade engine could not start.",
+        );
       });
 
     const pauseForVisibility = () => {
@@ -168,11 +181,20 @@ export function ArcadeGame({
 
   if (!hasValidMatch || !entrantA || !entrantB) {
     return (
-      <section className="arcade-game arcade-game--state" aria-labelledby="arcade-error-title">
+      <section
+        className="arcade-game arcade-game--state"
+        aria-labelledby="arcade-error-title"
+      >
         <span aria-hidden="true">NO CONTEST</span>
-        <h2 id="arcade-error-title">The arcade cabinet needs two entrants and one prepared round.</h2>
+        <h2 id="arcade-error-title">
+          The arcade cabinet needs two entrants and one prepared round.
+        </h2>
         <p>Return to the prepared matchup, then enter Arcade Mode again.</p>
-        {onExit && <button type="button" onClick={onExit}>Return to arena</button>}
+        {onExit && (
+          <button type="button" onClick={onExit}>
+            Return to arena
+          </button>
+        )}
       </section>
     );
   }
@@ -183,17 +205,31 @@ export function ArcadeGame({
   const rightHealth = healthPercent(liveStatus.health[1]);
 
   return (
-    <section className="arcade-game arcade-game--versus" aria-label="Agent Rumble versus-fighter exhibition">
+    <section
+      className="arcade-game arcade-game--versus"
+      aria-label="Agent Rumble versus-fighter exhibition"
+    >
       <header className="arcade-game__toolbar">
         <div>
-          <span className="arcade-game__eyebrow">Rumble Fighters · {mode === "solo" ? "Solo vs CPU" : "Local 2-player"}</span>
-          <h2>{entrantA.project_name} <em>vs</em> {entrantB.project_name}</h2>
+          <span className="arcade-game__eyebrow">
+            Rumble Fighters ·{" "}
+            {mode === "solo" ? "Solo vs CPU" : "Local 2-player"}
+          </span>
+          <h2>
+            {entrantA.project_name} <em>vs</em> {entrantB.project_name}
+          </h2>
         </div>
         <div className="arcade-game__actions">
-          <button type="button" disabled={!ready || Boolean(result)} onClick={togglePause}>
+          <button
+            type="button"
+            disabled={!ready || Boolean(result)}
+            onClick={togglePause}
+          >
             {paused ? "Resume" : "Pause"} <kbd>P</kbd>/<kbd>Esc</kbd>
           </button>
-          <button type="button" disabled={!ready} onClick={restart}>Restart <kbd>R</kbd></button>
+          <button type="button" disabled={!ready} onClick={restart}>
+            Restart <kbd>R</kbd>
+          </button>
           <button
             type="button"
             disabled={!ready}
@@ -202,18 +238,31 @@ export function ArcadeGame({
           >
             Enter fullscreen ⛶
           </button>
-          {onExit && <button type="button" onClick={onExit}>Exit ×</button>}
+          {onExit && (
+            <button type="button" onClick={onExit}>
+              Exit ×
+            </button>
+          )}
         </div>
       </header>
 
       <div className="arcade-game__cabinet">
-        <div className="arcade-fight-hud" aria-label="Live fighter health and round score">
+        <div
+          className="arcade-fight-hud"
+          aria-label="Live fighter health and round score"
+        >
           <div className="arcade-fight-hud__fighter arcade-fight-hud__fighter--left">
             <div className="arcade-fight-hud__name-row">
               <strong>{entrantA.project_name}</strong>
-              <span aria-label={`${entrantA.project_name}: ${liveStatus.roundsWon[0]} rounds won`}>
+              <span
+                aria-label={`${entrantA.project_name}: ${liveStatus.roundsWon[0]} rounds won`}
+              >
                 {Array.from({ length: ARCADE_ROUNDS_TO_WIN }, (_, index) => (
-                  <i key={index} className={index < liveStatus.roundsWon[0] ? "is-won" : ""} aria-hidden="true" />
+                  <i
+                    key={index}
+                    className={index < liveStatus.roundsWon[0] ? "is-won" : ""}
+                    aria-hidden="true"
+                  />
                 ))}
               </span>
             </div>
@@ -226,7 +275,11 @@ export function ArcadeGame({
               aria-valuenow={leftHealth}
               aria-valuetext={`${leftHealth} HP remaining`}
             >
-              <span style={{ "--fighter-health": `${leftHealth}%` } as CSSProperties} />
+              <span
+                style={
+                  { "--fighter-health": `${leftHealth}%` } as CSSProperties
+                }
+              />
             </div>
             <small>{leftHealth} HP</small>
           </div>
@@ -239,9 +292,15 @@ export function ArcadeGame({
 
           <div className="arcade-fight-hud__fighter arcade-fight-hud__fighter--right">
             <div className="arcade-fight-hud__name-row">
-              <span aria-label={`${entrantB.project_name}: ${liveStatus.roundsWon[1]} rounds won`}>
+              <span
+                aria-label={`${entrantB.project_name}: ${liveStatus.roundsWon[1]} rounds won`}
+              >
                 {Array.from({ length: ARCADE_ROUNDS_TO_WIN }, (_, index) => (
-                  <i key={index} className={index < liveStatus.roundsWon[1] ? "is-won" : ""} aria-hidden="true" />
+                  <i
+                    key={index}
+                    className={index < liveStatus.roundsWon[1] ? "is-won" : ""}
+                    aria-hidden="true"
+                  />
                 ))}
               </span>
               <strong>{entrantB.project_name}</strong>
@@ -255,7 +314,11 @@ export function ArcadeGame({
               aria-valuenow={rightHealth}
               aria-valuetext={`${rightHealth} HP remaining`}
             >
-              <span style={{ "--fighter-health": `${rightHealth}%` } as CSSProperties} />
+              <span
+                style={
+                  { "--fighter-health": `${rightHealth}%` } as CSSProperties
+                }
+              />
             </div>
             <small>{rightHealth} HP</small>
           </div>
@@ -268,8 +331,19 @@ export function ArcadeGame({
           aria-describedby="arcade-controls arcade-distinction"
           onClick={() => runtimeRef.current?.focus()}
         />
-        {!ready && !error && <div className="arcade-game__loading" role="status">INSERT RUMBLE TOKEN…</div>}
-        {error && <div className="arcade-game__loading arcade-game__loading--error" role="alert">Cabinet fault: {error}</div>}
+        {!ready && !error && (
+          <div className="arcade-game__loading" role="status">
+            INSERT RUMBLE TOKEN…
+          </div>
+        )}
+        {error && (
+          <div
+            className="arcade-game__loading arcade-game__loading--error"
+            role="alert"
+          >
+            Cabinet fault: {error}
+          </div>
+        )}
 
         <div className="arcade-touch" aria-label="Player 1 touch controls">
           <div className="arcade-touch__movement">
@@ -280,7 +354,9 @@ export function ArcadeGame({
               onPointerUp={() => setVirtualAction("left", false)}
               onPointerCancel={() => setVirtualAction("left", false)}
               onPointerLeave={() => setVirtualAction("left", false)}
-            >←</button>
+            >
+              ←
+            </button>
             <button
               type="button"
               aria-label="Move Player 1 right"
@@ -288,7 +364,9 @@ export function ArcadeGame({
               onPointerUp={() => setVirtualAction("right", false)}
               onPointerCancel={() => setVirtualAction("right", false)}
               onPointerLeave={() => setVirtualAction("right", false)}
-            >→</button>
+            >
+              →
+            </button>
           </div>
           <div className="arcade-touch__moves">
             <button
@@ -297,14 +375,18 @@ export function ArcadeGame({
               onPointerUp={() => setVirtualAction("jump", false)}
               onPointerCancel={() => setVirtualAction("jump", false)}
               onPointerLeave={() => setVirtualAction("jump", false)}
-            >Jump</button>
+            >
+              Jump
+            </button>
             <button
               type="button"
               onPointerDown={() => setVirtualAction("attack", true)}
               onPointerUp={() => setVirtualAction("attack", false)}
               onPointerCancel={() => setVirtualAction("attack", false)}
               onPointerLeave={() => setVirtualAction("attack", false)}
-            >Jab</button>
+            >
+              Jab
+            </button>
             <button
               type="button"
               className="arcade-touch__special"
@@ -312,7 +394,9 @@ export function ArcadeGame({
               onPointerUp={() => setVirtualAction("special", false)}
               onPointerCancel={() => setVirtualAction("special", false)}
               onPointerLeave={() => setVirtualAction("special", false)}
-            >Trait</button>
+            >
+              Trait
+            </button>
             <button
               type="button"
               className="arcade-touch__guard"
@@ -320,7 +404,9 @@ export function ArcadeGame({
               onPointerUp={() => setVirtualAction("block", false)}
               onPointerCancel={() => setVirtualAction("block", false)}
               onPointerLeave={() => setVirtualAction("block", false)}
-            >Guard</button>
+            >
+              Guard
+            </button>
           </div>
         </div>
       </div>
@@ -330,24 +416,48 @@ export function ArcadeGame({
         <p>{liveStatus.message}</p>
       </div>
 
-      <section className="arcade-signatures" aria-labelledby="arcade-signatures-title">
+      <section
+        className="arcade-signatures"
+        aria-labelledby="arcade-signatures-title"
+      >
         <div className="arcade-signatures__heading">
           <span>Fighter select</span>
           <h3 id="arcade-signatures-title">Contextual trait specials</h3>
-          <p>Different delivery, equal damage budget. Comparison findings theme the moves; they do not make either fighter stronger.</p>
+          <p>
+            Different delivery, equal damage budget. Comparison findings theme
+            the moves; they do not make either fighter stronger.
+          </p>
         </div>
         {signatureMoves.map((move, index) => (
-          <article className={`arcade-signature arcade-signature--${index === 0 ? "left" : "right"}`} key={`${move.projectName}-${index}`}>
-            <span>{move.contextualEdge ? "Contextual edge trait" : "Neutral exhibition trait"}</span>
+          <article
+            className={`arcade-signature arcade-signature--${index === 0 ? "left" : "right"}`}
+            key={`${move.projectName}-${index}`}
+          >
+            <span>
+              {move.contextualEdge
+                ? "Contextual edge trait"
+                : "Neutral exhibition trait"}
+            </span>
             <h4>{move.projectName}</h4>
             <strong>{move.moveName}</strong>
             <p>{move.description}</p>
             <dl>
-              <div><dt>Trait theme</dt><dd>{move.traitValue}</dd></div>
-              <div><dt>Attack form</dt><dd>{move.style}</dd></div>
+              <div>
+                <dt>Trait theme</dt>
+                <dd>{move.traitValue}</dd>
+              </div>
+              <div>
+                <dt>Attack form</dt>
+                <dd>{move.style}</dd>
+              </div>
               <div>
                 <dt>Comparison row</dt>
-                <dd>{move.contextualEdge ? (rounds[move.sourceRoundIndex]?.title ?? move.sourceRoundId) : "No contextual edge used"}</dd>
+                <dd>
+                  {move.contextualEdge
+                    ? (rounds[move.sourceRoundIndex]?.title ??
+                      move.sourceRoundId)
+                    : "No contextual edge used"}
+                </dd>
               </div>
             </dl>
           </article>
@@ -358,18 +468,40 @@ export function ArcadeGame({
         <div className="arcade-controls" id="arcade-controls">
           <div>
             <strong>Player 1</strong>
-            <span><kbd>A</kbd><kbd>D</kbd> move · <kbd>W</kbd> jump · <kbd>F</kbd> jab · <kbd>G</kbd> trait · <kbd>S</kbd> guard</span>
+            <span>
+              <kbd>A</kbd>
+              <kbd>D</kbd> move · <kbd>W</kbd> jump · <kbd>F</kbd> jab ·{" "}
+              <kbd>G</kbd> trait · <kbd>S</kbd> guard
+            </span>
           </div>
           <div>
-            <strong>{mode === "solo" ? "Player 2 · CPU controlled" : "Player 2"}</strong>
-            <span>{mode === "solo" ? "CPU uses the same balanced jab, guard, and trait-move rules" : <><kbd>←</kbd><kbd>→</kbd> move · <kbd>↑</kbd> jump · <kbd>M</kbd> jab · <kbd>N</kbd> trait · <kbd>↓</kbd> guard</>}</span>
+            <strong>
+              {mode === "solo" ? "Player 2 · CPU controlled" : "Player 2"}
+            </strong>
+            <span>
+              {mode === "solo" ? (
+                "CPU uses the same balanced jab, guard, and trait-move rules"
+              ) : (
+                <>
+                  <kbd>←</kbd>
+                  <kbd>→</kbd> move · <kbd>↑</kbd> jump · <kbd>M</kbd> jab ·{" "}
+                  <kbd>N</kbd> trait · <kbd>↓</kbd> guard
+                </>
+              )}
+            </span>
           </div>
         </div>
 
         {activeRound && (
-          <aside className="arcade-evidence-round" aria-labelledby="arcade-phase-title">
+          <aside
+            className="arcade-evidence-round"
+            aria-labelledby="arcade-phase-title"
+          >
             <div>
-              <span>Read-only evidence round {activeRoundIndex + 1} / {rounds.length}</span>
+              <span>
+                Read-only evidence round {activeRoundIndex + 1} /{" "}
+                {rounds.length}
+              </span>
               <h3 id="arcade-phase-title">{activeRound.title}</h3>
               <p>{activeRound.requirement}</p>
             </div>
@@ -383,13 +515,19 @@ export function ArcadeGame({
                 <dd>{cellValue(activeRound, "entrant_b")}</dd>
               </div>
             </dl>
-            <p className="arcade-evidence-round__callout">Prepared evidence call: {activeRound.callout}</p>
+            <p className="arcade-evidence-round__callout">
+              Prepared evidence call: {activeRound.callout}
+            </p>
           </aside>
         )}
       </div>
 
       <p className="arcade-game__distinction" id="arcade-distinction">
-        <strong>Game state is not project judgment:</strong> HP, round score, KO, time, and the player result come only from controller/CPU actions. Prepared comparison traits supply names and distinct move forms, with an equal damage budget; the evidence projection never changes fighter power.
+        <strong>Game state is not project judgment:</strong> HP, round score,
+        KO, time, and the player result come only from controller/CPU actions.
+        Prepared comparison traits supply names and distinct move forms, with an
+        equal damage budget; the evidence projection never changes fighter
+        power.
       </p>
 
       {result && (
@@ -397,10 +535,13 @@ export function ArcadeGame({
           <span>Player/exhibition outcome</span>
           <strong>{playerResultLabel(result, mode === "solo")}</strong>
           <p className="arcade-result__score">
-            {result.fighters[0].avatarName} {result.fighters[0].roundsWon}–{result.fighters[1].roundsWon} {result.fighters[1].avatarName}
+            {result.fighters[0].avatarName} {result.fighters[0].roundsWon}–
+            {result.fighters[1].roundsWon} {result.fighters[1].avatarName}
           </p>
           <p>{ARCADE_RESULT_DISCLAIMER}</p>
-          <button type="button" onClick={restart}>Play again</button>
+          <button type="button" onClick={restart}>
+            Play again
+          </button>
         </div>
       )}
     </section>

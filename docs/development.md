@@ -50,6 +50,15 @@ Dependency resolution enforces a seven-day release cooldown: registry packages
 uploaded within the preceding week are not eligible for a new lockfile. Locked
 installs continue to use the reviewed versions recorded in `uv.lock`.
 
+Install Node 24.20.0 from `.node-version`; its bundled npm is 11.19.0. The
+frontend package records these versions and installs from `package-lock.json`.
+Install scripts require explicit package-version approval; the pinned esbuild
+installer is allowed and the optional fsevents installer is disabled:
+
+```shell
+npm --prefix frontend ci
+```
+
 ### Make Commands
 
 The root `Makefile` provides shortcuts for the common development workflow:
@@ -58,8 +67,8 @@ The root `Makefile` provides shortcuts for the common development workflow:
 make help
 make setup
 make dev
-make test
-make build
+make check
+make audit
 ```
 
 `make dev` starts the FastAPI and Vite development servers together. Run
@@ -67,6 +76,17 @@ make build
 or restarts are more convenient. `make build` type-checks the frontend and
 creates its production bundle in `frontend/dist/`; the FastAPI backend runs
 directly from its Python package and does not require a separate build artifact.
+
+`make check` runs Ruff, ESLint, formatting checks, strict mypy, TypeScript,
+canonical-card validation, pytest, Vitest, and the production build. `make format`
+applies the formatters. `make audit` queries the Python and npm vulnerability
+databases and requires network access. CI runs both commands after locked
+installation, with immutable GitHub Action revisions.
+
+The backend runtime-boundary test starts a loopback-only mock model provider and
+runs the pinned Codex executable. It needs permission to bind a local port and
+start subprocesses, but uses no external model, real API key, or repository-code
+execution. A sandboxed development agent may need permission to run that test.
 
 ## Project Layout
 
@@ -76,7 +96,7 @@ Stack Template: the frontend and backend are separate top-level projects.
 ```text
 backend/                    # FastAPI Python project, source, and tests
 catalog/cards/              # Versioned canonical project-card.yaml artifacts
-frontend/                   # React project boundary
+frontend/                   # React, TypeScript, Vite, and Vitest
 docs/                       # Shared product and engineering documentation
 test-data/repos/            # Git-ignored local corpus for card-creation tests
 pyproject.toml              # Root uv workspace and dependency policy
@@ -84,8 +104,8 @@ uv.lock                     # Locked Python workspace dependencies
 ```
 
 This adopts the project split only. Database, authentication, container,
-frontend build-tool, UI-library, and deployment choices from the reference
-template are not selected by this repository structure.
+UI-library and deployment choices from the reference template are not selected
+by this repository structure. The frontend currently builds with Vite.
 
 ## Skill and Plugin Layout
 
@@ -193,7 +213,9 @@ committed snapshot when the API is unavailable.
 
 ## Frontend Development
 
-The React frontend belongs under `frontend/`. Its build tooling, routing,
-rendering mode, component libraries, and hosting have not yet been selected, so
-the directory currently records the project boundary without choosing a
-scaffold.
+The implemented React and TypeScript frontend lives under `frontend/` and uses
+Vite for development and production builds. Vitest and Testing Library cover
+behavior, ESLint checks TypeScript and React hooks, and Prettier enforces
+formatting. The catalog UI loads paginated summaries, then fetches pinned card
+versions for comparison and evidence. See the [frontend guide](../frontend/README.md)
+for commands and the [backend guide](../backend/README.md) for generation settings.

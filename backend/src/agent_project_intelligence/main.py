@@ -21,11 +21,14 @@ def create_app(
 ) -> FastAPI:
     """Create the backend over a loaded snapshot, with injection for tests."""
     resolved_settings = settings or get_settings()
-    snapshot = catalog_snapshot or FilesystemCatalogRepository(
-        root=resolved_settings.catalog_root,
-        validator=SkillCardValidator(),
-        max_file_size_bytes=resolved_settings.catalog_max_file_size_bytes,
-    ).load()
+    snapshot = (
+        catalog_snapshot
+        or FilesystemCatalogRepository(
+            root=resolved_settings.catalog_root,
+            validator=SkillCardValidator(),
+            max_file_size_bytes=resolved_settings.catalog_max_file_size_bytes,
+        ).load()
+    )
     application = FastAPI(
         title="Agent Project Intelligence",
         version="0.1.0",

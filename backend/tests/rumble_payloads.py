@@ -109,4 +109,3 @@ def rumble_payload() -> dict[str, Any]:
             ],
         }
     )
-

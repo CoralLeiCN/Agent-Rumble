@@ -20,7 +20,6 @@ import re
 
 from agent_project_intelligence.api.errors import CatalogAPIError
 
-
 OPAQUE_IDENTIFIER_PREFIX = "~"
 _BASE64URL_PAYLOAD = re.compile(r"^[A-Za-z0-9_-]+$")
 

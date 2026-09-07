@@ -22,7 +22,9 @@ export function FighterPanel({
         `fighter-panel--${corner}`,
         highlighted ? "fighter-panel--edge" : "",
         subdued ? "fighter-panel--subdued" : "",
-      ].filter(Boolean).join(" ")}
+      ]
+        .filter(Boolean)
+        .join(" ")}
       aria-label={`${entrant.project_name}, ${corner} corner`}
     >
       <div className="fighter-panel__corner">
@@ -38,15 +40,23 @@ export function FighterPanel({
       <dl className="fighter-panel__snapshot">
         <div>
           <dt>Card</dt>
-          <dd>{snapshot.card_id} · v{snapshot.card_version}</dd>
+          <dd>
+            {snapshot.card_id} · v{snapshot.card_version}
+          </dd>
         </div>
         <div>
           <dt>Revision</dt>
-          <dd><code>{snapshot.revision}</code></dd>
+          <dd>
+            <code>{snapshot.revision}</code>
+          </dd>
         </div>
         <div>
           <dt>Analyzed</dt>
-          <dd><time dateTime={snapshot.analyzed_at}>{shortDate(snapshot.analyzed_at)}</time></dd>
+          <dd>
+            <time dateTime={snapshot.analyzed_at}>
+              {shortDate(snapshot.analyzed_at)}
+            </time>
+          </dd>
         </div>
       </dl>
     </article>

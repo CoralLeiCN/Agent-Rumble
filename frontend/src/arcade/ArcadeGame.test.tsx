@@ -1,4 +1,10 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ArcadeSceneOptions } from "./ArcadeScene";
 import type { ArcadeRuntime } from "./runtime";
@@ -119,39 +125,55 @@ describe("ArcadeGame lifecycle", () => {
     runtimeMocks.setPaused.mockReset();
     runtimeMocks.setVirtualAction.mockReset();
     runtimeMocks.toggleFullscreen.mockReset();
-    runtimeMocks.create.mockImplementation((_host: HTMLElement, options: ArcadeSceneOptions) => {
-      capturedOptions = options;
-      const runtime = fakeRuntime();
-      options.callbacks.onPhaseChange(0);
-      options.callbacks.onStatusChange({
-        message: "Fight!",
-        remainingSeconds: 45,
-        phase: 0,
-        paused: false,
-        health: [82, 37],
-        roundsWon: [1, 0],
-        roundNumber: 2,
-      });
-      options.callbacks.onReady();
-      return runtime;
-    });
+    runtimeMocks.create.mockImplementation(
+      (_host: HTMLElement, options: ArcadeSceneOptions) => {
+        capturedOptions = options;
+        const runtime = fakeRuntime();
+        options.callbacks.onPhaseChange(0);
+        options.callbacks.onStatusChange({
+          message: "Fight!",
+          remainingSeconds: 45,
+          phase: 0,
+          paused: false,
+          health: [82, 37],
+          roundsWon: [1, 0],
+          roundNumber: 2,
+        });
+        options.callbacks.onReady();
+        return runtime;
+      },
+    );
   });
 
   it("lazy-starts Phaser, exposes accessible fighter HP and trait specials, and destroys it", async () => {
     const onPhaseChange = vi.fn();
     const { unmount } = render(
-      <ArcadeGame entrants={entrants} rounds={rounds} onPhaseChange={onPhaseChange} />,
+      <ArcadeGame
+        entrants={entrants}
+        rounds={rounds}
+        onPhaseChange={onPhaseChange}
+      />,
     );
 
     await waitFor(() => expect(runtimeMocks.create).toHaveBeenCalledOnce());
-    expect(screen.getByRole("heading", { name: "Approval gate" })).toBeInTheDocument();
-    expect(screen.getByRole("progressbar", { name: "Project A HP" })).toHaveAttribute("aria-valuenow", "82");
-    expect(screen.getByRole("progressbar", { name: "Project B HP" })).toHaveAttribute("aria-valuenow", "37");
-    expect(screen.getByLabelText("Project A: 1 rounds won")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Approval gate" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("progressbar", { name: "Project A HP" }),
+    ).toHaveAttribute("aria-valuenow", "82");
+    expect(
+      screen.getByRole("progressbar", { name: "Project B HP" }),
+    ).toHaveAttribute("aria-valuenow", "37");
+    expect(
+      screen.getByLabelText("Project A: 1 rounds won"),
+    ).toBeInTheDocument();
     expect(screen.getAllByText("Contextual edge trait")).toHaveLength(2);
     expect(screen.getByText(/HP, round score, KO, time/i)).toBeInTheDocument();
     expect(onPhaseChange).toHaveBeenCalledWith(0);
-    fireEvent.click(screen.getByRole("button", { name: "Enter or exit fullscreen" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Enter or exit fullscreen" }),
+    );
     expect(runtimeMocks.toggleFullscreen).toHaveBeenCalledOnce();
 
     unmount();
@@ -177,7 +199,8 @@ describe("ArcadeGame lifecycle", () => {
   it("clears a finished result when the scene restarts from the R key", async () => {
     render(<ArcadeGame entrants={entrants} rounds={rounds} />);
     await waitFor(() => expect(runtimeMocks.create).toHaveBeenCalledOnce());
-    if (!capturedOptions) throw new Error("The arcade runtime options were not captured.");
+    if (!capturedOptions)
+      throw new Error("The arcade runtime options were not captured.");
 
     act(() => {
       capturedOptions?.callbacks.onGameOver({
@@ -200,15 +223,20 @@ describe("ArcadeGame lifecycle", () => {
             signatureMove: "Restart Comeback Rush",
           },
         ],
-        disclaimer: "Player/exhibition outcome only — not a project assessment or Rumble verdict.",
+        disclaimer:
+          "Player/exhibition outcome only — not a project assessment or Rumble verdict.",
       });
     });
-    expect(screen.getByText("Project A wins the exhibition by KO")).toBeInTheDocument();
+    expect(
+      screen.getByText("Project A wins the exhibition by KO"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Project A 2–0 Project B")).toBeInTheDocument();
 
     act(() => capturedOptions?.callbacks.onReady());
 
-    expect(screen.queryByText("Project A wins the exhibition by KO")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Project A wins the exhibition by KO"),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Pause/i })).toBeEnabled();
 
     act(() => {
@@ -232,10 +260,13 @@ describe("ArcadeGame lifecycle", () => {
             signatureMove: "Restart Comeback Rush",
           },
         ],
-        disclaimer: "Player/exhibition outcome only — not a project assessment or Rumble verdict.",
+        disclaimer:
+          "Player/exhibition outcome only — not a project assessment or Rumble verdict.",
       });
     });
-    expect(screen.getByText("Project B wins the exhibition by time decision")).toBeInTheDocument();
+    expect(
+      screen.getByText("Project B wins the exhibition by time decision"),
+    ).toBeInTheDocument();
   });
 
   it("maps touch buttons to jab, trait special, and held guard actions", async () => {
