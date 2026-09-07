@@ -22,20 +22,81 @@ try:
     from jsonschema import Draft202012Validator
 except ImportError as exc:  # pragma: no cover - environment failure
     raise SystemExit(
-        "Validation requires PyYAML and jsonschema; run this file with "
-        "`uv run --script`."
+        "Validation requires PyYAML and jsonschema; run this file with `uv run --script`."
     ) from exc
 
 
 DEFAULT_SCHEMA = Path(__file__).resolve().parents[1] / "references" / "project-card.schema.json"
+MAX_DOCUMENT_BYTES = 2 * 1024 * 1024
+MAX_NESTING_DEPTH = 64
+MAX_DOCUMENT_NODES = 100_000
+
+
+class CardSafeLoader(yaml.SafeLoader):
+    """Reject ambiguous YAML and bound parser work before constructing values."""
+
+    def __init__(self, stream: str) -> None:
+        super().__init__(stream)
+        self._depth = 0
+        self._nodes = 0
+
+    def compose_node(self, parent: Any, index: Any) -> Any:
+        self._depth += 1
+        self._nodes += 1
+        try:
+            if self._depth > MAX_NESTING_DEPTH or self._nodes > MAX_DOCUMENT_NODES:
+                raise yaml.YAMLError("canonical card exceeds YAML depth or node limit")
+            if self.check_event(yaml.events.AliasEvent):
+                raise yaml.YAMLError("YAML aliases are not allowed in canonical cards")
+            return super().compose_node(parent, index)
+        finally:
+            self._depth -= 1
+
+    def construct_mapping(self, node: Any, deep: bool = False) -> dict[Any, Any]:
+        if not isinstance(node, yaml.nodes.MappingNode):
+            raise yaml.YAMLError("expected a YAML mapping")
+        self.flatten_mapping(node)
+        mapping: dict[Any, Any] = {}
+        for key_node, value_node in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            try:
+                if key in mapping:
+                    raise yaml.YAMLError(f"found duplicate key {key!r}")
+                mapping[key] = self.construct_object(value_node, deep=deep)
+            except TypeError as exc:
+                raise yaml.YAMLError("found an unhashable YAML key") from exc
+        return mapping
+
+
+def load_yaml(text: str) -> Any:
+    """Parse canonical YAML with the same rules in the CLI, catalog, and harness."""
+    try:
+        return yaml.load(text, Loader=CardSafeLoader)
+    except RecursionError as exc:
+        raise yaml.YAMLError("canonical card exceeds parser nesting limit") from exc
+
+
+def _json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, child in pairs:
+        if key in value:
+            raise ValueError(f"found duplicate key {key!r}")
+        value[key] = child
+    return value
 
 
 def load_document(path: Path) -> Any:
     """Load JSON or YAML from path."""
-    text = path.read_text(encoding="utf-8")
+    with path.open("rb") as stream:
+        raw = stream.read(MAX_DOCUMENT_BYTES + 1)
+    if len(raw) > MAX_DOCUMENT_BYTES:
+        raise ValueError("canonical card exceeds the document size limit")
+    text = raw.decode("utf-8")
     if path.suffix.lower() == ".json":
-        return json.loads(text)
-    return yaml.safe_load(text)
+        # Apply the same depth/node bounds before JSON-specific scalar parsing.
+        load_yaml(text)
+        return json.loads(text, object_pairs_hook=_json_object)
+    return load_yaml(text)
 
 
 def pointer_token(value: str) -> str:
@@ -232,7 +293,9 @@ def iter_technology_claim_refs(architecture: dict[str, Any]) -> Iterator[tuple[s
     for key, value in architecture.items():
         if key in {"overview", "languages", "data_flows", "control_flows"}:
             continue
-        entries = value.get("tools", []) if key == "tools_and_mcp" and isinstance(value, dict) else value
+        entries = (
+            value.get("tools", []) if key == "tools_and_mcp" and isinstance(value, dict) else value
+        )
         if not isinstance(entries, list):
             continue
         for index, entry in enumerate(entries):
@@ -305,7 +368,9 @@ def semantic_errors(card: dict[str, Any]) -> list[str]:
 
     for index, capability in enumerate(capabilities):
         base = f"/capabilities/{index}"
-        check_references(capability.get("claim_ids"), claim_ids, f"{base}/claim_ids", "claim", errors)
+        check_references(
+            capability.get("claim_ids"), claim_ids, f"{base}/claim_ids", "claim", errors
+        )
         check_references(
             capability.get("evidence_refs"),
             evidence_ids,
@@ -373,7 +438,9 @@ def semantic_errors(card: dict[str, Any]) -> list[str]:
         )
         context_id = claim.get("assessment_context_id")
         if context_id is not None and context_id not in context_ids:
-            errors.append(f"{base}/assessment_context_id: unknown assessment context {context_id!r}")
+            errors.append(
+                f"{base}/assessment_context_id: unknown assessment context {context_id!r}"
+            )
         if claim.get("claim_kind") == "assessment" and context_id is None:
             errors.append(f"{base}/assessment_context_id: assessment claim requires a context")
         if claim.get("verification_status") == "runtime_verified" and not dynamic_analysis:

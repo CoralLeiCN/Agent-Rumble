@@ -52,8 +52,16 @@ export const verdictPresentation: Record<
   RumbleRoundVerdict,
   { label: string; symbol: string; tone: string }
 > = {
-  entrant_a_advantage: { label: "Contextual edge · left corner", symbol: "↙", tone: "edge" },
-  entrant_b_advantage: { label: "Contextual edge · right corner", symbol: "↘", tone: "edge" },
+  entrant_a_advantage: {
+    label: "Contextual edge · left corner",
+    symbol: "↙",
+    tone: "edge",
+  },
+  entrant_b_advantage: {
+    label: "Contextual edge · right corner",
+    symbol: "↘",
+    tone: "edge",
+  },
   trade_off: { label: "Trade-off", symbol: "↔", tone: "tradeoff" },
   inconclusive: { label: "Inconclusive", symbol: "?", tone: "inconclusive" },
 };

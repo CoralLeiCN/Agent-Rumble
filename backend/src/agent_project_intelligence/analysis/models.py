@@ -34,7 +34,7 @@ class ProjectCardAnalysisRequest(BaseModel):
     analysis_depth: Literal["triage", "targeted", "deep"] = "targeted"
 
     @model_validator(mode="after")
-    def validate_public_github_repository(self) -> "ProjectCardAnalysisRequest":
+    def validate_public_github_repository(self) -> ProjectCardAnalysisRequest:
         """Constrain the first service slice to uncredentialed GitHub repository URLs."""
         url = self.repository_url
         if (
@@ -87,7 +87,7 @@ class ProjectCardGenerationResult(BaseModel):
     validation_errors: tuple[str, ...] = ()
 
     @model_validator(mode="after")
-    def validate_status_shape(self) -> "ProjectCardGenerationResult":
+    def validate_status_shape(self) -> ProjectCardGenerationResult:
         """Keep successful and failed result fields mutually coherent."""
         if self.status == "succeeded":
             required = (

@@ -8,7 +8,11 @@ interface RumbleRecapProps {
   onExit: () => void;
 }
 
-export function RumbleRecap({ projection, onReplay, onExit }: RumbleRecapProps) {
+export function RumbleRecap({
+  projection,
+  onReplay,
+  onExit,
+}: RumbleRecapProps) {
   const [ringCall, setRingCall] = useState<string | null>(null);
   const entrantA = projection.entrants[0];
   const entrantB = projection.entrants[1];
@@ -24,7 +28,9 @@ export function RumbleRecap({ projection, onReplay, onExit }: RumbleRecapProps) 
   return (
     <section className="rumble-recap" aria-labelledby="rumble-recap-title">
       <div className="rumble-recap__hero">
-        <span className="rumble-recap__bell" aria-hidden="true">◇</span>
+        <span className="rumble-recap__bell" aria-hidden="true">
+          ◇
+        </span>
         <div>
           <span>Contextual recap</span>
           <h2 id="rumble-recap-title" tabIndex={-1}>
@@ -37,8 +43,9 @@ export function RumbleRecap({ projection, onReplay, onExit }: RumbleRecapProps) 
       <div className="rumble-recap__notice">
         <strong>No overall project result</strong>
         <p>
-          The rounds are not totaled. An edge belongs only to its stated requirement and
-          Assessment Context; it is not a universal project judgment.
+          The rounds are not totaled. An edge belongs only to its stated
+          requirement and Assessment Context; it is not a universal project
+          judgment.
         </p>
       </div>
 
@@ -47,11 +54,16 @@ export function RumbleRecap({ projection, onReplay, onExit }: RumbleRecapProps) 
           const verdict = verdictPresentation[round.verdict];
           return (
             <li key={round.round_id}>
-              <span className={`recap-rounds__marker recap-rounds__marker--${verdict.tone}`} aria-hidden="true">
+              <span
+                className={`recap-rounds__marker recap-rounds__marker--${verdict.tone}`}
+                aria-hidden="true"
+              >
                 {verdict.symbol}
               </span>
               <div>
-                <span>{round.title} · {round.label}</span>
+                <span>
+                  {round.title} · {round.label}
+                </span>
                 <strong>{verdict.label}</strong>
                 <p>{round.callout}</p>
               </div>
@@ -65,8 +77,8 @@ export function RumbleRecap({ projection, onReplay, onExit }: RumbleRecapProps) 
           <span>Optional ring call</span>
           <h3 id="ring-choice-title">What would you explore next?</h3>
           <p>
-            This preference stays in the interface. It does not change either canonical
-            Agent Project Card.
+            This preference stays in the interface. It does not change either
+            canonical Agent Project Card.
           </p>
         </div>
         <div className="ring-choice__options">
@@ -82,12 +94,18 @@ export function RumbleRecap({ projection, onReplay, onExit }: RumbleRecapProps) 
           ))}
         </div>
         <p className="ring-choice__status" aria-live="polite">
-          {ringCall ? `Recorded locally: ${ringCall}.` : "No preference recorded."}
+          {ringCall
+            ? `Recorded locally: ${ringCall}.`
+            : "No preference recorded."}
         </p>
       </section>
 
       <div className="rumble-recap__actions">
-        <button className="button button--primary" type="button" onClick={onReplay}>
+        <button
+          className="button button--primary"
+          type="button"
+          onClick={onReplay}
+        >
           Replay this matchup ↻
         </button>
         <button className="button button--quiet" type="button" onClick={onExit}>

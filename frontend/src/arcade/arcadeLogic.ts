@@ -48,14 +48,18 @@ const SIGNATURE_STYLES: readonly ArcadeSignatureStyle[] = [
   "pulse",
 ];
 
-const STYLE_COPY: Record<ArcadeSignatureStyle, { suffix: string; description: string }> = {
+const STYLE_COPY: Record<
+  ArcadeSignatureStyle,
+  { suffix: string; description: string }
+> = {
   projectile: {
     suffix: "Relay",
     description: "A forward signal projectile with a visible travel window.",
   },
   rush: {
     suffix: "Rush",
-    description: "A fast grounded advance that converts its wind-up into one strike.",
+    description:
+      "A fast grounded advance that converts its wind-up into one strike.",
   },
   uppercut: {
     suffix: "Launcher",
@@ -76,7 +80,10 @@ function stableHash(value: string): number {
   return hash >>> 0;
 }
 
-function cellTrait(round: RumbleRound, corner: "entrant_a" | "entrant_b"): string {
+function cellTrait(
+  round: RumbleRound,
+  corner: "entrant_a" | "entrant_b",
+): string {
   const cell = round[corner];
   if (cell.state !== "value") return cell.state.replaceAll("_", " ");
   return cell.value?.trim() || round.label;
@@ -85,8 +92,13 @@ function cellTrait(round: RumbleRound, corner: "entrant_a" | "entrant_b"): strin
 function selectSignatureRound(
   rounds: readonly RumbleRound[],
   corner: "entrant_a" | "entrant_b",
-): { round: RumbleRound; sourceRoundIndex: number; contextualEdge: boolean } | null {
-  const edgeVerdict = corner === "entrant_a" ? "entrant_a_advantage" : "entrant_b_advantage";
+): {
+  round: RumbleRound;
+  sourceRoundIndex: number;
+  contextualEdge: boolean;
+} | null {
+  const edgeVerdict =
+    corner === "entrant_a" ? "entrant_a_advantage" : "entrant_b_advantage";
   const edgeIndex = rounds.findIndex((round) => {
     const cell = round[corner];
     return (
@@ -117,10 +129,17 @@ export function deriveSignatureMove(
   styleOverride?: ArcadeSignatureStyle,
 ): ArcadeSignatureMove {
   const selection = selectSignatureRound(rounds, corner);
-  const traitLabel = selection ? cleanTraitLabel(selection.round.label) : "RUMBLE STRIKE";
-  const traitValue = selection ? cellTrait(selection.round, corner) : "Neutral exhibition style";
+  const traitLabel = selection
+    ? cleanTraitLabel(selection.round.label)
+    : "RUMBLE STRIKE";
+  const traitValue = selection
+    ? cellTrait(selection.round, corner)
+    : "Neutral exhibition style";
   const seed = `${projectName}|${traitLabel}|${traitValue}`;
-  const style = styleOverride ?? SIGNATURE_STYLES[stableHash(seed) % SIGNATURE_STYLES.length] ?? "pulse";
+  const style =
+    styleOverride ??
+    SIGNATURE_STYLES[stableHash(seed) % SIGNATURE_STYLES.length] ??
+    "pulse";
   const copy = STYLE_COPY[style];
   const shortTrait = traitLabel.trim().slice(0, 24) || "RUMBLE STRIKE";
   return {
@@ -142,13 +161,27 @@ export function deriveSignatureMove(
 
 /** Builds two visibly distinct, equally budgeted signature moves. */
 export function deriveSignatureMoves(
-  entrants: readonly [Pick<RumbleEntrant, "project_name">, Pick<RumbleEntrant, "project_name">],
+  entrants: readonly [
+    Pick<RumbleEntrant, "project_name">,
+    Pick<RumbleEntrant, "project_name">,
+  ],
   rounds: readonly RumbleRound[],
 ): readonly [ArcadeSignatureMove, ArcadeSignatureMove] {
-  const left = deriveSignatureMove(entrants[0].project_name, rounds, "entrant_a");
-  let right = deriveSignatureMove(entrants[1].project_name, rounds, "entrant_b");
+  const left = deriveSignatureMove(
+    entrants[0].project_name,
+    rounds,
+    "entrant_a",
+  );
+  let right = deriveSignatureMove(
+    entrants[1].project_name,
+    rounds,
+    "entrant_b",
+  );
   if (left.style === right.style) {
-    const nextStyle = SIGNATURE_STYLES[(SIGNATURE_STYLES.indexOf(left.style) + 1) % SIGNATURE_STYLES.length];
+    const nextStyle =
+      SIGNATURE_STYLES[
+        (SIGNATURE_STYLES.indexOf(left.style) + 1) % SIGNATURE_STYLES.length
+      ];
     right = deriveSignatureMove(
       entrants[1].project_name,
       rounds,
@@ -164,7 +197,11 @@ export function damageAfterHit(
   attack: ArcadeAttackProfile,
   blocking: boolean,
 ): number {
-  return Math.max(0, Math.min(ARCADE_MAX_HEALTH, health) - (blocking ? attack.blockedDamage : attack.damage));
+  return Math.max(
+    0,
+    Math.min(ARCADE_MAX_HEALTH, health) -
+      (blocking ? attack.blockedDamage : attack.damage),
+  );
 }
 
 /** Resolves both health changes together so a same-frame double KO is fair. */
@@ -176,7 +213,10 @@ export function resolveHealthFrame(
     Math.max(0, health[0] - Math.max(0, incomingDamage[0])),
     Math.max(0, health[1] - Math.max(0, incomingDamage[1])),
   ];
-  const knockedOut: [boolean, boolean] = [nextHealth[0] === 0, nextHealth[1] === 0];
+  const knockedOut: [boolean, boolean] = [
+    nextHealth[0] === 0,
+    nextHealth[1] === 0,
+  ];
   return {
     health: nextHealth,
     knockedOut,
@@ -189,7 +229,9 @@ function compareFighters(
   entrantB: ArcadeFighterResult,
 ): ArcadeGameResult["winner"] {
   if (entrantA.roundsWon === entrantB.roundsWon) return "draw";
-  return entrantA.roundsWon > entrantB.roundsWon ? entrantA.controller : entrantB.controller;
+  return entrantA.roundsWon > entrantB.roundsWon
+    ? entrantA.controller
+    : entrantB.controller;
 }
 
 export function createExhibitionResult(

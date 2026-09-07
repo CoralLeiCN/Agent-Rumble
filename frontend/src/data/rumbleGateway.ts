@@ -12,7 +12,10 @@ import type {
   RumbleVerificationStatus,
 } from "../types/rumble";
 
-type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+type Fetcher = (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+) => Promise<Response>;
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -48,21 +51,28 @@ async function responseError(response: Response, operation: string) {
   } catch {
     // A status code is enough when an endpoint does not return JSON.
   }
-  return new Error(`${operation} failed with HTTP ${response.status}.${detail}`.trim());
+  return new Error(
+    `${operation} failed with HTTP ${response.status}.${detail}`.trim(),
+  );
 }
 
 export class HttpRumbleGateway implements RumbleGateway {
-  constructor(private readonly fetcher: Fetcher = globalThis.fetch.bind(globalThis)) {}
+  constructor(
+    private readonly fetcher: Fetcher = globalThis.fetch.bind(globalThis),
+  ) {}
 
   async getDemo(): Promise<LoadedRumbleData<RumbleDemoBundle>> {
     const response = await this.fetcher("/api/v1/rumble/demo", {
       headers: { Accept: "application/json" },
     });
-    if (!response.ok) throw await responseError(response, "Loading the prepared matchup");
+    if (!response.ok)
+      throw await responseError(response, "Loading the prepared matchup");
 
     const payload: unknown = await response.json();
     if (!isDemoBundle(payload)) {
-      throw new Error("The prepared matchup response does not match the Rumble demo contract.");
+      throw new Error(
+        "The prepared matchup response does not match the Rumble demo contract.",
+      );
     }
     return { data: payload, source: "live_api" };
   }
@@ -78,11 +88,14 @@ export class HttpRumbleGateway implements RumbleGateway {
       },
       body: JSON.stringify(matchup),
     });
-    if (!response.ok) throw await responseError(response, "Preparing the arena projection");
+    if (!response.ok)
+      throw await responseError(response, "Preparing the arena projection");
 
     const payload: unknown = await response.json();
     if (!isProjection(payload)) {
-      throw new Error("The arena projection response does not match the Rumble contract.");
+      throw new Error(
+        "The arena projection response does not match the Rumble contract.",
+      );
     }
     return { data: payload, source: "live_api" };
   }
@@ -104,7 +117,9 @@ export class BundledRumbleGateway implements RumbleGateway {
 }
 
 function fallbackMessage(caught: unknown) {
-  return caught instanceof Error ? caught.message : "The live Rumble API was unavailable.";
+  return caught instanceof Error
+    ? caught.message
+    : "The live Rumble API was unavailable.";
 }
 
 export class ResilientRumbleGateway implements RumbleGateway {
@@ -160,14 +175,21 @@ export function findPreparedMatchup(
   bundle: RumbleDemoBundle,
   projectIds: readonly string[],
 ): RumbleDemoMatchup | undefined {
-  if (projectIds.length !== 2 || projectIds[0] === projectIds[1]) return undefined;
+  if (projectIds.length !== 2 || projectIds[0] === projectIds[1])
+    return undefined;
   const preparedProjectIds = projectIds.map(toPreparedBundleProjectId);
-  if (preparedProjectIds.some((projectId) => projectId === undefined)) return undefined;
+  if (preparedProjectIds.some((projectId) => projectId === undefined))
+    return undefined;
   const requested = new Set(preparedProjectIds);
   if (requested.size !== 2) return undefined;
   return bundle.matchups.find((matchup) => {
-    const entrants = matchup.request.entrants.map((entrant) => entrant.project_id);
-    return entrants.length === 2 && entrants.every((projectId) => requested.has(projectId));
+    const entrants = matchup.request.entrants.map(
+      (entrant) => entrant.project_id,
+    );
+    return (
+      entrants.length === 2 &&
+      entrants.every((projectId) => requested.has(projectId))
+    );
   });
 }
 
@@ -193,7 +215,9 @@ export function toCatalogEvidenceRecord(
   evidence: RumbleEvidence,
   relationship: "supporting" | "conflicting" = "supporting",
 ): EvidenceRecord | undefined {
-  const verificationStatus = catalogVerificationStatus(claim.verification_status);
+  const verificationStatus = catalogVerificationStatus(
+    claim.verification_status,
+  );
   const confidence = catalogConfidence(claim.confidence);
   if (!verificationStatus || !confidence) return undefined;
 

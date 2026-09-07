@@ -1,6 +1,6 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { FixtureCatalogGateway } from "./test/FixtureCatalogGateway";
 import type { CatalogGateway } from "./types/catalog";
@@ -31,16 +31,22 @@ describe("Agent Rumble customer experience", () => {
     const user = userEvent.setup();
     const { container } = renderFixtureApp();
 
-    expect(screen.getByText(/complete pinned, statically analyzed catalog/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/complete pinned, statically analyzed catalog/i),
+    ).toBeInTheDocument();
     expect(screen.queryByText(/catalog \/ 03/i)).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
-    expect(await screen.findByRole("heading", { name: "3 projects to compare" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "3 projects to compare" }),
+    ).toBeInTheDocument();
     expect(screen.getAllByText("Must")).toHaveLength(2);
     expect(screen.getAllByText("Prefer")).toHaveLength(2);
     expect(screen.getByText("Avoid")).toBeInTheDocument();
     expect(screen.queryByText("Use case")).not.toBeInTheDocument();
-    expect(screen.queryByText("Organizational constraints")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Organizational constraints"),
+    ).not.toBeInTheDocument();
     expect(screen.getAllByText("What is included")).toHaveLength(3);
     expect(screen.queryByText("Card metadata")).not.toBeInTheDocument();
     expect(screen.queryByText(/SCHEMA 0\.2/)).not.toBeInTheDocument();
@@ -51,45 +57,170 @@ describe("Agent Rumble customer experience", () => {
     await user.click(compareButtons[2]);
     expect(screen.getByText("3 / 3 projects")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Compare projects →" }));
-    expect(await screen.findByRole("heading", { name: "Compare 3 projects" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Project details" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Highlights" })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByText("Overview", { selector: "summary strong" })).toBeInTheDocument();
-    expect(screen.getByText("Capabilities", { selector: "summary strong" })).toBeInTheDocument();
-    expect(screen.getByText("Architecture & setup", { selector: "summary strong" })).toBeInTheDocument();
-    expect(screen.getByText("Fit & trade-offs", { selector: "summary strong" })).toBeInTheDocument();
-    expect(screen.getByText("Integrations & dependencies", { selector: "summary strong" })).toBeInTheDocument();
-    expect(screen.queryByText(/the cards decide the fields/i)).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: "Compare projects →" }),
+    );
+    expect(
+      await screen.findByRole("heading", { name: "Compare 3 projects" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Project details" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Highlights" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(
+      screen.getByText("Overview", { selector: "summary strong" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Capabilities", { selector: "summary strong" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Architecture & setup", { selector: "summary strong" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Fit & trade-offs", { selector: "summary strong" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Integrations & dependencies", {
+        selector: "summary strong",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/the cards decide the fields/i),
+    ).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "All details" }));
-    expect(screen.getByRole("button", { name: "All details" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "All details" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
     expect(screen.getAllByText("Not analyzed").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Unknown").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Statically confirmed").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Statically confirmed").length).toBeGreaterThan(
+      0,
+    );
 
-    await user.click(screen.getAllByRole("button", { name: /View source \d+ →/ })[0]);
-    const dialog = await screen.findByRole("dialog", { name: /tool approval is represented/i });
+    await user.click(
+      screen.getAllByRole("button", { name: /View source \d+ →/ })[0],
+    );
+    const dialog = await screen.findByRole("dialog", {
+      name: /tool approval is represented/i,
+    });
     expect(within(dialog).getByText("Confirmed in source")).toBeInTheDocument();
     expect(within(dialog).getByText("Verification")).toBeInTheDocument();
     expect(within(dialog).getAllByText("Confidence").length).toBeGreaterThan(0);
-    expect(within(dialog).getByText(/Supporting sources \/ 1/)).toBeInTheDocument();
+    expect(
+      within(dialog).getByText(/Supporting sources \/ 1/),
+    ).toBeInTheDocument();
     expect(within(dialog).getByText("Project publisher")).toBeInTheDocument();
     expect(within(dialog).getByText("Public")).toBeInTheDocument();
-    expect(within(dialog).getByText("2026-07-15T12:00:00Z")).toBeInTheDocument();
-    expect(within(dialog).getByText(/src\/agents\/tool.py/)).toBeInTheDocument();
+    expect(
+      within(dialog).getByText("2026-07-15T12:00:00Z"),
+    ).toBeInTheDocument();
+    expect(
+      within(dialog).getByText(/src\/agents\/tool.py/),
+    ).toBeInTheDocument();
     expect(within(dialog).queryByText(/sample data/i)).not.toBeInTheDocument();
-    expect(within(dialog).getByRole("link", { name: "View source ↗" })).toBeInTheDocument();
+    expect(
+      within(dialog).getByRole("link", { name: "View source ↗" }),
+    ).toBeInTheDocument();
     expect(container.querySelector(".app-shell")).toHaveAttribute("inert");
     expect(document.body.style.overflow).toBe("hidden");
 
-    await user.click(within(dialog).getByRole("button", { name: "Close source details" }));
+    await user.click(
+      within(dialog).getByRole("button", { name: "Close source details" }),
+    );
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(container.querySelector(".app-shell")).not.toHaveAttribute("inert");
     expect(document.body.style.overflow).toBe("");
 
-    await user.click(screen.getByRole("button", { name: "← Back to search results" }));
-    expect(screen.getByRole("heading", { name: "3 projects to compare" })).toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: "← Back to search results" }),
+    );
+    expect(
+      screen.getByRole("heading", { name: "3 projects to compare" }),
+    ).toBeInTheDocument();
+  });
+
+  it("loads additional result pages and preserves the shortlist", async () => {
+    const user = userEvent.setup();
+    const gateway = new FixtureCatalogGateway();
+    const complete = await gateway.searchProjects("");
+    const search = vi
+      .spyOn(gateway, "searchProjects")
+      .mockImplementation(async (_query, ...args: unknown[]) => {
+        const page = (args[0] as number | undefined) ?? 1;
+        return {
+          ...complete,
+          page,
+          pageSize: 2,
+          total: 3,
+          projects:
+            page === 1
+              ? complete.projects.slice(0, 2)
+              : complete.projects.slice(2),
+        };
+      });
+    render(<App gateway={gateway} />);
+    await user.click(screen.getByRole("button", { name: "Find projects" }));
+    await screen.findByRole("heading", { name: "3 projects to compare" });
+    expect(screen.getAllByRole("button", { name: "+ Compare" })).toHaveLength(
+      2,
+    );
+    await user.click(screen.getAllByRole("button", { name: "+ Compare" })[0]);
+    await user.click(
+      screen.getByRole("button", { name: "Load more projects (2 of 3)" }),
+    );
+    await screen.findByRole("heading", { name: complete.projects[2].name });
+    expect(search).toHaveBeenLastCalledWith(complete.query, 2);
+    expect(screen.getByText("1 / 3 projects")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Load more projects/ }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("does not reopen results when a later page arrives after navigation", async () => {
+    const user = userEvent.setup();
+    const gateway = new FixtureCatalogGateway();
+    const complete = await gateway.searchProjects("");
+    let resolvePage!: (response: typeof complete) => void;
+    vi.spyOn(gateway, "searchProjects")
+      .mockResolvedValueOnce({
+        ...complete,
+        page: 1,
+        pageSize: 2,
+        projects: complete.projects.slice(0, 2),
+      })
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            resolvePage = resolve;
+          }),
+      );
+    render(<App gateway={gateway} />);
+    await user.click(screen.getByRole("button", { name: "Find projects" }));
+    await user.click(
+      await screen.findByRole("button", {
+        name: "Load more projects (2 of 3)",
+      }),
+    );
+    await user.click(screen.getByRole("button", { name: "← Edit request" }));
+    await act(async () =>
+      resolvePage({
+        ...complete,
+        page: 2,
+        pageSize: 2,
+        projects: complete.projects.slice(2),
+      }),
+    );
+    expect(
+      screen.getByRole("button", { name: "Find projects" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "3 projects to compare" }),
+    ).not.toBeInTheDocument();
   });
 
   it("requires at least two projects before comparison", async () => {
@@ -100,7 +231,9 @@ describe("Agent Rumble customer experience", () => {
     await screen.findByRole("heading", { name: "3 projects to compare" });
     await user.click(screen.getAllByRole("button", { name: "+ Compare" })[0]);
 
-    expect(screen.getByRole("button", { name: "Select one more" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Select one more" }),
+    ).toBeDisabled();
   });
 
   it("keeps lower-priority metadata reachable inside customer-facing sections", async () => {
@@ -112,16 +245,27 @@ describe("Agent Rumble customer experience", () => {
     const compareButtons = screen.getAllByRole("button", { name: "+ Compare" });
     await user.click(compareButtons[0]);
     await user.click(compareButtons[1]);
-    await user.click(screen.getByRole("button", { name: "Compare projects →" }));
+    await user.click(
+      screen.getByRole("button", { name: "Compare projects →" }),
+    );
     await screen.findByRole("heading", { name: "Project details" });
 
-    await user.type(screen.getByRole("searchbox", { name: "Find a detail" }), "Schema version");
-    expect(screen.getByText("Showing 1 details across 1 sections.")).toBeInTheDocument();
+    await user.type(
+      screen.getByRole("searchbox", { name: "Find a detail" }),
+      "Schema version",
+    );
     expect(
-      within(screen.getByLabelText("Technical details comparison")).getAllByText("0.3"),
+      screen.getByText("Showing 1 details across 1 sections."),
+    ).toBeInTheDocument();
+    expect(
+      within(
+        screen.getByLabelText("Technical details comparison"),
+      ).getAllByText("0.3"),
     ).toHaveLength(2);
     expect(screen.getByText("Technical details")).toBeInTheDocument();
-    expect(screen.queryByText("Schema Version", { selector: "summary strong" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Schema Version", { selector: "summary strong" }),
+    ).not.toBeInTheDocument();
   });
 
   it("keeps every interpreted requirement label in its padded pill segment", async () => {
@@ -129,7 +273,9 @@ describe("Agent Rumble customer experience", () => {
     const { container } = renderFixtureApp();
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
-    await screen.findByRole("heading", { name: "What matters for your search" });
+    await screen.findByRole("heading", {
+      name: "What matters for your search",
+    });
 
     const requirements = Array.from(container.querySelectorAll(".requirement"));
     expect(requirements.length).toBeGreaterThan(0);
@@ -149,18 +295,28 @@ describe("Agent Rumble customer experience", () => {
     await user.click(screen.getByRole("button", { name: "Enter Rumble →" }));
 
     expect(
-      await screen.findByRole("heading", { name: "Internal support agent proof of concept" }),
+      await screen.findByRole("heading", {
+        name: "Internal support agent proof of concept",
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Solo fullscreen ⛶" })).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Solo fullscreen ⛶" }),
+    ).toBeEnabled();
   });
 
   it("offers a one-click path to browse the complete API catalog", async () => {
     const user = userEvent.setup();
     renderFixtureApp();
 
-    await user.click(screen.getByRole("button", { name: "Browse every preprocessed project ↗" }));
+    await user.click(
+      screen.getByRole("button", {
+        name: "Browse every preprocessed project ↗",
+      }),
+    );
 
-    expect(await screen.findByRole("heading", { name: "3 projects to compare" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "3 projects to compare" }),
+    ).toBeInTheDocument();
   });
 
   it("shows a useful empty state for a backend query with no catalog matches", async () => {
@@ -170,6 +326,9 @@ describe("Agent Rumble customer experience", () => {
       async searchProjects(query) {
         return {
           query,
+          page: 1,
+          pageSize: 20,
+          total: 0,
           assessmentContexts: [],
           requirements: [{ id: "requirement-1", kind: "must", label: query }],
           uninterpretedTerms: ["nonexistent"],
@@ -190,9 +349,17 @@ describe("Agent Rumble customer experience", () => {
     await user.type(searchbox, "nonexistent capability");
     await user.click(screen.getByRole("button", { name: "Find projects" }));
 
-    expect(await screen.findByRole("heading", { name: "No matching projects yet" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Try a broader search" })).toBeInTheDocument();
-    expect(screen.getByText(/project name, purpose, capability, language/i)).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /Compare projects/ })).not.toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "No matching projects yet" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Try a broader search" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/project name, purpose, capability, language/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Compare projects/ }),
+    ).not.toBeInTheDocument();
   });
 });

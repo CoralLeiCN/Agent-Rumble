@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Path, Request, Response
 from pydantic import BaseModel
@@ -20,10 +20,9 @@ from agent_project_intelligence.api.models.catalog import (
 )
 from agent_project_intelligence.services.catalog import CatalogService
 
-
 router = APIRouter(tags=["catalog"])
 
-ERROR_RESPONSES = {
+ERROR_RESPONSES: dict[int | str, dict[str, Any]] = {
     400: {"model": ErrorEnvelope, "description": "Invalid catalog identifier or request"},
     404: {"model": ErrorEnvelope, "description": "Pinned card or evidence not found"},
     422: {"model": ErrorEnvelope, "description": "Request validation failed"},
@@ -157,9 +156,7 @@ async def get_evidence(
     """Resolve one Evidence record to Claims, Source, revision, and locator."""
     project_id = decode_identifier_reference(project_ref, field="project_id")
     evidence_id = decode_identifier_reference(evidence_ref, field="evidence_id")
-    return _surrogate_safe_json_response(
-        service.evidence(project_id, card_version, evidence_id)
-    )
+    return _surrogate_safe_json_response(service.evidence(project_id, card_version, evidence_id))
 
 
 @router.post(

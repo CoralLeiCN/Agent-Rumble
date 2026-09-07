@@ -7,9 +7,8 @@ from pathlib import Path
 from typing import Literal
 
 from dotenv import load_dotenv
-from pydantic import AnyHttpUrl, Field, field_validator, model_validator
+from pydantic import AliasChoices, AnyHttpUrl, Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CATALOG_ROOT = REPOSITORY_ROOT / "catalog" / "cards"
@@ -44,6 +43,10 @@ class Settings(BaseSettings):
         validation_alias="AGENT_RUMBLE_DEVELOPMENT_CORS_ORIGINS",
     )
     model: str | None = Field(default=None, validation_alias="CODEX_MODEL")
+    codex_config_home: Path = Field(
+        default=Path.home() / ".codex",
+        validation_alias=AliasChoices("CODEX_CONFIG_HOME", "CODEX_HOME"),
+    )
     model_provider: str | None = Field(
         default=None,
         validation_alias="CODEX_MODEL_PROVIDER",
@@ -105,8 +108,7 @@ class Settings(BaseSettings):
             or value.fragment is not None
         ):
             raise ValueError(
-                "model_provider_base_url must not contain credentials, "
-                "a query, or a fragment"
+                "model_provider_base_url must not contain credentials, a query, or a fragment"
             )
         return value
 
@@ -131,31 +133,21 @@ class Settings(BaseSettings):
         return value
 
     @model_validator(mode="after")
-    def validate_model_provider_configuration(self) -> "Settings":
+    def validate_model_provider_configuration(self) -> Settings:
         """Keep named Codex providers distinct from the inline local endpoint."""
         if self.model_provider_base_url is not None and self.model_provider not in (
             None,
             "custom",
         ):
             raise ValueError(
-                "model_provider_base_url cannot be combined with "
-                "a different model_provider"
+                "model_provider_base_url cannot be combined with a different model_provider"
             )
         if self.model_provider_base_url is not None and self.model is None:
-            raise ValueError(
-                "model is required when model_provider_base_url is configured"
-            )
-        if (
-            self.model_provider_env_key is not None
-            and self.model_provider_base_url is None
-        ):
-            raise ValueError(
-                "model_provider_env_key requires model_provider_base_url"
-            )
+            raise ValueError("model is required when model_provider_base_url is configured")
+        if self.model_provider_env_key is not None and self.model_provider_base_url is None:
+            raise ValueError("model_provider_env_key requires model_provider_base_url")
         if self.model_provider_base_url is None and self.model_provider == "custom":
-            raise ValueError(
-                "custom is reserved for model_provider_base_url configuration"
-            )
+            raise ValueError("custom is reserved for model_provider_base_url configuration")
         return self
 
 

@@ -1,10 +1,10 @@
 """API tests for the prepared Rumble demo endpoint."""
 
-from fastapi.testclient import TestClient
-
 from agent_project_intelligence.api.routes.rumble import provide_demo_bundle
 from agent_project_intelligence.main import create_app
 from agent_project_intelligence.services.rumble_demo import parse_demo_bundle
+from fastapi.testclient import TestClient
+
 from ..demo_bundle_payloads import demo_bundle_payload
 
 
@@ -21,9 +21,9 @@ def test_returns_an_injected_validated_demo_bundle() -> None:
     body = response.json()
     assert body["fixture_label"] == "Two-project static-analysis demo"
     assert body["matchups"][0]["matchup_id"] == "project-a-vs-project-b"
-    assert body["matchups"][0]["request"]["comparison_rows"][0][
-        "entrant_a"
-    ]["claim_ids"] == ["claim-a-approval"]
+    assert body["matchups"][0]["request"]["comparison_rows"][0]["entrant_a"]["claim_ids"] == [
+        "claim-a-approval"
+    ]
     serialized_keys = repr(body).casefold()
     assert "overall_score" not in serialized_keys
     assert "winner" not in serialized_keys
@@ -36,9 +36,10 @@ def test_returns_the_committed_real_project_matchup() -> None:
     assert response.status_code == 200
     matchup = response.json()["matchups"][0]
     assert matchup["matchup_id"] == "openai-agents-sdk-vs-langgraph-support-poc"
-    assert [
-        entrant["project_id"] for entrant in matchup["request"]["entrants"]
-    ] == ["openai-agents-sdk", "langgraph"]
+    assert [entrant["project_id"] for entrant in matchup["request"]["entrants"]] == [
+        "openai-agents-sdk",
+        "langgraph",
+    ]
     assert len(matchup["request"]["comparison_rows"]) == 3
 
 
@@ -49,9 +50,7 @@ def test_demo_endpoint_is_in_openapi_schema_with_typed_response() -> None:
     assert response.status_code == 200
     operation = response.json()["paths"]["/api/v1/rumble/demo"]["get"]
     assert operation["tags"] == ["catalog"]
-    response_schema = operation["responses"]["200"]["content"][
-        "application/json"
-    ]["schema"]
+    response_schema = operation["responses"]["200"]["content"]["application/json"]["schema"]
     assert response_schema["$ref"].endswith("/RumbleDemoBundle")
 
 

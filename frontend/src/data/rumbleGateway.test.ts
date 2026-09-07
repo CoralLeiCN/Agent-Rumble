@@ -41,7 +41,10 @@ describe("Rumble gateways", () => {
     expect(fetcher).toHaveBeenNthCalledWith(
       2,
       "/api/v1/rumble",
-      expect.objectContaining({ method: "POST", body: JSON.stringify(matchup) }),
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify(matchup),
+      }),
     );
   });
 
@@ -49,12 +52,25 @@ describe("Rumble gateways", () => {
     const openAiCatalogId = "project-openai-openai-agents-python";
     const langGraphCatalogId = "project-langchain-ai-langgraph";
 
-    expect(isPreparedRumblePair([openAiCatalogId, langGraphCatalogId])).toBe(true);
-    expect(isPreparedRumblePair([langGraphCatalogId, openAiCatalogId])).toBe(true);
-    expect(isPreparedRumblePair([openAiCatalogId, "project-crewai-crewai"])).toBe(true);
-    expect(isPreparedRumblePair([openAiCatalogId, openAiCatalogId])).toBe(false);
-    expect(isPreparedRumblePair([openAiCatalogId, langGraphCatalogId, "project-crewai-crewai"]))
-      .toBe(false);
+    expect(isPreparedRumblePair([openAiCatalogId, langGraphCatalogId])).toBe(
+      true,
+    );
+    expect(isPreparedRumblePair([langGraphCatalogId, openAiCatalogId])).toBe(
+      true,
+    );
+    expect(
+      isPreparedRumblePair([openAiCatalogId, "project-crewai-crewai"]),
+    ).toBe(true);
+    expect(isPreparedRumblePair([openAiCatalogId, openAiCatalogId])).toBe(
+      false,
+    );
+    expect(
+      isPreparedRumblePair([
+        openAiCatalogId,
+        langGraphCatalogId,
+        "project-crewai-crewai",
+      ]),
+    ).toBe(false);
   });
 
   it("resolves canonical catalog IDs to the prepared matchup bundle", () => {
@@ -63,11 +79,15 @@ describe("Rumble gateways", () => {
       "project-langchain-ai-langgraph",
     ]);
 
-    expect(matchup?.matchup_id).toBe("openai-agents-sdk-vs-langgraph-support-poc");
-    expect(findPreparedMatchup(bundledRumbleDemo, [
-      "project-openai-openai-agents-python",
-      "project-crewai-crewai",
-    ])).toBeUndefined();
+    expect(matchup?.matchup_id).toBe(
+      "openai-agents-sdk-vs-langgraph-support-poc",
+    );
+    expect(
+      findPreparedMatchup(bundledRumbleDemo, [
+        "project-openai-openai-agents-python",
+        "project-crewai-crewai",
+      ]),
+    ).toBeUndefined();
   });
 
   it("labels a bundled fallback and adapts its claim evidence for the existing drawer", async () => {
@@ -79,12 +99,16 @@ describe("Rumble gateways", () => {
         throw new Error("offline");
       },
     };
-    const gateway = new ResilientRumbleGateway(unavailable, new BundledRumbleGateway());
+    const gateway = new ResilientRumbleGateway(
+      unavailable,
+      new BundledRumbleGateway(),
+    );
     const loaded = await gateway.getDemo();
     const matchup = loaded.data.matchups[0];
     const claim = matchup?.claims[0];
     const evidence = claim?.supporting_evidence[0];
-    if (!claim || !evidence) throw new Error("The bundled evidence fixture is missing.");
+    if (!claim || !evidence)
+      throw new Error("The bundled evidence fixture is missing.");
 
     expect(loaded).toMatchObject({
       source: "bundled_fallback",

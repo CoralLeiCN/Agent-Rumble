@@ -3,9 +3,8 @@
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
-
 from agent_project_intelligence.analysis.models import ProjectCardAnalysisRequest
+from pydantic import ValidationError
 
 
 def test_analysis_request_accepts_public_github_repository() -> None:

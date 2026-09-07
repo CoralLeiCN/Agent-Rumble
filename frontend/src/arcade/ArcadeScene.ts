@@ -112,7 +112,9 @@ interface ControlKeys {
 
 type VirtualControls = Record<ArcadeVirtualAction, boolean>;
 
-function arcadeBody(sprite: Phaser.Physics.Arcade.Sprite): Phaser.Physics.Arcade.Body {
+function arcadeBody(
+  sprite: Phaser.Physics.Arcade.Sprite,
+): Phaser.Physics.Arcade.Body {
   return sprite.body as Phaser.Physics.Arcade.Body;
 }
 
@@ -230,9 +232,10 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     this.pendingDamage = [0, 0];
 
     const leftIntent = this.playerOneIntent();
-    const rightIntent = this.options.mode === "local"
-      ? this.playerTwoIntent()
-      : this.cpuIntent(delta);
+    const rightIntent =
+      this.options.mode === "local"
+        ? this.playerTwoIntent()
+        : this.cpuIntent(delta);
 
     // Both guards and movement are established before either attack is resolved.
     this.applyMovement(this.fighters[0], leftIntent);
@@ -260,7 +263,8 @@ export class ArcadeRumbleScene extends Phaser.Scene {
   }
 
   setPaused(paused: boolean): boolean {
-    if (this.gameOver || paused === this.isMatchPaused) return this.isMatchPaused;
+    if (this.gameOver || paused === this.isMatchPaused)
+      return this.isMatchPaused;
     this.isMatchPaused = paused;
     this.time.paused = paused;
     if (paused) this.physics.world.pause();
@@ -372,8 +376,15 @@ export class ArcadeRumbleScene extends Phaser.Scene {
   }
 
   private createGround(): void {
-    this.ground = this.physics.add.staticImage(GAME_WIDTH / 2, FLOOR_Y, "versus-floor");
-    this.ground.setDisplaySize(GAME_WIDTH - 92, 52).refreshBody().setDepth(5);
+    this.ground = this.physics.add.staticImage(
+      GAME_WIDTH / 2,
+      FLOOR_Y,
+      "versus-floor",
+    );
+    this.ground
+      .setDisplaySize(GAME_WIDTH - 92, 52)
+      .refreshBody()
+      .setDepth(5);
   }
 
   private createHud(): void {
@@ -386,40 +397,64 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     };
     // The accessible React layer owns the sole visible name/HP/round/timer HUD.
     // Phaser keeps only stage-specific comparison context and announcements.
-    this.evidenceText = this.add.text(GAME_WIDTH / 2, 118, "", {
-      fontFamily: "system-ui, sans-serif",
-      fontSize: "14px",
-      color: "#e2cad0",
-      align: "center",
-      wordWrap: { width: 920 },
-    }).setOrigin(0.5, 0).setDepth(42);
-    this.statusText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 22, "", {
-      ...outlined,
-      fontSize: "16px",
-      align: "center",
-      color: "#fff8e8",
-    }).setOrigin(0.5, 1).setDepth(42);
-    this.announcementText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 30, "", {
-      ...outlined,
-      fontSize: "58px",
-      align: "center",
-      color: "#fff8e8",
-    }).setOrigin(0.5).setDepth(90);
-    this.pausedText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "PAUSED\nP / ESC TO RESUME", {
-      ...outlined,
-      fontSize: "48px",
-      align: "center",
-      color: "#ffd34d",
-      backgroundColor: "#10080de8",
-      padding: { x: 42, y: 28 },
-    }).setOrigin(0.5).setDepth(120).setVisible(false);
+    this.evidenceText = this.add
+      .text(GAME_WIDTH / 2, 118, "", {
+        fontFamily: "system-ui, sans-serif",
+        fontSize: "14px",
+        color: "#e2cad0",
+        align: "center",
+        wordWrap: { width: 920 },
+      })
+      .setOrigin(0.5, 0)
+      .setDepth(42);
+    this.statusText = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT - 22, "", {
+        ...outlined,
+        fontSize: "16px",
+        align: "center",
+        color: "#fff8e8",
+      })
+      .setOrigin(0.5, 1)
+      .setDepth(42);
+    this.announcementText = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 30, "", {
+        ...outlined,
+        fontSize: "58px",
+        align: "center",
+        color: "#fff8e8",
+      })
+      .setOrigin(0.5)
+      .setDepth(90);
+    this.pausedText = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "PAUSED\nP / ESC TO RESUME", {
+        ...outlined,
+        fontSize: "48px",
+        align: "center",
+        color: "#ffd34d",
+        backgroundColor: "#10080de8",
+        padding: { x: 42, y: 28 },
+      })
+      .setOrigin(0.5)
+      .setDepth(120)
+      .setVisible(false);
   }
 
   private createFighters(): void {
     const [entrantA, entrantB] = this.options.entrants;
-    const signatures = deriveSignatureMoves([entrantA, entrantB], this.options.rounds);
-    const spriteA = this.physics.add.sprite(350, FIGHTER_SPAWN_Y, "boxer-idle-000");
-    const spriteB = this.physics.add.sprite(930, FIGHTER_SPAWN_Y, "boxer-idle-000");
+    const signatures = deriveSignatureMoves(
+      [entrantA, entrantB],
+      this.options.rounds,
+    );
+    const spriteA = this.physics.add.sprite(
+      350,
+      FIGHTER_SPAWN_Y,
+      "boxer-idle-000",
+    );
+    const spriteB = this.physics.add.sprite(
+      930,
+      FIGHTER_SPAWN_Y,
+      "boxer-idle-000",
+    );
     for (const sprite of [spriteA, spriteB]) {
       sprite
         .setOrigin(0.383, 0.5)
@@ -447,8 +482,15 @@ export class ArcadeRumbleScene extends Phaser.Scene {
       {
         corner: 0,
         sprite: spriteA,
-        nameLabel: this.add.text(spriteA.x, spriteA.y - FIGHTER_LABEL_OFFSET_Y, entrantA.project_name, nameStyle)
-          .setOrigin(0.5).setDepth(22),
+        nameLabel: this.add
+          .text(
+            spriteA.x,
+            spriteA.y - FIGHTER_LABEL_OFFSET_Y,
+            entrantA.project_name,
+            nameStyle,
+          )
+          .setOrigin(0.5)
+          .setDepth(22),
         name: entrantA.project_name,
         health: ARCADE_MAX_HEALTH,
         roundsWon: 0,
@@ -462,8 +504,15 @@ export class ArcadeRumbleScene extends Phaser.Scene {
       {
         corner: 1,
         sprite: spriteB,
-        nameLabel: this.add.text(spriteB.x, spriteB.y - FIGHTER_LABEL_OFFSET_Y, entrantB.project_name, nameStyle)
-          .setOrigin(0.5).setDepth(22),
+        nameLabel: this.add
+          .text(
+            spriteB.x,
+            spriteB.y - FIGHTER_LABEL_OFFSET_Y,
+            entrantB.project_name,
+            nameStyle,
+          )
+          .setOrigin(0.5)
+          .setDepth(22),
         name: entrantB.project_name,
         health: ARCADE_MAX_HEALTH,
         roundsWon: 0,
@@ -532,8 +581,13 @@ export class ArcadeRumbleScene extends Phaser.Scene {
       fighter.blocking = false;
       fighter.lastLightAt = -ARCADE_LIGHT_ATTACK.cooldownMs;
       fighter.lastSpecialAt = -ARCADE_SIGNATURE_ATTACK.cooldownMs;
-      fighter.sprite.setPosition(fighter.spawnX, FIGHTER_SPAWN_Y).setVelocity(0, 0);
-      fighter.sprite.clearTint().setAlpha(1).setFlipX(fighter.corner === 0);
+      fighter.sprite
+        .setPosition(fighter.spawnX, FIGHTER_SPAWN_Y)
+        .setVelocity(0, 0);
+      fighter.sprite
+        .clearTint()
+        .setAlpha(1)
+        .setFlipX(fighter.corner === 0);
       fighter.sprite.play("boxer-idle", true);
     }
     this.announcementText.setText(`ROUND ${this.roundNumber}`);
@@ -548,9 +602,12 @@ export class ArcadeRumbleScene extends Phaser.Scene {
       if (this.gameOver) return;
       this.announcementText.setText("FIGHT!");
       this.roundTransition = false;
-      this.emitStatus("Fight! Jabs, guards, and trait specials use equal combat budgets.");
+      this.emitStatus(
+        "Fight! Jabs, guards, and trait specials use equal combat budgets.",
+      );
       this.time.delayedCall(460, () => {
-        if (!this.roundTransition && !this.gameOver) this.announcementText.setText("");
+        if (!this.roundTransition && !this.gameOver)
+          this.announcementText.setText("");
       });
     });
 
@@ -570,9 +627,15 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     return {
       left: this.keys.p1Left.isDown || this.virtualControls.left,
       right: this.keys.p1Right.isDown || this.virtualControls.right,
-      jump: Phaser.Input.Keyboard.JustDown(this.keys.p1Jump) || this.consumeVirtual("jump"),
-      light: Phaser.Input.Keyboard.JustDown(this.keys.p1Light) || this.consumeVirtual("attack"),
-      special: Phaser.Input.Keyboard.JustDown(this.keys.p1Special) || this.consumeVirtual("special"),
+      jump:
+        Phaser.Input.Keyboard.JustDown(this.keys.p1Jump) ||
+        this.consumeVirtual("jump"),
+      light:
+        Phaser.Input.Keyboard.JustDown(this.keys.p1Light) ||
+        this.consumeVirtual("attack"),
+      special:
+        Phaser.Input.Keyboard.JustDown(this.keys.p1Special) ||
+        this.consumeVirtual("special"),
       block: this.keys.p1Block.isDown || this.virtualControls.block,
     };
   }
@@ -596,20 +659,27 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     const dx = target.sprite.x - cpu.sprite.x;
     const distance = Math.abs(dx);
     const incomingProjectile = this.projectiles.some(
-      (projectile) => projectile.owner === 0 && Math.abs(projectile.sprite.x - cpu.sprite.x) < 190,
+      (projectile) =>
+        projectile.owner === 0 &&
+        Math.abs(projectile.sprite.x - cpu.sprite.x) < 190,
     );
-    const guarding = incomingProjectile || (
-      distance < 118 && Math.floor(this.roundElapsedMs / 360) % 7 === 0
-    );
+    const guarding =
+      incomingProjectile ||
+      (distance < 118 && Math.floor(this.roundElapsedMs / 360) % 7 === 0);
     const canAct = !guarding;
     const specialRange = cpu.signature.style === "projectile" ? 430 : 150;
-    const shouldSpecial = canAct &&
-      this.roundElapsedMs - cpu.lastSpecialAt >= ARCADE_SIGNATURE_ATTACK.cooldownMs &&
+    const shouldSpecial =
+      canAct &&
+      this.roundElapsedMs - cpu.lastSpecialAt >=
+        ARCADE_SIGNATURE_ATTACK.cooldownMs &&
       distance < specialRange &&
       Math.floor(this.roundElapsedMs / 420) % 4 === 0;
-    const shouldJump = this.roundElapsedMs >= this.nextAiJumpAt &&
-      (target.sprite.y < cpu.sprite.y - 65 || Phaser.Math.Between(0, 1_000) < delta * 0.15);
-    if (shouldJump) this.nextAiJumpAt = this.roundElapsedMs + Phaser.Math.Between(850, 1_500);
+    const shouldJump =
+      this.roundElapsedMs >= this.nextAiJumpAt &&
+      (target.sprite.y < cpu.sprite.y - 65 ||
+        Phaser.Math.Between(0, 1_000) < delta * 0.15);
+    if (shouldJump)
+      this.nextAiJumpAt = this.roundElapsedMs + Phaser.Math.Between(850, 1_500);
     return {
       left: !guarding && dx < -84,
       right: !guarding && dx > 84,
@@ -621,7 +691,14 @@ export class ArcadeRumbleScene extends Phaser.Scene {
   }
 
   private emptyIntent(): FighterIntent {
-    return { left: false, right: false, jump: false, light: false, special: false, block: false };
+    return {
+      left: false,
+      right: false,
+      jump: false,
+      light: false,
+      special: false,
+      block: false,
+    };
   }
 
   private applyMovement(fighter: FighterState, intent: FighterIntent): void {
@@ -630,7 +707,8 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     fighter.blocking = intent.block && grounded;
     fighter.sprite.setAlpha(1);
 
-    if (intent.jump && grounded && !fighter.blocking) fighter.sprite.setVelocityY(-JUMP_SPEED);
+    if (intent.jump && grounded && !fighter.blocking)
+      fighter.sprite.setVelocityY(-JUMP_SPEED);
     if (intent.left === intent.right) {
       fighter.sprite.setVelocityX(
         Phaser.Math.Linear(body.velocity.x, 0, fighter.blocking ? 0.55 : 0.3),
@@ -638,7 +716,9 @@ export class ArcadeRumbleScene extends Phaser.Scene {
       return;
     }
     const direction = intent.left ? -1 : 1;
-    fighter.sprite.setVelocityX(direction * (fighter.blocking ? BLOCK_MOVE_SPEED : MOVE_SPEED));
+    fighter.sprite.setVelocityX(
+      direction * (fighter.blocking ? BLOCK_MOVE_SPEED : MOVE_SPEED),
+    );
   }
 
   private faceOpponents(): void {
@@ -652,7 +732,8 @@ export class ArcadeRumbleScene extends Phaser.Scene {
 
   private updateFighterAnimation(fighter: FighterState): void {
     const current = fighter.sprite.anims.currentAnim?.key;
-    const locked = current === "boxer-jab" ||
+    const locked =
+      current === "boxer-jab" ||
       current === "boxer-special" ||
       current === "boxer-hurt" ||
       current === "boxer-ko";
@@ -677,7 +758,8 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     if (attacker.blocking) return;
     if (
       intent.light &&
-      this.roundElapsedMs - attacker.lastLightAt >= ARCADE_LIGHT_ATTACK.cooldownMs
+      this.roundElapsedMs - attacker.lastLightAt >=
+        ARCADE_LIGHT_ATTACK.cooldownMs
     ) {
       attacker.lastLightAt = this.roundElapsedMs;
       attacker.sprite.play("boxer-jab", true);
@@ -689,7 +771,8 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     }
     if (
       intent.special &&
-      this.roundElapsedMs - attacker.lastSpecialAt >= ARCADE_SIGNATURE_ATTACK.cooldownMs
+      this.roundElapsedMs - attacker.lastSpecialAt >=
+        ARCADE_SIGNATURE_ATTACK.cooldownMs
     ) {
       attacker.lastSpecialAt = this.roundElapsedMs;
       attacker.sprite.play("boxer-special", true);
@@ -709,33 +792,53 @@ export class ArcadeRumbleScene extends Phaser.Scene {
           attacker.sprite.y - 8,
           "versus-projectile",
         );
-        sprite.setTint(color).setDepth(18).setVelocityX(attacker.facing * PROJECTILE_SPEED);
+        sprite
+          .setTint(color)
+          .setDepth(18)
+          .setVelocityX(attacker.facing * PROJECTILE_SPEED);
         (sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
         this.projectiles.push({ owner: attacker.corner, sprite });
         break;
       }
       case "rush":
         attacker.sprite.setVelocityX(attacker.facing * 670);
-        this.showStrike(attacker.sprite.x + attacker.facing * 78, attacker.sprite.y, attacker.corner, 55);
+        this.showStrike(
+          attacker.sprite.x + attacker.facing * 78,
+          attacker.sprite.y,
+          attacker.corner,
+          55,
+        );
         if (this.targetInFront(attacker, target, 150, 76)) {
           this.queueHit(attacker, target, ARCADE_SIGNATURE_ATTACK, "rush");
         }
         break;
       case "uppercut":
         attacker.sprite.setVelocityY(-470);
-        this.showStrike(attacker.sprite.x + attacker.facing * 45, attacker.sprite.y - 45, attacker.corner, 53);
+        this.showStrike(
+          attacker.sprite.x + attacker.facing * 45,
+          attacker.sprite.y - 45,
+          attacker.corner,
+          53,
+        );
         if (this.targetInFront(attacker, target, 105, 148)) {
           this.queueHit(attacker, target, ARCADE_SIGNATURE_ATTACK, "launcher");
         }
         break;
       case "pulse":
-        this.showStrike(attacker.sprite.x, attacker.sprite.y, attacker.corner, 86);
-        if (Phaser.Math.Distance.Between(
+        this.showStrike(
           attacker.sprite.x,
           attacker.sprite.y,
-          target.sprite.x,
-          target.sprite.y,
-        ) <= 128) {
+          attacker.corner,
+          86,
+        );
+        if (
+          Phaser.Math.Distance.Between(
+            attacker.sprite.x,
+            attacker.sprite.y,
+            target.sprite.x,
+            target.sprite.y,
+          ) <= 128
+        ) {
           this.queueHit(attacker, target, ARCADE_SIGNATURE_ATTACK, "pulse");
         }
         break;
@@ -749,9 +852,11 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     verticalRange: number,
   ): boolean {
     const dx = target.sprite.x - attacker.sprite.x;
-    return Math.sign(dx || attacker.facing) === attacker.facing &&
+    return (
+      Math.sign(dx || attacker.facing) === attacker.facing &&
       Math.abs(dx) <= horizontalRange &&
-      Math.abs(target.sprite.y - attacker.sprite.y) <= verticalRange;
+      Math.abs(target.sprite.y - attacker.sprite.y) <= verticalRange
+    );
   }
 
   private queueHit(
@@ -775,23 +880,34 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     if (!this.fighters) return;
     for (const projectile of [...this.projectiles]) {
       const target = this.fighters[projectile.owner === 0 ? 1 : 0];
-      const hit = Phaser.Math.Distance.Between(
-        projectile.sprite.x,
-        projectile.sprite.y,
-        target.sprite.x,
-        target.sprite.y,
-      ) < 66;
-      const expired = projectile.sprite.x < 40 || projectile.sprite.x > GAME_WIDTH - 40;
+      const hit =
+        Phaser.Math.Distance.Between(
+          projectile.sprite.x,
+          projectile.sprite.y,
+          target.sprite.x,
+          target.sprite.y,
+        ) < 66;
+      const expired =
+        projectile.sprite.x < 40 || projectile.sprite.x > GAME_WIDTH - 40;
       if (hit) {
         const attacker = this.fighters[projectile.owner];
-        this.queueHit(attacker, target, ARCADE_SIGNATURE_ATTACK, "signal projectile");
+        this.queueHit(
+          attacker,
+          target,
+          ARCADE_SIGNATURE_ATTACK,
+          "signal projectile",
+        );
       }
       if (hit || expired) this.destroyProjectile(projectile);
     }
   }
 
   private resolveCombatFrame(): void {
-    if (!this.fighters || (this.pendingDamage[0] === 0 && this.pendingDamage[1] === 0)) return;
+    if (
+      !this.fighters ||
+      (this.pendingDamage[0] === 0 && this.pendingDamage[1] === 0)
+    )
+      return;
     const resolution = resolveHealthFrame(
       [this.fighters[0].health, this.fighters[1].health],
       this.pendingDamage,
@@ -801,7 +917,8 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     this.pendingDamage = [0, 0];
     this.updateHud();
     if (resolution.doubleKnockout) this.finishRound("double_ko");
-    else if (resolution.knockedOut[0] || resolution.knockedOut[1]) this.finishRound("ko");
+    else if (resolution.knockedOut[0] || resolution.knockedOut[1])
+      this.finishRound("ko");
   }
 
   private finishRound(reason: ArcadeFinishReason): void {
@@ -813,23 +930,23 @@ export class ArcadeRumbleScene extends Phaser.Scene {
     const [left, right] = this.fighters;
     let winner: Corner | null = null;
     if (reason === "ko") winner = left.health <= 0 ? 1 : 0;
-    else if (reason === "time" && left.health !== right.health) winner = left.health > right.health ? 0 : 1;
+    else if (reason === "time" && left.health !== right.health)
+      winner = left.health > right.health ? 0 : 1;
     if (winner !== null) this.fighters[winner].roundsWon += 1;
     for (const fighter of this.fighters) {
       if (fighter.health <= 0) fighter.sprite.play("boxer-ko", true);
-      else if (winner === fighter.corner) fighter.sprite.play("boxer-special", true);
+      else if (winner === fighter.corner)
+        fighter.sprite.play("boxer-special", true);
       else if (winner !== null) fighter.sprite.play("boxer-hurt", true);
       else fighter.sprite.play("boxer-idle", true);
     }
 
-    const roundHeading = reason === "double_ko"
-      ? "DOUBLE KO"
-      : reason === "time"
-        ? "TIME"
-        : "KO";
-    const roundCall = winner === null
-      ? `${roundHeading}\nROUND DRAW`
-      : `${roundHeading}\n${this.fighters[winner].name} TAKES ROUND ${this.roundNumber}`;
+    const roundHeading =
+      reason === "double_ko" ? "DOUBLE KO" : reason === "time" ? "TIME" : "KO";
+    const roundCall =
+      winner === null
+        ? `${roundHeading}\nROUND DRAW`
+        : `${roundHeading}\n${this.fighters[winner].name} TAKES ROUND ${this.roundNumber}`;
     this.announcementText.setText(roundCall);
     this.emitStatus(
       winner === null
@@ -872,36 +989,53 @@ export class ArcadeRumbleScene extends Phaser.Scene {
       },
       reason,
     );
-    const heading = result.winner === "draw"
-      ? "EXHIBITION DRAW"
-      : `${result.winner === "player_1" ? "PLAYER 1" : result.winner === "cpu" ? "CPU" : "PLAYER 2"} WINS`;
-    this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 930, 300, 0x10080d, 0.96)
-      .setStrokeStyle(4, 0xffd34d).setDepth(110);
-    this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 86, heading, {
-      fontFamily: "system-ui, sans-serif",
-      fontSize: "50px",
-      fontStyle: "bold",
-      color: "#fff8e8",
-      align: "center",
-    }).setOrigin(0.5).setDepth(111);
-    this.add.text(
-      GAME_WIDTH / 2,
-      GAME_HEIGHT / 2,
-      `${left.name} ${left.roundsWon} – ${right.roundsWon} ${right.name}\nFirst to ${ARCADE_ROUNDS_TO_WIN}; HP and rounds came only from arcade actions.`,
-      {
+    const heading =
+      result.winner === "draw"
+        ? "EXHIBITION DRAW"
+        : `${result.winner === "player_1" ? "PLAYER 1" : result.winner === "cpu" ? "CPU" : "PLAYER 2"} WINS`;
+    this.add
+      .rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 930, 300, 0x10080d, 0.96)
+      .setStrokeStyle(4, 0xffd34d)
+      .setDepth(110);
+    this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 86, heading, {
         fontFamily: "system-ui, sans-serif",
-        fontSize: "21px",
-        color: "#e2cad0",
+        fontSize: "50px",
+        fontStyle: "bold",
+        color: "#fff8e8",
         align: "center",
-        lineSpacing: 8,
-      },
-    ).setOrigin(0.5).setDepth(111);
-    this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 96, `${result.disclaimer}\nPress R or use Restart.`, {
-      fontFamily: "system-ui, sans-serif",
-      fontSize: "17px",
-      color: "#8df6e7",
-      align: "center",
-    }).setOrigin(0.5).setDepth(111);
+      })
+      .setOrigin(0.5)
+      .setDepth(111);
+    this.add
+      .text(
+        GAME_WIDTH / 2,
+        GAME_HEIGHT / 2,
+        `${left.name} ${left.roundsWon} – ${right.roundsWon} ${right.name}\nFirst to ${ARCADE_ROUNDS_TO_WIN}; HP and rounds came only from arcade actions.`,
+        {
+          fontFamily: "system-ui, sans-serif",
+          fontSize: "21px",
+          color: "#e2cad0",
+          align: "center",
+          lineSpacing: 8,
+        },
+      )
+      .setOrigin(0.5)
+      .setDepth(111);
+    this.add
+      .text(
+        GAME_WIDTH / 2,
+        GAME_HEIGHT / 2 + 96,
+        `${result.disclaimer}\nPress R or use Restart.`,
+        {
+          fontFamily: "system-ui, sans-serif",
+          fontSize: "17px",
+          color: "#8df6e7",
+          align: "center",
+        },
+      )
+      .setOrigin(0.5)
+      .setDepth(111);
     this.lastStatusMessage = heading;
     this.options.callbacks.onGameOver(result);
     this.notifyStatus();
@@ -922,19 +1056,23 @@ export class ArcadeRumbleScene extends Phaser.Scene {
   private updateFighterLabels(): void {
     if (!this.fighters) return;
     for (const fighter of this.fighters) {
-      fighter.nameLabel.setPosition(fighter.sprite.x, fighter.sprite.y - FIGHTER_LABEL_OFFSET_Y);
+      fighter.nameLabel.setPosition(
+        fighter.sprite.x,
+        fighter.sprite.y - FIGHTER_LABEL_OFFSET_Y,
+      );
       fighter.nameLabel.setAlpha(fighter.blocking ? 0.74 : 1);
     }
   }
 
-  private showStrike(x: number, y: number, corner: Corner, radius: number): void {
-    const strike = this.add.circle(
-      x,
-      y,
-      radius,
-      corner === 0 ? 0x1ed9c3 : 0xffb72f,
-      0.36,
-    ).setDepth(17);
+  private showStrike(
+    x: number,
+    y: number,
+    corner: Corner,
+    radius: number,
+  ): void {
+    const strike = this.add
+      .circle(x, y, radius, corner === 0 ? 0x1ed9c3 : 0xffb72f, 0.36)
+      .setDepth(17);
     if (this.options.reducedMotion) {
       this.time.delayedCall(80, () => strike.destroy());
       return;
@@ -962,7 +1100,10 @@ export class ArcadeRumbleScene extends Phaser.Scene {
   private feedbackBurst(x: number, y: number, color: number): void {
     if (this.options.reducedMotion) return;
     for (let index = 0; index < 6; index += 1) {
-      const spark = this.add.image(x, y, "versus-spark").setTint(color).setDepth(26);
+      const spark = this.add
+        .image(x, y, "versus-spark")
+        .setTint(color)
+        .setDepth(26);
       const angle = (Math.PI * 2 * index) / 6;
       this.tweens.add({
         targets: spark,
@@ -978,7 +1119,9 @@ export class ArcadeRumbleScene extends Phaser.Scene {
 
   private destroyProjectile(projectile: ActiveProjectile): void {
     projectile.sprite.destroy();
-    this.projectiles = this.projectiles.filter((candidate) => candidate !== projectile);
+    this.projectiles = this.projectiles.filter(
+      (candidate) => candidate !== projectile,
+    );
   }
 
   private clearProjectiles(): void {

@@ -30,7 +30,9 @@
   --color-unknown: #5d6576;
   --color-unknown-soft: #ececf0;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", ui-sans-serif, sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", ui-sans-serif,
+    sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
   --space-1: 0.25rem;
@@ -46,7 +48,9 @@
   --radius-panel: 1rem;
   --content-width: 88rem;
   --shadow-surface: 0 0.125rem 0.5rem rgb(17 26 46 / 5%);
-  --shadow-raised: 0 0.125rem 0.25rem rgb(17 26 46 / 5%), 0 0.75rem 2rem rgb(17 26 46 / 7%);
-  --shadow-overlay: 0 0.25rem 0.75rem rgb(17 26 46 / 10%), 0 1.5rem 4rem rgb(17 26 46 / 18%);
+  --shadow-raised:
+    0 0.125rem 0.25rem rgb(17 26 46 / 5%), 0 0.75rem 2rem rgb(17 26 46 / 7%);
+  --shadow-overlay:
+    0 0.25rem 0.75rem rgb(17 26 46 / 10%), 0 1.5rem 4rem rgb(17 26 46 / 18%);
   --transition-responsive: 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }

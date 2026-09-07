@@ -16,8 +16,12 @@ vi.mock("../arcade", () => ({
   }) => (
     <section aria-label="Arcade game test double">
       <h2>Arcade match · {mode}</h2>
-      <button type="button" onClick={() => onPhaseChange?.(1)}>Advance test phase</button>
-      <button type="button" onClick={onExit}>Exit test arcade</button>
+      <button type="button" onClick={() => onPhaseChange?.(1)}>
+        Advance test phase
+      </button>
+      <button type="button" onClick={onExit}>
+        Exit test arcade
+      </button>
     </section>
   ),
 }));
@@ -28,8 +32,12 @@ const projectIds = [
 ] as const;
 
 async function enterArena() {
-  await screen.findByRole("heading", { name: "Internal support agent proof of concept" });
-  await userEvent.click(screen.getByRole("button", { name: "Guided evidence tour →" }));
+  await screen.findByRole("heading", {
+    name: "Internal support agent proof of concept",
+  });
+  await userEvent.click(
+    screen.getByRole("button", { name: "Guided evidence tour →" }),
+  );
 }
 
 describe("ArenaScreen", () => {
@@ -44,13 +52,18 @@ describe("ArenaScreen", () => {
       />,
     );
 
-    expect(await screen.findByRole("heading", { name: "CrewAI vs Eigent" }))
-      .toBeInTheDocument();
-    expect(screen.getByText("Gameplay-only exhibition", { selector: "strong" }))
-      .toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Enter solo fight →" })).toBeEnabled();
-    expect(screen.queryByRole("button", { name: "Guided evidence tour →" }))
-      .not.toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "CrewAI vs Eigent" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Gameplay-only exhibition", { selector: "strong" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Enter solo fight →" }),
+    ).toBeEnabled();
+    expect(
+      screen.queryByRole("button", { name: "Guided evidence tour →" }),
+    ).not.toBeInTheDocument();
   });
 
   it("plays all prepared rounds, opens evidence, and reaches a no-winner recap", async () => {
@@ -67,28 +80,46 @@ describe("ArenaScreen", () => {
     );
 
     expect(
-      await screen.findByRole("heading", { name: "Internal support agent proof of concept" }),
+      await screen.findByRole("heading", {
+        name: "Internal support agent proof of concept",
+      }),
     ).toBeInTheDocument();
     expect(screen.getByText("Bundled fallback in play")).toBeInTheDocument();
-    expect(screen.getByLabelText("OpenAI Agents SDK for Python, left corner")).toHaveTextContent(
-      "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
-    );
+    expect(
+      screen.getByLabelText("OpenAI Agents SDK for Python, left corner"),
+    ).toHaveTextContent("65886fa16dcdb482090b30b74de1d0cc80b9f4c6");
     expect(screen.getByLabelText("LangGraph, right corner")).toHaveTextContent(
       "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
     );
-    expect(screen.getByRole("button", { name: "Enter solo fight →" })).toBeEnabled();
-    expect(screen.getByRole("button", { name: "Local 2-player" })).toBeEnabled();
-    expect(screen.getByRole("button", { name: "Solo fullscreen ⛶" })).toBeEnabled();
-    expect(screen.getByRole("button", { name: "Guided evidence tour →" })).toBeEnabled();
-    expect(screen.getByText(/each fighter keeps its exact project name/i)).toBeInTheDocument();
-    expect(screen.getByText(/equally budgeted game identities/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Enter solo fight →" }),
+    ).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Local 2-player" }),
+    ).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Solo fullscreen ⛶" }),
+    ).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Guided evidence tour →" }),
+    ).toBeEnabled();
+    expect(
+      screen.getByText(/each fighter keeps its exact project name/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/equally budgeted game identities/i),
+    ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Guided evidence tour →" }));
+    await user.click(
+      screen.getByRole("button", { name: "Guided evidence tour →" }),
+    );
     expect(
       screen.getByRole("heading", { name: "Round 1: Capability Clash" }),
     ).toBeInTheDocument();
     expect(screen.getAllByText("Approval Gate Smackdown")).not.toHaveLength(0);
-    expect(screen.getByText("Contextual edge · left corner")).toBeInTheDocument();
+    expect(
+      screen.getByText("Contextual edge · left corner"),
+    ).toBeInTheDocument();
 
     await user.click(
       screen.getByRole("button", {
@@ -109,27 +140,41 @@ describe("ArenaScreen", () => {
       screen.getByRole("heading", { name: "Round 2: Operations Endgame" }),
     ).toBeInTheDocument();
     expect(screen.getAllByText("Restart Comeback Combo")).not.toHaveLength(0);
-    expect(screen.getByText("Contextual edge · right corner")).toBeInTheDocument();
+    expect(
+      screen.getByText("Contextual edge · right corner"),
+    ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Next round →" }));
     expect(
       screen.getByRole("heading", { name: "Round 3: Integration Grapple" }),
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "See contextual recap →" }));
+    await user.click(
+      screen.getByRole("button", { name: "See contextual recap →" }),
+    );
     expect(
-      screen.getByRole("heading", { name: "The bell rings. The decision stays yours." }),
+      screen.getByRole("heading", {
+        name: "The bell rings. The decision stays yours.",
+      }),
     ).toBeInTheDocument();
     expect(screen.getByText("No overall project result")).toBeInTheDocument();
     expect(screen.getByText(/the rounds are not totaled/i)).toBeInTheDocument();
     expect(screen.queryByText(/^winner$/i)).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Gather more evidence" }));
-    expect(screen.getByText("Recorded locally: Gather more evidence.")).toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "Replay this matchup ↻" }));
+    await user.click(
+      screen.getByRole("button", { name: "Gather more evidence" }),
+    );
     expect(
-      screen.getByRole("heading", { name: "Internal support agent proof of concept" }),
+      screen.getByText("Recorded locally: Gather more evidence."),
+    ).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", { name: "Replay this matchup ↻" }),
+    );
+    expect(
+      screen.getByRole("heading", {
+        name: "Internal support agent proof of concept",
+      }),
     ).toBeInTheDocument();
   });
 
@@ -144,15 +189,21 @@ describe("ArenaScreen", () => {
       />,
     );
 
-    await screen.findByRole("heading", { name: "Internal support agent proof of concept" });
-    await user.click(screen.getByRole("button", { name: "Enter solo fight →" }));
+    await screen.findByRole("heading", {
+      name: "Internal support agent proof of concept",
+    });
+    await user.click(
+      screen.getByRole("button", { name: "Enter solo fight →" }),
+    );
 
     expect(
       await screen.findByRole("heading", { name: "Arcade match · solo" }),
     ).toBeInTheDocument();
     expect(screen.getByText(/entertainment state/i)).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Advance test phase" }));
+    await user.click(
+      screen.getByRole("button", { name: "Advance test phase" }),
+    );
     expect(screen.getByText("Round 2: Operations Endgame")).toBeInTheDocument();
 
     await user.click(
@@ -160,7 +211,9 @@ describe("ArenaScreen", () => {
         name: "End match and inspect this evidence round →",
       }),
     );
-    expect(screen.getAllByText("Restart Comeback Combo").length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText("Restart Comeback Combo").length,
+    ).toBeGreaterThan(0);
   });
 
   it("requests fullscreen from the mode chooser and still starts the fight", async () => {
@@ -179,12 +232,15 @@ describe("ArenaScreen", () => {
       />,
     );
 
-    await screen.findByRole("heading", { name: "Internal support agent proof of concept" });
+    await screen.findByRole("heading", {
+      name: "Internal support agent proof of concept",
+    });
     await user.click(screen.getByRole("button", { name: "Solo fullscreen ⛶" }));
 
     expect(requestFullscreen).toHaveBeenCalledOnce();
-    expect(await screen.findByRole("heading", { name: "Arcade match · solo" }))
-      .toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Arcade match · solo" }),
+    ).toBeInTheDocument();
   });
 
   it("keeps a no-evidence round inconclusive and does not style either project as having an edge", async () => {
@@ -206,10 +262,15 @@ describe("ArenaScreen", () => {
     expect(screen.getByText("No evidence found")).toBeInTheDocument();
     expect(screen.getByText("Confidence unknown")).toBeInTheDocument();
     expect(
-      screen.getByText(/absence of evidence is not evidence that the capability is absent/i),
+      screen.getByText(
+        /absence of evidence is not evidence that the capability is absent/i,
+      ),
     ).toBeInTheDocument();
     expect(container.querySelectorAll(".round-finding--edge")).toHaveLength(0);
-    expect(screen.getByText(/the recorded values or evidence do not justify a contextual edge/i))
-      .toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /the recorded values or evidence do not justify a contextual edge/i,
+      ),
+    ).toBeInTheDocument();
   });
 });

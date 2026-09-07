@@ -7,6 +7,7 @@ from agent_project_intelligence.analysis.models import (
     ProjectCardAnalysisRequest,
     ProjectCardGenerationResult,
 )
+
 __all__ = [
     "AnalysisConfiguration",
     "CodexProjectCardHarness",

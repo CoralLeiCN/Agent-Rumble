@@ -48,20 +48,33 @@ interface ClaimSourcesProps {
 
 function ClaimSources({ claim, onOpenEvidence }: ClaimSourcesProps) {
   const sources = [
-    ...claim.supporting_evidence.map((evidence) => ({ evidence, relationship: "supporting" as const })),
-    ...claim.conflicting_evidence.map((evidence) => ({ evidence, relationship: "conflicting" as const })),
+    ...claim.supporting_evidence.map((evidence) => ({
+      evidence,
+      relationship: "supporting" as const,
+    })),
+    ...claim.conflicting_evidence.map((evidence) => ({
+      evidence,
+      relationship: "conflicting" as const,
+    })),
   ];
 
   return (
     <li className="claim-source">
       <code>{claim.claim_id}</code>
-      {sources.length === 0 && <span>No evidence locator is attached to this claim.</span>}
+      {sources.length === 0 && (
+        <span>No evidence locator is attached to this claim.</span>
+      )}
       {sources.map(({ evidence, relationship }, index) => {
-        const catalogEvidence = toCatalogEvidenceRecord(claim, evidence, relationship);
+        const catalogEvidence = toCatalogEvidenceRecord(
+          claim,
+          evidence,
+          relationship,
+        );
         if (!catalogEvidence) {
           return (
             <span key={`${relationship}-${evidence.evidence_id}`}>
-              {relationship === "conflicting" ? "Conflicting source" : "Source"} recorded · status cannot be projected in this drawer
+              {relationship === "conflicting" ? "Conflicting source" : "Source"}{" "}
+              recorded · status cannot be projected in this drawer
             </span>
           );
         }
@@ -70,10 +83,14 @@ function ClaimSources({ claim, onOpenEvidence }: ClaimSourcesProps) {
             className={`claim-source__button claim-source__button--${relationship}`}
             key={`${relationship}-${evidence.evidence_id}`}
             type="button"
-            onClick={(event) => onOpenEvidence(catalogEvidence, event.currentTarget)}
+            onClick={(event) =>
+              onOpenEvidence(catalogEvidence, event.currentTarget)
+            }
             aria-label={`${relationship === "conflicting" ? "Inspect conflicting evidence" : "Inspect evidence"} for ${claim.statement}`}
           >
-            {relationship === "conflicting" ? "Conflicting source" : "Inspect evidence"}
+            {relationship === "conflicting"
+              ? "Conflicting source"
+              : "Inspect evidence"}
             {sources.length > 1 ? ` ${index + 1}` : ""} →
           </button>
         );
@@ -122,8 +139,12 @@ function RoundFinding({
             </span>
           </>
         ) : (
-          <div className={`arena-null arena-null--${comparisonStateFor(cell.state).tone}`}>
-            <span aria-hidden="true">{comparisonStateFor(cell.state).symbol}</span>
+          <div
+            className={`arena-null arena-null--${comparisonStateFor(cell.state).tone}`}
+          >
+            <span aria-hidden="true">
+              {comparisonStateFor(cell.state).symbol}
+            </span>
             <span>
               <strong>{comparisonStateFor(cell.state).label}</strong>
               Absence of evidence is not evidence that the capability is absent.
@@ -133,13 +154,21 @@ function RoundFinding({
         <RumbleStatus cell={cell} />
         {cell.claim_ids.length > 0 && resolvedClaims.length === 0 && (
           <p className="round-finding__claim-warning" role="note">
-            Claim reference {cell.claim_ids.join(", ")} is not present in this demo bundle.
+            Claim reference {cell.claim_ids.join(", ")} is not present in this
+            demo bundle.
           </p>
         )}
         {resolvedClaims.length > 0 && (
-          <ul className="claim-sources" aria-label={`Claim evidence for ${entrant.project_name}`}>
+          <ul
+            className="claim-sources"
+            aria-label={`Claim evidence for ${entrant.project_name}`}
+          >
             {resolvedClaims.map((claim) => (
-              <ClaimSources key={claim.claim_id} claim={claim} onOpenEvidence={onOpenEvidence} />
+              <ClaimSources
+                key={claim.claim_id}
+                claim={claim}
+                onOpenEvidence={onOpenEvidence}
+              />
             ))}
           </ul>
         )}
@@ -166,7 +195,9 @@ export function RoundCard({
       <header className="round-card__header">
         <div>
           <span className="round-card__dimension">{round.dimension}</span>
-          <h2 id={`${round.round_id}-title`} tabIndex={-1}>{round.title}</h2>
+          <h2 id={`${round.round_id}-title`} tabIndex={-1}>
+            {round.title}
+          </h2>
           <p>{round.label}</p>
         </div>
         <div className={`round-verdict round-verdict--${verdict.tone}`}>
@@ -189,7 +220,9 @@ export function RoundCard({
           claims={claims}
           onOpenEvidence={onOpenEvidence}
         />
-        <div className="round-findings__versus" aria-hidden="true">VS</div>
+        <div className="round-findings__versus" aria-hidden="true">
+          VS
+        </div>
         <RoundFinding
           cell={round.entrant_b}
           entrant={entrantB}
@@ -205,7 +238,11 @@ export function RoundCard({
           <span>Ring call</span>
           <strong>{round.callout}</strong>
         </div>
-        <button className="button button--primary" type="button" onClick={onAdvance}>
+        <button
+          className="button button--primary"
+          type="button"
+          onClick={onAdvance}
+        >
           {isFinalRound ? "See contextual recap →" : "Next round →"}
         </button>
       </footer>

@@ -12,7 +12,6 @@ from agent_project_intelligence.models.rumble_demo import (
 from agent_project_intelligence.services.rumble import project_rumble
 from agent_project_intelligence.services.rumble_demo import load_demo_bundle
 
-
 router = APIRouter(prefix="/api/v1/rumble", tags=["catalog"])
 
 

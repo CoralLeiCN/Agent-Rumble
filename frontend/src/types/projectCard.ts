@@ -21,7 +21,8 @@ export type VerificationStatus =
   | "runtime_verified"
   | "unverified"
   | "conflicted";
-export type FieldState = "unknown" | "not_applicable" | "not_analyzed" | "no_evidence_found";
+export type FieldState =
+  "unknown" | "not_applicable" | "not_analyzed" | "no_evidence_found";
 
 export interface CardRepository {
   source_id: string;
@@ -60,7 +61,8 @@ export interface Capability {
 export interface TechnologyEntry {
   name: string;
   version_constraint: NullableString;
-  dependency_relation: "direct" | "transitive" | "development" | "optional" | "bundled" | "hosted";
+  dependency_relation:
+    "direct" | "transitive" | "development" | "optional" | "bundled" | "hosted";
   required: boolean;
   claim_ids: string[];
 }
@@ -242,11 +244,14 @@ export interface AgentProjectCard {
   claims: Claim[];
   sources: Source[];
   evidence: Evidence[];
-  open_questions: Array<string | {
-    question: string;
-    reason: NullableString;
-    related_claim_ids: string[];
-  }>;
+  open_questions: Array<
+    | string
+    | {
+        question: string;
+        reason: NullableString;
+        related_claim_ids: string[];
+      }
+  >;
 }
 
 export interface Relationship {

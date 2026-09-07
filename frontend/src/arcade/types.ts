@@ -64,9 +64,4 @@ export interface ArcadeGameProps {
 }
 
 export type ArcadeVirtualAction =
-  | "left"
-  | "right"
-  | "jump"
-  | "attack"
-  | "special"
-  | "block";
+  "left" | "right" | "jump" | "attack" | "special" | "block";

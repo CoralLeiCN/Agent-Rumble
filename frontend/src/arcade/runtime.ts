@@ -60,7 +60,7 @@ export function createArcadeRuntime(
     },
   });
 
-  const withScene = <T,>(fallback: T, action: () => T): T => {
+  const withScene = <T>(fallback: T, action: () => T): T => {
     if (!sceneReady || destroyed) return fallback;
     return action();
   };
@@ -89,4 +89,3 @@ export function createArcadeRuntime(
     },
   };
 }
-

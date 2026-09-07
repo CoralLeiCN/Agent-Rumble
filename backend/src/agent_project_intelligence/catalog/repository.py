@@ -10,57 +10,13 @@ from typing import Any, Protocol
 from urllib.parse import quote
 
 import yaml
-from yaml.events import AliasEvent
-from yaml.nodes import MappingNode
 
 from agent_project_intelligence.catalog.models import CatalogCard, CatalogSnapshot, freeze_value
-from agent_project_intelligence.catalog.validation import CardValidationError, CardValidator
-
-
-class _CatalogSafeLoader(yaml.SafeLoader):
-    """Safe YAML loader that rejects aliases and ambiguous duplicate keys."""
-
-    def compose_node(self, parent: Any, index: Any) -> Any:
-        if self.check_event(AliasEvent):
-            event = self.peek_event()
-            raise yaml.constructor.ConstructorError(
-                None,
-                None,
-                "YAML aliases are not allowed in canonical catalog cards",
-                event.start_mark,
-            )
-        return super().compose_node(parent, index)
-
-    def construct_mapping(self, node: MappingNode, deep: bool = False) -> dict[Any, Any]:
-        if not isinstance(node, MappingNode):
-            raise yaml.constructor.ConstructorError(
-                None,
-                None,
-                f"expected a mapping node, but found {node.id}",
-                node.start_mark,
-            )
-        self.flatten_mapping(node)
-        mapping: dict[Any, Any] = {}
-        for key_node, value_node in node.value:
-            key = self.construct_object(key_node, deep=deep)
-            try:
-                duplicate = key in mapping
-            except TypeError as exc:
-                raise yaml.constructor.ConstructorError(
-                    "while constructing a mapping",
-                    node.start_mark,
-                    "found an unhashable key",
-                    key_node.start_mark,
-                ) from exc
-            if duplicate:
-                raise yaml.constructor.ConstructorError(
-                    "while constructing a mapping",
-                    node.start_mark,
-                    f"found duplicate key {key!r}",
-                    key_node.start_mark,
-                )
-            mapping[key] = self.construct_object(value_node, deep=deep)
-        return mapping
+from agent_project_intelligence.catalog.validation import (
+    CardValidationError,
+    CardValidator,
+    parse_card_yaml,
+)
 
 
 def encode_card_id(card_id: str) -> str:
@@ -97,9 +53,7 @@ class CatalogLoadError(ValueError):
 
     def __init__(self, diagnostics: tuple[CatalogDiagnostic, ...]) -> None:
         self.diagnostics = diagnostics
-        summary = "; ".join(
-            f"{item.code} at {item.path}: {item.message}" for item in diagnostics
-        )
+        summary = "; ".join(f"{item.code} at {item.path}: {item.message}" for item in diagnostics)
         super().__init__(summary)
 
 
@@ -166,7 +120,9 @@ class FilesystemCatalogRepository:
         encoded_card_id, _, version_segment, filename = relative.parts
         if filename != "project-card.yaml":  # Kept explicit for contract readability.
             return None
-        if path.is_symlink() or any(parent.is_symlink() for parent in path.parents if parent != root):
+        if path.is_symlink() or any(
+            parent.is_symlink() for parent in path.parents if parent != root
+        ):
             diagnostics.append(
                 CatalogDiagnostic("unsafe_path", path, "catalog artifacts may not use symlinks")
             )
@@ -193,7 +149,8 @@ class FilesystemCatalogRepository:
                     )
                 )
                 return None
-            raw = resolved_path.read_bytes()
+            with resolved_path.open("rb") as stream:
+                raw = stream.read(self._max_file_size_bytes + 1)
         except OSError as exc:
             diagnostics.append(CatalogDiagnostic("unreadable_file", path, str(exc)))
             return None
@@ -208,7 +165,7 @@ class FilesystemCatalogRepository:
             return None
 
         try:
-            document: Any = yaml.load(raw.decode("utf-8"), Loader=_CatalogSafeLoader)
+            document: Any = parse_card_yaml(raw.decode("utf-8"))
         except (UnicodeDecodeError, yaml.YAMLError) as exc:
             diagnostics.append(CatalogDiagnostic("invalid_yaml", path, str(exc)))
             return None

@@ -517,11 +517,15 @@
 
 .round-finding--edge {
   border-color: var(--color-verified);
-  box-shadow: inset 0.25rem 0 0 var(--color-verified), 0 0.5rem 1.5rem rgb(19 122 90 / 9%);
+  box-shadow:
+    inset 0.25rem 0 0 var(--color-verified),
+    0 0.5rem 1.5rem rgb(19 122 90 / 9%);
 }
 
 .round-finding--b.round-finding--edge {
-  box-shadow: inset -0.25rem 0 0 var(--color-verified), 0 0.5rem 1.5rem rgb(19 122 90 / 9%);
+  box-shadow:
+    inset -0.25rem 0 0 var(--color-verified),
+    0 0.5rem 1.5rem rgb(19 122 90 / 9%);
 }
 
 .round-finding header {
@@ -611,10 +615,18 @@
   font-weight: 800;
 }
 
-.arena-status--positive { color: var(--color-verified); }
-.arena-status--informational { color: var(--color-documented); }
-.arena-status--warning { color: var(--color-conflict); }
-.arena-status--muted { color: var(--color-text-soft); }
+.arena-status--positive {
+  color: var(--color-verified);
+}
+.arena-status--informational {
+  color: var(--color-documented);
+}
+.arena-status--warning {
+  color: var(--color-conflict);
+}
+.arena-status--muted {
+  color: var(--color-text-soft);
+}
 
 .arena-null {
   min-height: 5.5rem;
@@ -922,9 +934,15 @@
   border-radius: var(--radius-panel);
   background:
     linear-gradient(90deg, rgb(5 10 25 / 94%), rgb(17 26 46 / 90%)),
-    repeating-linear-gradient(0deg, transparent 0 17px, rgb(122 255 215 / 8%) 18px);
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 17px,
+      rgb(122 255 215 / 8%) 18px
+    );
   color: var(--color-text-inverse);
-  box-shadow: 0 1.1rem 3rem rgb(17 26 46 / 24%), inset 0 0 3rem rgb(122 255 215 / 6%);
+  box-shadow:
+    0 1.1rem 3rem rgb(17 26 46 / 24%),
+    inset 0 0 3rem rgb(122 255 215 / 6%);
 }
 
 .arcade-launch::after {
@@ -935,7 +953,9 @@
   height: 13rem;
   border: 1px solid rgb(122 255 215 / 22%);
   border-radius: 50%;
-  box-shadow: 0 0 0 2rem rgb(122 255 215 / 4%), 0 0 0 4rem rgb(122 255 215 / 3%);
+  box-shadow:
+    0 0 0 2rem rgb(122 255 215 / 4%),
+    0 0 0 4rem rgb(122 255 215 / 3%);
   content: "";
   pointer-events: none;
 }
@@ -1151,33 +1171,69 @@
 }
 
 @keyframes arena-enter-left {
-  from { opacity: 0; transform: translateX(-2rem); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes arena-enter-right {
-  from { opacity: 0; transform: translateX(2rem); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes arena-pop {
-  from { opacity: 0; transform: scale(0.6) rotate(-12deg); }
-  to { opacity: 1; transform: scale(1) rotate(-5deg); }
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-12deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(-5deg);
+  }
 }
 
 @keyframes arena-rise {
-  from { opacity: 0; transform: translateY(0.6rem); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes arena-round-enter {
-  from { opacity: 0; transform: translateY(0.5rem) scale(0.995); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes arena-pulse {
-  from { background: transparent; transform: scale(0.95); }
-  to { background: var(--color-action); transform: scale(1.05); }
+  from {
+    background: transparent;
+    transform: scale(0.95);
+  }
+  to {
+    background: var(--color-action);
+    transform: scale(1.05);
+  }
 }
 
 @media (max-width: 60rem) {

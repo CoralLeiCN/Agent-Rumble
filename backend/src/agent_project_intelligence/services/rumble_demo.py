@@ -6,7 +6,6 @@ from typing import Any
 
 from agent_project_intelligence.models.rumble_demo import RumbleDemoBundle
 
-
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_DEMO_BUNDLE_PATH = REPOSITORY_ROOT / "fixtures" / "rumble" / "demo_bundle.json"
 

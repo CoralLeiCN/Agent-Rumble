@@ -1,8 +1,7 @@
 """Tests for the service health endpoint."""
 
-from fastapi.testclient import TestClient
-
 from agent_project_intelligence.main import create_app
+from fastapi.testclient import TestClient
 
 
 def test_health_check() -> None:

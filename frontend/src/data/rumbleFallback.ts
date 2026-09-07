@@ -32,7 +32,10 @@ function canSupportAdvantage(cell: RumbleCell) {
   );
 }
 
-function verdictFor(entrantA: RumbleCell, entrantB: RumbleCell): RumbleRoundVerdict {
+function verdictFor(
+  entrantA: RumbleCell,
+  entrantB: RumbleCell,
+): RumbleRoundVerdict {
   if (!canSupportAdvantage(entrantA) || !canSupportAdvantage(entrantB)) {
     return "inconclusive";
   }
@@ -61,7 +64,12 @@ function calloutFor(
 }
 
 function slug(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "comparison";
+  return (
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") || "comparison"
+  );
 }
 
 export function projectBundledRumble(
@@ -71,7 +79,9 @@ export function projectBundledRumble(
   if (!entrantA || !entrantB) {
     throw new Error("A Rumble projection requires exactly two projects.");
   }
-  const sharedRole = entrantA.project_roles.some((role) => entrantB.project_roles.includes(role));
+  const sharedRole = entrantA.project_roles.some((role) =>
+    entrantB.project_roles.includes(role),
+  );
 
   return {
     mode: "rumble_arena",
@@ -90,7 +100,11 @@ export function projectBundledRumble(
         round_id: `round-${roundNumber}-${slug(row.dimension)}`,
         title: `Round ${roundNumber}: ${roundTitles[row.dimension.toLowerCase()] ?? `${row.label} Face-off`}`,
         verdict,
-        callout: calloutFor(verdict, entrantA.project_name, entrantB.project_name),
+        callout: calloutFor(
+          verdict,
+          entrantA.project_name,
+          entrantB.project_name,
+        ),
       };
     }),
     overall_result: "no_universal_winner",

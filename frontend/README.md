@@ -18,10 +18,10 @@ The prototype demonstrates one complete interaction:
 
 ## Local Development
 
-Use a supported Node.js LTS release. From this directory:
+Use Node 24.20.0 (the root `.node-version`) with bundled npm 11.19.0. From this directory:
 
 ```shell
-npm install
+npm ci
 npm run dev
 ```
 
@@ -43,9 +43,11 @@ npm test
 npm run build
 ```
 
-The prototype does not add a dedicated lint dependency while the production
-frontend toolchain remains an open architecture choice. TypeScript compilation,
-behavior tests, and the production build are the current automated checks.
+ESLint checks TypeScript and React hook dependencies; Prettier enforces consistent
+formatting. Run `npm run lint`, `npm run format:check`, and `npm run typecheck`.
+`npm run format` applies formatting. The root `make check` also runs backend
+checks, canonical-card validation, tests, and the production build. CI runs the
+same checks plus dependency audits.
 
 To inspect the production bundle locally:
 
@@ -63,15 +65,15 @@ fallback for the arcade demo.
 
 The reusable seams are:
 
-* `src/types/projectCard.ts` represents the versioned pre-release Agent Project
+- `src/types/projectCard.ts` represents the versioned pre-release Agent Project
   Card schema v0.3, preserving separate capability support, claim verification,
   confidence, and field-state vocabularies.
-* `src/types/catalog.ts` defines typed UI projections and typed data provenance
+- `src/types/catalog.ts` defines typed UI projections and typed data provenance
   without becoming a second card source of truth.
-* `src/data/projectCardContract.ts` reads the schema packaged with the Agent
+- `src/data/projectCardContract.ts` reads the schema packaged with the Agent
   Project Card skill and derives the complete field-definition inventory and
   top-level order without maintaining a frontend schema copy.
-* `src/data/projectCardAdapter.ts` is the only canonical-card-to-UI adapter. It
+- `src/data/projectCardAdapter.ts` is the only canonical-card-to-UI adapter. It
   projects structured Assessment Contexts and result rows, then recursively
   inventories every field present in selected canonical card payloads. Scalar
   values, nested objects, entity arrays, arbitrary analysis configuration,
@@ -80,26 +82,26 @@ The reusable seams are:
   verification from capability support. It resolves the evidence inspector
   claim-first through supporting or conflicting evidence records and full source
   provenance.
-* `src/comparison/comparisonPresentation.ts` maps the exhaustive dynamic
+- `src/comparison/comparisonPresentation.ts` maps the exhaustive dynamic
   inventory into customer-readable sections and priority tiers. It controls
   presentation only: every row and schema-only field remains reachable, and
   unknown future groups fall back to collapsed technical details.
-* `src/comparison/ContractComparison.tsx` presents four highlights per primary
+- `src/comparison/ContractComparison.tsx` presents four highlights per primary
   section, searchable collapsed details, exact status semantics, and supporting
   source links without exposing internal paths or record identifiers in the
   primary view.
-* `src/data/catalogGateway.ts` provides the FastAPI HTTP gateway. Search loads
+- `src/data/catalogGateway.ts` provides the FastAPI HTTP gateway. Search loads
   pinned canonical cards, comparison
   inventories those validated cards through the same schema-derived path, and
   evidence links resolve through the backend. It never replaces an API failure
   with fixture data.
-* `src/status/statusPresentation.ts` is the single mapping for verification,
+- `src/status/statusPresentation.ts` is the single mapping for verification,
   confidence, requirement, and comparison-state language. Screens do not invent
   their own status colors or labels.
-* `src/styles/tokens.css` separates surface, action, and verification semantics.
+- `src/styles/tokens.css` separates surface, action, and verification semantics.
   Electric lime indicates actions and selection accents; confirmed evidence
   uses a distinct green token and an explicit icon-plus-text label.
-* `src/data/fixtures.ts` exports JSON-compatible pre-release v0.3 card objects
+- `src/data/fixtures.ts` exports JSON-compatible pre-release v0.3 card objects
   for isolated tests only. `projectCardValidation.ts` checks their schema
   version, null-state pointers, and reference integrity.
 
@@ -124,13 +126,13 @@ mode. OpenAI Agents SDK and LangGraph retain the prepared evidence-backed
 comparison; every other pair uses neutral, equally powered gameplay identities
 without attributing claims or evidence to those projects.
 
-* **Solo vs CPU:** Player 1 uses `A` / `D` to move, `W` to jump, `F` to jab,
+- **Solo vs CPU:** Player 1 uses `A` / `D` to move, `W` to jump, `F` to jab,
   `G` for the project-trait special, and `S` to guard. Matching touch controls
   appear on coarse-pointer devices.
-* **Local 2-player:** Player 1 keeps those controls; Player 2 uses left/right,
+- **Local 2-player:** Player 1 keeps those controls; Player 2 uses left/right,
   up to jump, `M` to jab, `N` for the trait special, and down to guard.
-* **Solo fullscreen:** Starts a solo match while requesting browser fullscreen.
-* **Guided evidence tour:** Retains the non-game evidence walkthrough for the
+- **Solo fullscreen:** Starts a solo match while requesting browser fullscreen.
+- **Guided evidence tour:** Retains the non-game evidence walkthrough for the
   prepared evidence-backed pair.
 
 Use `P` or `Escape` to pause, `R` to restart, or the cabinet controls for pause,

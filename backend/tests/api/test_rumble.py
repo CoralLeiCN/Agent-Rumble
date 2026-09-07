@@ -1,8 +1,8 @@
 """API tests for the Rumble Arena projection endpoint."""
 
+from agent_project_intelligence.main import create_app
 from fastapi.testclient import TestClient
 
-from agent_project_intelligence.main import create_app
 from ..demo_bundle_payloads import demo_bundle_payload
 
 
@@ -54,9 +54,7 @@ def test_rejects_a_context_cohort_that_does_not_match_the_entrants() -> None:
 
 def test_rejects_an_invented_claim_id_before_projection() -> None:
     payload = matchup_payload()
-    payload["request"]["comparison_rows"][0]["entrant_a"]["claim_ids"] = [
-        "invented-claim"
-    ]
+    payload["request"]["comparison_rows"][0]["entrant_a"]["claim_ids"] = ["invented-claim"]
 
     with TestClient(create_app()) as client:
         response = client.post("/api/v1/rumble", json=payload)
@@ -67,9 +65,7 @@ def test_rejects_an_invented_claim_id_before_projection() -> None:
 
 def test_rejects_an_invented_claim_id_on_an_inconclusive_cell() -> None:
     payload = matchup_payload()
-    payload["request"]["comparison_rows"][2]["entrant_a"]["claim_ids"] = [
-        "invented-claim"
-    ]
+    payload["request"]["comparison_rows"][2]["entrant_a"]["claim_ids"] = ["invented-claim"]
 
     with TestClient(create_app()) as client:
         response = client.post("/api/v1/rumble", json=payload)

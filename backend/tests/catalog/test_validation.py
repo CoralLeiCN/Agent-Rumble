@@ -1,21 +1,16 @@
 """Contract tests for the repository-local skill validation adapter."""
 
 from copy import deepcopy
-from pathlib import Path
 
 import pytest
 import yaml
-
 from agent_project_intelligence.catalog.validation import (
     CardValidationError,
     SkillCardValidator,
 )
 from agent_project_intelligence.config import REPOSITORY_ROOT
 
-
-BIOAGENTS_CARD = (
-    REPOSITORY_ROOT / "project-cards" / "bio-xyz--BioAgents" / "project-card.yaml"
-)
+BIOAGENTS_CARD = REPOSITORY_ROOT / "project-cards" / "bio-xyz--BioAgents" / "project-card.yaml"
 
 
 def load_bioagents_card() -> dict[str, object]:
@@ -57,9 +52,7 @@ def test_skill_validator_rejects_dangling_references() -> None:
 
     assert len(caught.value.errors) == 1
     assert caught.value.errors[0].startswith("/classification/claim_ids/")
-    assert caught.value.errors[0].endswith(
-        ": unknown claim identifier 'claim-does-not-exist'"
-    )
+    assert caught.value.errors[0].endswith(": unknown claim identifier 'claim-does-not-exist'")
 
 
 def test_skill_validator_normalizes_surrogate_pairs_in_document_and_ids() -> None:
@@ -71,9 +64,9 @@ def test_skill_validator_normalizes_surrogate_pairs_in_document_and_ids() -> Non
 
     validated = SkillCardValidator().validate(document)
 
-    assert validated.card_id == "card-\U0001F680"
-    assert validated.project_id == "project-\U0001F680"
-    assert validated.document["summary"]["one_line"] == "Launch \U0001F680"
+    assert validated.card_id == "card-\U0001f680"
+    assert validated.project_id == "project-\U0001f680"
+    assert validated.document["summary"]["one_line"] == "Launch \U0001f680"
     assert document["card_id"] == f"card-{pair}"
 
 
@@ -116,7 +109,7 @@ def test_skill_validator_rejects_lone_surrogate_object_key() -> None:
 def test_skill_validator_rejects_key_collision_created_by_normalization() -> None:
     document = load_bioagents_card()
     pair_key = "\ud83d\ude80"
-    literal_key = "\U0001F680"
+    literal_key = "\U0001f680"
     configuration = document["source_snapshot"]["analysis_configuration"]  # type: ignore[index]
     configuration[pair_key] = "pair"  # type: ignore[index]
     configuration[literal_key] = "literal"  # type: ignore[index]
@@ -133,8 +126,8 @@ def test_skill_validator_rejects_key_collision_created_by_normalization() -> Non
 
 def test_skill_validator_preserves_existing_astral_scalar_exactly() -> None:
     document = load_bioagents_card()
-    document["summary"]["one_line"] = "Launch \U0001F680"  # type: ignore[index]
+    document["summary"]["one_line"] = "Launch \U0001f680"  # type: ignore[index]
 
     validated = SkillCardValidator().validate(document)
 
-    assert validated.document["summary"]["one_line"] == "Launch \U0001F680"
+    assert validated.document["summary"]["one_line"] == "Launch \U0001f680"

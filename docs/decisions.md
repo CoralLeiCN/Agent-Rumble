@@ -125,6 +125,57 @@ and validation controls defined by the product specification.
 * [Build plugins](https://learn.chatgpt.com/docs/build-plugins)
 * [Submit plugins](https://learn.chatgpt.com/docs/submit-plugins)
 
+### Static Generation Isolation
+
+**Status:** Accepted
+
+**Date:** 2026-09-07
+
+**Related requirements:** [Development Quality](requirements.md#development-quality),
+[Implementation Technology](requirements.md#implementation-technology)
+
+#### Context
+
+Denying approval requests does not prevent code execution within a writable
+sandbox. Model instructions and schema validity alone cannot establish that a
+card came from static analysis of the requested source revision.
+
+#### Decision
+
+The application reads immutable Git blobs at the checkout's full HEAD commit.
+It exposes bounded listing, text reading, literal search, and trusted contract
+references through a source-only MCP adapter. Codex continues to be invoked
+through the direct Python SDK. The MCP adapter supplies source data; it does not
+host Codex or orchestrate model calls.
+
+Run Codex in a disposable directory with a clean environment and a named
+filesystem profile that denies host reads and writes. Disable shell execution,
+web search, extra agents, plugins, and other executable tool surfaces. Import
+only the selected operator model/provider settings and required authentication.
+The application receives final YAML, writes it privately, applies the same
+bounded parser as the catalog and skill validator, and rejects policy or
+source-identity violations before accepting a draft.
+
+#### Consequences
+
+The model cannot modify or execute the analyzed checkout. Uncommitted files,
+symlinks, submodules, binary files, and oversized files are unavailable through
+the source tools. Repository-wide size limits produce typed failures. Local
+analysis requests must use the checkout's full commit hash when specifying a
+revision. Cancellation, malformed output, and runtime errors remove the private
+runtime and output directory.
+
+Provider commands, user tools, hooks, and unrelated environment variables are
+not inherited. Selected credentials may be read from the operator's file-based
+Codex login or referenced environment variable. Runtime upgrades must pass a
+local mock-provider test that attempts forbidden reads, writes, and execution
+and verifies permitted snapshot reads.
+
+#### References
+
+* [Codex permissions](https://learn.chatgpt.com/docs/config-file/config-reference)
+* [Pinned runtime filesystem reader](https://github.com/openai/codex/blob/rust-v0.144.4/codex-rs/core/src/tools/handlers/view_image.rs)
+
 ## Application Layout
 
 ### Frontend and Backend Project Areas
@@ -433,10 +484,40 @@ repeatable continuous-integration suite.
 * [Codex built-in browser](https://learn.chatgpt.com/docs/browser)
 * [Codex Model Context Protocol configuration](https://learn.chatgpt.com/docs/extend/mcp)
 
+## Development Quality Checks
+
+**Status:** Accepted
+
+**Date:** 2026-09-07
+
+**Related requirements:** [Development Quality](requirements.md#development-quality)
+
+### Context
+
+The existing regression tests and production build did not enforce Python types,
+consistent lint and formatting, or automated pull-request checks.
+
+### Decision
+
+Use Ruff and strict mypy for Python, ESLint with TypeScript and React hook rules
+for the frontend, and Prettier for frontend formatting. Retain pytest and Vitest.
+Record Node in `.node-version`, npm in the frontend package metadata, and use
+locked uv/npm installs. Permit only explicitly reviewed dependency install
+scripts through npm's version-pinned `allowScripts` policy. Run `make check` and Python/npm advisory audits in GitHub
+Actions with immutable action revisions and read-only repository permissions.
+
+### Consequences
+
+Existing code is formatted once to establish the baseline. The local commands
+and CI enforce the same checks. Runtime and dependency changes update the pins
+and lockfiles and must pass the runtime safety regression. This does not select
+a production deployment platform or add Playwright testing.
+
 ## Change Log
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-09-07 | Static generation and development quality | Selected immutable source tools, restricted runtime authority, application-owned output validation, pinned runtimes, and shared local/CI quality checks. |
 | 2026-07-29 | Agent workflow and runtime | Removed the redundant Agents SDK orchestration model and selected the direct Codex SDK adapter as the sole generation runtime with one model-provider settings group. |
 | 2026-07-28 | Agent workflow and runtime | Replaced the Codex MCP server integration with direct Python Codex SDK invocation while retaining the Agents SDK as the surrounding workflow orchestrator. |
 | 2026-07-25 | Frontend | Selected Vitest for frontend tests and deferred repository-owned Playwright testing pending evaluation of Codex browser capabilities. |
