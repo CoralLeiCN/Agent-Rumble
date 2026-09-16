@@ -58,15 +58,18 @@ export function ArenaScreen({
   const stageRef = useRef<HTMLDivElement>(null);
   const projectAId = projectIds[0];
   const projectBId = projectIds[1];
+  const projectAName = projectNames[0] ?? projectAId;
+  const projectBName = projectNames[1] ?? projectBId;
 
   useEffect(() => {
     const createGameplayOnlySession = (
       bundle: LoadedRumbleData<RumbleDemoBundle>,
     ): ArenaSession => {
       const preparedAt = new Date().toISOString();
+      const names = [projectAName, projectBName];
       const entrants = [projectAId, projectBId].map((projectId, index) => ({
         project_id: projectId as string,
-        project_name: projectNames[index] ?? (projectId as string),
+        project_name: names[index] ?? (projectId as string),
         project_roles: ["gameplay_exhibition"],
         source_snapshot: {
           card_id: `gameplay-${projectId as string}`,
@@ -214,7 +217,8 @@ export function ArenaScreen({
     projectAId,
     projectBId,
     projectIds.length,
-    projectNames,
+    projectAName,
+    projectBName,
   ]);
 
   useEffect(() => {

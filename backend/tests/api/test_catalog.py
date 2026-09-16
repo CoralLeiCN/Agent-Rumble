@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -12,7 +13,7 @@ from agent_project_intelligence.api.identifier_references import (
     decode_identifier_reference,
     encode_identifier_reference,
 )
-from agent_project_intelligence.api.models.catalog import CardReference
+from agent_project_intelligence.api.models.catalog import CardReference, SearchRequest
 from agent_project_intelligence.catalog import (
     CatalogCard,
     CatalogSnapshot,
@@ -22,6 +23,8 @@ from agent_project_intelligence.catalog import (
 from agent_project_intelligence.catalog.models import freeze_value
 from agent_project_intelligence.config import Settings
 from agent_project_intelligence.main import create_app
+from agent_project_intelligence.services import catalog as catalog_module
+from agent_project_intelligence.services.catalog import CatalogService
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
@@ -148,6 +151,45 @@ def test_catalog_context_exposes_declared_scope_and_freshness(client: TestClient
     assert body["schema_versions"] == ["0.3"]
     assert body["oldest_analyzed_at"] <= body["newest_analyzed_at"]
     assert any("Universal project quality scoring" in value for value in body["exclusions"])
+
+
+def test_catalog_freshness_compares_instants_across_timezones(
+    catalog_snapshot: CatalogSnapshot,
+) -> None:
+    earlier = _eigent_clone(catalog_snapshot, "earlier")
+    later = _eigent_clone(catalog_snapshot, "later")
+    earlier["source_snapshot"]["analyzed_at"] = "2026-07-18T10:00:00+02:00"  # type: ignore[index]
+    later["source_snapshot"]["analyzed_at"] = "2026-07-18T09:00:00Z"  # type: ignore[index]
+    service = CatalogService(
+        CatalogSnapshot(tuple(_card_from_document(document) for document in (earlier, later)))
+    )
+
+    context = service.catalog_context()
+
+    assert context.oldest_analyzed_at == "2026-07-18T10:00:00+02:00"
+    assert context.newest_analyzed_at == "2026-07-18T09:00:00Z"
+
+
+def test_analysis_age_advances_without_restarting_the_service(
+    catalog_snapshot: CatalogSnapshot,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    current_time = datetime(2026, 9, 16, tzinfo=UTC)
+
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz: object = None) -> datetime:
+            return current_time
+
+    monkeypatch.setattr(catalog_module, "datetime", Clock)
+    service = CatalogService(catalog_snapshot)
+    request = SearchRequest(text="")
+    first = service.search(request).projects[0]
+    current_time += timedelta(days=3)
+    later = service.search(request).projects[0]
+
+    assert later.id == first.id
+    assert later.analysis_age_days == first.analysis_age_days + 3
 
 
 def test_catalog_publishes_every_preprocessed_card(
@@ -456,6 +498,41 @@ def test_unsafe_evidence_locator_never_becomes_a_source_url() -> None:
 
     assert response.status_code == 200
     assert response.json()["source_url"] is None
+
+
+@pytest.mark.parametrize(
+    "uri",
+    [
+        "https://github.com:invalid/example/repo",
+        "https://github.com:99999/example/repo",
+        "https://[github.com/example/repo",
+    ],
+)
+def test_malformed_source_url_preserves_evidence_without_a_link(
+    catalog_snapshot: CatalogSnapshot,
+    uri: str,
+) -> None:
+    original = catalog_snapshot.get(EIGENT, 1)
+    assert original is not None
+    document = original.to_document()
+    evidence = document["evidence"][0]
+    source = next(
+        item for item in document["sources"] if item["source_id"] == evidence["source_id"]
+    )
+    source["uri"] = uri
+    SkillCardValidator().validate(document)
+    snapshot = CatalogSnapshot((_card_from_document(document),))
+
+    with TestClient(create_app(catalog_snapshot=snapshot)) as malformed_client:
+        project_ref = encode_identifier_reference(original.project_id)
+        evidence_ref = encode_identifier_reference(evidence["evidence_id"])
+        response = malformed_client.get(
+            f"/api/v1/projects/{project_ref}/cards/1/evidence/{evidence_ref}"
+        )
+
+    assert response.status_code == 200
+    assert response.json()["source_url"] is None
+    assert response.json()["evidence"] == evidence
 
 
 def test_comparison_is_role_first_pinned_and_preserves_field_states(
