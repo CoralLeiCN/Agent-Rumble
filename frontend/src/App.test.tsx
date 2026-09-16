@@ -3,7 +3,22 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { FixtureCatalogGateway } from "./test/FixtureCatalogGateway";
-import type { CatalogGateway } from "./types/catalog";
+import type {
+  CatalogGateway,
+  ClaimEvidenceRecord,
+  ComparisonResponse,
+  SearchResponse,
+} from "./types/catalog";
+
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<T>((onResolve, onReject) => {
+    resolve = onResolve;
+    reject = onReject;
+  });
+  return { promise, resolve, reject };
+}
 
 function renderFixtureApp() {
   return render(<App gateway={new FixtureCatalogGateway()} />);
@@ -27,6 +42,119 @@ class CanonicalPreparedPairCatalogGateway extends FixtureCatalogGateway {
 }
 
 describe("Agent Rumble customer experience", () => {
+  it.each(["success", "failure"] as const)(
+    "ignores a stale search %s after reset and a new search",
+    async (outcome) => {
+      const user = userEvent.setup();
+      const gateway = new FixtureCatalogGateway();
+      const complete = await gateway.searchProjects("");
+      const oldSearch = deferred<SearchResponse>();
+      const newSearch = deferred<SearchResponse>();
+      vi.spyOn(gateway, "searchProjects")
+        .mockReturnValueOnce(oldSearch.promise)
+        .mockReturnValueOnce(newSearch.promise);
+      render(<App gateway={gateway} />);
+
+      await user.click(screen.getByRole("button", { name: "Find projects" }));
+      await user.click(screen.getByRole("button", { name: "Explore" }));
+      expect(
+        screen.getByRole("button", { name: "Find projects" }),
+      ).toBeEnabled();
+      await user.click(
+        screen.getByRole("button", {
+          name: /Browse every preprocessed project/,
+        }),
+      );
+
+      await act(async () => {
+        if (outcome === "success") oldSearch.resolve(complete);
+        else oldSearch.reject(new Error("Obsolete search failed"));
+      });
+      expect(
+        screen.getByRole("button", { name: "Finding projects…" }),
+      ).toBeDisabled();
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+
+      await act(async () =>
+        newSearch.resolve({
+          ...complete,
+          total: 1,
+          projects: complete.projects.slice(0, 1),
+        }),
+      );
+      expect(
+        screen.getByRole("heading", { name: "1 project to compare" }),
+      ).toBeInTheDocument();
+    },
+  );
+
+  it("does not reopen a comparison after navigating to Explore", async () => {
+    const user = userEvent.setup();
+    const gateway = new FixtureCatalogGateway();
+    const pendingComparison = deferred<ComparisonResponse>();
+    const complete = await gateway.compareProjects([
+      { projectId: "openai-agents-sdk", cardVersion: 1 },
+      { projectId: "langgraph", cardVersion: 1 },
+    ]);
+    vi.spyOn(gateway, "compareProjects").mockReturnValue(
+      pendingComparison.promise,
+    );
+    render(<App gateway={gateway} />);
+    await user.click(screen.getByRole("button", { name: "Find projects" }));
+    const buttons = await screen.findAllByRole("button", { name: "+ Compare" });
+    await user.click(buttons[0]);
+    await user.click(buttons[1]);
+    await user.click(
+      screen.getByRole("button", { name: "Compare projects →" }),
+    );
+    await user.click(screen.getByRole("button", { name: "Explore" }));
+
+    await act(async () => pendingComparison.resolve(complete));
+
+    expect(
+      screen.getByRole("button", { name: "Find projects" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "Compare 2 projects" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("keeps the latest evidence when a closed request finishes later", async () => {
+    const user = userEvent.setup();
+    const gateway = new FixtureCatalogGateway();
+    const getEvidence = gateway.getClaimEvidence.bind(gateway);
+    const oldEvidence = deferred<ClaimEvidenceRecord>();
+    const newEvidence = deferred<ClaimEvidenceRecord>();
+    const evidenceRequest = vi
+      .spyOn(gateway, "getClaimEvidence")
+      .mockReturnValueOnce(oldEvidence.promise)
+      .mockReturnValueOnce(newEvidence.promise);
+    render(<App gateway={gateway} />);
+    await user.click(screen.getByRole("button", { name: "Find projects" }));
+    const buttons = await screen.findAllByRole("button", { name: "+ Compare" });
+    await user.click(buttons[0]);
+    await user.click(buttons[1]);
+    await user.click(
+      screen.getByRole("button", { name: "Compare projects →" }),
+    );
+    const sources = await screen.findAllByRole("button", {
+      name: /View source \d+ →/,
+    });
+    await user.click(sources[0]);
+    await user.click(
+      screen.getByRole("button", { name: "Close source details" }),
+    );
+    await user.click(sources[1]);
+    const first = await getEvidence(evidenceRequest.mock.calls[0][0]);
+    const second = await getEvidence(evidenceRequest.mock.calls[1][0]);
+    expect(first.claim).not.toBe(second.claim);
+
+    await act(async () => newEvidence.resolve(second));
+    await act(async () => oldEvidence.resolve(first));
+
+    expect(screen.getByRole("dialog")).toHaveAccessibleName(second.claim);
+  });
+
   it("completes search, shortlist, comparison, source review, and back navigation", async () => {
     const user = userEvent.setup();
     const { container } = renderFixtureApp();

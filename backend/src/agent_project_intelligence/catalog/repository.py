@@ -249,8 +249,7 @@ class FilesystemCatalogRepository:
                     )
                 )
             versions = sorted(card.card_version for card in lineage)
-            expected = list(range(1, versions[-1] + 1))
-            if versions != expected:
+            if any(version != expected for expected, version in enumerate(versions, start=1)):
                 diagnostics.append(
                     CatalogDiagnostic(
                         "invalid_version_lineage",

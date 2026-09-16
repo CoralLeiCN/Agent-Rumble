@@ -709,7 +709,15 @@ export function App({ gateway = catalogGateway }: AppProps) {
   const [error, setError] = useState<string | null>(null);
   const mainRef = useRef<HTMLElement>(null);
   const evidenceTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const requestIdRef = useRef(0);
   const canEnterRumble = isPreparedRumblePair(shortlist);
+
+  useEffect(
+    () => () => {
+      requestIdRef.current += 1;
+    },
+    [],
+  );
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -729,15 +737,19 @@ export function App({ gateway = catalogGateway }: AppProps) {
   }, [drawerOpen]);
 
   const announceView = (nextView: View) => {
+    requestIdRef.current += 1;
+    setPending(null);
     setView(nextView);
     window.requestAnimationFrame(() => mainRef.current?.focus());
   };
 
   const search = async (searchQuery = query, page = 1) => {
+    const requestId = ++requestIdRef.current;
     setPending("search");
     setError(null);
     try {
       const result = await gateway.searchProjects(searchQuery, page);
+      if (requestId !== requestIdRef.current) return;
       if (page === 1) {
         setResponse(result);
         setShortlist([]);
@@ -764,17 +776,22 @@ export function App({ gateway = catalogGateway }: AppProps) {
       }
       if (page === 1) announceView("results");
     } catch (caught) {
+      if (requestId !== requestIdRef.current) return;
       setError(
         caught instanceof Error
           ? caught.message
           : "Projects could not be loaded right now.",
       );
     } finally {
-      setPending(null);
+      if (requestId === requestIdRef.current) setPending(null);
     }
   };
 
   const toggleProject = (projectId: string) => {
+    if (pending === "comparison") {
+      requestIdRef.current += 1;
+      setPending(null);
+    }
     setShortlist((current) =>
       current.includes(projectId)
         ? current.filter((id) => id !== projectId)
@@ -786,6 +803,7 @@ export function App({ gateway = catalogGateway }: AppProps) {
 
   const openComparison = async () => {
     if (shortlist.length < 2) return;
+    const requestId = ++requestIdRef.current;
     setPending("comparison");
     setError(null);
     try {
@@ -797,16 +815,18 @@ export function App({ gateway = catalogGateway }: AppProps) {
           return { projectId, cardVersion: project.cardVersion };
         }),
       );
+      if (requestId !== requestIdRef.current) return;
       setComparison(result);
       announceView("comparison");
     } catch (caught) {
+      if (requestId !== requestIdRef.current) return;
       setError(
         caught instanceof Error
           ? caught.message
           : "The comparison could not be prepared.",
       );
     } finally {
-      setPending(null);
+      if (requestId === requestIdRef.current) setPending(null);
     }
   };
 
@@ -814,21 +834,25 @@ export function App({ gateway = catalogGateway }: AppProps) {
     reference: ClaimReference,
     trigger: HTMLButtonElement,
   ) => {
+    const requestId = ++requestIdRef.current;
     evidenceTriggerRef.current = trigger;
     setEvidence(null);
     setError(null);
     setDrawerOpen(true);
     setPending("evidence");
     try {
-      setEvidence(await gateway.getClaimEvidence(reference));
+      const result = await gateway.getClaimEvidence(reference);
+      if (requestId !== requestIdRef.current) return;
+      setEvidence(result);
     } catch (caught) {
+      if (requestId !== requestIdRef.current) return;
       setError(
         caught instanceof Error
           ? caught.message
           : "Source details could not be loaded.",
       );
     } finally {
-      setPending(null);
+      if (requestId === requestIdRef.current) setPending(null);
     }
   };
 
@@ -836,6 +860,7 @@ export function App({ gateway = catalogGateway }: AppProps) {
     record: EvidenceRecord,
     trigger: HTMLButtonElement,
   ) => {
+    requestIdRef.current += 1;
     evidenceTriggerRef.current = trigger;
     setEvidence(projectArenaEvidence(record));
     setError(null);
@@ -844,6 +869,8 @@ export function App({ gateway = catalogGateway }: AppProps) {
   };
 
   const closeDrawer = () => {
+    requestIdRef.current += 1;
+    setPending(null);
     setDrawerOpen(false);
     setEvidence(null);
     setError(null);
@@ -855,6 +882,7 @@ export function App({ gateway = catalogGateway }: AppProps) {
     setComparison(null);
     setShortlist([]);
     setDrawerOpen(false);
+    setEvidence(null);
     setError(null);
     announceView("explore");
   };

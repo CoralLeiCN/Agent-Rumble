@@ -246,7 +246,7 @@ class CatalogService:
         catalog_label: str = "Development catalog",
     ) -> None:
         self._snapshot = snapshot
-        self._now = (now or datetime.now(UTC)).astimezone(UTC)
+        self._now = now.astimezone(UTC) if now is not None else None
         self._catalog_id = catalog_id
         self._catalog_label = catalog_label
         self._index = tuple(self._index_card(card) for card in snapshot.list_current())
@@ -255,9 +255,13 @@ class CatalogService:
         """Describe the deployed cohort and its freshness bounds."""
         documents = [indexed.document for indexed in self._index]
         analyzed_at = sorted(
-            value
-            for document in documents
-            if (value := _at(document, "source_snapshot", "analyzed_at")) and isinstance(value, str)
+            (
+                value
+                for document in documents
+                if (value := _at(document, "source_snapshot", "analyzed_at"))
+                and isinstance(value, str)
+            ),
+            key=lambda value: self._normalized_instant(value) or "",
         )
         schema_versions = sorted({str(document.get("schema_version")) for document in documents})
         ontology_versions: set[str] = set()
@@ -1598,14 +1602,18 @@ class CatalogService:
         path = locator.get("path")
         if not isinstance(uri, str) or not isinstance(commit, str) or not isinstance(path, str):
             return None
-        parsed = urlsplit(uri)
+        try:
+            parsed = urlsplit(uri)
+            port = parsed.port
+        except ValueError:
+            return None
         segments = [segment for segment in parsed.path.removesuffix(".git").split("/") if segment]
         if (
             parsed.scheme != "https"
             or parsed.hostname != "github.com"
             or parsed.username is not None
             or parsed.password is not None
-            or parsed.port is not None
+            or port is not None
             or len(segments) != 2
             or not _GITHUB_COMMIT.fullmatch(commit)
             or not self._safe_locator_path(path)
@@ -1633,7 +1641,8 @@ class CatalogService:
             analyzed_at = datetime.fromisoformat(value.replace("Z", "+00:00"))
             if analyzed_at.tzinfo is None:
                 analyzed_at = analyzed_at.replace(tzinfo=UTC)
-            return max(0, (self._now - analyzed_at.astimezone(UTC)).days)
+            now = self._now if self._now is not None else datetime.now(UTC)
+            return max(0, (now - analyzed_at.astimezone(UTC)).days)
         except ValueError:
             return 0
 

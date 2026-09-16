@@ -222,6 +222,15 @@ def test_rejects_non_contiguous_version_lineage(tmp_path: Path) -> None:
     assert diagnostic_codes(caught.value) == {"invalid_version_lineage"}
 
 
+def test_large_version_is_rejected_without_allocating_the_missing_lineage(tmp_path: Path) -> None:
+    publish(tmp_path, card_document(card_version=10**30))
+
+    with pytest.raises(CatalogLoadError) as caught:
+        repository(tmp_path).load()
+
+    assert diagnostic_codes(caught.value) == {"invalid_version_lineage"}
+
+
 def test_rejects_project_id_shared_by_card_lineages(tmp_path: Path) -> None:
     publish(tmp_path, card_document(card_id="card-one"))
     publish(tmp_path, card_document(card_id="card-two"))

@@ -41,6 +41,37 @@ async function enterArena() {
 }
 
 describe("ArenaScreen", () => {
+  it("preserves the active round when the parent recreates unchanged project names", async () => {
+    const gateway = new BundledRumbleGateway();
+    const load = vi.spyOn(gateway, "getDemo");
+    const props = {
+      projectIds,
+      gateway,
+      onExit: () => undefined,
+      onOpenEvidence: () => undefined,
+    };
+    const { rerender } = render(
+      <ArenaScreen
+        {...props}
+        projectNames={["OpenAI Agents SDK", "LangGraph"]}
+      />,
+    );
+    await enterArena();
+    await userEvent.click(screen.getByRole("button", { name: "Next round →" }));
+
+    rerender(
+      <ArenaScreen
+        {...props}
+        projectNames={["OpenAI Agents SDK", "LangGraph"]}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Round 2: Operations Endgame" }),
+    ).toBeInTheDocument();
+    expect(load).toHaveBeenCalledTimes(1);
+  });
+
   it("opens a neutral gameplay-only arena for any other catalog pair", async () => {
     render(
       <ArenaScreen
