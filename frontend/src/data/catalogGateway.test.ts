@@ -51,20 +51,20 @@ describe("fixture card projections", () => {
       })),
     );
     const record = await gateway.getClaimEvidence({
-      projectId: "openai-agents-sdk",
+      projectId: "project-openai-openai-agents-python",
       cardVersion: 1,
-      claimId: "claim-openai-agents-sdk-approval",
+      claimId: "claim-project-openai-openai-agents-python-approval",
     });
 
     expect(search.projects).toHaveLength(3);
     expect(search.projects[0]).not.toHaveProperty("verificationStatus");
     expect(search.projects[0]).toMatchObject({
-      cardId: "card-openai-agents-sdk",
+      cardId: "card-project-openai-openai-agents-python",
       canonicalPrimaryType: "agent_framework_sdk",
       analysisDepth: "targeted",
     });
     expect(search.projects[0].matchClaim?.claimId).toBe(
-      "claim-openai-agents-sdk-approval",
+      "claim-project-openai-openai-agents-python-approval",
     );
     expect(search.assessmentContexts[0]).toMatchObject({
       useCase: "customer-support agent prototype",
@@ -78,27 +78,28 @@ describe("fixture card projections", () => {
     expect(comparison.provenance).toBe("fixture");
     expect(comparison.cards).toEqual(projectCards);
     expect(comparison.cardRefs[0]).toEqual({
-      projectId: "openai-agents-sdk",
-      cardId: "card-openai-agents-sdk",
+      projectId: "project-openai-openai-agents-python",
+      cardId: "card-project-openai-openai-agents-python",
       cardVersion: 1,
       schemaVersion: "0.3",
     });
     expect(comparison.schemaVersions).toEqual(["0.3"]);
     expect(
       comparisonRows(comparison).some(
-        (row) => row.cells.crewai?.state === "not_analyzed",
+        (row) =>
+          row.cells["project-crewaiinc-crewai"]?.state === "not_analyzed",
       ),
     ).toBe(true);
     expect(
       comparisonRows(comparison).some(
-        (row) => row.cells.crewai?.state === "unknown",
+        (row) => row.cells["project-crewaiinc-crewai"]?.state === "unknown",
       ),
     ).toBe(true);
     expect(record.supportingEvidence[0].revision).toBe("a94d3f2");
     expect(record).toMatchObject({
       claimKind: "factual",
-      appliesTo: "openai-agents-sdk",
-      assessmentContextId: "context-openai-agents-sdk",
+      appliesTo: "project-openai-openai-agents-python",
+      assessmentContextId: "context-project-openai-openai-agents-python",
     });
     expect(record.supportingEvidence[0]).toMatchObject({
       sourceType: "repository",
@@ -126,7 +127,7 @@ describe("fixture card projections", () => {
   it("resolves supporting and conflicting evidence from a claim through canonical sources", () => {
     const card = structuredClone(projectCards[0]);
     card.claims[0].conflicting_evidence_ids = [
-      "evidence-openai-agents-sdk-state",
+      "evidence-project-openai-openai-agents-python-state",
     ];
 
     const record = projectCardsToClaimEvidence([card], {
@@ -403,7 +404,7 @@ describe("fixture card projections", () => {
       pointer: "/capabilities/0/description",
       state: "value",
       value: "Tool approval is represented before execution.",
-      claimIds: ["claim-openai-agents-sdk-approval"],
+      claimIds: ["claim-project-openai-openai-agents-python-approval"],
     });
   });
 

@@ -37,10 +37,11 @@ These cards become a reusable knowledge layer for downstream products such as:
 The first product experience is a preprocessed catalog of cards for a selected
 set of leading public GitHub repositories made for or used in AI systems. Users
 and agents search and compare this catalog without waiting for a new repository
-analysis. The Agent Project Card tool is also available as a published skill
+analysis. The Agent Project Card tool must also be delivered as a published skill
 packaged as a Codex plugin for use in a user's own coding-agent workflow and as
 a hosted web service that generates a card from a user-provided public GitHub
-repository link.
+repository link. These are required delivery forms; current availability is
+recorded in the [QA review](../qa/README.md).
 
 ---
 
@@ -123,20 +124,12 @@ Over time, the platform should become a trusted system for answering questions s
 Requirements are organized by topic in that single file, and this specification
 describes the product response to them.
 
-The [`Documentation and Writing
-Guidelines`](../documentation_guidelines.md) are the single operational guide
-for documentation processes and writing style. The guide defines document
-responsibilities and authority, when and how durable session information is
-captured, requirements and architecture-decision workflows, writing rules,
-maintenance, and documentation quality checks.
-
-Repository agent instructions direct agents to the guide instead of duplicating
-those workflows and rules. Documentation indexes provide navigation without
-becoming competing sources of documentation policy.
-
-The guide preserves the authority of the requirements record, product
-specification, and architecture decisions record while implementing the
-documentation-governance requirements in one operational location.
+The [documentation and writing guide](../documentation_guidelines.md) owns the
+operational rules for document responsibilities, session capture, maintenance,
+and validation. Apply the
+[documentation maintenance requirement](../requirements.md#documentation-maintenance)
+without duplicating those rules. Keep required behavior traceable to its source
+and distinguish it from implemented behavior and outstanding delivery work.
 
 ---
 
@@ -205,11 +198,10 @@ The core tool combines:
 Generated human-readable views are optional and are not required for the
 current tool or service implementation.
 
-The tool is provided in two forms. The Agent Project Card skill is published as
-a Codex plugin that users can integrate into their own coding-agent workflow.
-Agent Project Card as a Service is a hosted web service that accepts a public
-GitHub repository link and generates a card. Both forms use Codex as the core
-harness.
+The tool must be provided in two forms: a published Codex plugin that users can
+integrate into their own coding-agent workflow, and Agent Project Card as a
+Service, a hosted web service accepting a public GitHub repository link. Both
+forms use Codex as the core harness.
 
 The core tool supports three usage modes:
 
@@ -432,11 +424,5 @@ Use **Agent Project Intelligence** for the underlying system and analysis
 capability. Use **Agent Project Card** as the formal, canonical artifact.
 
 Use **Card Summary** for the compact visual representation. “Profile” may describe an internal indexed projection, but it is not a separate user-facing artifact or source of truth.
-
-Alternative system or artifact names considered included Agent Repository
-Intelligence, Agent System Card, Agent Landscape Intelligence, and Capability
-Profile. Those alternatives either overemphasize repositories, are too narrow
-for supporting projects, or imply a landscape view rather than a canonical
-project artifact.
 
 ---

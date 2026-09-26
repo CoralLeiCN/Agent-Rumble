@@ -48,7 +48,7 @@ Project Cards preprocessed for a selected cohort of leading public GitHub
 repositories made for or used in AI systems. The preprocessing workflow may
 limit each analysis to one primary repository and repository-hosted
 documentation even though the schema models multi-source projects. The same
-card-generation capability is available through the published skill packaged
+card-generation capability must be delivered through the published skill packaged
 as a Codex plugin and through Agent Project Card as a Service for a
 user-provided public GitHub repository link.
 
@@ -80,7 +80,7 @@ user-provided public GitHub repository link.
 * Shortlisting and contextual comparison of catalog projects
 * An actively playable, classic 2D versus-fighter Rumble Arena mode with
   human-looking, visibly moving, project-named fighters, health bars, a
-  fullscreen option, and distinct attacks themed around the prepared
+  fullscreen option, and distinct attacks themed around the canonical
   comparison's contextual winning traits
 * Manual operator-managed card refresh
 * Prompt-injection resistance for repository content
@@ -134,7 +134,10 @@ The MVP is successful when it can analyze a representative set of agent-related 
 10. Allow a reviewer to trace major conclusions back to source files.
 11. Include domain agents, SDKs or frameworks, skills, MCP projects, and supporting projects in the expert-reviewed evaluation set.
 12. Record the project boundary, analyzed revisions, analysis configuration, schema version, and ontology versions.
-13. Distinguish documented, statically confirmed, runtime-verified, planned, deprecated, unverified, and conflicted states where applicable.
+13. Preserve capability support, claim verification, confidence, and unavailable
+    values as independent dimensions. The canonical vocabulary includes
+    runtime verification for authorized dynamic analysis; static-only MVP
+    generation must not assert it.
 14. Prevent instructions embedded in repository content from changing analysis policy, tool authority, project scope, or output requirements.
 15. Allow users and agents to search the preprocessed catalog without first
     submitting a repository.

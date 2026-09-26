@@ -10,6 +10,8 @@ The system must:
 
 * Accept public GitHub repositories for the MVP
 * Declare a project boundary that may include one or more repositories, packages, directories, services, releases, and documentation sources
+* Keep distinct project boundaries distinguishable when they share a repository;
+  a repository URL alone must not select a card lineage for generation or refresh
 * Analyze a specific branch, tag, or commit
 * Map repository structure
 * Detect languages and frameworks
@@ -67,11 +69,19 @@ To provide Agent Project Cards as a service, the system must:
   project boundary, and Source Snapshot
 * Preserve prior card versions and identify the current version without
   silently overwriting historical canonical cards
+* Keep one checked-in copy of each canonical card version and use it for catalog
+  retrieval, tests, and validation commands
 * Rebuild any temporary in-memory search state from the canonical YAML files
   rather than persisting a separate card index as a source of truth
 * Keep any optional human-readable views traceable to the canonical stored card
 * Exclude embeddings, vector storage, and vector-based semantic ranking from the
   first implementation
+
+Saving a validated generation draft and publishing it to the searchable catalog
+are separate operations. Draft retrieval reads its canonical YAML version;
+request metadata and retrieval identifiers must not become another card payload.
+Publication is explicit and validated, as recorded in the
+[local generation decision](../decisions.md#local-generation-storage-and-publication).
 
 The current Agent Project Card as a Service implementation does not require
 optimistic publishing, a derived card API projection, or background
@@ -124,6 +134,10 @@ package and must not replace the card, schema, ontology, or analyzer versions.
 Repository-local, API, and plugin-installed invocation must use identical skill
 content and validation behavior for the same release. Marketplace publication
 must not create a separately maintained copy of the skill.
+
+Keep the checked-in plugin package and marketplace metadata in one plugin area.
+Repository-local discovery and application consumers must resolve the same
+packaged skill after layout changes.
 
 A schema-driven Agent Project Card editor is deferred from the current
 implementation and recorded in the
@@ -222,6 +236,17 @@ Traceability: [Development Quality](../requirements.md#development-quality).
 * Check lint, formatting, Python and TypeScript types, canonical cards,
   regressions, builds, and dependency advisories in CI using locked dependencies
   and recorded runtime versions.
+* Use current project-owned configuration names, identifiers, and transport
+  contracts directly. Remove aliases and adapters maintained solely for older
+  versions, and update fixtures and documentation with those removals, following
+  the [pre-release compatibility requirement](../requirements.md#pre-release-schema-compatibility).
+* Maintain a [QA feature inventory and test plan](../qa/README.md) grounded in
+  the current implementation. Distinguish build/test results, implemented
+  capabilities, partial behavior, and unfinished or unverified delivery so QA
+  can test the available features without treating proposals as built behavior.
+* Keep API documentation consistent with runtime responses and local setup
+  instructions consistent with the supported commands. Correct stale delivery
+  status without treating unfinished requirements as implemented behavior.
 
 ### Dependency Release Cooldown
 
@@ -288,7 +313,7 @@ For the preprocessed catalog, the system must:
   or open-source character design where one is available
 * Offer a user-initiated fullscreen option for arcade play
 * Give each fighter distinct attacks themed around that project's contextual
-  winning trait in the prepared comparison-sheet projection, with the theme
+  winning trait in the canonical comparison projection, with the theme
   traceable to its comparison trait and Assessment Context
 * Derive every project fact, assessment, and contextual advantage communicated
   in Rumble Arena from the same card and comparison data used by the standard
@@ -308,6 +333,10 @@ For the preprocessed catalog, the system must:
   universal project score, or declaring a universal project winner
 * Treat a role mismatch, equivalent contextual fit, or insufficient evidence as
   a trade-off or inconclusive round rather than forcing a winner
+
+The product arena uses canonical catalog comparisons. Do not serve a bundled
+sample matchup through a standalone demo endpoint or maintain its dataset under
+a root fixture directory. Keep synthetic regression inputs alongside tests.
 
 ### Refresh and Change Tracking
 
@@ -359,7 +388,8 @@ The system should use staged exploration and avoid reading every file when a tar
 
 ### Explainability
 
-Scores and classifications should include reasons rather than appearing as unsupported numerical outputs.
+Contextual assessments, search relevance, and classifications must include
+reasons and evidence. They must not imply a universal project score.
 
 ---
 

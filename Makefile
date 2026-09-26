@@ -4,7 +4,7 @@ SHELL := /bin/sh
 
 UV ?= uv
 NPM ?= npm
-CARD_VALIDATOR := plugins/agent-project-card/skills/agent-project-card/scripts/validate_project_card.py
+CARD_VALIDATOR := .agents/plugins/agent-project-card/skills/agent-project-card/scripts/validate_project_card.py
 
 .PHONY: help setup backend-setup frontend-setup dev backend frontend test \
 	backend-test frontend-test typecheck build check lint format format-check cards-check audit
@@ -67,8 +67,8 @@ format-check: ## Check formatting without modifying files.
 	$(UV) run --locked ruff format --check .
 	$(NPM) --prefix frontend run format:check
 
-cards-check: ## Validate published and analysis-library canonical cards.
-	@for card in project-cards/*/project-card.yaml catalog/cards/*/versions/*/project-card.yaml; do \
+cards-check: ## Validate every retained canonical catalog card.
+	@for card in catalog/cards/*/versions/*/project-card.yaml; do \
 		$(UV) run --locked python $(CARD_VALIDATOR) "$$card" || exit $$?; \
 	done
 

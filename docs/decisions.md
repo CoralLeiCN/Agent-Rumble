@@ -10,7 +10,7 @@ expand product scope. When a requirement mandates a technology, the
 [requirements record](requirements.md) remains the source of that constraint;
 the decision records its architectural consequences and related choices.
 
-Proposed approaches remain in [design documents](design-docs/README.md), and
+Proposed approaches remain in [design documents](../README.md#design-documents), and
 unresolved choices remain in [`open-decisions.md`](open-decisions.md).
 
 ## Agent Workflow and Runtime
@@ -19,7 +19,7 @@ unresolved choices remain in [`open-decisions.md`](open-decisions.md).
 
 **Status:** Accepted
 
-**Date:** 2026-07-18; revised 2026-07-28 and 2026-07-29
+**Date:** 2026-07-18; revised 2026-07-28, 2026-07-29, and 2026-09-26
 
 **Related requirements:**
 [Agent Project Card](requirements.md#agent-project-card),
@@ -65,6 +65,10 @@ providers and custom provider base URLs.
 * Package that same skill as a skills-only Codex plugin for public marketplace
   distribution, with repository-local discovery pointing to the packaged skill
   rather than maintaining a second copy.
+* Keep the package under `.agents/plugins/agent-project-card/`, beside
+  `.agents/plugins/marketplace.json`. The marketplace source path is relative to
+  the repository root. The `.agents/skills/agent-project-card` symlink and
+  application schema and validator consumers resolve this package directly.
 * Use the skill first to preprocess the selected repository cohort for the
   searchable and comparable catalog required by the first product experience.
 * Expose preprocessed cards through an API used by users, agents, and the React
@@ -100,8 +104,8 @@ and validation controls defined by the product specification.
   and failures remain typed generation failures.
 * Provider credentials remain runtime secrets and are not written to analysis
   configuration, canonical cards, prompts, or traces.
-* The Python Codex SDK is currently beta. Its version and pinned Codex runtime
-  will be reviewed and locked through the repository's `uv` dependency policy.
+* Review and lock the Python Codex SDK and its pinned Codex runtime through the
+  repository's `uv` dependency policy.
 * Catalog preprocessing, direct skill use, and hosted on-demand generation will
   share the Agent Project Card skill and canonical output contract.
 * Marketplace users will receive the same skill content through a versioned
@@ -347,7 +351,7 @@ cannot round-trip through the required API and frontend.
 #### References
 
 * [Canonical Machine-Readable Card](specification/04-card-schema-and-outputs.md#canonical-machine-readable-card)
-* [Agent Project Card validator](../plugins/agent-project-card/skills/agent-project-card/scripts/validate_project_card.py)
+* [Agent Project Card validator](../.agents/plugins/agent-project-card/skills/agent-project-card/scripts/validate_project_card.py)
 
 ## Persistence and Search
 
@@ -355,7 +359,7 @@ cannot round-trip through the required API and frontend.
 
 **Status:** Accepted
 
-**Date:** 2026-07-18
+**Date:** 2026-07-18; updated 2026-09-26
 
 **Related requirements:**
 [Agent Project Card Service and Storage](requirements.md#agent-project-card-service-and-storage)
@@ -373,6 +377,8 @@ first implementation and deferred embedding-based vector search to the backlog.
 
 * Store service catalog cards as versioned canonical YAML files under a
   configurable catalog root, with `catalog/cards/` as the repository default.
+* Keep `catalog/cards/` as the single checked-in card store. Tests and validation
+  commands use its versioned files directly, without a second analysis library.
 * Use
   `catalog/cards/{encoded_card_id}/versions/{card_version}/project-card.yaml` as
   the default artifact layout, where `encoded_card_id` is the percent-encoded
@@ -405,6 +411,58 @@ first implementation and deferred embedding-based vector search to the backlog.
 * [Agent Project Card Service and Storage specification](specification/05-system-behavior-and-quality.md#agent-project-card-service-and-storage)
 * [Semantic and Vector Search backlog](backlog.md#semantic-and-vector-search)
 
+### Local Generation Storage and Publication
+
+**Status:** Accepted for local implementation
+
+**Date:** 2026-09-26
+
+**Related requirements:**
+[API](requirements.md#api),
+[Agent Project Card Service and Storage](requirements.md#agent-project-card-service-and-storage),
+and [Card Versioning](requirements.md#card-versioning)
+
+#### Context
+
+The stakeholder requested completion of the remaining implementation gaps.
+The existing FastAPI process, direct Codex harness, and YAML-first store can
+support a local end-to-end generation workflow without adding infrastructure.
+No public hosting destination or production access model has been supplied.
+
+#### Decision
+
+* Accept one explicitly bounded public GitHub repository per generation request.
+  Verify public metadata anonymously and acquire Git objects without checkout.
+  Use the existing source limits and isolated static-analysis harness.
+* Run generation synchronously in one local application worker, with one active
+  analysis at a time. Cancel analysis on disconnection. Do not introduce a job
+  queue, database, separate service, or background preprocessing.
+* Remove acquired repository objects and temporary runtime data on exit.
+  Retain validated card evidence excerpts and canonical provenance with the card.
+* Store drafts in a configurable local YAML history outside the searchable
+  catalog, plus UUID retrieval manifests. Retain versions and support manual
+  refresh. This storage root must not overlap the public catalog.
+* Match new submissions to retained lineages by primary repository URL and
+  exact requested boundary, with outer whitespace removed. Use saved analysis
+  request provenance when available and otherwise the canonical project boundary.
+  Distinct boundaries require distinct identities; ambiguous matches and identity
+  collisions return a conflict. A saved generation UUID explicitly selects the
+  lineage and boundary for refresh.
+* Publish only through an explicit operator command. Validate before atomic
+  version-directory installation, serialize writers, preserve immutable
+  versions, and report material changes. Reload the catalog only after complete
+  validation of a replacement snapshot.
+
+#### Consequences
+
+This completes local generation, retrieval, refresh, and publication using the
+accepted filesystem architecture. A draft is not automatically public or
+searchable. Retrieval IDs are locators, not user authorization. The local
+workflow is single-process; production request limits, access controls,
+retention, backups, worker coordination, provider operation, and hosting remain
+part of the unresolved deployment decision. This decision does not resolve
+broader multi-repository intake or linked-source product scope.
+
 ## Frontend
 
 ### React Frontend
@@ -435,6 +493,40 @@ frontend project under `frontend/`.
 * The React frontend will consume the FastAPI backend interfaces.
 * This decision does not select routing, build tooling, client-side or
   server-side rendering, component libraries, or frontend hosting.
+
+### Canonical Arena Data
+
+**Status:** Accepted
+
+**Date:** 2026-09-26
+
+**Related requirements:**
+[Rumble Arena](requirements.md#rumble-arena) and
+[Pre-Release Schema Compatibility](requirements.md#pre-release-schema-compatibility)
+
+#### Context
+
+The product arena uses pinned catalog comparisons. Its original frontend demo
+adapter wrapped canonical responses in a prepared-bundle interface and retained
+a second evidence conversion path.
+
+#### Decision
+
+Load the matchup and projection together from `POST /catalog/rumble`. Require
+canonical project, card-version, and claim references for evidence navigation.
+Show API errors with retry controls. Remove the standalone demo endpoint, bundle
+loader, and root dataset. Keep the supplied-matchup projection API and its
+evidence validation, with synthetic inputs alongside backend tests. Frontend
+tests use canonical response fixtures.
+The canonical response's `matchup` contains its display label and claim registry;
+rounds, context, and entrants are returned in `projection`.
+
+#### Consequences
+
+The arena and standard comparison share the canonical evidence drawer. The
+frontend has one loading contract, with no fixture substitution or duplicated
+projection algorithm. Backend projection and evidence-validation tests remain
+independent of the product UI and do not need a served demo dataset.
 
 ### Vitest Frontend Testing
 
@@ -517,6 +609,12 @@ a production deployment platform or add Playwright testing.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-09-26 | Persistence and search | Made lineage selection depend on the requested boundary as well as repository identity; reject ambiguous matches and collisions across boundaries. |
+| 2026-09-26 | Frontend and Rumble API | Removed the served demo bundle and root fixtures; retained supplied-matchup validation and synthetic test inputs. |
+| 2026-09-26 | Agent workflow and runtime | Consolidated plugin packages and marketplace metadata under `.agents/plugins/`, preserving one canonical skill and local discovery. |
+| 2026-09-26 | Persistence and search | Consolidated checked-in cards in the versioned catalog; tests and validation read the same canonical files. |
+| 2026-09-26 | Frontend | Removed the prepared-demo compatibility adapter; the arena loads one canonical comparison and opens evidence by pinned claim reference. |
+| 2026-09-26 | Persistence and search | Selected the local synchronous generation workflow, separate YAML draft history, ephemeral acquired sources, and explicit atomic operator publication; production deployment remains open. |
 | 2026-09-07 | Static generation and development quality | Selected immutable source tools, restricted runtime authority, application-owned output validation, pinned runtimes, and shared local/CI quality checks. |
 | 2026-07-29 | Agent workflow and runtime | Removed the redundant Agents SDK orchestration model and selected the direct Codex SDK adapter as the sole generation runtime with one model-provider settings group. |
 | 2026-07-28 | Agent workflow and runtime | Replaced the Codex MCP server integration with direct Python Codex SDK invocation while retaining the Agents SDK as the surrounding workflow orchestrator. |

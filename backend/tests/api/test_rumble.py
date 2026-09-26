@@ -3,17 +3,12 @@
 from agent_project_intelligence.main import create_app
 from fastapi.testclient import TestClient
 
-from ..demo_bundle_payloads import demo_bundle_payload
-
-
-def matchup_payload() -> dict:
-    """Return the complete evidence registry required by the public endpoint."""
-    return demo_bundle_payload()["matchups"][0]
+from ..rumble_matchup_payloads import rumble_matchup_payload
 
 
 def test_create_rumble_projection() -> None:
     with TestClient(create_app()) as client:
-        response = client.post("/api/v1/rumble", json=matchup_payload())
+        response = client.post("/api/v1/rumble", json=rumble_matchup_payload())
 
     assert response.status_code == 200
     body = response.json()
@@ -28,7 +23,7 @@ def test_create_rumble_projection() -> None:
 
 
 def test_rejects_material_alignment_without_claim_evidence() -> None:
-    payload = matchup_payload()
+    payload = rumble_matchup_payload()
     payload["request"]["comparison_rows"][0]["entrant_a"]["claim_ids"] = []
 
     with TestClient(create_app()) as client:
@@ -39,7 +34,7 @@ def test_rejects_material_alignment_without_claim_evidence() -> None:
 
 
 def test_rejects_a_context_cohort_that_does_not_match_the_entrants() -> None:
-    payload = matchup_payload()
+    payload = rumble_matchup_payload()
     payload["request"]["assessment_context"]["cohort_project_ids"] = [
         "project-a",
         "project-c",
@@ -53,7 +48,7 @@ def test_rejects_a_context_cohort_that_does_not_match_the_entrants() -> None:
 
 
 def test_rejects_an_invented_claim_id_before_projection() -> None:
-    payload = matchup_payload()
+    payload = rumble_matchup_payload()
     payload["request"]["comparison_rows"][0]["entrant_a"]["claim_ids"] = ["invented-claim"]
 
     with TestClient(create_app()) as client:
@@ -64,7 +59,7 @@ def test_rejects_an_invented_claim_id_before_projection() -> None:
 
 
 def test_rejects_an_invented_claim_id_on_an_inconclusive_cell() -> None:
-    payload = matchup_payload()
+    payload = rumble_matchup_payload()
     payload["request"]["comparison_rows"][2]["entrant_a"]["claim_ids"] = ["invented-claim"]
 
     with TestClient(create_app()) as client:
@@ -82,5 +77,37 @@ def test_rumble_endpoint_is_in_openapi_schema() -> None:
     operation = response.json()["paths"]["/api/v1/rumble"]["post"]
     assert operation["tags"] == ["catalog"]
     request_schema = operation["requestBody"]["content"]["application/json"]["schema"]
-    assert request_schema["$ref"].endswith("/RumbleDemoMatchup")
+    assert request_schema["$ref"].endswith("/PreparedRumbleMatchup")
     assert operation["responses"]["200"]["content"]["application/json"]
+
+
+def test_demo_endpoint_is_not_served_or_documented() -> None:
+    with TestClient(create_app()) as client:
+        response = client.get("/api/v1/rumble/demo")
+        schema = client.get("/openapi.json").json()
+
+    assert response.status_code == 404
+    assert "/api/v1/rumble/demo" not in schema["paths"]
+    assert "RumbleDemoBundle" not in schema["components"]["schemas"]
+
+
+def test_openapi_contract_exposes_nested_claim_and_evidence_fields() -> None:
+    with TestClient(create_app()) as client:
+        schema = client.get("/openapi.json").json()
+
+    components = schema["components"]["schemas"]
+    matchup_fields = components["PreparedRumbleMatchup"]["properties"]
+    claim_fields = components["PreparedRumbleClaim"]["properties"]
+    evidence_fields = components["PreparedRumbleEvidence"]["properties"]
+
+    assert set(matchup_fields) == {"matchup_id", "display_label", "request", "claims"}
+    assert {"supporting_evidence", "conflicting_evidence"} <= set(claim_fields)
+    assert set(evidence_fields) == {
+        "evidence_id",
+        "repository",
+        "revision",
+        "path",
+        "locator",
+        "excerpt",
+        "source_url",
+    }

@@ -2,6 +2,7 @@ import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { App } from "./App";
+import { canonicalRumble } from "./test/FixtureRumbleGateway";
 import { FixtureCatalogGateway } from "./test/FixtureCatalogGateway";
 import type {
   CatalogGateway,
@@ -22,23 +23,6 @@ function deferred<T>() {
 
 function renderFixtureApp() {
   return render(<App gateway={new FixtureCatalogGateway()} />);
-}
-
-class CanonicalPreparedPairCatalogGateway extends FixtureCatalogGateway {
-  override async searchProjects(query: string) {
-    const response = await super.searchProjects(query);
-    const canonicalIdByFixtureId: Readonly<Record<string, string>> = {
-      "openai-agents-sdk": "project-openai-openai-agents-python",
-      langgraph: "project-langchain-ai-langgraph",
-    };
-    return {
-      ...response,
-      projects: response.projects.map((project) => ({
-        ...project,
-        id: canonicalIdByFixtureId[project.id] ?? project.id,
-      })),
-    };
-  }
 }
 
 describe("Agent Rumble customer experience", () => {
@@ -93,8 +77,8 @@ describe("Agent Rumble customer experience", () => {
     const gateway = new FixtureCatalogGateway();
     const pendingComparison = deferred<ComparisonResponse>();
     const complete = await gateway.compareProjects([
-      { projectId: "openai-agents-sdk", cardVersion: 1 },
-      { projectId: "langgraph", cardVersion: 1 },
+      { projectId: "project-openai-openai-agents-python", cardVersion: 1 },
+      { projectId: "project-langchain-ai-langgraph", cardVersion: 1 },
     ]);
     vi.spyOn(gateway, "compareProjects").mockReturnValue(
       pendingComparison.promise,
@@ -302,7 +286,11 @@ describe("Agent Rumble customer experience", () => {
       screen.getByRole("button", { name: "Load more projects (2 of 3)" }),
     );
     await screen.findByRole("heading", { name: complete.projects[2].name });
-    expect(search).toHaveBeenLastCalledWith(complete.query, 2);
+    expect(search).toHaveBeenLastCalledWith(
+      complete.query,
+      2,
+      expect.objectContaining({ requirements: expect.any(Array) }),
+    );
     expect(screen.getByText("1 / 3 projects")).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /Load more projects/ }),
@@ -411,9 +399,42 @@ describe("Agent Rumble customer experience", () => {
       expect(requirement.querySelector(".requirement__label")).not.toBeNull();
     });
   });
-  it("enters the prepared two-project Rumble Arena from the shortlist", async () => {
+  it("enters the canonical two-project Rumble Arena from the shortlist", async () => {
+    const fetch = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify(canonicalRumble), {
+        headers: { "content-type": "application/json" },
+      }),
+    );
     const user = userEvent.setup();
-    render(<App gateway={new CanonicalPreparedPairCatalogGateway()} />);
+    const gateway = new FixtureCatalogGateway();
+    const search = gateway.searchProjects.bind(gateway);
+    vi.spyOn(gateway, "searchProjects").mockImplementation(async (query) => {
+      const result = await search(query);
+      return {
+        ...result,
+        projects: result.projects.map((project) => ({
+          ...project,
+          cardVersion: 2,
+        })),
+      };
+    });
+    const evidence = {
+      claimId: "claim-test",
+      projectId: canonicalRumble.matchup.claims[0].project_id,
+      claim: "Canonical claim loaded from the pinned card",
+      claimKind: "assessment",
+      appliesTo: "project",
+      assessmentContextId: null,
+      whyItMatters: "Test claim",
+      verificationStatus: "conflicted" as const,
+      confidence: "unknown" as const,
+      supportingEvidence: [],
+      conflictingEvidence: [],
+    };
+    const getEvidence = vi
+      .spyOn(gateway, "getClaimEvidence")
+      .mockResolvedValue(evidence);
+    render(<App gateway={gateway} />);
 
     await user.click(screen.getByRole("button", { name: "Find projects" }));
     await screen.findByRole("heading", { name: "3 projects to compare" });
@@ -424,12 +445,27 @@ describe("Agent Rumble customer experience", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Internal support agent proof of concept",
+        name: "OpenAI Agents SDK for Python vs LangGraph",
       }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Solo fullscreen ⛶" }),
     ).toBeEnabled();
+    expect(fetch).toHaveBeenCalledWith(
+      "/api/v1/catalog/rumble",
+      expect.objectContaining({ method: "POST" }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Guided evidence tour →" }),
+    );
+    await user.click(
+      screen.getAllByRole("button", { name: /inspect evidence for/i })[0],
+    );
+    expect(getEvidence).toHaveBeenCalledWith(
+      canonicalRumble.matchup.claims[0].canonical_reference,
+    );
+    expect(await screen.findByText(evidence.claim)).toBeInTheDocument();
+    fetch.mockRestore();
   });
 
   it("offers a one-click path to browse the complete API catalog", async () => {
@@ -450,7 +486,8 @@ describe("Agent Rumble customer experience", () => {
   it("shows a useful empty state for a backend query with no catalog matches", async () => {
     const user = userEvent.setup();
     const emptyGateway: CatalogGateway = {
-      dataSource: "http",
+      getCatalogContext: () => new FixtureCatalogGateway().getCatalogContext(),
+      getCurrentCard: (id) => new FixtureCatalogGateway().getCurrentCard(id),
       async searchProjects(query) {
         return {
           query,

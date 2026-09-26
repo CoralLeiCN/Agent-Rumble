@@ -50,12 +50,16 @@ class AssessmentContextInput(APIModel):
     use_case: str = Field(min_length=1, max_length=2_000)
     comparison_cohort: list[str] = Field(default_factory=list, max_length=100)
     requirements: list[str] = Field(default_factory=list, max_length=100)
+    preferences: list[str] = Field(default_factory=list, max_length=100)
+    exclusions: list[str] = Field(default_factory=list, max_length=100)
     organizational_constraints: list[str] = Field(default_factory=list, max_length=100)
     assessed_at: datetime | None = None
 
     @field_validator(
         "comparison_cohort",
         "requirements",
+        "preferences",
+        "exclusions",
         "organizational_constraints",
     )
     @classmethod
@@ -63,6 +67,14 @@ class AssessmentContextInput(APIModel):
         if any(not value.strip() for value in values):
             raise ValueError("items must not be blank")
         return values
+
+    def canonical_requirements(self) -> list[str]:
+        """Keep preference polarity explicit when matching canonical contexts."""
+        return [
+            *self.requirements,
+            *(f"Prefer: {item}" for item in self.preferences),
+            *(f"Avoid: {item}" for item in self.exclusions),
+        ]
 
 
 class AssessmentContextView(APIModel):
@@ -228,9 +240,9 @@ class ComparisonRequest(APIModel):
     @field_validator("cards")
     @classmethod
     def cards_must_be_unique(cls, cards: list[CardReference]) -> list[CardReference]:
-        keys = {(identifier_comparison_key(card.project_id), card.card_version) for card in cards}
+        keys = {identifier_comparison_key(card.project_id) for card in cards}
         if len(keys) != len(cards):
-            raise ValueError("card references must be unique")
+            raise ValueError("comparison cards must reference distinct projects")
         return cards
 
 

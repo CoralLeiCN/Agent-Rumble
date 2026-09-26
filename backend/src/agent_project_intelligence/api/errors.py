@@ -1,4 +1,4 @@
-"""Typed HTTP errors shared by the catalog API."""
+"""Typed HTTP errors shared by catalog, generation, and Rumble APIs."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ class ErrorDetail(BaseModel):
 
 
 class ErrorEnvelope(BaseModel):
-    """Envelope used for every non-success catalog response."""
+    """Envelope for expected service failures and request-validation errors."""
 
     model_config = ConfigDict(extra="forbid")
 

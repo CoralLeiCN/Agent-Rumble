@@ -19,7 +19,7 @@ changes, read:
    record.
 3. [`specification/README.md`](specification/README.md), the index for the
    normative product specification.
-4. [`README.md`](README.md), the documentation index.
+4. The root [documentation index](../README.md#documentation).
 
 If these documents conflict, do not silently choose one. Preserve the intent in
 the relevant requirement topic, identify the conflict, and request a product
@@ -33,9 +33,9 @@ Place information according to its purpose and authority.
 | --- | --- | --- |
 | [`requirements.md`](requirements.md) | Preserve stakeholder-requested outcomes and constraints in one topic-organized record with a single change log. | Choosing an unspecified solution, explaining implementation rationale, or tracking delivery work. |
 | [`specification/`](specification/README.md) | Define normative product behavior that satisfies the requirements and trace it to requirement topics. | Originating stakeholder requirements or making proposed designs and plans binding. |
-| [`design-docs/`](design-docs/README.md) | Explore proposed technical approaches, alternatives, risks, and trade-offs. | Overriding requirements or recording a proposal as an accepted choice. |
+| [`design-docs/`](../README.md#design-documents) | Explore proposed technical approaches, alternatives, risks, and trade-offs. | Overriding requirements or recording a proposal as an accepted choice. |
 | [`decisions.md`](decisions.md) | Record accepted, architecturally significant implementation choices, their context, and their consequences in one topic-organized record with a single change log. | Creating stakeholder requirements, silently expanding product scope, or scheduling delivery work. |
-| [`exec-plans/`](exec-plans/README.md) | Organize proposed, active, and completed delivery work. | Creating product scope, accepting architectural decisions, or changing its inputs. |
+| [`exec-plans/`](exec-plans/active/mvp-delivery.md) | Organize proposed, active, and completed delivery work. | Creating product scope, accepting architectural decisions, or changing its inputs. |
 | [`backlog.md`](backlog.md) | Record requested capabilities and implementation work that stakeholders explicitly defer. | Replacing a source requirement or decision, authorizing implementation, or collecting uncommitted ideas. |
 | [`open-decisions.md`](open-decisions.md) | Record unresolved product choices. | Silently selecting an answer or treating an unresolved option as committed scope. |
 | [`architecture.md`](architecture.md) | Map the implemented system and link to proposed designs and accepted decisions. | Acting as a separate architecture decision record. |
@@ -76,10 +76,10 @@ Capture durable information when the session establishes one of the following:
 | --- | --- |
 | A new or changed stakeholder outcome or constraint | The relevant topic in [`requirements.md`](requirements.md), its change log, and the corresponding specification |
 | An accepted, architecturally significant implementation choice | The relevant topic in [`decisions.md`](decisions.md) and its change log |
-| A proposed implementation approach, alternative, risk, or trade-off | A document under [`design-docs/`](design-docs/README.md) |
+| A proposed implementation approach, alternative, risk, or trade-off | A document under [`design-docs/`](../README.md#design-documents) |
 | An unresolved product choice | [`open-decisions.md`](open-decisions.md) |
 | Requested work that the stakeholder explicitly postpones | [`backlog.md`](backlog.md), linked to its source requirement or decision |
-| Delivery sequence, work breakdown, or execution status | A plan under [`exec-plans/`](exec-plans/README.md) |
+| Delivery sequence, work breakdown, or execution status | A plan under [`exec-plans/`](exec-plans/active/mvp-delivery.md) |
 | A durable narrative about how the project was built | [`project-stories.md`](project-stories.md) |
 
 Questions, brainstorming, temporary observations, status checks, and
@@ -174,6 +174,12 @@ internal indexed projection, but it is not a separate source of truth.
 * Update schema, ontology, analyzer, and card versions deliberately; do not
   change their meaning in place.
 * Keep area indexes navigable without duplicating the rules in this guide.
+* Remove stale content, compatibility-only guidance, and redundant pointer
+  documents. Consolidate useful content in its responsible document, update
+  inbound links, and do not leave redirect stubs.
+* Keep required behavior distinct from implementation status. Record unmet
+  requirements in delivery and QA records instead of describing them as shipped
+  or removing them from the specification.
 
 When requested work is moved out of the deferred backlog, update its source
 requirement, product specification, any required architecture decision, and

@@ -208,7 +208,11 @@ function makeCard(input: CardFixtureInput): AgentProjectCard {
         {
           context_id: contextId,
           use_case: "customer-support agent prototype",
-          comparison_cohort: ["openai-agents-sdk", "langgraph", "crewai"],
+          comparison_cohort: [
+            "project-openai-openai-agents-python",
+            "project-langchain-ai-langgraph",
+            "project-crewaiinc-crewai",
+          ],
           requirements: searchProjectionContext.requirements.map(
             ({ label }) => label,
           ),
@@ -247,9 +251,11 @@ function makeCard(input: CardFixtureInput): AgentProjectCard {
     relationships: {
       depends_on: [],
       integrates_with: [],
-      comparable_projects: ["openai-agents-sdk", "langgraph", "crewai"].filter(
-        (id) => id !== input.id,
-      ),
+      comparable_projects: [
+        "project-openai-openai-agents-python",
+        "project-langchain-ai-langgraph",
+        "project-crewaiinc-crewai",
+      ].filter((id) => id !== input.id),
     },
     claims: input.facts.map((fact) => ({
       claim_id: claimId(fact.key),
@@ -295,7 +301,7 @@ function makeCard(input: CardFixtureInput): AgentProjectCard {
 
 export const projectCards: AgentProjectCard[] = [
   makeCard({
-    id: "openai-agents-sdk",
+    id: "project-openai-openai-agents-python",
     name: "OpenAI Agents SDK",
     owner: "openai",
     repository: "https://github.com/openai/openai-agents-python",
@@ -365,7 +371,7 @@ export const projectCards: AgentProjectCard[] = [
     ],
   }),
   makeCard({
-    id: "langgraph",
+    id: "project-langchain-ai-langgraph",
     name: "LangGraph",
     owner: "langchain-ai",
     repository: "https://github.com/langchain-ai/langgraph",
@@ -436,7 +442,7 @@ export const projectCards: AgentProjectCard[] = [
     ],
   }),
   makeCard({
-    id: "crewai",
+    id: "project-crewaiinc-crewai",
     name: "CrewAI",
     owner: "crewAIInc",
     repository: "https://github.com/crewAIInc/crewAI",

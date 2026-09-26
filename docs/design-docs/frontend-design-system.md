@@ -1,12 +1,9 @@
 # Frontend Design System
 
-**Status:** Proposed
+**Status:** Design guidance; production extensions remain proposed
 
 This document defines a reusable visual and interaction system for the Agent
-Rumble prototype and a possible production frontend. It implements the visual
-direction in the [Frontend Screen Design](frontend-screen-design.md) and is
-informed by the [Frontend Reference Research](frontend-reference-research.md)
-and the
+Rumble prototype and a possible production frontend. It is informed by the
 [Apple Design skill](https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md).
 It does not accept an unresolved frontend architecture choice or change the
 [product specification](../specification/README.md).
@@ -15,9 +12,10 @@ It does not accept an unresolved frontend architecture choice or change the
 
 Agent Rumble should feel like an evidence ledger and technical field guide: a
 compact workspace where project identity, status, freshness, differences, and
-source evidence are easy to scan. A small amount of visual tension can reflect
-the `Rumble` name, but the interface should not use boxing metaphors or imply a
-universal winner.
+source evidence are easy to scan. Catalog and evidence views use plain research
+language. Rumble Arena uses boxing and arcade presentation while keeping the
+gameplay outcome separate from project assessment and avoiding a universal
+project winner.
 
 The system combines:
 
@@ -38,6 +36,32 @@ The system combines:
 These are interaction references, not templates. Agent Rumble's distinctive
 pattern is the direct path from a contextual conclusion to a claim, precise
 evidence, verification status, confidence, and pinned Source Snapshot.
+
+## Interaction Flow
+
+1. Start with a use case and an editable Assessment Context, including Must,
+   Prefer, Avoid, cohort, constraints, and date.
+2. Search the prepared backend catalog and show keyword match reasons, project
+   roles, source revisions, and analysis dates. Keyword matches do not certify
+   requirement satisfaction or enforce exclusions.
+3. Shortlist two or three projects within the browser session. Pin their card
+   versions for comparison and evidence inspection.
+4. Explain project-role relationships before contextual differences. Prioritize
+   useful details while keeping every schema/data field reachable through
+   disclosure and search.
+5. Open a claim-first evidence drawer with independent verification/confidence,
+   supporting and conflicting evidence, precise locators, and source provenance.
+   Preserve comparison position and restore keyboard focus on close.
+6. For two projects, offer canonical Rumble and arcade play under the same
+   context. Inconclusive assessments remain neutral in the presentation.
+7. Offer explicit public GitHub draft generation separately from catalog
+   search, with retrieval, download, and manual refresh. Publication remains an
+   operator action.
+
+Loading, empty, partial-data, and error states preserve the same data boundary.
+API failures show retryable errors; they never substitute fixture cards. The
+[feature inventory](../qa/feature-inventory.md) identifies implemented controls
+and API-only features.
 
 ## Apple-Informed Refinement
 
@@ -73,8 +97,9 @@ gradients, glass effects, AI sparkles, score rings, or background particles.
 ### Context before ranking
 
 Show the Assessment Context and project-role relationship before fit or
-comparison details. Use `Sorted by requirement match`, `shortlist`, and
-`prototype when`; do not use `best`, `winner`, or a universal score.
+comparison details. Explain keyword relevance and use contextual language such
+as `shortlist` and `prototype when`; do not describe ranking as verified
+requirement satisfaction or a universal score.
 
 ### Meaning before color
 
@@ -86,7 +111,7 @@ dimensions and must never be collapsed into one badge.
 ### Snapshot before currency
 
 Results and cards always disclose the analysis date, pinned revision, and
-bundled or live data source. The interface must not imply that a preprocessed
+canonical source snapshot. The interface must not imply that a preprocessed
 card describes the current repository head.
 
 ### Density with progressive disclosure
@@ -108,25 +133,25 @@ imitating an Apple product surface.
 
 ### Color tokens
 
-Palette tokens describe appearance; semantic tokens describe use. Components
-consume semantic tokens so a later brand or contrast update does not require
-component rewrites.
+The implemented values live in
+[`tokens.css`](../../frontend/src/styles/tokens.css). Components consume these
+semantic tokens; update the source and this table together when values change.
 
 | Semantic token | Prototype value | Use |
 | --- | --- | --- |
-| `surface.canvas` | `#F3F1E8` | Warm application background |
-| `surface.paper` | `#FCFBF6` | Primary content surface |
-| `surface.inverse` | `#111A2E` | Header and contextual framing |
-| `text.primary` | `#111A2E` | Main text |
-| `text.muted` | `#596173` | Secondary text and helper copy |
-| `border.default` | `#C9C7BC` | Structural borders and dividers |
-| `action.primary` | `#C8FF45` | Primary action and active focus surface |
-| `action.on-primary` | `#263900` | Text on the primary action |
-| `evidence.link` | `#5B7CFF` | Evidence anchors and links |
-| `status.documented` | `#5B7CFF` | Documented status reinforcement |
-| `status.confirmed` | `#28735A` | Static confirmation reinforcement |
-| `status.conflict` | `#C64C3A` | Conflict or material limitation |
-| `status.planned` | `#7B59CE` | Planned status reinforcement |
+| `--color-canvas` | `#F3F1E8` | Warm application background |
+| `--color-paper` | `#FCFBF6` | Primary content surface |
+| `--color-frame` | `#111A2E` | Header and contextual framing |
+| `--color-text` | `#111A2E` | Main text |
+| `--color-text-soft` | `#596173` | Secondary text and helper copy |
+| `--color-line` | `#C9C7BC` | Structural borders and dividers |
+| `--color-action` | `#C8FF45` | Primary action and active focus surface |
+| `--color-action-text` | `#263900` | Text on the primary action |
+| `--color-link` | `#3159DC` | Evidence anchors and links |
+| `--color-documented` | `#345BD6` | Documented status reinforcement |
+| `--color-verified` | `#137A5A` | Confirmation reinforcement; text distinguishes static and runtime status |
+| `--color-conflict` | `#B84032` | Conflict or material limitation |
+| `--color-planned` | `#7654C2` | Planned status reinforcement |
 
 The electric signal color is an interaction accent, not a claim that something
 was verified. Normal text, controls, and status combinations must meet WCAG AA
@@ -147,15 +172,15 @@ zero. Avoid extreme negative tracking that harms word-shape recognition.
 
 ### Space, shape, and depth
 
-Use a 4-pixel base spacing unit. Controls use 8-pixel corners and major panels
-use 12-pixel corners. Most surfaces use a one-pixel border and no shadow. Touch
-targets remain at least 44 by 44 CSS pixels.
+The implemented spacing scale starts at `0.25rem`. Control and panel radius
+tokens are `0.625rem` and `1rem` respectively; surface, raised, and overlay shadow
+tokens distinguish elevation. Touch targets should remain at least 44 by 44 CSS
+pixels; verify them in the browser checks.
 
 ### Motion
 
-Use 120–180 millisecond transitions only to preserve continuity when the
-shortlist tray, comparison disclosure, filter sheet, or evidence inspector
-opens and closes. Respect `prefers-reduced-motion`.
+The shared responsive transition is 140 milliseconds. Use motion to clarify
+state changes and preserve continuity. Respect `prefers-reduced-motion`.
 
 ## Semantic Status Grammar
 
@@ -177,11 +202,14 @@ the full label.
 
 ## Reusable Components
 
+These names describe design responsibilities, not a required source-file
+layout. Proposed controls are identified separately below.
+
 ### Project identity and snapshots
 
 * `ProjectIdentity` shows the Project boundary before repository metadata.
 * `SourceSnapshotStrip` shows analysis date, revision, schema and ontology
-  versions, and whether data came from the API or a bundled fixture.
+  versions, and canonical source provenance.
 * `CatalogContext` states cohort scope, exclusions, freshness, and limitations.
 
 ### Discovery
@@ -189,7 +217,6 @@ the full label.
 * `QueryComposer` describes a need without presenting a chat persona.
 * `RequirementChip` distinguishes `Must`, `Prefer`, `Avoid`, and uninterpreted
   text.
-* `FacetRail` and its mobile sheet expose the structured filter vocabulary.
 * `ProjectResultCard` presents role, match reasons, one constraint, claim-status
   counts, snapshot metadata, and shortlist action.
 * `ShortlistTray` keeps two or three projects visible and removable.
@@ -220,11 +247,9 @@ the full label.
 
 ## Responsive and Accessibility Contract
 
-At less than 760 pixels, filters become a sheet, comparison remains navigable
-without compressing text into unreadable cells, and the evidence inspector fills
-the viewport. At 760–1,080 pixels, comparison may show two project columns or
-scroll horizontally. Above 1,080 pixels, the filter rail and three project
-columns may remain visible.
+At less than 760 pixels, comparison fields stack their project values with
+visible project labels, and the evidence inspector fills the viewport. Wider
+layouts align two or three project columns without hiding values or actions.
 
 The primary flow is keyboard operable; focus is visible; overlay focus is
 contained and restored; dynamic shortlist and result counts use restrained live
@@ -233,17 +258,29 @@ evidence is rendered as inert text rather than HTML.
 
 ## Prototype-to-Production Boundary
 
-The prototype may use bundled illustrative responses and local component state,
-but its types and components consume a `CatalogGateway` contract so the same
-views can later receive validated FastAPI projections. Vite, SPA rendering,
-routing, URL state, CSS organization, package workflow, fonts, and component
-libraries remain reversible prototype choices until accepted in
-[Architecture Decisions](../decisions.md).
+The prototype uses the complete validated FastAPI catalog through a
+`CatalogGateway` contract and local component state. Illustrative catalog
+responses are test-only; interactive catalog failures must remain visible.
+The product Rumble tour uses the same pinned canonical cards and shared context
+as standard comparison and opens evidence by canonical claim reference.
+Synthetic fixtures remain test-only. Browser validation remains in the
+[delivery plan](../exec-plans/active/mvp-delivery.md#browser-and-user-validation).
+SPA rendering, routing, URL state, CSS organization, fonts, and component
+libraries remain reversible prototype choices unless accepted in
+[Architecture Decisions](../decisions.md). Runtime versions, locked installs,
+linting, and formatting follow the accepted
+[development quality checks](../decisions.md#development-quality-checks).
 
-Production adoption should add validated canonical fixtures, generated API
-types, contrast and accessibility automation, visual regression coverage,
+Validated canonical fixtures and contract-derived field coverage are implemented.
+Further production work should evaluate generated API types and add contrast
+and accessibility automation, visual regression coverage,
 content-security policy, performance budgets, and documented token governance.
 Fixture objects and screen-specific row lists must not define field coverage.
 The production contract adapter and coverage tests should detect newly added
 contract fields and ensure they remain available through the generic field
 presentation until specialized treatment is introduced.
+
+Structured filter controls and a dedicated catalog-card page remain design
+proposals. A filter rail could become a sheet on mobile; a card page could group
+summary, capabilities, evidence, and canonical JSON. Their detailed metadata
+behavior and production navigation remain [open decisions](../open-decisions.md).

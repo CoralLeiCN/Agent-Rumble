@@ -2396,3 +2396,31 @@
     border-bottom: 1px solid var(--color-line);
   }
 }
+.context-editor,
+.generation-panel,
+.contextual-comparison {
+  margin-block: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.context-editor label,
+.generation-panel label {
+  display: grid;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+.context-editor input,
+.context-editor textarea,
+.generation-panel input,
+.generation-panel textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.75rem;
+  font: inherit;
+}
+.generation-panel pre {
+  overflow: auto;
+  max-height: 28rem;
+}

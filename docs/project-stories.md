@@ -41,6 +41,6 @@ assessment.
 
 ## Continue Through the Same Contract
 
-Hosted on-demand card generation remains delivery work. It should invoke the
-same Codex-powered skill and produce the same validated Agent Project Card
-rather than defining a separate analysis path or artifact.
+Local on-demand generation invokes the same Codex-powered skill and stores
+validated drafts separately from the reviewed catalog. Public hosting and
+marketplace publication remain delivery work.

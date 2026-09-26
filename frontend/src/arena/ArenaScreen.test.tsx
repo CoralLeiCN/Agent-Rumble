@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { BundledRumbleGateway } from "../data/rumbleGateway";
+import {
+  FixtureRumbleGateway,
+  canonicalRumble,
+} from "../test/FixtureRumbleGateway";
 import { ArenaScreen } from "./ArenaScreen";
 
 vi.mock("../arcade", () => ({
@@ -33,7 +36,7 @@ const projectIds = [
 
 async function enterArena() {
   await screen.findByRole("heading", {
-    name: "Internal support agent proof of concept",
+    name: "OpenAI Agents SDK for Python vs LangGraph",
   });
   await userEvent.click(
     screen.getByRole("button", { name: "Guided evidence tour →" }),
@@ -41,9 +44,9 @@ async function enterArena() {
 }
 
 describe("ArenaScreen", () => {
-  it("preserves the active round when the parent recreates unchanged project names", async () => {
-    const gateway = new BundledRumbleGateway();
-    const load = vi.spyOn(gateway, "getDemo");
+  it("preserves the active round when the parent recreates unchanged project IDs", async () => {
+    const gateway = new FixtureRumbleGateway();
+    const load = vi.spyOn(gateway, "load");
     const props = {
       projectIds,
       gateway,
@@ -51,60 +54,70 @@ describe("ArenaScreen", () => {
       onOpenEvidence: () => undefined,
     };
     const { rerender } = render(
-      <ArenaScreen
-        {...props}
-        projectNames={["OpenAI Agents SDK", "LangGraph"]}
-      />,
+      <ArenaScreen {...props} projectIds={[...projectIds]} />,
     );
     await enterArena();
     await userEvent.click(screen.getByRole("button", { name: "Next round →" }));
 
-    rerender(
-      <ArenaScreen
-        {...props}
-        projectNames={["OpenAI Agents SDK", "LangGraph"]}
-      />,
-    );
+    rerender(<ArenaScreen {...props} projectIds={[...projectIds]} />);
 
     expect(
-      screen.getByRole("heading", { name: "Round 2: Operations Endgame" }),
+      screen.getByRole("heading", {
+        name: canonicalRumble.projection.rounds[1].title,
+      }),
     ).toBeInTheDocument();
     expect(load).toHaveBeenCalledTimes(1);
   });
 
-  it("opens a neutral gameplay-only arena for any other catalog pair", async () => {
+  it("reports a different pair instead of inventing a gameplay-only comparison", async () => {
     render(
       <ArenaScreen
         projectIds={["project-crewaiinc-crewai", "project-eigent-ai-eigent"]}
-        projectNames={["CrewAI", "Eigent"]}
-        gateway={new BundledRumbleGateway()}
+        gateway={new FixtureRumbleGateway()}
         onExit={() => undefined}
         onOpenEvidence={() => undefined}
       />,
     );
-
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "does not match the selected projects",
+    );
     expect(
-      await screen.findByRole("heading", { name: "CrewAI vs Eigent" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Gameplay-only exhibition", { selector: "strong" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Enter solo fight →" }),
-    ).toBeEnabled();
-    expect(
-      screen.queryByRole("button", { name: "Guided evidence tour →" }),
+      screen.queryByRole("button", { name: "Enter solo fight →" }),
     ).not.toBeInTheDocument();
   });
 
-  it("plays all prepared rounds, opens evidence, and reaches a no-winner recap", async () => {
+  it("shows an API failure and retries the canonical comparison", async () => {
+    const gateway = new FixtureRumbleGateway();
+    vi.spyOn(gateway, "load").mockRejectedValueOnce(
+      new Error("API unavailable"),
+    );
+    render(
+      <ArenaScreen
+        projectIds={projectIds}
+        gateway={gateway}
+        onExit={() => undefined}
+        onOpenEvidence={() => undefined}
+      />,
+    );
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "API unavailable",
+    );
+    expect(
+      screen.queryByRole("button", { name: "Enter solo fight →" }),
+    ).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Try again" }));
+    await enterArena();
+    expect(gateway.load).toHaveBeenCalledTimes(2);
+  });
+
+  it("plays canonical rounds, opens evidence, and reaches a no-winner recap", async () => {
     const user = userEvent.setup();
     const onOpenEvidence = vi.fn();
     const onExit = vi.fn();
     render(
       <ArenaScreen
         projectIds={projectIds}
-        gateway={new BundledRumbleGateway()}
+        gateway={new FixtureRumbleGateway()}
         onExit={onExit}
         onOpenEvidence={onOpenEvidence}
       />,
@@ -112,10 +125,12 @@ describe("ArenaScreen", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Internal support agent proof of concept",
+        name: "OpenAI Agents SDK for Python vs LangGraph",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Bundled fallback in play")).toBeInTheDocument();
+    expect(
+      screen.getByText("Pinned canonical card comparison"),
+    ).toBeInTheDocument();
     expect(
       screen.getByLabelText("OpenAI Agents SDK for Python, left corner"),
     ).toHaveTextContent("65886fa16dcdb482090b30b74de1d0cc80b9f4c6");
@@ -138,46 +153,40 @@ describe("ArenaScreen", () => {
       screen.getByText(/each fighter keeps its exact project name/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/equally budgeted game identities/i),
+      screen.getByText(/equal damage and cooldown budgets/i),
     ).toBeInTheDocument();
 
     await user.click(
       screen.getByRole("button", { name: "Guided evidence tour →" }),
     );
     expect(
-      screen.getByRole("heading", { name: "Round 1: Capability Clash" }),
+      screen.getByRole("heading", {
+        name: canonicalRumble.projection.rounds[0].title,
+      }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Approval Gate Smackdown")).not.toHaveLength(0);
-    expect(
-      screen.getByText("Contextual edge · left corner"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Inconclusive")).toBeInTheDocument();
 
     await user.click(
-      screen.getByRole("button", {
-        name: /inspect evidence for functiontool exposes an always-on/i,
-      }),
+      screen.getAllByRole("button", { name: /inspect evidence for/i })[0],
     );
     expect(onOpenEvidence).toHaveBeenCalledTimes(1);
-    expect(onOpenEvidence.mock.calls[0]?.[0]).toMatchObject({
-      id: "evidence-openai-function-tool-needs-approval",
-      projectId: "openai-agents-sdk",
-      verificationStatus: "statically_confirmed",
-      confidence: "high",
-      repository: "openai/openai-agents-python",
-    });
+    expect(onOpenEvidence.mock.calls[0]?.[0]).toEqual(
+      canonicalRumble.matchup.claims[0].canonical_reference,
+    );
 
     await user.click(screen.getByRole("button", { name: "Next round →" }));
     expect(
-      screen.getByRole("heading", { name: "Round 2: Operations Endgame" }),
+      screen.getByRole("heading", {
+        name: canonicalRumble.projection.rounds[1].title,
+      }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Restart Comeback Combo")).not.toHaveLength(0);
-    expect(
-      screen.getByText("Contextual edge · right corner"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Inconclusive")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Next round →" }));
     expect(
-      screen.getByRole("heading", { name: "Round 3: Integration Grapple" }),
+      screen.getByRole("heading", {
+        name: canonicalRumble.projection.rounds[2].title,
+      }),
     ).toBeInTheDocument();
 
     await user.click(
@@ -204,7 +213,7 @@ describe("ArenaScreen", () => {
     );
     expect(
       screen.getByRole("heading", {
-        name: "Internal support agent proof of concept",
+        name: "OpenAI Agents SDK for Python vs LangGraph",
       }),
     ).toBeInTheDocument();
   });
@@ -214,14 +223,14 @@ describe("ArenaScreen", () => {
     render(
       <ArenaScreen
         projectIds={projectIds}
-        gateway={new BundledRumbleGateway()}
+        gateway={new FixtureRumbleGateway()}
         onExit={() => undefined}
         onOpenEvidence={() => undefined}
       />,
     );
 
     await screen.findByRole("heading", {
-      name: "Internal support agent proof of concept",
+      name: "OpenAI Agents SDK for Python vs LangGraph",
     });
     await user.click(
       screen.getByRole("button", { name: "Enter solo fight →" }),
@@ -235,7 +244,9 @@ describe("ArenaScreen", () => {
     await user.click(
       screen.getByRole("button", { name: "Advance test phase" }),
     );
-    expect(screen.getByText("Round 2: Operations Endgame")).toBeInTheDocument();
+    expect(
+      screen.getByText(canonicalRumble.projection.rounds[1].title),
+    ).toBeInTheDocument();
 
     await user.click(
       screen.getByRole("button", {
@@ -243,8 +254,10 @@ describe("ArenaScreen", () => {
       }),
     );
     expect(
-      screen.getAllByText("Restart Comeback Combo").length,
-    ).toBeGreaterThan(0);
+      screen.getByRole("heading", {
+        name: canonicalRumble.projection.rounds[1].title,
+      }),
+    ).toBeInTheDocument();
   });
 
   it("requests fullscreen from the mode chooser and still starts the fight", async () => {
@@ -257,14 +270,14 @@ describe("ArenaScreen", () => {
     render(
       <ArenaScreen
         projectIds={projectIds}
-        gateway={new BundledRumbleGateway()}
+        gateway={new FixtureRumbleGateway()}
         onExit={() => undefined}
         onOpenEvidence={() => undefined}
       />,
     );
 
     await screen.findByRole("heading", {
-      name: "Internal support agent proof of concept",
+      name: "OpenAI Agents SDK for Python vs LangGraph",
     });
     await user.click(screen.getByRole("button", { name: "Solo fullscreen ⛶" }));
 
@@ -278,7 +291,7 @@ describe("ArenaScreen", () => {
     const { container } = render(
       <ArenaScreen
         projectIds={projectIds}
-        gateway={new BundledRumbleGateway()}
+        gateway={new FixtureRumbleGateway()}
         onExit={() => undefined}
         onOpenEvidence={() => undefined}
       />,
@@ -288,10 +301,9 @@ describe("ArenaScreen", () => {
     await userEvent.click(screen.getByRole("button", { name: "Next round →" }));
     await userEvent.click(screen.getByRole("button", { name: "Next round →" }));
 
-    expect(screen.getAllByText("Audit Bell-Ringer")).not.toHaveLength(0);
     expect(screen.getByText("Inconclusive")).toBeInTheDocument();
-    expect(screen.getByText("No evidence found")).toBeInTheDocument();
-    expect(screen.getByText("Confidence unknown")).toBeInTheDocument();
+    expect(screen.getByText("Not analyzed")).toBeInTheDocument();
+    expect(screen.getAllByText("Confidence unknown")[0]).toBeInTheDocument();
     expect(
       screen.getByText(
         /absence of evidence is not evidence that the capability is absent/i,

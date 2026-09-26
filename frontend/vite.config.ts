@@ -13,7 +13,7 @@ export default defineConfig({
     fs: {
       allow: [
         ".",
-        "../plugins/agent-project-card/skills/agent-project-card/references/project-card.schema.json",
+        "../.agents/plugins/agent-project-card/skills/agent-project-card/references/project-card.schema.json",
       ],
     },
   },

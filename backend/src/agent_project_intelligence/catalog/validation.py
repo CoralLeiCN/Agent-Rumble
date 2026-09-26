@@ -13,7 +13,7 @@ from typing import Any, Protocol
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_SKILL_ROOT = (
-    REPOSITORY_ROOT / "plugins" / "agent-project-card" / "skills" / "agent-project-card"
+    REPOSITORY_ROOT / ".agents" / "plugins" / "agent-project-card" / "skills" / "agent-project-card"
 )
 DEFAULT_SCHEMA_PATH = DEFAULT_SKILL_ROOT / "references" / "project-card.schema.json"
 DEFAULT_VALIDATOR_PATH = DEFAULT_SKILL_ROOT / "scripts" / "validate_project_card.py"

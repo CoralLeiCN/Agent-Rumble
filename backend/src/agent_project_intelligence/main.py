@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from agent_project_intelligence.api.errors import install_error_handlers
 from agent_project_intelligence.api.router import api_router, catalog_api_router
+from agent_project_intelligence.api.routes.generation import router as generation_router
 from agent_project_intelligence.catalog import (
     CatalogSnapshot,
     FilesystemCatalogRepository,
@@ -12,6 +13,7 @@ from agent_project_intelligence.catalog import (
 )
 from agent_project_intelligence.config import Settings, get_settings
 from agent_project_intelligence.services.catalog import CatalogService
+from agent_project_intelligence.services.generation import GenerationService
 
 
 def create_app(
@@ -34,13 +36,17 @@ def create_app(
         version="0.1.0",
     )
     install_error_handlers(application)
+    application.state.settings = resolved_settings
     application.state.catalog_service = CatalogService(snapshot)
+    application.state.generation_service = GenerationService(resolved_settings)
+    application.include_router(generation_router, prefix=resolved_settings.api_prefix)
     application.add_middleware(
         CORSMiddleware,
         allow_origins=list(resolved_settings.development_cors_origins),
         allow_credentials=False,
         allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["Accept", "Content-Type"],
+        allow_headers=["Accept", "Content-Type", "If-None-Match"],
+        expose_headers=["ETag"],
     )
     application.include_router(api_router)
     application.include_router(

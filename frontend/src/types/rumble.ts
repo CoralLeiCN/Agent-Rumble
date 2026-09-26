@@ -1,4 +1,4 @@
-import type { EvidenceRecord } from "./catalog";
+import type { ClaimReference } from "./catalog";
 
 export type RumbleComparisonState =
   "value" | "unknown" | "not_applicable" | "not_analyzed" | "no_evidence_found";
@@ -62,12 +62,6 @@ export interface RumbleRoundInput {
   entrant_b: RumbleCell;
 }
 
-export interface RumbleProjectionRequest {
-  assessment_context: RumbleAssessmentContext;
-  entrants: RumbleEntrant[];
-  comparison_rows: RumbleRoundInput[];
-}
-
 export interface RumbleRound extends RumbleRoundInput {
   round_number: number;
   round_id: string;
@@ -87,14 +81,13 @@ export interface RumbleProjectionResponse {
   ring_call: string;
 }
 
-export interface RumbleDemoMatchup {
-  matchup_id: string;
+export interface RumbleMatchup {
   display_label: string;
-  request: RumbleProjectionRequest;
   claims: RumbleClaim[];
 }
 
 export interface RumbleClaim {
+  canonical_reference: ClaimReference;
   claim_id: string;
   project_id: string;
   statement: string;
@@ -112,32 +105,14 @@ export interface RumbleEvidence {
   path: string;
   locator: string;
   excerpt: string;
-  source_url: string;
+  source_url: string | null;
 }
 
-export interface RumbleDemoBundle {
-  fixture_label: string;
-  prepared_at: string;
-  coverage_notice: string;
-  matchups: RumbleDemoMatchup[];
-}
-
-export type RumbleDataSource = "live_api" | "bundled_fallback";
-
-export interface LoadedRumbleData<T> {
-  data: T;
-  source: RumbleDataSource;
-  fallbackReason?: string;
+export interface CanonicalRumbleResult {
+  matchup: RumbleMatchup;
+  projection: RumbleProjectionResponse;
 }
 
 export interface RumbleGateway {
-  getDemo(): Promise<LoadedRumbleData<RumbleDemoBundle>>;
-  project(
-    matchup: RumbleDemoMatchup,
-  ): Promise<LoadedRumbleData<RumbleProjectionResponse>>;
-}
-
-export interface ArenaEvidenceSelection {
-  claimId: string;
-  catalogEvidence: EvidenceRecord;
+  load(): Promise<CanonicalRumbleResult>;
 }

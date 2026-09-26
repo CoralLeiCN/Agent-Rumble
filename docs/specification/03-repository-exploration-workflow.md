@@ -80,7 +80,11 @@ The system identifies capabilities and separates their support status into:
 * Planned capabilities
 * Deprecated capabilities
 
-Static inspection must never be labeled runtime verification. Each capability records its scope, configuration requirements, interfaces, limitations, evidence, and confidence.
+The vocabulary supports authorized dynamic analysis, but MVP generation is
+static-only and must not emit `runtime_verified` capabilities or claims. Static
+inspection must never be labeled runtime verification. Each capability records
+its scope, configuration requirements, interfaces, limitations, evidence, and
+confidence.
 
 ### Step 6: Architecture Reconstruction
 

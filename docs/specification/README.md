@@ -4,7 +4,7 @@
 * **Underlying system:** Agent Project Intelligence
 * **Primary output:** Agent Project Card
 * **Requirements record:** [`../requirements.md`](../requirements.md)
-* **Design documents:** [`../design-docs/`](../design-docs/README.md)
+* **Design documents:** [Design document index](../../README.md#design-documents)
 * **Architecture decisions:** [`../decisions.md`](../decisions.md)
 
 This folder contains the normative product specification and this file is its
@@ -15,6 +15,12 @@ and delivery plans binding. Technical approaches, delivery plans, deferred
 backlog entries, and unresolved decisions are maintained separately so they do
 not silently become product requirements.
 
+Required behavior is not a claim of current availability. The
+[QA review](../qa/README.md#remaining-gaps-and-review-findings) records gaps, and
+the [active delivery plan](../exec-plans/active/mvp-delivery.md) tracks completion.
+Public hosting and marketplace publication remain outstanding; the current
+application and plugin package are locally testable.
+
 ## Specification Files
 
 | Sections | File | Scope |
@@ -22,15 +28,15 @@ not silently become product requirements.
 | 1–8 | [`01-product-overview.md`](01-product-overview.md) | Problem, vision, goals, users, core tool, use cases, usage modes, terminology, and product naming |
 | 9–10 | [`02-classification-and-sources.md`](02-classification-and-sources.md) | Project classification, input sources, trust, and provenance |
 | 11 | [`03-repository-exploration-workflow.md`](03-repository-exploration-workflow.md) | Required repository exploration and validation behavior |
-| 12–14 | [`04-card-schema-and-outputs.md`](04-card-schema-and-outputs.md) | Agent Project Card semantics, output views, and proposed machine-readable structure |
+| 12–14 | [`04-card-schema-and-outputs.md`](04-card-schema-and-outputs.md) | Agent Project Card semantics, optional output views, and current executable schema |
 | 15–17 | [`05-system-behavior-and-quality.md`](05-system-behavior-and-quality.md) | Functional behavior, quality attributes, implementation constraints, and assessment principles |
 | 18–20 | [`06-mvp-scope-and-evaluation.md`](06-mvp-scope-and-evaluation.md) | Success measures, MVP scope, and acceptance criteria |
 
 ## Related Documents
 
-* [`System Design`](../design-docs/system-design.md) describes the proposed implementation architecture and exploration strategy.
-* [`Technical Risks and Mitigations`](../design-docs/risks-and-mitigations.md) records design risks and proposed responses.
-* [`Parallel MVP Execution Plan`](../exec-plans/proposed/mvp/README.md) is a proposed plan rather than an active product commitment.
+* [Implemented architecture](../architecture.md) maps the current runtime, storage, and UI boundaries.
+* [Frontend design system](../design-docs/frontend-design-system.md) describes presentation guidance and identifies proposed extensions.
+* [Active MVP delivery plan](../exec-plans/active/mvp-delivery.md) tracks remaining implementation, validation, and release work.
 * [`Deferred Backlog`](../backlog.md) records requested work that has been explicitly postponed.
 * [`Open Decisions`](../open-decisions.md) records choices that remain unresolved.
 
@@ -39,13 +45,13 @@ not silently become product requirements.
 | Requirement topic | Specification and related records |
 | --- | --- |
 | [Agent Project Card](../requirements.md#agent-project-card) | Sections 1–20 across the specification files above; ecosystem trends are covered specifically by [section 7.7](01-product-overview.md#77-analyze-ecosystem-trends) and [section 13](04-card-schema-and-outputs.md#13-card-output-formats). |
-| [Pre-Release Schema Compatibility](../requirements.md#pre-release-schema-compatibility) | [Schema Baseline and Current Pre-Release Structure](04-card-schema-and-outputs.md#14-schema-baseline-and-current-pre-release-structure). |
+| [Pre-Release Schema Compatibility](../requirements.md#pre-release-schema-compatibility) | [Current Pre-Release Schema](04-card-schema-and-outputs.md#14-current-pre-release-schema). |
 | [Agent Project Card Service and Storage](../requirements.md#agent-project-card-service-and-storage) | [Agent Project Card Service and Storage](05-system-behavior-and-quality.md#agent-project-card-service-and-storage), [Search and Retrieval](05-system-behavior-and-quality.md#search-and-retrieval), the [YAML-first architecture decision](../decisions.md#yaml-first-card-catalog), and the [deferred semantic and vector search backlog](../backlog.md#semantic-and-vector-search). |
-| [Core Tool and Access](../requirements.md#core-tool-and-access) | [Section 7](01-product-overview.md#7-core-tool-and-use-cases), [Access and Invocation](05-system-behavior-and-quality.md#access-and-invocation), the [proposed system architecture](../design-docs/system-design.md#proposed-system-architecture), and the [Agent Workflow and Runtime decisions](../decisions.md#agent-workflow-and-runtime). |
+| [Core Tool and Access](../requirements.md#core-tool-and-access) | [Section 7](01-product-overview.md#7-core-tool-and-use-cases), [Access and Invocation](05-system-behavior-and-quality.md#access-and-invocation), the [implemented architecture](../architecture.md), and the [Agent Workflow and Runtime decisions](../decisions.md#agent-workflow-and-runtime). |
 | [Catalog-First Discovery and Comparison](../requirements.md#catalog-first-discovery-and-comparison) | [Catalog-First Access](01-product-overview.md#catalog-first-access), [Search and Retrieval](05-system-behavior-and-quality.md#search-and-retrieval), [Comparison](05-system-behavior-and-quality.md#comparison), and [MVP Scope](06-mvp-scope-and-evaluation.md#19-mvp-scope). |
 | [Public Product Naming](../requirements.md#public-product-naming) | [Product Naming](01-product-overview.md#product-naming). |
 | [Public Page Discoverability](../requirements.md#public-page-discoverability) | [Access and Invocation](05-system-behavior-and-quality.md#access-and-invocation), [MVP Scope](06-mvp-scope-and-evaluation.md#19-mvp-scope), and the [deferred backlog](../backlog.md#public-page-discoverability). |
 | [Frontend Experience](../requirements.md#frontend-experience) | [Section 7.2](01-product-overview.md#72-compare-similar-projects), [Frontend Presentation](05-system-behavior-and-quality.md#frontend-presentation), [Comparison](05-system-behavior-and-quality.md#comparison), [MVP Acceptance Criteria](06-mvp-scope-and-evaluation.md#20-mvp-acceptance-criteria), and the [Frontend Design System](../design-docs/frontend-design-system.md). |
-| [Implementation Technology](../requirements.md#implementation-technology) | [Implementation Technology](05-system-behavior-and-quality.md#implementation-technology), [Dependency Release Cooldown](05-system-behavior-and-quality.md#dependency-release-cooldown), the technology sections in the [System Design](../design-docs/system-design.md#initial-agent-technology-stack), and the [architecture decisions](../decisions.md). |
-| [Development Quality](../requirements.md#development-quality) | [Development Quality](05-system-behavior-and-quality.md#development-quality), [quality-check decision](../decisions.md#development-quality-checks), and [developer guide](../development.md). |
-| [Documentation Governance](../requirements.md#documentation-governance) | The [Documentation and Writing Guidelines](../documentation_guidelines.md), [section 4.3](01-product-overview.md#43-requirements-and-traceability), this specification index, the [documentation index](../README.md), [our building stories](../project-stories.md), and the [repository instructions](../../AGENTS.md#documentation-and-writing). |
+| [Implementation Technology](../requirements.md#implementation-technology) | [Implementation Technology](05-system-behavior-and-quality.md#implementation-technology), [Dependency Release Cooldown](05-system-behavior-and-quality.md#dependency-release-cooldown), the [implemented architecture](../architecture.md), and the [architecture decisions](../decisions.md). |
+| [Development Quality](../requirements.md#development-quality) | [Development Quality](05-system-behavior-and-quality.md#development-quality), [quality-check decision](../decisions.md#development-quality-checks), [developer guide](../development.md), and [QA inventory and test plan](../qa/README.md). |
+| [Documentation Governance](../requirements.md#documentation-governance) | The [Documentation and Writing Guidelines](../documentation_guidelines.md), [section 4.3](01-product-overview.md#43-requirements-and-traceability), this specification index, the [root documentation index](../../README.md#documentation), [our building stories](../project-stories.md), and the [repository instructions](../../AGENTS.md#documentation-and-writing). |

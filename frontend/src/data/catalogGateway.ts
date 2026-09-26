@@ -10,6 +10,9 @@ import {
 } from "./projectCardAdapter";
 import type {
   AssessmentContextView,
+  AssessmentContextInput,
+  CatalogContext,
+  ContextualComparison,
   CardReference,
   ClaimReference,
   CatalogGateway,
@@ -22,19 +25,7 @@ import type {
 import type { AgentProjectCard } from "../types/projectCard";
 
 const API_PREFIX = "/api/v1";
-
-export interface CatalogContext {
-  catalogId: string;
-  label: string;
-  cohortDescription: string;
-  coverage: string[];
-  exclusions: string[];
-  cardCount: number;
-  schemaVersions: string[];
-  ontologyVersions: string[];
-  oldestAnalyzedAt: string | null;
-  newestAnalyzedAt: string | null;
-}
+const MAX_CACHED_CARDS = 32;
 
 interface RawCatalogContext {
   catalog_id: string;
@@ -162,13 +153,20 @@ function projectSummary(raw: RawProjectSummary): ProjectSummary {
 }
 
 export class HttpCatalogGateway implements CatalogGateway {
-  readonly dataSource = "http" as const;
   private readonly cards = new Map<string, AgentProjectCard>();
   private readonly pendingCards = new Map<string, Promise<AgentProjectCard>>();
 
   constructor(
     private readonly transport: JsonTransport = new FetchJsonTransport(),
   ) {}
+
+  private cacheCard(key: string, card: AgentProjectCard): void {
+    this.cards.delete(key);
+    this.cards.set(key, card);
+    if (this.cards.size > MAX_CACHED_CARDS) {
+      this.cards.delete(this.cards.keys().next().value!);
+    }
+  }
 
   async getCatalogContext(): Promise<CatalogContext> {
     const response = await this.transport.request<RawCatalogContext>(
@@ -184,7 +182,7 @@ export class HttpCatalogGateway implements CatalogGateway {
     if (card.project.project_id !== projectId) {
       throw new Error("Catalog returned a card for a different project.");
     }
-    this.cards.set(JSON.stringify([projectId, card.card_version]), card);
+    this.cacheCard(JSON.stringify([projectId, card.card_version]), card);
     return card;
   }
 
@@ -194,7 +192,10 @@ export class HttpCatalogGateway implements CatalogGateway {
   ): Promise<AgentProjectCard> {
     const key = JSON.stringify([projectId, cardVersion]);
     const cached = this.cards.get(key);
-    if (cached) return cached;
+    if (cached) {
+      this.cacheCard(key, cached);
+      return cached;
+    }
     const pending = this.pendingCards.get(key);
     if (pending) return pending;
     const request = this.transport
@@ -210,7 +211,7 @@ export class HttpCatalogGateway implements CatalogGateway {
             "Catalog returned a card that does not match its pinned reference.",
           );
         }
-        this.cards.set(key, card);
+        this.cacheCard(key, card);
         return card;
       })
       .finally(() => this.pendingCards.delete(key));
@@ -218,7 +219,11 @@ export class HttpCatalogGateway implements CatalogGateway {
     return request;
   }
 
-  async searchProjects(query: string, page = 1): Promise<SearchResponse> {
+  async searchProjects(
+    query: string,
+    page = 1,
+    context?: AssessmentContextInput,
+  ): Promise<SearchResponse> {
     const normalizedQuery = query.trim();
     const response = await this.transport.request<RawSearchResponse>(
       `${API_PREFIX}/catalog/search`,
@@ -228,16 +233,18 @@ export class HttpCatalogGateway implements CatalogGateway {
           text: normalizedQuery,
           page,
           page_size: 20,
-          ...(normalizedQuery
-            ? {
-                assessment_context: {
-                  use_case: normalizedQuery,
-                  comparison_cohort: ["Published Agent Project Cards"],
-                  requirements: [normalizedQuery],
-                  organizational_constraints: ["Static evidence only"],
-                },
-              }
-            : {}),
+          ...(context
+            ? { assessment_context: context }
+            : normalizedQuery
+              ? {
+                  assessment_context: {
+                    use_case: normalizedQuery,
+                    comparison_cohort: ["Published Agent Project Cards"],
+                    requirements: [normalizedQuery],
+                    organizational_constraints: ["Static evidence only"],
+                  },
+                }
+              : {}),
         }),
       },
     );
@@ -255,17 +262,49 @@ export class HttpCatalogGateway implements CatalogGateway {
 
   async compareProjects(
     references: CardReference[],
+    context?: AssessmentContextInput,
   ): Promise<ComparisonResponse> {
+    if (
+      references.length < 2 ||
+      references.length > 3 ||
+      new Set(references.map(({ projectId }) => projectId)).size !==
+        references.length
+    ) {
+      throw new Error("A comparison requires two or three distinct projects.");
+    }
     const cards = await Promise.all(
       references.map(({ projectId, cardVersion }) =>
         this.getCard(projectId, cardVersion),
       ),
     );
-    return projectCardsToComparison(
-      cards,
-      references.map(({ projectId }) => projectId),
-      "validated_catalog",
+    const contextual = await this.transport.request<ContextualComparison>(
+      `${API_PREFIX}/catalog/compare`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          cards: references.map((ref) => ({
+            project_id: ref.projectId,
+            card_version: ref.cardVersion,
+          })),
+          assessment_context: context ?? {
+            use_case: "Compare selected projects",
+            comparison_cohort: references.map((ref) => ref.projectId),
+            requirements: [],
+            preferences: [],
+            exclusions: [],
+            organizational_constraints: [],
+          },
+        }),
+      },
     );
+    return {
+      ...projectCardsToComparison(
+        cards,
+        references.map(({ projectId }) => projectId),
+        "validated_catalog",
+      ),
+      contextual,
+    };
   }
 
   async getClaimEvidence(

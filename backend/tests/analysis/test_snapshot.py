@@ -50,6 +50,10 @@ def test_snapshot_reads_only_committed_regular_blobs(tmp_path: Path) -> None:
     assert "private-data" not in str(snapshot)
     assert not (repo / "SHOULD_NOT_EXIST").exists()
     assert snapshot_repository(repo, snapshot.revision) == snapshot
+    nested = repo / "nested"
+    nested.mkdir()
+    with pytest.raises(ValueError, match="repository root"):
+        snapshot_repository(nested, None)
     with pytest.raises(ValueError, match="full checked-out"):
         snapshot_repository(repo, "0" * 40)
 

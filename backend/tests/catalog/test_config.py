@@ -25,6 +25,19 @@ def test_settings_have_repository_catalog_defaults() -> None:
     assert settings.turn_timeout_seconds == 15 * 60
 
 
+def test_operator_configuration_uses_only_codex_config_home(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.delenv("CODEX_CONFIG_HOME", raising=False)
+    monkeypatch.setenv("CODEX_HOME", str(tmp_path / "runtime-home"))
+    assert config.Settings().codex_config_home == Path.home() / ".codex"
+
+    operator_home = tmp_path / "operator-home"
+    monkeypatch.setenv("CODEX_CONFIG_HOME", str(operator_home))
+    assert config.Settings().codex_config_home == operator_home
+
+
 def test_get_settings_loads_dotenv_before_construction(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,

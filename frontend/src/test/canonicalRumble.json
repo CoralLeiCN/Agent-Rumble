@@ -1,0 +1,355 @@
+{
+  "matchup": {
+    "display_label": "OpenAI Agents SDK for Python vs LangGraph",
+    "claims": [
+      {
+        "canonical_reference": {
+          "projectId": "project-openai-openai-agents-python",
+          "cardVersion": 2,
+          "claimId": "claim-python-support-prototype-fit"
+        },
+        "claim_id": "[\"project-openai-openai-agents-python\",\"claim-python-support-prototype-fit\"]",
+        "project_id": "project-openai-openai-agents-python",
+        "statement": "A candidate for a Python support-agent prototype using an agent runner, tools, and handoffs.",
+        "why_it_matters": "Recorded in the pinned canonical card for this comparison.",
+        "verification_status": "statically_confirmed",
+        "confidence": "medium",
+        "supporting_evidence": [
+          {
+            "evidence_id": "evidence-runner-loop",
+            "repository": "https://github.com/openai/openai-agents-python",
+            "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+            "path": "src/agents/run.py",
+            "locator": "{\"path\": \"src/agents/run.py\", \"symbol_or_section\": \"Runner.run, Runner.run_sync, and Runner.run_streamed\", \"line_start\": 201, \"line_end\": 430}",
+            "excerpt": "Runner",
+            "source_url": "https://github.com/openai/openai-agents-python/blob/65886fa16dcdb482090b30b74de1d0cc80b9f4c6/src/agents/run.py#L201-L430"
+          },
+          {
+            "evidence_id": "evidence-agent-configuration",
+            "repository": "https://github.com/openai/openai-agents-python",
+            "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+            "path": "src/agents/agent.py",
+            "locator": "{\"path\": \"src/agents/agent.py\", \"symbol_or_section\": \"Agent\", \"line_start\": 269, \"line_end\": 350}",
+            "excerpt": "Agent",
+            "source_url": "https://github.com/openai/openai-agents-python/blob/65886fa16dcdb482090b30b74de1d0cc80b9f4c6/src/agents/agent.py#L269-L350"
+          },
+          {
+            "evidence_id": "evidence-tools",
+            "repository": "https://github.com/openai/openai-agents-python",
+            "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+            "path": "docs/tools.md",
+            "locator": "{\"path\": \"docs/tools.md\", \"symbol_or_section\": \"Tools; Hosted tools; Local runtime tools\", \"line_start\": 1, \"line_end\": 33}",
+            "excerpt": "Hosted, local/runtime, function, agent-as-tool, and experimental tool categories",
+            "source_url": "https://github.com/openai/openai-agents-python/blob/65886fa16dcdb482090b30b74de1d0cc80b9f4c6/docs/tools.md#L1-L33"
+          }
+        ],
+        "conflicting_evidence": []
+      },
+      {
+        "canonical_reference": {
+          "projectId": "project-langchain-ai-langgraph",
+          "cardVersion": 2,
+          "claimId": "claim-python-support-prototype-fit"
+        },
+        "claim_id": "[\"project-langchain-ai-langgraph\",\"claim-python-support-prototype-fit\"]",
+        "project_id": "project-langchain-ai-langgraph",
+        "statement": "A candidate for a Python support-agent prototype using explicit state graphs and model/tool execution nodes.",
+        "why_it_matters": "Recorded in the pinned canonical card for this comparison.",
+        "verification_status": "statically_confirmed",
+        "confidence": "medium",
+        "supporting_evidence": [
+          {
+            "evidence_id": "evidence-stategraph-contract",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/langgraph/langgraph/graph/state.py",
+            "locator": "{\"path\": \"libs/langgraph/langgraph/graph/state.py\", \"symbol_or_section\": \"StateGraph\", \"line_start\": 130, \"line_end\": 198}",
+            "excerpt": "StateGraph nodes read and write shared state, reducers merge values, and compile creates invoke and stream interfaces.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py#L130-L198"
+          },
+          {
+            "evidence_id": "evidence-routing-primitives",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/langgraph/langgraph/graph/state.py",
+            "locator": "{\"path\": \"libs/langgraph/langgraph/graph/state.py\", \"symbol_or_section\": \"StateGraph.add_edge and StateGraph.add_conditional_edges\", \"line_start\": 915, \"line_end\": 1017}",
+            "excerpt": "Static edges wait for one or all source nodes; conditional paths select one or more destinations.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py#L915-L1017"
+          },
+          {
+            "evidence_id": "evidence-compile-persistence",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/langgraph/langgraph/graph/state.py",
+            "locator": "{\"path\": \"libs/langgraph/langgraph/graph/state.py\", \"symbol_or_section\": \"StateGraph.compile\", \"line_start\": 1164, \"line_end\": 1218}",
+            "excerpt": "compile accepts checkpointer, cache, store, interrupt controls, and produces a runnable that supports sync, async, batch, and stream operations.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py#L1164-L1218"
+          },
+          {
+            "evidence_id": "evidence-prebuilt-react-agent",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/prebuilt/langgraph/prebuilt/chat_agent_executor.py",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/prebuilt/langgraph/prebuilt/chat_agent_executor.py",
+            "locator": "{\"path\": \"libs/prebuilt/langgraph/prebuilt/chat_agent_executor.py\", \"symbol_or_section\": \"create_react_agent model and tool loop\", \"line_start\": 480, \"line_end\": 590}",
+            "excerpt": "The prebuilt graph alternates model and tool nodes until no tool calls remain and binds supplied tool classes to the model.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/prebuilt/langgraph/prebuilt/chat_agent_executor.py#L480-L590"
+          },
+          {
+            "evidence_id": "evidence-tool-node",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/prebuilt/langgraph/prebuilt/tool_node.py",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/prebuilt/langgraph/prebuilt/tool_node.py",
+            "locator": "{\"path\": \"libs/prebuilt/langgraph/prebuilt/tool_node.py\", \"symbol_or_section\": \"Module contract and ToolCallRequest\", \"line_start\": 1, \"line_end\": 149}",
+            "excerpt": "ToolNode supports parallel calls, customizable error handling, state/store injection, command-based updates, and request interception.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/prebuilt/langgraph/prebuilt/tool_node.py#L1-L149"
+          }
+        ],
+        "conflicting_evidence": []
+      },
+      {
+        "canonical_reference": {
+          "projectId": "project-langchain-ai-langgraph",
+          "cardVersion": 2,
+          "claimId": "claim-runtime-tooling"
+        },
+        "claim_id": "[\"project-langchain-ai-langgraph\",\"claim-runtime-tooling\"]",
+        "project_id": "project-langchain-ai-langgraph",
+        "statement": "The repository provides a CLI for project creation, local or Docker API operation, and image generation, plus a Python SDK for a separately running LangGraph API server.",
+        "why_it_matters": "Recorded in the pinned canonical card for this comparison.",
+        "verification_status": "documented",
+        "confidence": "high",
+        "supporting_evidence": [
+          {
+            "evidence_id": "evidence-cli-runtime",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/cli/README.md",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/cli/README.md",
+            "locator": "{\"path\": \"libs/cli/README.md\", \"symbol_or_section\": \"Commands and Configuration\", \"line_start\": 17, \"line_end\": 104}",
+            "excerpt": "The CLI creates projects, runs a hot-reloading server, launches Docker, builds images or Dockerfiles, and reads graph registration from langgraph.json.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/cli/README.md#L17-L104"
+          },
+          {
+            "evidence_id": "evidence-sdk-client",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/sdk-py/README.md",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/sdk-py/README.md",
+            "locator": "{\"path\": \"libs/sdk-py/README.md\", \"symbol_or_section\": \"What is this?, Quick Start, and Known Limitations\", \"line_start\": 17, \"line_end\": 60}",
+            "excerpt": "The Python SDK manages assistants, threads, and streamed runs against a running API server and documents SSE/WebSocket and reconnect limitations.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/sdk-py/README.md#L17-L60"
+          }
+        ],
+        "conflicting_evidence": []
+      },
+      {
+        "canonical_reference": {
+          "projectId": "project-langchain-ai-langgraph",
+          "cardVersion": 2,
+          "claimId": "claim-durable-persistence"
+        },
+        "claim_id": "[\"project-langchain-ai-langgraph\",\"claim-durable-persistence\"]",
+        "project_id": "project-langchain-ai-langgraph",
+        "statement": "Checkpointers persist thread-scoped graph state and pending writes to enable memory, pause/resume, replay, and durable continuation, with repository adapters for memory, SQLite, and PostgreSQL.",
+        "why_it_matters": "Recorded in the pinned canonical card for this comparison.",
+        "verification_status": "statically_confirmed",
+        "confidence": "high",
+        "supporting_evidence": [
+          {
+            "evidence_id": "evidence-compile-persistence",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/langgraph/langgraph/graph/state.py",
+            "locator": "{\"path\": \"libs/langgraph/langgraph/graph/state.py\", \"symbol_or_section\": \"StateGraph.compile\", \"line_start\": 1164, \"line_end\": 1218}",
+            "excerpt": "compile accepts checkpointer, cache, store, interrupt controls, and produces a runnable that supports sync, async, batch, and stream operations.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/langgraph/langgraph/graph/state.py#L1164-L1218"
+          },
+          {
+            "evidence_id": "evidence-checkpoint-contract",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint/README.md",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/checkpoint/README.md",
+            "locator": "{\"path\": \"libs/checkpoint/README.md\", \"symbol_or_section\": \"What is this?, Key concepts, and Interface\", \"line_start\": 17, \"line_end\": 67}",
+            "excerpt": "Checkpointers persist graph state each superstep, separate runs by thread, preserve pending writes, and define sync and async saver methods.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint/README.md#L17-L67"
+          },
+          {
+            "evidence_id": "evidence-checkpoint-adapters",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-sqlite/README.md",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/checkpoint-sqlite/README.md",
+            "locator": "{\"path\": \"libs/checkpoint-sqlite/README.md\", \"symbol_or_section\": \"What is this? and Security\", \"line_start\": 17, \"line_end\": 28}",
+            "excerpt": "The repository provides sync and async SQLite checkpoint persistence and repeats the strict deserialization guidance.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-sqlite/README.md#L17-L28"
+          }
+        ],
+        "conflicting_evidence": []
+      },
+      {
+        "canonical_reference": {
+          "projectId": "project-langchain-ai-langgraph",
+          "cardVersion": 2,
+          "claimId": "claim-checkpoint-security"
+        },
+        "claim_id": "[\"project-langchain-ai-langgraph\",\"claim-checkpoint-security\"]",
+        "project_id": "project-langchain-ai-langgraph",
+        "statement": "Checkpoint deserialization requires an explicit trust decision because the documented default can allow Python types from checkpoint data; strict MessagePack or an allowlist reduces that risk.",
+        "why_it_matters": "Recorded in the pinned canonical card for this comparison.",
+        "verification_status": "documented",
+        "confidence": "high",
+        "supporting_evidence": [
+          {
+            "evidence_id": "evidence-checkpoint-security",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint/README.md",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/checkpoint/README.md",
+            "locator": "{\"path\": \"libs/checkpoint/README.md\", \"symbol_or_section\": \"Serde security notice\", \"line_start\": 45, \"line_end\": 54}",
+            "excerpt": "Default checkpoint deserialization may allow Python types; strict MessagePack or an explicit allowed-module list is recommended.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint/README.md#L45-L54"
+          },
+          {
+            "evidence_id": "evidence-checkpoint-adapters",
+            "repository": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-sqlite/README.md",
+            "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+            "path": "libs/checkpoint-sqlite/README.md",
+            "locator": "{\"path\": \"libs/checkpoint-sqlite/README.md\", \"symbol_or_section\": \"What is this? and Security\", \"line_start\": 17, \"line_end\": 28}",
+            "excerpt": "The repository provides sync and async SQLite checkpoint persistence and repeats the strict deserialization guidance.",
+            "source_url": "https://github.com/langchain-ai/langgraph/blob/49ae27c2ae983cfb92091b0dea9f7bc37a716479/libs/checkpoint-sqlite/README.md#L17-L28"
+          }
+        ],
+        "conflicting_evidence": []
+      }
+    ]
+  },
+  "projection": {
+    "mode": "rumble_arena",
+    "assessment_context": {
+      "title": "OpenAI Agents SDK for Python vs LangGraph",
+      "use_case": "A Python support-agent prototype with tools and explicit workflow control",
+      "cohort_project_ids": [
+        "project-openai-openai-agents-python",
+        "project-langchain-ai-langgraph"
+      ],
+      "requirements": ["Python", "Tool integration", "Workflow control"],
+      "organizational_constraints": [
+        "Static evidence only; runtime behavior has not been verified"
+      ],
+      "assessed_at": "2026-09-25"
+    },
+    "entrants": [
+      {
+        "project_id": "project-openai-openai-agents-python",
+        "project_name": "OpenAI Agents SDK for Python",
+        "project_roles": ["agent_framework_sdk"],
+        "source_snapshot": {
+          "card_id": "card-openai-openai-agents-python",
+          "card_version": 2,
+          "revision": "65886fa16dcdb482090b30b74de1d0cc80b9f4c6",
+          "analyzed_at": "2026-07-18T13:13:32Z"
+        }
+      },
+      {
+        "project_id": "project-langchain-ai-langgraph",
+        "project_name": "LangGraph",
+        "project_roles": ["agent_framework_sdk"],
+        "source_snapshot": {
+          "card_id": "card-langchain-ai-langgraph",
+          "card_version": 2,
+          "revision": "49ae27c2ae983cfb92091b0dea9f7bc37a716479",
+          "analyzed_at": "2026-07-18T13:14:15Z"
+        }
+      }
+    ],
+    "role_relationship": "overlapping",
+    "role_notice": "The projects share at least one recorded role, so direct round comparisons may be meaningful within the stated Assessment Context.",
+    "rounds": [
+      {
+        "round_number": 1,
+        "round_id": "round-1-contextual-best-fit",
+        "title": "Round 1: Fit under the requested context Face-off",
+        "dimension": "contextual-best-fit",
+        "label": "Fit under the requested context",
+        "requirement": "A Python support-agent prototype with tools and explicit workflow control",
+        "verdict": "inconclusive",
+        "callout": "No clean hit: the recorded values or evidence do not justify a contextual edge.",
+        "entrant_a": {
+          "state": "value",
+          "value": "A candidate for a Python support-agent prototype using an agent runner, tools, and handoffs.",
+          "alignment": "unclear",
+          "verification_status": "statically_confirmed",
+          "confidence": "medium",
+          "claim_ids": [
+            "[\"project-openai-openai-agents-python\",\"claim-python-support-prototype-fit\"]"
+          ]
+        },
+        "entrant_b": {
+          "state": "value",
+          "value": "A candidate for a Python support-agent prototype using explicit state graphs and model/tool execution nodes.",
+          "alignment": "unclear",
+          "verification_status": "statically_confirmed",
+          "confidence": "medium",
+          "claim_ids": [
+            "[\"project-langchain-ai-langgraph\",\"claim-python-support-prototype-fit\"]"
+          ]
+        }
+      },
+      {
+        "round_number": 2,
+        "round_id": "round-2-capability-x-20langgraph-20cli-20api-20client",
+        "title": "Round 2: Local development, packaging, and API client tooling Face-off",
+        "dimension": "capability-x%20langgraph%20cli%20api%20client",
+        "label": "Local development, packaging, and API client tooling",
+        "requirement": "A Python support-agent prototype with tools and explicit workflow control",
+        "verdict": "inconclusive",
+        "callout": "No clean hit: the recorded values or evidence do not justify a contextual edge.",
+        "entrant_a": {
+          "state": "not_analyzed",
+          "value": null,
+          "alignment": "unclear",
+          "verification_status": "unverified",
+          "confidence": "unknown",
+          "claim_ids": []
+        },
+        "entrant_b": {
+          "state": "value",
+          "value": "Creates projects, runs a development API server, launches a Docker stack, builds images or Dockerfiles, and exposes a Python client for assistants, threads, runs, state, and streaming against a LangGraph API server.",
+          "alignment": "unclear",
+          "verification_status": "documented",
+          "confidence": "high",
+          "claim_ids": [
+            "[\"project-langchain-ai-langgraph\",\"claim-runtime-tooling\"]"
+          ]
+        }
+      },
+      {
+        "round_number": 3,
+        "round_id": "round-3-capability-x-20langgraph-20durable-20persistence",
+        "title": "Round 3: Checkpointed durable execution and memory Face-off",
+        "dimension": "capability-x%20langgraph%20durable%20persistence",
+        "label": "Checkpointed durable execution and memory",
+        "requirement": "A Python support-agent prototype with tools and explicit workflow control",
+        "verdict": "inconclusive",
+        "callout": "No clean hit: the recorded values or evidence do not justify a contextual edge.",
+        "entrant_a": {
+          "state": "not_analyzed",
+          "value": null,
+          "alignment": "unclear",
+          "verification_status": "unverified",
+          "confidence": "unknown",
+          "claim_ids": []
+        },
+        "entrant_b": {
+          "state": "value",
+          "value": "Persists graph state by thread and checkpoint, keeps pending writes, and supports pause, resume, replay, state history, and memory across invocations through an interface with in-memory, SQLite, and PostgreSQL implementations.",
+          "alignment": "unclear",
+          "verification_status": "statically_confirmed",
+          "confidence": "high",
+          "claim_ids": [
+            "[\"project-langchain-ai-langgraph\",\"claim-durable-persistence\"]",
+            "[\"project-langchain-ai-langgraph\",\"claim-checkpoint-security\"]"
+          ]
+        }
+      }
+    ],
+    "overall_result": "no_universal_winner",
+    "ring_call": "No universal winner is calculated. Choose the trade-offs that fit this Assessment Context, then inspect the linked claims and evidence."
+  }
+}

@@ -12,7 +12,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
 SKILL = ROOT / ".agents" / "skills" / "agent-project-card"
-PLUGIN = ROOT / "plugins" / "agent-project-card"
+PLUGIN = ROOT / ".agents" / "plugins" / "agent-project-card"
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
 
@@ -361,7 +361,8 @@ def test_marketplace_plugin_packages_the_repository_skill() -> None:
     assert manifest["version"].startswith("0.1.0+codex.")
     assert manifest["skills"] == "./skills/"
     assert "Local developer" not in json.dumps(manifest)
-    assert entry["source"]["path"] == "./plugins/agent-project-card"
+    assert entry["source"]["path"] == "./.agents/plugins/agent-project-card"
+    assert (ROOT / entry["source"]["path"]).resolve() == PLUGIN.resolve()
     assert entry["policy"] == {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL",
@@ -370,11 +371,11 @@ def test_marketplace_plugin_packages_the_repository_skill() -> None:
 
 def test_skill_symlink_and_plugin_namespace_are_documented() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    design = (ROOT / "docs" / "design-docs" / "system-design.md").read_text(encoding="utf-8")
+    development = (ROOT / "docs" / "development.md").read_text(encoding="utf-8")
 
-    for document in (readme, design):
+    for document in (readme, development):
         assert ".agents/skills/agent-project-card" in document
-        assert "../../plugins/agent-project-card/skills/agent-project-card" in document
+        assert "../plugins/agent-project-card/skills/agent-project-card" in document
         assert "agent-project-card:agent-project-card" in document
         assert "<plugin-name>:<skill-name>" in document
 

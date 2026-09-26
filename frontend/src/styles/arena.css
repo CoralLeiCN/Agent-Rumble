@@ -61,23 +61,6 @@
   text-transform: uppercase;
 }
 
-.arena-source small {
-  margin-left: auto;
-  color: inherit;
-  font: 700 0.56rem var(--font-mono);
-  text-transform: uppercase;
-}
-
-.arena-source--fallback {
-  border-color: #b39525;
-  background: #fff0ad;
-  color: #4b3a00;
-}
-
-.arena-source--fallback strong {
-  color: #4b3a00;
-}
-
 .arena-stage:focus {
   outline: none;
 }
@@ -1285,10 +1268,6 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 0.25rem;
-  }
-
-  .arena-source small {
-    margin: 0;
   }
 
   .arena-intro__heading {

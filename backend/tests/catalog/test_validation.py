@@ -8,9 +8,11 @@ from agent_project_intelligence.catalog.validation import (
     CardValidationError,
     SkillCardValidator,
 )
-from agent_project_intelligence.config import REPOSITORY_ROOT
+from agent_project_intelligence.config import DEFAULT_CATALOG_ROOT
 
-BIOAGENTS_CARD = REPOSITORY_ROOT / "project-cards" / "bio-xyz--BioAgents" / "project-card.yaml"
+BIOAGENTS_CARD = (
+    DEFAULT_CATALOG_ROOT / "card-bio-xyz-bioagents" / "versions" / "1" / "project-card.yaml"
+)
 
 
 def load_bioagents_card() -> dict[str, object]:

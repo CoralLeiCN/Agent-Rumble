@@ -10,7 +10,8 @@ These product choices remain unresolved.
 3. Which project types are required beyond the representative categories already named for the MVP.
 4. Which linked first-party documentation sources are included in the MVP.
 5. Whether popularity and community metrics are included.
-6. How much source code may be retained after analysis.
+6. Production source-retention policy beyond the local workflow's ephemeral
+   acquisition and retained evidence excerpts.
 7. Which fields are mandatory for downstream recommendation.
 
 ## Delivery Scope
@@ -29,12 +30,28 @@ These product choices remain unresolved.
    field is placed, and how `project.primary_type` is represented when the
    status is `insufficient_evidence`.
 
+## Public Service Deployment
+
+Choose the hosting destination, access controls, provider operation, request
+limits, durable volumes/backups, production retention, and worker/reload
+coordination before exposing generation publicly. The
+[local generation decision](decisions.md#local-generation-storage-and-publication)
+covers the single-process developer workflow only. Public rollout requires
+these deployment choices; local validation can proceed.
+
+## Frontend Architecture
+
+Choose production build tooling, routing, rendering, and UI foundations when
+preparing the public frontend. The local Vite SPA, React state, session storage,
+CSS, and Phaser runtime remain reversible implementation choices rather than a
+selected production architecture.
+
 ## Marketplace Publication Inputs
 
 Public marketplace release remains blocked until the stakeholder supplies the
 publisher identity, public support and policy URLs, production logo and
 category, and supported countries or regions listed in the
-[plugin public-release checklist](../plugins/agent-project-card/SUBMISSION.md#public-release-checklist).
+[plugin public-release checklist](../.agents/plugins/agent-project-card/SUBMISSION.md#public-release-checklist).
 
 ## MVP Evaluation Protocol
 

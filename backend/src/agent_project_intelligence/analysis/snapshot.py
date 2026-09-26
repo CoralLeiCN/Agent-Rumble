@@ -66,6 +66,9 @@ def snapshot_repository(workspace: Path, revision: str | None) -> SourceSnapshot
             raise ValueError("Git snapshot output exceeds its size limit")
         return raw
 
+    root = Path(os.fsdecode(run("rev-parse", "--show-toplevel").removesuffix(b"\n")))
+    if root.resolve() != workspace.resolve():
+        raise ValueError("analysis workspace must be the Git repository root")
     head = run("rev-parse", "--verify", "HEAD^{commit}").decode("ascii").strip()
     if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", head):
         raise ValueError("workspace does not resolve to a full Git commit")

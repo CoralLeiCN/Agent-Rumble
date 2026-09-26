@@ -5,19 +5,15 @@ Part of the [Agent Rumble product specification](README.md).
 ## 12. Agent Project Card Schema
 
 The card is the canonical, machine-readable record. Human-readable views are
-generated from it. The stakeholder-provided **Agent Project Card Schema v0.1**
-is the normative starting point for the card's field groups, initial controlled
-values, and `project-card.yaml` output. Schema v0.3 is the current pre-release
-working contract.
+generated from it. Schema v0.3 is the current executable pre-release contract.
+The [schema requirements](../requirements.md#project-card-schema-baseline) define
+the project boundary, classification, and evidence expectations. Author cards
+against the current executable contract below.
 
-The v0.1 baseline predates requirements that a project may span multiple
-repositories, claims and sources must be first-class, confidence and
-verification must remain independent, assessments must declare their context,
-and unavailable values must distinguish `unknown`, `not_applicable`,
-`not_analyzed`, and `no_evidence_found`. The evolved schema therefore preserves
-the useful v0.1 concepts while adding the structures needed to satisfy those
-active requirements. Because Agent Rumble has not been released, the current
-product does not require v0.1 import, export, or compatibility projections.
+Sections 12.1–12.22 describe the information and evidence semantics, not literal
+top-level YAML keys. The executable schema groups that information as mapped in
+[section 14.2](#142-executable-v03-contract). Additions beyond that contract require
+a deliberate schema revision.
 
 ### 12.1 Identity and Source Snapshot
 
@@ -376,10 +372,10 @@ Each parent source record contains:
 
 Recommended confidence levels:
 
-* High: directly confirmed by version-aligned code, configuration, or authorized dynamic verification
-* Medium: strongly supported by version-aligned documentation and repository structure
-* Low: inferred from incomplete evidence
-* Unknown: insufficient information
+* High: strong, consistent evidence with little material uncertainty
+* Medium: meaningful support with material uncertainty or incomplete coverage
+* Low: weak, ambiguous, or incomplete support
+* Unknown: insufficient information to assess confidence
 
 Confidence and verification status are independent. For example, a repository can provide high-confidence evidence that a feature is documented while the implementation remains unverified.
 
@@ -430,7 +426,7 @@ whitespace, or compatibility normalization.
 A compact human-readable projection may be generated from a validated canonical
 card, but is not required by the current delivery scope.
 The repository-local Agent Project Card skill provides the reusable
-[`card-summary-template.md`](../../plugins/agent-project-card/skills/agent-project-card/assets/card-summary-template.md).
+[`card-summary-template.md`](../../.agents/plugins/agent-project-card/skills/agent-project-card/assets/card-summary-template.md).
 
 When a summary is generated, it identifies the source card ID, card version,
 schema version, project boundary, source snapshot, analysis date and depth, and
@@ -464,76 +460,37 @@ A traceable list of claims and their supporting sources.
 
 ---
 
-## 14. Schema Baseline and Current Pre-Release Structure
+## 14. Current Pre-Release Schema
 
-### 14.1 v0.1 Baseline
+### 14.1 Canonical Structure Rules
 
-Schema v0.1 establishes these top-level field groups:
-
-| v0.1 field group | Required interpretation |
-| --- | --- |
-| `project` | Project identity, repository identity, analyzed revision, license, and lifecycle status |
-| `summary` | One-line description, purpose, target users, and primary use cases |
-| `classification` | Secondary characteristics, domains, delivery forms, and agent patterns |
-| `capabilities` | User-meaningful capabilities with evidence status, confidence, and evidence references |
-| `architecture` | Direct, architecturally meaningful technologies grouped by their role |
-| `components` | Important project components and their paths, types, and purposes |
-| `usage` | Installation, minimal start, configuration, required services, and extension points |
-| `assessment` | Maturity, strengths, limitations, risks, and fit |
-| `relationships` | Dependencies, integrations, and comparable projects |
-| `open_questions` | Material questions the analysis could not answer |
-| `evidence` | Precisely located support for card conclusions |
-
-The v0.1 controlled values are:
-
-* `project.primary_type`: `agent_application`, `agent_framework_sdk`,
-  `agent_harness_runtime`, `agent_tool_mcp`, or `agent_skill`
-* `confidence`: `high`, `medium`, `low`, or `unknown`
-* `evidence_status`: `confirmed`, `documented_only`, `inferred`, or `not_found`
-* `assessment.maturity`: `experimental`, `early`, `established`, `mature`, or
-  `unclear`
-* `project.status`: `active`, `maintenance`, `archived`, or `unclear`
-* `architecture.tools_and_mcp.mcp_role`: `none`, `client`, `server`, `both`, or
-  `unclear`
-
-### 14.2 Pre-Release Evolution Rules
-
-Schema v0.3 evolves the baseline according to these rules:
-
-1. Use the v0.1 top-level groups as the design starting point without requiring
-   an exact v0.1-compatible representation.
-2. Expand `project` and add `source_snapshot` so a card describes an explicit
-   project boundary across one or more sources rather than assuming that one
-   repository is the project.
-3. Use the five v0.1 primary types as the initial core vocabulary while the
-   current schema evolves to support the existing supporting-project requirement
-   and namespaced ontology extensions.
-4. Omit the v0.1 `evidence_status` compatibility projection. The canonical record
-   keeps capability support status, claim verification status, and confidence
-   independent.
-5. Separate claims, sources, and evidence. Capabilities and assessments refer to
-   claims; claims refer to supporting or conflicting evidence; evidence refers
-   to a precisely versioned source and locator.
-6. Add assessment contexts and reasoning. Maturity, strengths, limitations,
-   risks, fit, and gaps are not context-free project properties.
-7. Treat empty strings in the v0.1 example as authoring placeholders, not as the
-   canonical representation of unavailable data. A v0.3 card uses `null` plus a
-   JSON Pointer entry in `field_states` to record `unknown`, `not_applicable`,
-   `not_analyzed`, or `no_evidence_found`. An empty collection means the
-   collection was analyzed and is known to contain no items; otherwise its path
-   requires a `field_states` entry.
-8. Increment `schema_version` for a backward-incompatible structural or semantic
-   change. Do not reinterpret an existing enum value or field in place. Record
-   the card instance revision separately in `card_version`, following
+1. `project` defines the analyzed project boundary; `source_snapshot` records
+   the versions of its repositories, packages, documents, and other sources.
+2. Classification uses the five core primary types and versioned, namespaced
+   ontology extensions described in [Project Classification](02-classification-and-sources.md#9-project-classification-system).
+3. Capability support status, claim verification status, and confidence are
+   independent fields.
+4. Capabilities and assessments refer to claims; claims refer to supporting or
+   conflicting evidence; evidence refers to a precisely versioned source and
+   locator.
+5. Maturity, strengths, limitations, risks, fit, and gaps require assessment
+   contexts and reasoning.
+6. Where the schema permits a nullable value, use `null` plus a JSON Pointer entry in
+   `field_states` recording `unknown`, `not_applicable`, `not_analyzed`, or
+   `no_evidence_found`. An empty array means it was analyzed and contains
+   no items; otherwise its path requires a `field_states` entry. A state pointer
+   must resolve to `null` or an empty array. Required non-null identity fields
+   must be supplied; a field-state entry cannot make them optional.
+7. Structural or semantic contract changes increment `schema_version`. Do not
+   reinterpret existing enum values or fields in place. Record the card instance
+   revision separately in `card_version`, following
    [Card Identity and Versioning](#card-identity-and-versioning).
 
-### 14.3 Current Pre-Release v0.3 Structure
+### 14.2 Executable v0.3 Contract
 
-The current executable pre-release schema is packaged with the repository-local
-skill at
-[`project-card.schema.json`](../../plugins/agent-project-card/skills/agent-project-card/references/project-card.schema.json).
-It is the working canonical contract for pre-release implementation and may
-evolve without providing v0.1 compatibility.
+The current executable schema is packaged with the repository-local skill at
+[`project-card.schema.json`](../../.agents/plugins/agent-project-card/skills/agent-project-card/references/project-card.schema.json).
+Cards, fixtures, validators, and generated views must use this contract directly.
 
 Schema v0.3 does not yet contain the accepted `classification_status` field.
 Until a later executable schema revision adds the
@@ -543,181 +500,28 @@ classification claims and confidence, and `open_questions`. The later schema
 revision must keep classification status independent from the primary-type
 vocabulary and must not use `x-unclassified` as an uncertainty marker.
 
-The following YAML is an illustrative v0.3 authoring template. Its empty strings
-are values still to be populated; before validation, each must be replaced by a
-known value or by `null` with the corresponding `field_states` entry. The
-implementation schema must define required fields, types, enum values, and
-conditional validation rules explicitly.
+The schema and deterministic validator define required fields, allowed values,
+nullability, and cross-reference rules. The current groups map to the semantic
+sections above as follows:
 
-```yaml
-schema_version: "0.3"
-card_id: "card-project-001"
-card_version: 1
-field_states:
-  /project/license: "unknown"
+| Canonical group | Information represented |
+| --- | --- |
+| `schema_version`, `card_id`, `card_version`, `field_states` | Contract version, immutable card identity, and explicit unavailable-value states |
+| `project`, `source_snapshot` | Project boundary, repository roles, exact source revisions, analysis configuration, and provenance |
+| `summary`, `classification` | Purpose, users, use cases, secondary characteristics, domains, delivery forms, patterns, and architecture layers |
+| `capabilities` | User-meaningful functions, support status, interfaces, prerequisites, limits, claims, and evidence references |
+| `architecture`, `components` | Technologies, runtime, tools, state, retrieval, document processing, deployment, security, flows, and component boundaries |
+| `usage` | Installation, minimal start, configuration, required services, and extension points |
+| `assessment` | Explicit contexts, maturity signals, strengths, limitations, risks, fit, and gaps |
+| `relationships` | Dependencies, integrations, and comparable projects |
+| `claims`, `sources`, `evidence` | Statements, independent verification/confidence, supporting or conflicting evidence, source versions, and precise locators |
+| `open_questions` | Unresolved questions at the analyzed snapshot |
 
-project:
-  project_id: "project-001"
-  name: "Example project"
-  primary_type: "agent_framework_sdk"
-  type_rationale: ""
-  boundary: ""
-  repositories:
-    - source_id: "source-repository-1"
-      url: ""
-      owner: ""
-      role: "primary"
-      included_paths: []
-      excluded_paths: []
-  packages: []
-  services: []
-  documentation_sites: []
-  license: null
-  status: "unclear"
-
-source_snapshot:
-  analyzed_at: ""
-  source_revisions:
-    - source_id: "source-repository-1"
-      branch: ""
-      tag: ""
-      commit: ""
-      retrieved_at: ""
-      content_digest: ""
-  release_versions: []
-  analysis_depth: "targeted"
-  analysis_configuration: {}
-  analyzer_version: ""
-  ontology_versions:
-    classification: ""
-    capabilities: ""
-
-summary:
-  one_line: ""
-  purpose: ""
-  target_users: []
-  primary_use_cases: []
-
-classification:
-  secondary_characteristics: []
-  domains: []
-  delivery_forms: []
-  agent_patterns: []
-  architecture_layers: []
-  claim_ids: []
-
-capabilities:
-  - capability_id: "capability-001"
-    ontology_id: ""
-    name: ""
-    description: ""
-    support_status: "statically_confirmed"
-    scope: ""
-    interfaces: []
-    prerequisites: []
-    configuration_requirements: []
-    limitations: []
-    confidence: "high"
-    claim_ids: []
-    evidence_refs: []
-
-architecture:
-  overview: ""
-  languages: []
-  frameworks_and_sdks: []
-  model_providers: []
-  runtime_and_orchestration: []
-  tools_and_mcp:
-    tools: []
-    mcp_role: "unclear"
-    mcp_details: []
-  skills: []
-  memory_and_state: []
-  retrieval_and_knowledge: []
-  document_processing: []
-  execution_and_sandbox: []
-  gateways_and_routing: []
-  storage_and_databases: []
-  interfaces: []
-  deployment: []
-  observability_and_evaluation: []
-  security_and_permissions: []
-  data_flows: []
-  control_flows: []
-
-components:
-  - component_id: "component-001"
-    name: ""
-    path: ""
-    project_type: ""
-    purpose: ""
-    claim_ids: []
-
-usage:
-  installation: ""
-  minimal_start: ""
-  configuration: []
-  required_services: []
-  extension_points: []
-
-assessment:
-  contexts:
-    - context_id: "context-001"
-      use_case: "general_project_assessment"
-      comparison_cohort: []
-      requirements: []
-      organizational_constraints: []
-      assessed_at: ""
-  maturity: "unclear"
-  maturity_signals: []
-  strengths: []
-  limitations: []
-  risks: []
-  best_fit: []
-  poor_fit: []
-  gaps: []
-
-relationships:
-  depends_on: []
-  integrates_with: []
-  comparable_projects: []
-
-claims:
-  - claim_id: "claim-001"
-    statement: ""
-    claim_kind: "factual"
-    verification_status: "documented"
-    confidence: "unknown"
-    applies_to: ""
-    assessment_context_id: null
-    supporting_evidence_ids: []
-    conflicting_evidence_ids: []
-    reasoning: ""
-    last_verified_at: ""
-
-sources:
-  - source_id: "source-repository-1"
-    source_type: "repository"
-    provenance: "first_party"
-    uri: ""
-    revision_or_version: ""
-    retrieved_at: ""
-    content_digest: ""
-    access_scope: "public"
-
-evidence:
-  - evidence_id: "evidence-001"
-    source_id: "source-repository-1"
-    locator:
-      path: ""
-      symbol_or_section: ""
-      line_start: null
-      line_end: null
-    confidence: "high"
-    excerpt_or_symbol: ""
-    note: ""
-
-open_questions: []
-```
-
----
+Use validated canonical artifacts as examples, such as the
+[Eigent application card](../../catalog/cards/card-eigent-ai-eigent/versions/1/project-card.yaml)
+and [OpenAI Agents SDK card](../../catalog/cards/card-openai-openai-agents-python/versions/2/project-card.yaml).
+They are pinned examples with their own boundaries and source snapshots;
+new analyses must collect their own evidence. The skill's
+[analysis contract](../../.agents/plugins/agent-project-card/skills/agent-project-card/references/analysis-contract.md)
+defines authoring steps, and `make cards-check` validates every retained catalog
+version against the shared schema and semantic rules.

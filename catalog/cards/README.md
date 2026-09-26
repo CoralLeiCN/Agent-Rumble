@@ -1,7 +1,7 @@
 # Agent Project Card Catalog
 
-This directory is the default storage root for Agent Rumble's YAML-first card
-catalog. Store each validated canonical card at:
+This directory is the single checked-in card store and the default storage root
+for Agent Rumble's YAML-first catalog. Store each validated canonical card at:
 
 ```text
 {encoded_card_id}/versions/{card_version}/project-card.yaml
@@ -17,6 +17,7 @@ Every `project-card.yaml` must pass the versioned Agent Project Card validator
 before publication. Publishing a refresh adds a new card-version directory and
 does not overwrite an earlier version.
 
-Every completed card under `project-cards/` must be published here before the
-catalog is considered complete. The backend regression suite checks that the
-versioned catalog contains the exact complete set of preprocessed cards.
+The highest retained card version is current; earlier versions remain available
+for reproducible retrieval. Tests and validation commands read these same files.
+Keep generation drafts outside the checked-in catalog until review and
+[explicit publication](../../backend/README.md#generation-storage-and-publication).

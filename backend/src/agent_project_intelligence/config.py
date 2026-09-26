@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Literal
 
 from dotenv import load_dotenv
-from pydantic import AliasChoices, AnyHttpUrl, Field, field_validator, model_validator
+from pydantic import AnyHttpUrl, Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
@@ -31,6 +31,10 @@ class Settings(BaseSettings):
         default=DEFAULT_CATALOG_ROOT,
         validation_alias="AGENT_RUMBLE_CATALOG_ROOT",
     )
+    generated_cards_root: Path = Field(
+        default=REPOSITORY_ROOT / "var" / "generated-cards",
+        validation_alias="AGENT_RUMBLE_GENERATED_CARDS_ROOT",
+    )
     catalog_max_file_size_bytes: int = Field(
         default=2 * 1024 * 1024,
         validation_alias="AGENT_RUMBLE_CATALOG_MAX_FILE_SIZE_BYTES",
@@ -45,7 +49,7 @@ class Settings(BaseSettings):
     model: str | None = Field(default=None, validation_alias="CODEX_MODEL")
     codex_config_home: Path = Field(
         default=Path.home() / ".codex",
-        validation_alias=AliasChoices("CODEX_CONFIG_HOME", "CODEX_HOME"),
+        validation_alias="CODEX_CONFIG_HOME",
     )
     model_provider: str | None = Field(
         default=None,
@@ -135,6 +139,10 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def validate_model_provider_configuration(self) -> Settings:
         """Keep named Codex providers distinct from the inline local endpoint."""
+        generated = self.generated_cards_root.expanduser().resolve()
+        catalog = self.catalog_root.expanduser().resolve()
+        if generated.is_relative_to(catalog) or catalog.is_relative_to(generated):
+            raise ValueError("generated_cards_root and catalog_root must be separate directories")
         if self.model_provider_base_url is not None and self.model_provider not in (
             None,
             "custom",

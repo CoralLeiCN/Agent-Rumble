@@ -42,6 +42,53 @@ export interface Requirement {
   label: string;
 }
 
+export interface AssessmentContextInput {
+  use_case: string;
+  comparison_cohort: string[];
+  requirements: string[];
+  preferences: string[];
+  exclusions: string[];
+  organizational_constraints: string[];
+  assessed_at?: string;
+}
+
+export interface CatalogContext {
+  catalogId: string;
+  label: string;
+  cohortDescription: string;
+  coverage: string[];
+  exclusions: string[];
+  cardCount: number;
+  schemaVersions: string[];
+  ontologyVersions: string[];
+  oldestAnalyzedAt: string | null;
+  newestAnalyzedAt: string | null;
+}
+
+export interface ContextualComparison {
+  assessment_context: AssessmentContextInput;
+  role_analysis: {
+    compatibility: "same_role" | "complementary_roles" | "different_roles";
+    explanation: string;
+  };
+  rows: {
+    id: string;
+    label: string;
+    cells: Record<
+      string,
+      {
+        state: FieldState | "value";
+        value?: ComparisonJsonValue;
+        claim_ids: string[];
+        project_id: string;
+        card_version: number;
+        claim_verification_status?: VerificationStatus | null;
+        confidence?: Confidence | null;
+      }
+    >;
+  }[];
+}
+
 export interface ProjectSummary {
   id: string;
   name: string;
@@ -118,22 +165,6 @@ export interface ClaimEvidenceRecord {
   conflictingEvidence: ResolvedEvidence[];
 }
 
-/** Prepared Rumble evidence before it is projected into the canonical drawer. */
-export interface EvidenceRecord {
-  id: string;
-  projectId: string;
-  claim: string;
-  whyItMatters: string;
-  verificationStatus: VerificationStatus;
-  confidence: Confidence;
-  repository: string;
-  revision: string;
-  locator: string;
-  excerpt: string;
-  sourceUrl: string;
-  relationship?: "supporting" | "conflicting";
-}
-
 export interface ComparisonCell {
   pointer: string | null;
   state: ComparisonState;
@@ -177,6 +208,7 @@ export interface ComparisonCardRef {
 export type ComparisonProvenance = "fixture" | "validated_catalog";
 
 export interface ComparisonResponse {
+  contextual?: ContextualComparison;
   assessmentContexts: AssessmentContextView[];
   projectIds: string[];
   cards: AgentProjectCard[];
@@ -190,8 +222,6 @@ export interface ComparisonResponse {
   contractOnlyAttributeCount: number;
 }
 
-export type CatalogDataSource = "http";
-
 export interface CardReference {
   projectId: string;
   cardVersion: number;
@@ -202,8 +232,16 @@ export interface ClaimReference extends CardReference {
 }
 
 export interface CatalogGateway {
-  readonly dataSource: CatalogDataSource;
-  searchProjects(query: string, page?: number): Promise<SearchResponse>;
-  compareProjects(cards: CardReference[]): Promise<ComparisonResponse>;
+  getCatalogContext(): Promise<CatalogContext>;
+  getCurrentCard(projectId: string): Promise<AgentProjectCard>;
+  searchProjects(
+    query: string,
+    page?: number,
+    context?: AssessmentContextInput,
+  ): Promise<SearchResponse>;
+  compareProjects(
+    cards: CardReference[],
+    context?: AssessmentContextInput,
+  ): Promise<ComparisonResponse>;
   getClaimEvidence(reference: ClaimReference): Promise<ClaimEvidenceRecord>;
 }

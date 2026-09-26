@@ -9,7 +9,7 @@ normative behavior that satisfies them.
 A requirement may mandate a technology when that choice comes from a
 stakeholder, but it does not invent solution details, explain architectural
 rationale, or organize delivery work. Proposed approaches belong in
-[design documents](design-docs/README.md), and accepted architectural choices
+[design documents](../README.md#design-documents), and accepted architectural choices
 belong in the [decisions record](decisions.md).
 
 ## Agent Project Card
@@ -69,8 +69,9 @@ canonical artifact.
 
 ### Output
 
-The agent should produce a standardized **Project Card**, similar in purpose to
-a Model Card or Dataset Card. A more appropriate name may be recommended.
+The agent should produce a standardized **Agent Project Card**, similar in
+purpose to a Model Card or Dataset Card, using the accepted
+[product naming](#public-product-naming).
 
 The card should describe:
 
@@ -81,26 +82,23 @@ The card should describe:
 
 ### Project Card Schema Baseline
 
-Use the stakeholder-provided **Agent Project Card Schema v0.1** as the normative
-starting point for `project-card.yaml` and for the Agent Project Card skill.
-
-The schema organizes the card into project identity and revision, summary,
+Use the [current executable Agent Project Card schema](specification/04-card-schema-and-outputs.md#142-executable-v03-contract)
+for `project-card.yaml` and the Agent Project Card skill. It organizes the card
+into project identity and revision, summary,
 classification, capabilities, architecture, components, usage, assessment,
-relationships, open questions, and evidence. It defines these initial
-controlled values:
+relationships, open questions, and evidence. Its stable core project types are:
 
-* Primary type: `agent_application`, `agent_framework_sdk`,
-  `agent_harness_runtime`, `agent_tool_mcp`, or `agent_skill`
-* Confidence: `high`, `medium`, `low`, or `unknown`
-* Evidence status: `confirmed`, `documented_only`, `inferred`, or `not_found`
-* Maturity: `experimental`, `early`, `established`, `mature`, or `unclear`
-* Project status: `active`, `maintenance`, `archived`, or `unclear`
-* MCP role: `none`, `client`, `server`, `both`, or `unclear`
+* `agent_application`
+* `agent_framework_sdk`
+* `agent_harness_runtime`
+* `agent_tool_mcp`
+* `agent_skill`
 
-Record the exact analyzed revision when Git metadata is available. Do not guess
-unavailable identity values; the v0.1 baseline directs the author to represent
-them as empty strings. In v0.1, `project.primary_type` describes the repository
-itself, while supporting services used by it belong under `architecture` or
+Record the exact analyzed revision when Git metadata is available. Represent
+unavailable scalar values using `null` and the applicable `field_states` entry;
+do not guess values or use empty strings as absence markers.
+`project.primary_type` describes the declared project boundary, while supporting
+services used by it belong under `architecture` or
 `relationships`. Capture user-meaningful capabilities rather than implementation
 trivia, connect capabilities to available claims and evidence, and record only
 direct, architecturally meaningful technologies.
@@ -131,6 +129,11 @@ compatibility among pre-release Agent Project Card schemas is not an
 implementation or release requirement. Do not include migration, import/export
 compatibility, or compatibility-only fields or projections solely to support
 older pre-release schemas.
+
+Remove repository-owned code, configuration aliases, identifier mappings, and
+projections that exist solely to preserve backward compatibility. Update
+fixtures, tests, and documentation to use the current contracts directly.
+Operational documentation should describe current behavior.
 
 ### Card Versioning
 
@@ -200,6 +203,9 @@ Version the Agent Project Card skill as part of the Agent Project Intelligence
 repository so the direct Codex session and API use the same reviewed skill
 artifact.
 
+Keep the repository's plugin package and marketplace metadata together in one
+plugin area while preserving repository-local skill discovery.
+
 ### Marketplace Distribution
 
 Publish the Agent Project Card skill to the public Codex marketplace so users
@@ -241,6 +247,9 @@ The first implementation should store, retrieve, and search validated canonical
 `project-card.yaml` files directly. It should not depend on embeddings or a
 vector store. Vector-based semantic search should remain in the backlog.
 
+Keep one checked-in copy of each canonical card version, shared by the catalog,
+tests, and validation commands. Preserve distinct historical versions.
+
 ### Public Page Discoverability
 
 Search-engine indexing and rich social previews for public Agent Project Card
@@ -272,6 +281,10 @@ trait in the prepared comparison sheet.
 Arcade fighters should use human-looking character designs with visible body
 movement, reusing an existing or open-source design where available. Users
 should have an option to enter fullscreen.
+
+Remove the standalone prepared-demo endpoint and root fixture dataset. Keep
+synthetic test inputs alongside the tests; the product arena uses canonical
+catalog comparisons.
 
 ## Frontend Experience
 
@@ -381,6 +394,14 @@ dependency vulnerabilities, and keep the full catalog reachable. Provide
 repeatable automated quality checks, reproducible runtime setup, and accurate
 development documentation.
 
+Keep implementation behavior, API contracts, setup instructions, and delivery
+status documentation aligned. Review and correct inconsistencies across the
+codebase and project documents.
+
+Provide repository-local QA documentation that inventories the available
+features, records whether the current implementation builds and what remains
+incomplete, and gives QA test procedures for the implemented features.
+
 ## Documentation Governance
 
 ### Documentation Structure
@@ -407,6 +428,16 @@ accepted architectural choices, their context, and their consequences.
 Add repository rules that enforce these responsibilities, keep the source of
 normative content explicit, and prevent duplication from creating competing
 sources of truth.
+
+### Documentation Maintenance
+
+Remove stale documentation, compatibility-only guidance, and redundant
+pointer documents. Consolidate useful current content into the responsible
+document and update references directly without leaving redirect stubs.
+
+Keep documentation and the product specification aligned with the requirements,
+canonical schema, and implementation. Distinguish required behavior from
+implemented behavior and outstanding delivery work.
 
 ### Project Stories and Build Notes
 
@@ -463,6 +494,15 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-09-26 | Rumble Arena | Requested removal of the standalone demo endpoint and root fixture files while retaining synthetic test inputs beside their tests. |
+| 2026-09-26 | Documentation governance | Reaffirmed removal of stale and pointer documents and alignment of documentation and specification; consolidated current guidance and made remaining delivery gaps explicit. |
+| 2026-09-26 | Repository-local skill | Requested consolidation of the plugin package and marketplace metadata into one plugin area. |
+| 2026-09-26 | Agent Project Card service and storage | Requested a single checked-in copy of duplicated cards, retaining distinct historical versions. |
+| 2026-09-26 | Documentation governance | Requested removal of stale, backward-compatibility, and pointer documents; current guidance is consolidated and links point directly to maintained content. |
+| 2026-09-26 | Development quality | Requested a codebase-to-documentation alignment review and correction of inconsistencies. |
+| 2026-09-26 | Pre-release compatibility | Reaffirmed removal of compatibility-only code and documentation; current contracts govern implementation and operational guidance. |
+| 2026-09-26 | Development quality | Requested a review of implementation completeness and a documented feature inventory and test procedures for QA. |
+| 2026-09-25 | Pre-release compatibility | Requested removal of repository-owned backward-compatibility code and alignment of fixtures, tests, and documentation with current contracts. |
 | 2026-09-07 | Development quality | Requested remediation of all project-review findings, including correctness, static-analysis safety, dependencies, automated checks, and development setup. |
 | 2026-07-29 | Implementation technology | Simplified Agent Project Card generation to invoke Codex directly with one configurable model-provider group, superseding the separate Agents SDK orchestration model. |
 | 2026-07-28 | Implementation technology | Required the Python application to invoke Codex directly through the Codex SDK instead of using the Codex MCP server as its application integration path. |

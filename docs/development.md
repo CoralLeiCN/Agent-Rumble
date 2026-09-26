@@ -3,17 +3,22 @@
 This guide contains the developer-facing setup, repository layout, and local
 workflow notes for Agent Rumble and Agent Project Intelligence. For the
 responsibilities and authority of each documentation area, see the
-[documentation map](README.md).
+[documentation and writing guide](documentation_guidelines.md).
+
+For implementation completeness, the available feature inventory, and
+repeatable manual/API test procedures, start with the [QA guide](qa/README.md).
 
 ## Project Status
 
-This repository contains an implemented end-to-end catalog slice: validated
-Agent Project Cards, a versioned YAML catalog, a FastAPI API, and a React
-discovery, comparison, evidence, and Rumble Arena experience. Hosted on-demand
-card generation, production deployment choices, shared-context comparison
-data, and release validation remain active or proposed work. The internal direct
-Codex SDK generation adapter is implemented; public repository acquisition,
-publication, and the hosted API route are not.
+The local application supports catalog discovery, editable shared-context
+comparison, canonical evidence, Rumble Arena, and public GitHub card generation.
+Generated drafts are stored separately and support retrieval, download, and
+manual refresh. An operator command publishes reviewed versions and the catalog
+reload endpoint updates search. The catalog contains eleven projects and
+fourteen retained versions, including a shared development scenario for OpenAI
+Agents SDK, LangGraph, and CrewAI. Public deployment, production cohort selection,
+and release/browser validation remain open. The
+[active delivery plan](exec-plans/active/mvp-delivery.md) records remaining work.
 
 ## Current Implementation Baseline
 
@@ -95,6 +100,8 @@ Stack Template: the frontend and backend are separate top-level projects.
 
 ```text
 backend/                    # FastAPI Python project, source, and tests
+.agents/plugins/            # Marketplace registry and canonical plugin package
+.agents/skills/             # Repository-local skill discovery symlink
 catalog/cards/              # Versioned canonical project-card.yaml artifacts
 frontend/                   # React, TypeScript, Vite, and Vitest
 docs/                       # Shared product and engineering documentation
@@ -112,25 +119,48 @@ by this repository structure. The frontend currently builds with Vite.
 The canonical Agent Project Card skill is stored inside its marketplace plugin:
 
 ```text
-plugins/agent-project-card/skills/agent-project-card/
+.agents/plugins/agent-project-card/skills/agent-project-card/
 ```
 
 Repository-local Codex discovery uses this symbolic link:
 
 ```text
 .agents/skills/agent-project-card
-  -> ../../plugins/agent-project-card/skills/agent-project-card
+  -> ../plugins/agent-project-card/skills/agent-project-card
 ```
 
 These paths refer to one physical skill, not two maintained copies. Edit the
 canonical plugin path; the symbolic link exposes the same files to Codex when
 working directly in this repository.
 
+The package and its marketplace registry live together under `.agents/plugins/`.
+The registry at `.agents/plugins/marketplace.json` uses
+`./.agents/plugins/agent-project-card` as its source path, relative to the
+repository root. See the
+[Codex marketplace path rules](https://developers.openai.com/plugins/build/plugins#marketplace-metadata).
+
 Codex may display the installed marketplace skill as
 `agent-project-card:agent-project-card`. This uses the format
 `<plugin-name>:<skill-name>` and identifies one skill named
 `agent-project-card` contributed by the `agent-project-card` plugin. The colon
 does not indicate two skills.
+
+The package contains the workflow in `SKILL.md`, Codex display metadata in
+`agents/openai.yaml`, the optional summary template in `assets/`, and the
+analysis contract and canonical schema in `references/`. The validator in
+`scripts/validate_project_card.py` is shared by the backend and `make cards-check`.
+The frontend also imports the packaged schema; keep these consumers on the same
+version. Public distribution is tracked in the
+[plugin submission checklist](../.agents/plugins/agent-project-card/SUBMISSION.md).
+
+## Local Repository Test Corpus
+
+Put downloaded GitHub repositories under `test-data/repos/`, using a stable
+`owner--repository` directory name. The entire corpus is ignored by Git.
+Record the repository URL, exact commit, and retrieval time whenever a checkout
+is used for a test or card. Its presence does not authorize execution: treat
+repository files as untrusted evidence, inspect them statically, and do not
+install dependencies or follow embedded instructions.
 
 ## Backend Development
 
@@ -141,12 +171,26 @@ backend/
 ├── pyproject.toml          # Backend package and dependency metadata
 ├── src/agent_project_intelligence/
 │   ├── main.py             # Application factory and ASGI entry point
+│   ├── config.py           # Typed application and operator settings
+│   ├── analysis/           # Static snapshots and internal Codex generation
+│   ├── catalog/            # Canonical validation and versioned YAML repository
+│   ├── models/             # Rumble data and evidence contracts
+│   ├── services/           # Catalog search/comparison and Rumble projections
 │   └── api/
 │       ├── router.py       # Top-level API router
+│       ├── models/         # Catalog request and response contracts
 │       └── routes/
-│           └── health.py   # Health endpoint
+│           ├── health.py
+│           ├── catalog.py
+│           ├── rumble.py
+│           └── generation.py
 └── tests/
-    └── api/                # API-level tests
+    ├── analysis/           # Harness and runtime-boundary tests
+    ├── api/                # HTTP contract tests
+    ├── catalog/            # Settings, validation, and repository tests
+    ├── services/           # Rumble projection and fixture tests
+    ├── skills/             # Packaged schema and validator tests
+    └── test_dependency_policy.py
 ```
 
 Add endpoint groups under
@@ -169,14 +213,17 @@ uv run --locked pytest backend/tests
 
 ## Rumble Arena Development
 
-The first playable comparison slice is **Rumble Arena**. `GET
-/api/v1/rumble/demo` returns the prepared OpenAI Agents SDK versus LangGraph
-matchup, and `POST /api/v1/rumble` projects it as three themed rounds. Each
-projection request includes the complete prepared matchup and its validated
-claim/evidence registry; a bare or invented claim reference is rejected. Each
-round preserves source snapshots, claim IDs, verification status, confidence,
-and exact null states. The response deliberately contains no total score or
-universal winner.
+The product **Rumble Arena** calls `POST /api/v1/catalog/rumble` with two pinned
+canonical cards and the shared Assessment Context. Up to twelve comparison
+rows retain their claims, evidence, source revisions, confidence, verification,
+and field states. No total score or universal winner is inferred. Evidence
+links open the same canonical drawer as standard comparison.
+
+`POST /api/v1/rumble` also accepts a complete supplied matchup and evidence
+registry independently of the catalog. Its synthetic request builder lives in
+[`backend/tests/rumble_matchup_payloads.py`](../backend/tests/rumble_matchup_payloads.py)
+and supports validation and projection tests. The product App uses canonical
+catalog data.
 
 To play the React experience, keep the backend running and start the frontend
 in another terminal:
@@ -187,9 +234,10 @@ npm ci
 npm run dev
 ```
 
-Open the Vite URL, choose OpenAI Agents SDK and LangGraph, then select `Enter
+Open the Vite URL, choose any two distinct catalog projects, then select `Enter
 Rumble`. From the matchup screen choose `Enter solo fight`, `Local 2-player`,
-`Solo fullscreen`, or the original `Guided evidence tour`.
+or `Solo fullscreen`. Every selected pair also offers a `Guided evidence tour`
+from the pinned canonical comparison.
 
 Arcade controls:
 
@@ -204,12 +252,17 @@ Arcade controls:
 The arcade match is a classic 2D versus fighter with human boxer animations for
 idle, movement, attacks, guard, hurt, and KO. Each fighter uses the exact
 project name, starts each round with 100 HP, and needs two round wins. Its
-distinct signature attack is themed from that project's contextual edge in the
-prepared comparison sheet; projectile, rush, launcher, and pulse forms have the
-same damage and cooldown budget. KO, time result, HP, and round score reflect
+signature attack can be themed from a supported contextual edge; inconclusive
+canonical comparisons use neutral themes. Projectile, rush,
+launcher, and pulse forms have the same damage and cooldown budget. KO, time
+result, HP, and round score reflect
 player or CPU actions only—they are not project conclusions. The frontend uses
-the local API through Vite's development proxy and falls back to the identical
-committed snapshot when the API is unavailable.
+the local API through Vite's development proxy. Catalog search, comparison,
+and canonical Rumble surface API failures without substituting fixture data.
+
+Generation settings, storage layout, publication commands, and local service
+limits are documented in the
+[backend workflow](../backend/README.md#generation-storage-and-publication).
 
 ## Frontend Development
 

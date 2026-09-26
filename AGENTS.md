@@ -6,7 +6,7 @@ These instructions apply to the entire repository.
 
 ## Project Purpose
 
-This repository defines and will implement **Agent Rumble**, the public product
+This repository defines and implements **Agent Rumble**, the public product
 experience powered by **Agent Project Intelligence**, a system that explores
 agent-related software projects and produces standardized **Agent Project
 Cards**.
@@ -101,9 +101,13 @@ Do not silently add private-repository support, code execution, continuous monit
 
 ## Implementation Guidance
 
-The repository is currently specification-first. Do not assume an application framework, database, deployment platform, or service decomposition until it is selected and recorded as a decision.
+The repository contains a FastAPI catalog backend, a React frontend, and an
+internal Codex generation adapter. See [the architecture overview](docs/architecture.md)
+for implemented boundaries and [architecture decisions](docs/decisions.md) for
+accepted choices. Do not assume additional frameworks, databases, deployment
+platforms, or service decomposition until selected and recorded as a decision.
 
-When implementation begins:
+When extending the implementation:
 
 * Prefer a small end-to-end vertical slice that produces a valid card for representative repositories.
 * Keep analyzers modular, but avoid separate services until operational needs justify them.

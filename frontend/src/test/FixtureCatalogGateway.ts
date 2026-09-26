@@ -15,12 +15,33 @@ import type {
   ClaimEvidenceRecord,
   ComparisonResponse,
   SearchResponse,
+  CatalogContext,
 } from "../types/catalog";
 
 /** Test-only catalog adapter. Production builds always use the backend API. */
 export class FixtureCatalogGateway implements CatalogGateway {
-  readonly dataSource = "http" as const;
+  async getCatalogContext(): Promise<CatalogContext> {
+    return {
+      catalogId: "test",
+      label: "Test catalog",
+      cohortDescription: "Illustrative test projects",
+      coverage: ["Static analysis"],
+      exclusions: [],
+      cardCount: projectCards.length,
+      schemaVersions: ["0.3"],
+      ontologyVersions: [],
+      oldestAnalyzedAt: null,
+      newestAnalyzedAt: null,
+    };
+  }
 
+  async getCurrentCard(projectId: string) {
+    const card = projectCards.find(
+      (item) => item.project.project_id === projectId,
+    );
+    if (!card) throw new Error("Project is no longer in the catalog.");
+    return card;
+  }
   async searchProjects(query: string): Promise<SearchResponse> {
     return projectCardsToSearchResponse(
       projectCards,

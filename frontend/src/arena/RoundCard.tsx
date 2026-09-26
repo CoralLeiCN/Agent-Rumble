@@ -1,11 +1,10 @@
-import type { EvidenceRecord } from "../types/catalog";
+import type { ClaimReference } from "../types/catalog";
 import type {
   RumbleCell,
   RumbleClaim,
   RumbleEntrant,
   RumbleRound,
 } from "../types/rumble";
-import { toCatalogEvidenceRecord } from "../data/rumbleGateway";
 import {
   alignmentLabels,
   comparisonStateFor,
@@ -15,7 +14,7 @@ import {
 } from "./arenaPresentation";
 
 export type OpenArenaEvidence = (
-  evidence: EvidenceRecord,
+  reference: ClaimReference,
   trigger: HTMLButtonElement,
 ) => void;
 
@@ -60,31 +59,18 @@ function ClaimSources({ claim, onOpenEvidence }: ClaimSourcesProps) {
 
   return (
     <li className="claim-source">
-      <code>{claim.claim_id}</code>
+      <span>{claim.statement}</span>
       {sources.length === 0 && (
         <span>No evidence locator is attached to this claim.</span>
       )}
       {sources.map(({ evidence, relationship }, index) => {
-        const catalogEvidence = toCatalogEvidenceRecord(
-          claim,
-          evidence,
-          relationship,
-        );
-        if (!catalogEvidence) {
-          return (
-            <span key={`${relationship}-${evidence.evidence_id}`}>
-              {relationship === "conflicting" ? "Conflicting source" : "Source"}{" "}
-              recorded · status cannot be projected in this drawer
-            </span>
-          );
-        }
         return (
           <button
             className={`claim-source__button claim-source__button--${relationship}`}
             key={`${relationship}-${evidence.evidence_id}`}
             type="button"
             onClick={(event) =>
-              onOpenEvidence(catalogEvidence, event.currentTarget)
+              onOpenEvidence(claim.canonical_reference, event.currentTarget)
             }
             aria-label={`${relationship === "conflicting" ? "Inspect conflicting evidence" : "Inspect evidence"} for ${claim.statement}`}
           >
@@ -155,7 +141,7 @@ function RoundFinding({
         {cell.claim_ids.length > 0 && resolvedClaims.length === 0 && (
           <p className="round-finding__claim-warning" role="note">
             Claim reference {cell.claim_ids.join(", ")} is not present in this
-            demo bundle.
+            comparison.
           </p>
         )}
         {resolvedClaims.length > 0 && (

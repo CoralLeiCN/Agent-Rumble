@@ -260,7 +260,7 @@ def test_repository_catalog_loads_all_published_validated_cards() -> None:
         max_file_size_bytes=2 * 1024 * 1024,
     ).load()
 
-    assert snapshot.card_count == 11
+    assert snapshot.card_count == 14
     assert snapshot.project_count == 11
     assert {card.project_id for card in snapshot.list_current()} == {
         "project-anthropics-claude-agent-sdk-python",
@@ -279,10 +279,7 @@ def test_repository_catalog_loads_all_published_validated_cards() -> None:
 
 def test_snapshot_receives_normalized_document_and_card_id(tmp_path: Path) -> None:
     source = (
-        DEFAULT_CATALOG_ROOT.parents[1]
-        / "project-cards"
-        / "bio-xyz--BioAgents"
-        / "project-card.yaml"
+        DEFAULT_CATALOG_ROOT / "card-bio-xyz-bioagents" / "versions" / "1" / "project-card.yaml"
     )
     document = yaml.safe_load(source.read_text(encoding="utf-8"))
     document["card_id"] = "card-\ud83d\ude80"
@@ -302,29 +299,3 @@ def test_snapshot_receives_normalized_document_and_card_id(tmp_path: Path) -> No
     assert card is not None
     assert card.card_id == "card-\U0001f680"
     assert card.to_document()["card_id"] == "card-\U0001f680"
-
-
-@pytest.mark.parametrize(
-    ("generated", "published"),
-    [
-        (
-            "project-cards/bio-xyz--BioAgents/project-card.yaml",
-            "catalog/cards/card-bio-xyz-bioagents/versions/1/project-card.yaml",
-        ),
-        (
-            "project-cards/eigent-ai--eigent/project-card.yaml",
-            "catalog/cards/card-eigent-ai-eigent/versions/1/project-card.yaml",
-        ),
-        (
-            "project-cards/snap-stanford--biomni/project-card.yaml",
-            "catalog/cards/card-snap-stanford-biomni/versions/1/project-card.yaml",
-        ),
-    ],
-)
-def test_published_cards_preserve_generated_canonical_bytes(
-    generated: str,
-    published: str,
-) -> None:
-    repository_root = DEFAULT_CATALOG_ROOT.parents[1]
-
-    assert (repository_root / generated).read_bytes() == (repository_root / published).read_bytes()

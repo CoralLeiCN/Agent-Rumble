@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from typing import Annotated, Any
 
@@ -19,6 +20,7 @@ from agent_project_intelligence.api.models.catalog import (
     SearchResponse,
 )
 from agent_project_intelligence.services.catalog import CatalogService
+from agent_project_intelligence.services.catalog_rumble import CanonicalRumbleResult, catalog_rumble
 
 router = APIRouter(tags=["catalog"])
 
@@ -28,6 +30,15 @@ ERROR_RESPONSES: dict[int | str, dict[str, Any]] = {
     422: {"model": ErrorEnvelope, "description": "Request validation failed"},
     500: {"model": ErrorEnvelope, "description": "Validated catalog reference error"},
     503: {"model": ErrorEnvelope, "description": "Catalog is unavailable"},
+}
+CACHE_HEADERS: dict[str, Any] = {
+    "ETag": {"schema": {"type": "string"}, "description": "Hash of this response representation"},
+    "Cache-Control": {"schema": {"type": "string"}, "description": "private, no-cache"},
+}
+CACHED_RESPONSES: dict[int | str, dict[str, Any]] = {
+    **ERROR_RESPONSES,
+    200: {"headers": CACHE_HEADERS},
+    304: {"description": "Representation unchanged; no response body", "headers": CACHE_HEADERS},
 }
 
 
@@ -68,6 +79,7 @@ def _surrogate_safe_json_response(
     content: BaseModel | dict[str, Any],
     *,
     exclude_none: bool = False,
+    request: Request | None = None,
 ) -> Response:
     """Serialize catalog JSON as ASCII so every JSON string remains representable.
 
@@ -87,7 +99,14 @@ def _surrogate_safe_json_response(
         allow_nan=False,
         separators=(",", ":"),
     )
-    return Response(content=body, media_type="application/json")
+    headers = {}
+    if request is not None:
+        etag = '"' + hashlib.sha256(body.encode("utf-8")).hexdigest() + '"'
+        headers = {"ETag": etag, "Cache-Control": "private, no-cache"}
+        candidates = request.headers.get("if-none-match", "").split(",")
+        if any(item.strip().removeprefix("W/") in {etag, "*"} for item in candidates):
+            return Response(status_code=304, headers=headers)
+    return Response(content=body, media_type="application/json", headers=headers)
 
 
 @router.get(
@@ -116,38 +135,41 @@ async def search_catalog(
 @router.get(
     "/projects/{project_ref}/cards/current",
     response_model=dict[str, Any],
-    responses=ERROR_RESPONSES,
+    responses=CACHED_RESPONSES,
 )
 async def get_current_card(
+    request: Request,
     project_ref: ProjectReference,
     service: CatalogServiceDependency,
 ) -> Response:
     """Return the exact canonical data for the current retained card."""
     project_id = decode_identifier_reference(project_ref, field="project_id")
-    return _surrogate_safe_json_response(service.current_card(project_id))
+    return _surrogate_safe_json_response(service.current_card(project_id), request=request)
 
 
 @router.get(
     "/projects/{project_ref}/cards/{card_version}",
     response_model=dict[str, Any],
-    responses=ERROR_RESPONSES,
+    responses=CACHED_RESPONSES,
 )
 async def get_versioned_card(
+    request: Request,
     project_ref: ProjectReference,
     card_version: Annotated[int, Path(ge=1)],
     service: CatalogServiceDependency,
 ) -> Response:
     """Return the exact canonical data for one pinned historical card."""
     project_id = decode_identifier_reference(project_ref, field="project_id")
-    return _surrogate_safe_json_response(service.card(project_id, card_version))
+    return _surrogate_safe_json_response(service.card(project_id, card_version), request=request)
 
 
 @router.get(
     "/projects/{project_ref}/cards/{card_version}/evidence/{evidence_ref}",
     response_model=EvidenceResponse,
-    responses=ERROR_RESPONSES,
+    responses=CACHED_RESPONSES,
 )
 async def get_evidence(
+    request: Request,
     project_ref: ProjectReference,
     card_version: Annotated[int, Path(ge=1)],
     evidence_ref: EvidenceReference,
@@ -156,7 +178,9 @@ async def get_evidence(
     """Resolve one Evidence record to Claims, Source, revision, and locator."""
     project_id = decode_identifier_reference(project_ref, field="project_id")
     evidence_id = decode_identifier_reference(evidence_ref, field="evidence_id")
-    return _surrogate_safe_json_response(service.evidence(project_id, card_version, evidence_id))
+    return _surrogate_safe_json_response(
+        service.evidence(project_id, card_version, evidence_id), request=request
+    )
 
 
 @router.post(
@@ -174,3 +198,32 @@ async def compare_catalog(
         service.compare(comparison_request),
         exclude_none=True,
     )
+
+
+@router.post("/catalog/rumble", response_model=CanonicalRumbleResult, responses=ERROR_RESPONSES)
+async def compare_rumble(
+    comparison_request: ComparisonRequest,
+    service: CatalogServiceDependency,
+) -> Response:
+    return _surrogate_safe_json_response(catalog_rumble(service, comparison_request))
+
+
+@router.post("/catalog/refresh", response_model=CatalogContextResponse, responses=ERROR_RESPONSES)
+def refresh_catalog(request: Request) -> Response:
+    """Reload reviewed artifacts atomically; a failed reload leaves the old snapshot active."""
+    from agent_project_intelligence.catalog import FilesystemCatalogRepository, SkillCardValidator
+
+    settings = request.app.state.settings
+    try:
+        snapshot = FilesystemCatalogRepository(
+            root=settings.catalog_root,
+            validator=SkillCardValidator(),
+            max_file_size_bytes=settings.catalog_max_file_size_bytes,
+        ).load()
+    except ValueError as exc:
+        raise CatalogAPIError(
+            422, "catalog_refresh_failed", "The catalog contains invalid artifacts."
+        ) from exc
+    service = CatalogService(snapshot)
+    request.app.state.catalog_service = service
+    return _surrogate_safe_json_response(service.catalog_context())

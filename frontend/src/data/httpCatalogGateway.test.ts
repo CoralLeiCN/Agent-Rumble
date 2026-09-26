@@ -41,6 +41,26 @@ function summary(card: AgentProjectCard) {
 }
 
 describe("HttpCatalogGateway", () => {
+  it("evicts the least recently used card and refetches its pinned version", async () => {
+    const request = vi.fn(async (path: string) => ({
+      ...projectCards[0],
+      card_version: Number(path.split("/").at(-1)),
+    }));
+    const gateway = new HttpCatalogGateway({ request } as JsonTransport);
+    const id = projectCards[0].project.project_id;
+    for (let version = 1; version <= 32; version++)
+      await gateway.getCard(id, version);
+    await gateway.getCard(id, 1);
+    await gateway.getCard(id, 33);
+    const first = await gateway.getCard(id, 1);
+    expect(first.card_version).toBe(1);
+    expect(request).toHaveBeenCalledTimes(33);
+    const evicted = await gateway.getCard(id, 2);
+    expect(evicted.card_version).toBe(2);
+    expect(request).toHaveBeenCalledTimes(34);
+    expect(request).toHaveBeenLastCalledWith(cardPath(evicted));
+  });
+
   it("loads paginated search summaries without fetching full cards or inventing match evidence", async () => {
     const request = vi.fn(async () => ({
       query: "human approval",
@@ -91,6 +111,15 @@ describe("HttpCatalogGateway", () => {
     newer.card_version = second.card_version + 1;
     newer.claims[0].statement = "The newer classification";
     const request = vi.fn(async (path: string): Promise<unknown> => {
+      if (path === "/api/v1/catalog/compare")
+        return {
+          assessment_context: { use_case: "Test" },
+          role_analysis: {
+            compatibility: "same_role",
+            explanation: "Same role",
+          },
+          rows: [],
+        };
       if (path.includes("/evidence/")) return { source_url: null };
       const card = [first, second, newer].find(
         (candidate) => cardPath(candidate) === path,
@@ -153,22 +182,27 @@ describe("HttpCatalogGateway", () => {
       gateway.getCurrentCard(projectCards[1].project.project_id),
     ).rejects.toThrow(/different project/);
   });
+
+  it("rejects comparing multiple versions of one project before fetching cards", async () => {
+    const request = vi.fn();
+    const gateway = new HttpCatalogGateway({ request } as JsonTransport);
+    await expect(
+      gateway.compareProjects([
+        reference(projectCards[0]),
+        { ...reference(projectCards[0]), cardVersion: 2 },
+      ]),
+    ).rejects.toThrow(/distinct projects/);
+    expect(request).not.toHaveBeenCalled();
+  });
 });
 describe("catalog transport configuration", () => {
-  it("uses the backend exclusively", () => {
+  it("reads the API host from the current configuration", () => {
     expect(readCatalogGatewayConfig({})).toEqual({ apiBaseUrl: "" });
     expect(
       readCatalogGatewayConfig({
-        VITE_CATALOG_GATEWAY: "http",
-        VITE_CATALOG_API_BASE_URL: "http://localhost:8000",
+        VITE_CATALOG_API_BASE_URL: " http://localhost:8000 ",
       }),
     ).toEqual({ apiBaseUrl: "http://localhost:8000" });
-    expect(() =>
-      readCatalogGatewayConfig({ VITE_CATALOG_GATEWAY: "static" }),
-    ).toThrow(/only the live HTTP catalog is supported/);
-    expect(() =>
-      readCatalogGatewayConfig({ VITE_CATALOG_GATEWAY: "automatic" }),
-    ).toThrow(/only the live HTTP catalog is supported/);
   });
 
   it("surfaces typed API errors without silently falling back to sample data", async () => {

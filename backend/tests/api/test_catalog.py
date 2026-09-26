@@ -7,7 +7,6 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
-import yaml
 from agent_project_intelligence.api.errors import CatalogAPIError
 from agent_project_intelligence.api.identifier_references import (
     decode_identifier_reference,
@@ -23,15 +22,17 @@ from agent_project_intelligence.catalog import (
 from agent_project_intelligence.catalog.models import freeze_value
 from agent_project_intelligence.config import Settings
 from agent_project_intelligence.main import create_app
-from agent_project_intelligence.services import catalog as catalog_module
+from agent_project_intelligence.services import catalog_search as catalog_module
 from agent_project_intelligence.services.catalog import CatalogService
+from agent_project_intelligence.services.catalog_search import CatalogSearch
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
+
+from ..rumble_matchup_payloads import rumble_matchup_payload
 
 EIGENT = "project-eigent-ai-eigent"
 BIOMNI = "project-snap-stanford-biomni"
 BIOAGENTS = "project-bio-xyz-bioagents"
-PREPROCESSED_CARD_ROOT = Path(__file__).resolve().parents[3] / "project-cards"
 
 
 @pytest.mark.parametrize(
@@ -192,23 +193,35 @@ def test_analysis_age_advances_without_restarting_the_service(
     assert later.analysis_age_days == first.analysis_age_days + 3
 
 
-def test_catalog_publishes_every_preprocessed_card(
+def test_search_calculates_term_frequency_once_per_query(catalog_snapshot, monkeypatch):
+    calls = []
+    frequency = CatalogSearch._term_document_frequency
+
+    def count(self, term):
+        calls.append(term)
+        return frequency(self, term)
+
+    monkeypatch.setattr(CatalogSearch, "_term_document_frequency", count)
+    service = CatalogService(catalog_snapshot)
+    response = service.search(SearchRequest(text="python"))
+    assert response.total > 1
+    assert calls == ["python"]
+    assert service.search(SearchRequest(text="python")).model_dump() == response.model_dump()
+    assert calls == ["python", "python"]
+
+
+def test_search_exposes_every_current_catalog_card(
+    client: TestClient,
     catalog_snapshot: CatalogSnapshot,
 ) -> None:
-    validator = SkillCardValidator()
-    preprocessed: dict[tuple[str, int], dict[str, object]] = {}
+    response = client.post("/api/v1/catalog/search", json={"page_size": 100})
 
-    for path in sorted(PREPROCESSED_CARD_ROOT.glob("*/project-card.yaml")):
-        document = yaml.safe_load(path.read_text(encoding="utf-8"))
-        validated = validator.validate(document)
-        preprocessed[(validated.project_id, validated.card_version)] = validated.document
-
-    published = {
-        (card.project_id, card.card_version): card.to_document() for card in catalog_snapshot.cards
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == len(body["projects"]) == catalog_snapshot.project_count == 11
+    assert {(project["id"], project["card_version"]) for project in body["projects"]} == {
+        (card.project_id, card.card_version) for card in catalog_snapshot.list_current()
     }
-
-    assert len(preprocessed) == 11
-    assert published == preprocessed
 
 
 def test_current_and_versioned_routes_return_exact_canonical_document(
@@ -309,7 +322,7 @@ def test_search_is_deterministic_traceable_and_reports_uninterpreted_terms(
         "project-different-ai-openwork",
     ]
     assert body["requirements"] == [
-        {"id": "requirement-1", "kind": "must", "label": "TypeScript implementation"}
+        {"id": "must-0", "kind": "must", "label": "TypeScript implementation"}
     ]
     for project in body["projects"]:
         assert project["source_snapshot"]["source_revisions"]
@@ -595,6 +608,43 @@ def test_comparison_rejects_duplicate_or_unpinned_card_sets(client: TestClient) 
     assert duplicate.json()["error"]["code"] == "request_validation_error"
     assert missing.status_code == 404
     assert missing.json()["error"]["code"] == "card_not_found"
+
+
+def test_comparison_rejects_two_versions_of_the_same_project(
+    catalog_snapshot: CatalogSnapshot,
+) -> None:
+    original = catalog_snapshot.get(EIGENT, 1)
+    assert original is not None
+    newer = original.to_document()
+    newer["card_version"] = 2
+    snapshot = CatalogSnapshot((original, _card_from_document(newer)))
+    with TestClient(create_app(catalog_snapshot=snapshot)) as comparison_client:
+        response = comparison_client.post(
+            "/api/v1/catalog/compare",
+            json={
+                "cards": [
+                    {"project_id": EIGENT, "card_version": 1},
+                    {"project_id": EIGENT, "card_version": 2},
+                ],
+                "assessment_context": {"use_case": "Compare projects"},
+            },
+        )
+    assert response.status_code == 422
+    assert "distinct projects" in response.text
+
+
+def test_configured_api_prefix_applies_to_catalog_and_rumble(
+    catalog_snapshot: CatalogSnapshot,
+) -> None:
+    application = create_app(
+        settings=Settings(api_prefix="/custom/v1"), catalog_snapshot=catalog_snapshot
+    )
+    with TestClient(application) as configured_client:
+        assert configured_client.get("/custom/v1/catalog").status_code == 200
+        matchup = rumble_matchup_payload()
+        assert configured_client.post("/custom/v1/rumble", json=matchup).status_code == 200
+        assert configured_client.post("/api/v1/rumble", json=matchup).status_code == 404
+        assert configured_client.get("/health").status_code == 200
 
 
 def test_comparison_assessments_require_an_exact_context_and_matching_context_id(

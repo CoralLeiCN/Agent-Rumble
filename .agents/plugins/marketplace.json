@@ -8,7 +8,7 @@
       "name": "agent-project-card",
       "source": {
         "source": "local",
-        "path": "./plugins/agent-project-card"
+        "path": "./.agents/plugins/agent-project-card"
       },
       "policy": {
         "installation": "AVAILABLE",
