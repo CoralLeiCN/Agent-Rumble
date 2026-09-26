@@ -1,0 +1,21 @@
+
+> agent-rumble-frontend-prototype@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 71 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                      0.55 kB │ gzip:   0.33 kB
+dist/assets/index-D5IngR2P.css      12.92 kB │ gzip:   3.32 kB
+dist/assets/index-uotEegyk.css      63.81 kB │ gzip:  11.38 kB
+dist/assets/index-zmX_RoRw.js       14.38 kB │ gzip:   4.67 kB
+dist/assets/index-DjExLFxj.js      284.34 kB │ gzip:  85.94 kB
+dist/assets/runtime-CcVPoeQI.js  1,228.27 kB │ gzip: 338.81 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.25s

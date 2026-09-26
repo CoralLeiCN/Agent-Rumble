@@ -1,0 +1,12 @@
+
+> agent-rumble-frontend-prototype@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /Users/coral/.codex/worktrees/0890/stayagent/frontend
+
+
+ Test Files  11 passed (11)
+      Tests  86 passed (86)
+   Start at  09:49:18
+   Duration  2.92s (transform 1.04s, setup 1.55s, import 1.24s, tests 3.46s, environment 4.01s)

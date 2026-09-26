@@ -209,7 +209,9 @@ JSON and wrong project/version responses are covered by transport/gateway tests.
 
 **Expected:** no hidden required action or unreadable value; drawer focus stays
 inside while open and returns on close; status is not color-only. Record actual
-browser/OS/viewport and screenshots. This case is currently Not run.
+browser/OS/viewport and screenshots. The
+[2026-09-26 browser follow-up](browser-test-2026-09-26.md) records layout samples
+and drawer focus checks; the remaining steps are not yet verified.
 
 ## Rumble and Arcade
 
