@@ -68,6 +68,11 @@ fullscreen behavior. Verify evidence focus handling and that catalog requests
 do not invoke generation or substitute fixtures. Measure arcade loading and
 record user findings.
 
+The [2026-09-26 built-in browser run](../../qa/browser-test-2026-09-26.md)
+records working catalog, comparison, evidence, and tour flows, plus an open
+fullscreen failure. Arcade keyboard verification and the remaining device,
+accessibility, and provider cases still require follow-up.
+
 **Complete when:** The browser cases have recorded results, reproducible
 findings are resolved or explicitly accepted, and required actions and canonical
 fields remain reachable. Passing jsdom tests alone does not close this work.
