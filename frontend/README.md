@@ -32,7 +32,9 @@ Publication remains an explicit operator step.
 
 ## Local Development
 
-Use Node 24.20.0 (the root `.node-version`) with bundled npm 11.19.0. From this directory:
+Use Node 26.10.0 (the root `.node-version`) and npm 12.1.0. Follow the
+[toolchain setup](../docs/development.md#development-setup) to install the
+recorded versions. From this directory:
 
 ```shell
 npm ci

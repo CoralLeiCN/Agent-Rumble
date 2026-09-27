@@ -582,6 +582,8 @@ repeatable continuous-integration suite.
 
 **Date:** 2026-09-07
 
+**Updated:** 2026-09-27
+
 **Related requirements:** [Development Quality](requirements.md#development-quality)
 
 ### Context
@@ -598,6 +600,11 @@ locked uv/npm installs. Permit only explicitly reviewed dependency install
 scripts through npm's version-pinned `allowScripts` policy. Run `make check` and Python/npm advisory audits in GitHub
 Actions with immutable action revisions and read-only repository permissions.
 
+For the requested toolchain upgrade, use Node 26.10.0 and npm 12.1.0, the current
+stable releases checked on 2026-09-27. CI installs the exact npm version from
+`frontend/package.json` explicitly because Node's bundled npm can differ. Keep
+strict engine checks and the existing dependency install-script approvals.
+
 ### Consequences
 
 Existing code is formatted once to establish the baseline. The local commands
@@ -609,6 +616,7 @@ a production deployment platform or add Playwright testing.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-09-27 | Development quality | Updated the development baseline to Node 26.10.0 and npm 12.1.0; CI installs the recorded npm version explicitly before locked setup. |
 | 2026-09-26 | Persistence and search | Made lineage selection depend on the requested boundary as well as repository identity; reject ambiguous matches and collisions across boundaries. |
 | 2026-09-26 | Frontend and Rumble API | Removed the served demo bundle and root fixtures; retained supplied-matchup validation and synthetic test inputs. |
 | 2026-09-26 | Agent workflow and runtime | Consolidated plugin packages and marketplace metadata under `.agents/plugins/`, preserving one canonical skill and local discovery. |

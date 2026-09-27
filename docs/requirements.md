@@ -394,6 +394,9 @@ dependency vulnerabilities, and keep the full catalog reachable. Provide
 repeatable automated quality checks, reproducible runtime setup, and accurate
 development documentation.
 
+Upgrade the Node.js and npm development baseline to the current stable releases,
+recording the selected versions for reproducible local setup and CI.
+
 Keep implementation behavior, API contracts, setup instructions, and delivery
 status documentation aligned. Review and correct inconsistencies across the
 codebase and project documents.
@@ -494,6 +497,7 @@ Do not add content beyond what the user asked to write.
 
 | Date | Topic | Change |
 | --- | --- | --- |
+| 2026-09-27 | Development quality | Requested an upgrade of the Node.js and npm development baseline to the latest stable releases. |
 | 2026-09-26 | Rumble Arena | Requested removal of the standalone demo endpoint and root fixture files while retaining synthetic test inputs beside their tests. |
 | 2026-09-26 | Documentation governance | Reaffirmed removal of stale and pointer documents and alignment of documentation and specification; consolidated current guidance and made remaining delivery gaps explicit. |
 | 2026-09-26 | Repository-local skill | Requested consolidation of the plugin package and marketplace metadata into one plugin area. |

@@ -28,6 +28,8 @@ jobs:
           node-version-file: .node-version
           cache: npm
           cache-dependency-path: frontend/package-lock.json
+      - name: Install the pinned npm version
+        run: npm install --global "$(node -p "require('./frontend/package.json').packageManager")" --ignore-scripts
       - name: Install locked dependencies
         run: make setup
       - name: Lint, types, canonical cards, regression tests, and build
