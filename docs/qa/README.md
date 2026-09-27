@@ -2,6 +2,8 @@
 
 **Reviewed:** 2026-09-26
 
+**Toolchain recheck:** 2026-09-27 with Node 26.10.0 and npm 12.1.0.
+
 **Baseline:** `de4fa00e827db64a110ef90fb4d86b67162ed0b1` plus the implementation,
 tests, version-2 cards, and alignment fixes in the commit containing this review.
 Checking out the baseline commit alone does not reproduce this build.
@@ -35,6 +37,7 @@ and accepted [decisions](../decisions.md).
 
 | Check | Result | What this establishes |
 | --- | --- | --- |
+| Toolchain upgrade, 2026-09-27 | `make setup`, `make check`, and `make audit` passed locally on Node 26.10.0/npm 12.1.0 | Clean locked frontend install; 219 backend tests, 86 frontend tests, all 14 canonical cards, lint, formatting, types, and production build passed. Python and npm audits found no known vulnerabilities. Locked dependency versions and install-script approvals are unchanged. CI now installs the pinned npm version explicitly. This records local verification; GitHub CI results are tracked separately. |
 | `make check` | Passed after review fixes and module separation: 219 backend tests and 86 frontend tests | Python/TypeScript lint, formatting and types; canonical-card validation; regressions; frontend production build. Run with Python 3.12.10, Node 24.20.0, npm 11.19.0, a writable uv cache, and permission for the loopback runtime test. |
 | Plugin layout | Package validation and path checks passed | Marketplace metadata and the package share `.agents/plugins/`; local skill discovery, backend validation/generation, and frontend schema imports resolve the relocated package. All eight package files are unchanged by the move. |
 | Validated catalog inspection | 11 current projects, 14 retained versions | The single checked-in store is `catalog/cards/`; three projects retain versions 1 and 2. All 14 files remain byte-for-byte unchanged after removing the 11 duplicate working copies. |

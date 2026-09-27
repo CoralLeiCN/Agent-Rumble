@@ -55,8 +55,25 @@ Dependency resolution enforces a seven-day release cooldown: registry packages
 uploaded within the preceding week are not eligible for a new lockfile. Locked
 installs continue to use the reviewed versions recorded in `uv.lock`.
 
-Install Node 24.20.0 from `.node-version`; its bundled npm is 11.19.0. The
-frontend package records these versions and installs from `package-lock.json`.
+Install Node 26.10.0 from `.node-version`, then install npm 12.1.0 explicitly.
+The frontend package records both versions; CI reads `.node-version` and
+installs the npm version in `frontend/package.json` before setup. From the
+repository root:
+
+```shell
+npm install --global npm@12.1.0 --ignore-scripts
+node --version
+npm --version
+make setup
+```
+
+The version checks should print `v26.10.0` and `12.1.0`. `make setup` installs
+locked dependencies; it does not install or switch Node. A version manager is
+optional. If the shell still selects an older Node installation, update its
+`PATH` before setup. If `uv` warns about an active environment from another
+checkout, run `deactivate`; activation is not required for the Make commands.
+
+The frontend installs from `package-lock.json`.
 Install scripts require explicit package-version approval; the pinned esbuild
 installer is allowed and the optional fsevents installer is disabled:
 

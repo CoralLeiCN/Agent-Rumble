@@ -9,7 +9,7 @@ release readiness. Unless a result is listed in the review, the manual case is
 
 Use the complete working tree or a commit containing all reviewed changes.
 Record `git rev-parse HEAD` and `git status --short` with the test results.
-Use Python 3.12, `uv >= 0.9.17`, Node 24.20.x, and npm 11.19.x; the CI uv version
+Use Python 3.12, `uv >= 0.9.17`, Node 26.10.x, and npm 12.1.x; the CI uv version
 is 0.11.29. Commands below run from the repository root on macOS/Linux.
 
 ```shell

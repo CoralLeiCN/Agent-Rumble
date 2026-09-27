@@ -236,6 +236,8 @@ Traceability: [Development Quality](../requirements.md#development-quality).
 * Check lint, formatting, Python and TypeScript types, canonical cards,
   regressions, builds, and dependency advisories in CI using locked dependencies
   and recorded runtime versions.
+* Upgrade the Node.js and npm development baseline to current stable releases,
+  recording the selected versions and aligning local setup and CI.
 * Use current project-owned configuration names, identifiers, and transport
   contracts directly. Remove aliases and adapters maintained solely for older
   versions, and update fixtures and documentation with those removals, following
